@@ -330,6 +330,41 @@ a {
   font-size: 0.95rem;
 }
 
+.awareness {
+  background:
+    radial-gradient(circle at top left, rgba(213, 122, 49, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.72), rgba(255, 250, 243, 0.32));
+}
+
+.awareness-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 2rem 3rem;
+}
+
+.awareness-copy p,
+.awareness-panel p,
+.awareness-panel span {
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.awareness-panel {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 250, 243, 0.78);
+  box-shadow: var(--shadow);
+}
+
+.awareness-panel strong {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
 .section {
   padding: 6.5rem 0;
 }
@@ -716,6 +751,7 @@ a {
 
   .hero-points,
   .proof-inner,
+  .awareness-layout,
   .service-layout,
   .story-layout,
   .advantage-layout,

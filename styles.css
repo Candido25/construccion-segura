@@ -1,16 +1,19 @@
 :root {
-  --bg: #101315;
-  --bg-soft: #161c1f;
-  --surface: #f2ede3;
-  --surface-strong: #e4dac9;
-  --text: #f6f1e8;
-  --text-dark: #171a1c;
-  --muted: rgba(246, 241, 232, 0.7);
-  --muted-dark: rgba(23, 26, 28, 0.7);
-  --accent: #c96f2d;
-  --accent-soft: #e3a675;
+  --bg: #0f1b24;
+  --bg-soft: #162634;
+  --surface: #f2ede2;
+  --surface-strong: #e8dcc7;
+  --text: #f6f2ea;
+  --text-dark: #16202a;
+  --muted: rgba(246, 242, 234, 0.74);
+  --muted-dark: rgba(22, 32, 42, 0.72);
+  --accent: #c86b32;
+  --accent-soft: #e1a06f;
+  --accent-deep: #9f4f20;
+  --trust: #8fb3c9;
   --line: rgba(255, 255, 255, 0.12);
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  --line-dark: rgba(22, 32, 42, 0.12);
+  --shadow: 0 28px 90px rgba(4, 10, 15, 0.42);
   --radius: 28px;
   --max: 1200px;
 }
@@ -31,8 +34,9 @@ body {
   margin: 0;
   font-family: "Manrope", "Segoe UI Variable", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(201, 111, 45, 0.18), transparent 30%),
-    linear-gradient(180deg, #111517 0%, #0c0f11 100%);
+    radial-gradient(circle at top left, rgba(200, 107, 50, 0.18), transparent 26%),
+    radial-gradient(circle at top right, rgba(143, 179, 201, 0.12), transparent 24%),
+    linear-gradient(180deg, #0f1b24 0%, #0a1218 100%);
   color: var(--text);
 }
 
@@ -57,7 +61,7 @@ a {
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.4rem;
-  background: linear-gradient(180deg, rgba(9, 12, 13, 0.92), rgba(9, 12, 13, 0.45));
+  background: linear-gradient(180deg, rgba(8, 16, 22, 0.94), rgba(8, 16, 22, 0.5));
   backdrop-filter: blur(18px);
 }
 
@@ -112,7 +116,7 @@ a {
 .nav-cta {
   padding: 0.8rem 1.15rem;
   border-radius: 999px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   color: white !important;
   font-weight: 700;
 }
@@ -141,7 +145,7 @@ a {
   position: absolute;
   inset: auto 0 0;
   height: 12rem;
-  background: linear-gradient(180deg, transparent, rgba(12, 15, 17, 0.95));
+  background: linear-gradient(180deg, transparent, rgba(10, 18, 24, 0.96));
 }
 
 .hero-content,
@@ -161,7 +165,7 @@ a {
 
 .eyebrow {
   margin: 0 0 1rem;
-  color: var(--accent-soft);
+  color: var(--trust);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.78rem;
@@ -207,14 +211,14 @@ a {
 }
 
 .button-primary {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   color: white;
-  box-shadow: 0 18px 40px rgba(201, 111, 45, 0.26);
+  box-shadow: 0 18px 40px rgba(159, 79, 32, 0.28);
 }
 
 .button-secondary {
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(143, 179, 201, 0.08);
 }
 
 .hero-points {
@@ -246,10 +250,11 @@ a {
 
 .hero-image {
   background:
-    linear-gradient(180deg, rgba(8, 10, 11, 0.15), rgba(8, 10, 11, 0.55)),
+    linear-gradient(180deg, rgba(8, 15, 20, 0.2), rgba(8, 15, 20, 0.62)),
     url("https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80") center/cover;
   transform: scale(1.08);
   transform-origin: center;
+  filter: saturate(0.88) contrast(1.04);
 }
 
 .hero-grid {
@@ -268,11 +273,12 @@ a {
   align-items: center;
   padding: 0.8rem 1rem;
   border-radius: 999px;
-  background: rgba(13, 16, 17, 0.78);
+  background: rgba(10, 19, 25, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(8px);
   color: var(--text);
   font-weight: 700;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
 .hero-badge-top {
@@ -283,6 +289,33 @@ a {
 .hero-badge-bottom {
   bottom: 12%;
   left: 10%;
+}
+
+.proof-strip {
+  width: min(var(--max), calc(100% - 2.4rem));
+  margin: -1rem auto 0;
+  position: relative;
+  z-index: 3;
+}
+
+.proof-inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 19, 25, 0.78);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+}
+
+.proof-inner p {
+  margin: 0;
+  color: var(--text);
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .section {
@@ -346,12 +379,15 @@ a {
 }
 
 .contrast {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  background:
+    radial-gradient(circle at left top, rgba(143, 179, 201, 0.08), transparent 20%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
 }
 
 .story {
   background:
-    radial-gradient(circle at top left, rgba(201, 111, 45, 0.14), transparent 24%),
+    radial-gradient(circle at top left, rgba(200, 107, 50, 0.14), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(143, 179, 201, 0.08), transparent 22%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
 }
 
@@ -378,6 +414,64 @@ a {
 .story-values h3 {
   margin: 0 0 0.75rem;
   font-size: 1.35rem;
+  color: var(--text);
+}
+
+.cases {
+  background:
+    radial-gradient(circle at top left, rgba(143, 179, 201, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+}
+
+.case-grid,
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.case-card,
+.testimonial-card {
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.case-card span,
+.testimonial-card span {
+  color: var(--trust);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.case-card h3 {
+  margin: 0.85rem 0 0.6rem;
+  font-size: 1.3rem;
+}
+
+.case-card p,
+.testimonial-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.testimonials {
+  background:
+    radial-gradient(circle at top right, rgba(200, 107, 50, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.04));
+}
+
+.testimonial-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.testimonial-card strong {
+  font-size: 1rem;
 }
 
 .advantage-layout,
@@ -414,7 +508,9 @@ a {
 }
 
 .payments {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.05));
+  background:
+    radial-gradient(circle at top right, rgba(200, 107, 50, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.05));
 }
 
 .payment-layout {
@@ -452,7 +548,7 @@ a {
 
 .payment-contact p {
   margin: 0;
-  color: var(--accent-soft);
+  color: var(--trust);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -496,7 +592,7 @@ a {
   place-items: center;
   border-radius: 22px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(201, 111, 45, 0.18)),
+    linear-gradient(135deg, rgba(143, 179, 201, 0.12), rgba(200, 107, 50, 0.18)),
     repeating-linear-gradient(
       0deg,
       rgba(255, 255, 255, 0.06) 0,
@@ -516,7 +612,7 @@ a {
   min-height: 7rem;
   padding: 1rem;
   border-radius: 18px;
-  background: rgba(14, 18, 19, 0.78);
+  background: rgba(11, 20, 26, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.12);
   font-weight: 800;
 }
@@ -524,12 +620,13 @@ a {
 .territory {
   color: var(--text-dark);
   background:
-    radial-gradient(circle at top right, rgba(201, 111, 45, 0.24), transparent 26%),
+    radial-gradient(circle at top right, rgba(200, 107, 50, 0.18), transparent 26%),
+    radial-gradient(circle at bottom left, rgba(143, 179, 201, 0.1), transparent 22%),
     linear-gradient(180deg, var(--surface) 0%, var(--surface-strong) 100%);
 }
 
 .territory .eyebrow {
-  color: #8b4e1f;
+  color: #7b8f9f;
 }
 
 .territory p,
@@ -547,7 +644,7 @@ a {
 
 .territory li {
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(23, 26, 28, 0.12);
+  border-bottom: 1px solid var(--line-dark);
 }
 
 .cta {
@@ -559,7 +656,7 @@ a {
   padding: 2.4rem;
   border-radius: var(--radius);
   background:
-    linear-gradient(135deg, rgba(201, 111, 45, 0.18), rgba(255, 255, 255, 0.05)),
+    linear-gradient(135deg, rgba(200, 107, 50, 0.2), rgba(143, 179, 201, 0.08)),
     rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow);
@@ -587,10 +684,10 @@ a {
   z-index: 25;
   padding: 0.95rem 1.15rem;
   border-radius: 999px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   color: white;
   font-weight: 800;
-  box-shadow: 0 18px 35px rgba(201, 111, 45, 0.34);
+  box-shadow: 0 18px 35px rgba(159, 79, 32, 0.34);
 }
 
 .reveal {
@@ -622,9 +719,12 @@ a {
   }
 
   .hero-points,
+  .proof-inner,
   .service-layout,
   .story-layout,
   .advantage-layout,
+  .case-grid,
+  .testimonial-grid,
   .payment-layout,
   .qr-grid,
   .territory-layout,
@@ -668,6 +768,15 @@ a {
 
   .hero-media {
     min-height: 46svh;
+  }
+
+  .proof-strip {
+    width: min(var(--max), calc(100% - 1.5rem));
+    margin-top: 0.5rem;
+  }
+
+  .proof-inner {
+    border-radius: 28px;
   }
 
   .hero-badge {

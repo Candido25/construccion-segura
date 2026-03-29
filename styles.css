@@ -332,6 +332,8 @@ a {
 }
 
 .service-item p,
+.story-copy p,
+.story-values p,
 .advantage-copy p,
 .advantage-list p,
 .timeline p,
@@ -345,6 +347,37 @@ a {
 
 .contrast {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+}
+
+.story {
+  background:
+    radial-gradient(circle at top left, rgba(201, 111, 45, 0.14), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+}
+
+.story-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 2rem 3rem;
+}
+
+.story-copy {
+  max-width: 40rem;
+}
+
+.story-values {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.story-values article {
+  padding: 1.25rem 0 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.story-values h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
 }
 
 .advantage-layout,
@@ -590,6 +623,7 @@ a {
 
   .hero-points,
   .service-layout,
+  .story-layout,
   .advantage-layout,
   .payment-layout,
   .qr-grid,

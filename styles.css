@@ -365,6 +365,45 @@ a {
   line-height: 1.4;
 }
 
+.tips {
+  background:
+    radial-gradient(circle at top right, rgba(79, 126, 149, 0.1), transparent 22%),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.38), rgba(255, 250, 243, 0.12));
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.tip-card {
+  padding: 1.45rem;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 250, 243, 0.72);
+  box-shadow: 0 16px 36px rgba(64, 46, 24, 0.08);
+}
+
+.tip-card span {
+  color: var(--trust);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tip-card h3 {
+  margin: 0.85rem 0 0.65rem;
+  font-size: 1.28rem;
+}
+
+.tip-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
 .section {
   padding: 6.5rem 0;
 }
@@ -752,6 +791,7 @@ a {
   .hero-points,
   .proof-inner,
   .awareness-layout,
+  .tips-grid,
   .service-layout,
   .story-layout,
   .advantage-layout,

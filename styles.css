@@ -15,7 +15,7 @@
   --line-dark: rgba(27, 39, 48, 0.12);
   --shadow: 0 28px 90px rgba(64, 46, 24, 0.14);
   --radius: 28px;
-  --max: 1200px;
+  --max: 1440px;
 }
 
 * {
@@ -167,8 +167,8 @@ a {
   position: relative;
   z-index: 2;
   align-self: center;
-  max-width: 40rem;
-  padding: 2rem 0 5rem;
+  max-width: 46rem;
+  padding: 2rem 0 4rem;
 }
 
 .hero-brand {
@@ -198,16 +198,16 @@ a {
 }
 
 .hero h1 {
-  max-width: 12ch;
-  font-size: clamp(2.7rem, 5.2vw, 5rem);
+  max-width: 13ch;
+  font-size: clamp(2.5rem, 4.4vw, 4.3rem);
 }
 
 .hero-text {
-  max-width: 35rem;
+  max-width: 39rem;
   margin: 1.35rem 0 0;
   color: var(--muted);
-  font-size: 1.08rem;
-  line-height: 1.7;
+  font-size: 1.04rem;
+  line-height: 1.75;
 }
 
 .hero-actions {
@@ -388,7 +388,7 @@ a {
 
 .proof-strip {
   width: min(var(--max), calc(100% - 2.4rem));
-  margin: 2.5rem auto 0;
+  margin: 2rem auto 0;
   position: relative;
   z-index: 3;
 }
@@ -543,7 +543,7 @@ a {
 }
 
 .section {
-  padding: 6.5rem 0;
+  padding: 5.2rem 0;
 }
 
 .section-heading {
@@ -555,7 +555,7 @@ a {
 
 .section h2,
 .cta h2 {
-  font-size: clamp(2.4rem, 4vw, 4.6rem);
+  font-size: clamp(2.15rem, 3.2vw, 3.55rem);
 }
 
 .intro {
@@ -1183,6 +1183,37 @@ a {
   border-radius: 24px;
   background: rgba(255, 250, 243, 0.74);
   box-shadow: 0 16px 36px rgba(64, 46, 24, 0.08);
+}
+
+@media (min-width: 1200px) {
+  .site-header {
+    padding-inline: 2.2rem;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(560px, 0.94fr);
+  }
+
+  .hero-content,
+  .section,
+  .cta-panel {
+    width: min(var(--max), calc(100% - 3.6rem));
+  }
+
+  .proof-strip {
+    width: min(var(--max), calc(100% - 3.6rem));
+  }
+
+  .mistake-layout {
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+  }
+
+  .case-grid,
+  .testimonial-grid,
+  .tips-grid,
+  .faq-grid {
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+  }
 }
 
 .section-cta p {

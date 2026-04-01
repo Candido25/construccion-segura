@@ -75,20 +75,20 @@ a {
 .brand-mark {
   display: inline-grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
+  width: 4.35rem;
+  height: 4.35rem;
+  padding: 0.28rem;
   border: 1px solid rgba(31, 45, 54, 0.12);
-  border-radius: 50%;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  background: rgba(213, 122, 49, 0.1);
+  border-radius: 1.1rem;
+  background: rgba(255, 250, 243, 0.92);
+  box-shadow: 0 14px 30px rgba(64, 46, 24, 0.12);
   overflow: hidden;
 }
 
 .brand-mark img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .brand-copy {
@@ -214,7 +214,40 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
-  margin: 2rem 0;
+  margin: 2rem 0 1.25rem;
+}
+
+.hero-signature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  max-width: 35rem;
+  margin-bottom: 1.8rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(31, 45, 54, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 250, 243, 0.74);
+  box-shadow: 0 16px 36px rgba(64, 46, 24, 0.08);
+}
+
+.hero-signature img {
+  width: 4.2rem;
+  height: 4.2rem;
+  object-fit: contain;
+}
+
+.hero-signature strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.hero-signature span {
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.94rem;
 }
 
 .button {
@@ -252,10 +285,12 @@ a {
   border-top: 1px solid var(--line);
   color: var(--muted);
   line-height: 1.6;
-  background: rgba(255, 250, 243, 0.52);
-  padding-inline: 0.8rem;
-  padding-bottom: 0.8rem;
-  border-radius: 16px;
+  min-height: 100%;
+  background: rgba(255, 250, 243, 0.68);
+  padding-inline: 0.95rem;
+  padding-bottom: 0.95rem;
+  border-radius: 18px;
+  box-shadow: 0 14px 28px rgba(64, 46, 24, 0.06);
 }
 
 .hero-media {
@@ -353,7 +388,7 @@ a {
 
 .proof-strip {
   width: min(var(--max), calc(100% - 2.4rem));
-  margin: 1.75rem auto 0;
+  margin: 2.5rem auto 0;
   position: relative;
   z-index: 3;
 }
@@ -955,6 +990,16 @@ a {
     max-width: none;
   }
 
+  .hero-signature {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .hero-signature img {
+    width: 4.8rem;
+    height: 4.8rem;
+  }
+
   .proof-strip {
     width: min(var(--max), calc(100% - 1.5rem));
     margin-top: 1.2rem;
@@ -1010,3 +1055,4 @@ a {
     transition: none !important;
   }
 }
+

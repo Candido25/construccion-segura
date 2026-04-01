@@ -171,6 +171,15 @@ a {
   padding: 2rem 0 5rem;
 }
 
+.hero-brand {
+  margin: 0 0 0.4rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-dark);
+}
+
 .eyebrow {
   margin: 0 0 1rem;
   color: var(--trust);
@@ -263,11 +272,11 @@ a {
 
 .hero-image {
   background:
-    linear-gradient(180deg, rgba(255, 244, 232, 0.12), rgba(52, 73, 84, 0.4)),
-    url("https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80") center/cover;
+    linear-gradient(180deg, rgba(255, 244, 232, 0.08), rgba(42, 60, 70, 0.38)),
+    url("https://images.unsplash.com/photo-1590725175313-950c1f2fe694?auto=format&fit=crop&w=1400&q=80") center/cover;
   transform: scale(1.08);
   transform-origin: center;
-  filter: saturate(0.98) contrast(1.02);
+  filter: saturate(0.94) contrast(1.02);
 }
 
 .hero-grid {
@@ -302,6 +311,44 @@ a {
 .hero-badge-bottom {
   bottom: 12%;
   left: 10%;
+}
+
+.hero-panel {
+  position: absolute;
+  right: 2.2rem;
+  bottom: 2rem;
+  z-index: 2;
+  max-width: 18rem;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: 22px;
+  background: rgba(31, 45, 54, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 44px rgba(31, 45, 54, 0.18);
+  color: #fdf8f1;
+}
+
+.hero-panel span {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  color: #c8d8e2;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-panel strong {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.hero-panel p {
+  margin: 0;
+  color: rgba(253, 248, 241, 0.8);
+  line-height: 1.65;
 }
 
 .proof-strip {
@@ -848,6 +895,13 @@ a {
 
   .hero-media {
     min-height: 46svh;
+  }
+
+  .hero-panel {
+    right: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+    max-width: none;
   }
 
   .proof-strip {

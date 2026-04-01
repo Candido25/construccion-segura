@@ -1,7 +1,7 @@
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector(".site-nav");
 const navLinks = document.querySelectorAll(".site-nav a");
-const revealTargets = document.querySelectorAll(".section, .hero-content");
+const revealTargets = document.querySelectorAll(".section, .hero-content, .reveal");
 
 if (menuToggle && siteNav) {
   menuToggle.addEventListener("click", () => {

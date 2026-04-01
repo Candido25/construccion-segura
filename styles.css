@@ -696,6 +696,11 @@ a {
   align-items: stretch;
 }
 
+.resource-stack {
+  display: grid;
+  gap: 1rem;
+}
+
 .resource-card {
   padding: 1.5rem;
   border: 1px solid var(--line);

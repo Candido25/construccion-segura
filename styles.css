@@ -15,7 +15,7 @@
   --line-dark: rgba(27, 39, 48, 0.12);
   --shadow: 0 28px 90px rgba(64, 46, 24, 0.14);
   --radius: 28px;
-  --max: 1440px;
+  --max: 1680px;
 }
 
 * {
@@ -549,7 +549,7 @@ a {
 .section-heading {
   display: grid;
   gap: 0.8rem;
-  max-width: 52rem;
+  max-width: 64rem;
   margin-bottom: 3rem;
 }
 
@@ -1197,11 +1197,35 @@ a {
   .hero-content,
   .section,
   .cta-panel {
-    width: min(var(--max), calc(100% - 3.6rem));
+    width: calc(100% - 4rem);
+    max-width: none;
   }
 
   .proof-strip {
-    width: min(var(--max), calc(100% - 3.6rem));
+    width: calc(100% - 4rem);
+    max-width: none;
+  }
+
+  .section-heading {
+    max-width: 78rem;
+  }
+
+  .awareness-layout,
+  .story-layout,
+  .advantage-layout,
+  .territory-layout,
+  .cta-panel,
+  .payment-layout,
+  .resource-grid {
+    gap: 2rem 4rem;
+  }
+
+  .service-layout {
+    gap: 1.25rem 3rem;
+  }
+
+  .timeline {
+    gap: 1.5rem 2rem;
   }
 
   .mistake-layout {

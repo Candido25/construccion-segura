@@ -273,7 +273,7 @@ a {
 .hero-image {
   background:
     linear-gradient(180deg, rgba(255, 244, 232, 0.08), rgba(42, 60, 70, 0.38)),
-    url("https://images.unsplash.com/photo-1590725175313-950c1f2fe694?auto=format&fit=crop&w=1400&q=80") center/cover;
+    url("assets/site-photos/hero-portada.jpg") center/cover;
   transform: scale(1.08);
   transform-origin: center;
   filter: saturate(0.94) contrast(1.02);
@@ -452,6 +452,56 @@ a {
 }
 
 .tip-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.mistakes {
+  background:
+    radial-gradient(circle at top left, rgba(213, 122, 49, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.16), rgba(255, 250, 243, 0.04));
+}
+
+.mistake-layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.mistake-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 250, 243, 0.72);
+  box-shadow: 0 16px 36px rgba(64, 46, 24, 0.08);
+}
+
+.mistake-card img {
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  object-fit: cover;
+}
+
+.mistake-card div {
+  padding: 1.2rem 1.2rem 1.35rem;
+}
+
+.mistake-card span {
+  color: var(--trust);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mistake-card h3 {
+  margin: 0.8rem 0 0.65rem;
+  font-size: 1.24rem;
+  line-height: 1.35;
+}
+
+.mistake-card p {
   margin: 0;
   color: var(--muted);
   line-height: 1.8;
@@ -846,6 +896,7 @@ a {
   .proof-inner,
   .awareness-layout,
   .tips-grid,
+  .mistake-layout,
   .service-layout,
   .story-layout,
   .advantage-layout,

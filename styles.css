@@ -167,8 +167,10 @@ a {
   position: relative;
   z-index: 2;
   align-self: center;
+  width: auto;
   max-width: 46rem;
-  padding: 2rem 0 4rem;
+  margin-inline: 0 auto;
+  padding: 2rem 2.2rem 4rem 0;
 }
 
 .hero-brand {
@@ -1043,6 +1045,13 @@ a {
     width: min(var(--max), calc(100% - 1.5rem));
   }
 
+  .hero-content {
+    width: min(var(--max), calc(100% - 1.5rem));
+    max-width: none;
+    margin-inline: auto;
+    padding: 1.8rem 0 4rem;
+  }
+
   .hero-points,
   .proof-inner,
   .awareness-layout,
@@ -1191,14 +1200,21 @@ a {
   }
 
   .hero {
-    grid-template-columns: minmax(0, 1fr) minmax(560px, 0.94fr);
+    grid-template-columns: minmax(420px, 0.98fr) minmax(520px, 0.92fr);
   }
 
-  .hero-content,
   .section,
   .cta-panel {
     width: calc(100% - 4rem);
     max-width: none;
+  }
+
+  .hero-content {
+    width: auto;
+    max-width: 44rem;
+    margin-left: 0;
+    margin-right: auto;
+    padding: 2rem 2.6rem 4rem 2rem;
   }
 
   .proof-strip {

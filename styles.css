@@ -917,7 +917,7 @@ a   { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: minmax(0,0.95fr) minmax(0,1.05fr);
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 .payment-card,
 .qr-card {
@@ -967,8 +967,13 @@ a   { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 1rem;
+  align-items: stretch;
 }
-.qr-card { padding: 1.5rem; }
+.qr-card {
+  display: grid;
+  align-content: start;
+  padding: 1.35rem;
+}
 .qr-card h3 { margin: 1rem 0 0.45rem; font-size: 1.35rem; }
 .qr-card p  { margin: 0 0 0.7rem; }
 .qr-frame {
@@ -976,12 +981,13 @@ a   { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--line);
   background: #fff;
+  max-height: 18.5rem;
 }
 .qr-image {
   width: 100%;
-  aspect-ratio: 1 / 1.45;
-  object-fit: cover;
-  object-position: center top;
+  aspect-ratio: 1 / 1.16;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 

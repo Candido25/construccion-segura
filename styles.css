@@ -1152,7 +1152,7 @@ a   { color: inherit; text-decoration: none; }
 }
 .error-article {
   display: grid;
-  grid-template-columns: minmax(0,0.95fr) minmax(0,1.05fr);
+  grid-template-columns: minmax(0,0.62fr) minmax(0,1.38fr);
   gap: 1.8rem 2.4rem;
   align-items: stretch;
   margin-top: 2rem;
@@ -1162,14 +1162,21 @@ a   { color: inherit; text-decoration: none; }
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
-.error-article.reverse { grid-template-columns: minmax(0,1.05fr) minmax(0,0.95fr); }
+.error-article.reverse { grid-template-columns: minmax(0,1.38fr) minmax(0,0.62fr); }
 .error-article.reverse img { order: 2; }
 .error-article.reverse div { order: 1; }
 .error-article img {
-  width: 100%; height: 100%;
-  min-height: 22rem;
-  object-fit: cover;
+  width: 100%;
+  max-width: 22rem;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: contain;
+  justify-self: center;
+  align-self: start;
+  background: #fff;
+  padding: 0.4rem;
   border-radius: var(--radius-sm);
+  border: 1px solid rgba(15, 39, 68, 0.08);
 }
 .error-article span {
   color: var(--trust);

@@ -1095,6 +1095,32 @@ a   { color: inherit; text-decoration: none; }
 
 /* ── PAGE INTERIOR (errores-frecuentes) ──────────────────────────── */
 .page-hero { padding-top: 7.5rem; }
+.hero-resource-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.hero-resource-link {
+  display: grid;
+  place-items: center;
+  min-height: 4.6rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid rgba(15, 39, 68, 0.14);
+  border-radius: calc(var(--radius-sm) + 0.1rem);
+  background: rgba(255,255,255,0.72);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.3;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+.hero-resource-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201,111,45,0.35);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
 .page-hero-inner {
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(0,1fr);
@@ -1234,6 +1260,7 @@ a   { color: inherit; text-decoration: none; }
   .faq-grid,
   .resource-highlight,
   .page-hero-inner,
+  .hero-resource-strip,
   .article-intro-grid,
   .error-article,
   .error-article.reverse {

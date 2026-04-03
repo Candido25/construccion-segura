@@ -218,23 +218,47 @@ a   { color: inherit; text-decoration: none; }
   margin: 2.1rem 0 1.4rem;
 }
 
-/* Signature card */
-.hero-signature {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1rem;
-  align-items: center;
-  max-width: 34rem;
+/* Review panel */
+.hero-review-panel {
+  max-width: 36rem;
   margin-bottom: 2rem;
-  padding: 1rem 1.15rem;
+  padding: 1.15rem 1.25rem;
   border: 1.5px solid rgba(201,111,45,0.18);
   border-radius: var(--radius-sm);
-  background: rgba(253,248,241,0.80);
+  background: rgba(253,248,241,0.84);
   box-shadow: var(--shadow-sm);
 }
-.hero-signature img { width: 4rem; height: 4rem; object-fit: contain; }
-.hero-signature strong { display: block; margin-bottom: 0.25rem; font-size: 0.96rem; line-height: 1.4; }
-.hero-signature span  { color: var(--muted); font-size: 0.88rem; line-height: 1.65; }
+.hero-review-panel strong {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.hero-review-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.hero-review-list li {
+  position: relative;
+  padding: 0.6rem 0 0.6rem 1.45rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  border-top: 1px solid rgba(28, 42, 51, 0.08);
+}
+.hero-review-list li:first-child { border-top: 0; padding-top: 0; }
+.hero-review-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.hero-review-list li:first-child::before { top: 0.45rem; }
 
 /* Buttons */
 .button {
@@ -1334,7 +1358,7 @@ a   { color: inherit; text-decoration: none; }
   .hero { padding-top: 5.8rem; padding-bottom: 4.2rem; }
   .hero-media { min-height: 46svh; }
   .hero-panel { right: 0.9rem; left: 0.9rem; bottom: 0.9rem; max-width: none; }
-  .hero-signature { grid-template-columns: 1fr; }
+.hero-review-panel { max-width: none; }
 
   .section { padding: 4.5rem 0; }
   .cta { padding-bottom: 7rem; }

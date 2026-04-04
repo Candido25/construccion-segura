@@ -91,3 +91,36 @@ if (floatingCta) {
   floatingCta.style.transition = "opacity 0.4s ease, transform 0.4s ease";
   floatingCta.style.pointerEvents = "none";
 }
+
+/* ── LOGO LIGHTBOX ───────────────────────────────────────────────── */
+const brandZoomTriggers = document.querySelectorAll(".brand-zoom-trigger");
+const logoLightbox = document.querySelector(".logo-lightbox");
+const logoLightboxBackdrop = document.querySelector(".logo-lightbox-backdrop");
+const logoLightboxClose = document.querySelector(".logo-lightbox-close");
+
+if (brandZoomTriggers.length && logoLightbox) {
+  const closeLogoLightbox = () => {
+    logoLightbox.classList.remove("is-open");
+    logoLightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  const openLogoLightbox = () => {
+    logoLightbox.classList.add("is-open");
+    logoLightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
+
+  brandZoomTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", openLogoLightbox);
+  });
+
+  logoLightboxBackdrop?.addEventListener("click", closeLogoLightbox);
+  logoLightboxClose?.addEventListener("click", closeLogoLightbox);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && logoLightbox.classList.contains("is-open")) {
+      closeLogoLightbox();
+    }
+  });
+}

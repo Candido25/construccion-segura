@@ -113,9 +113,9 @@
   </script>
 </head>
 <body>
-  <a class="brand-corner" href="#inicio" aria-label="Ir al inicio de Construcción Segura">
+  <button class="brand-corner brand-zoom-trigger" type="button" aria-label="Ampliar logo de Construcción Segura">
     <img src="assets/brand/logo-marca-construccion-segura-transparente.png" alt="Logo de Construcción Segura">
-  </a>
+  </button>
   <header class="site-header">
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
       Menú
@@ -754,6 +754,14 @@
   </main>
 
   <a class="floating-cta" href="#contacto">Cotiza tu proyecto</a>
+
+  <div class="logo-lightbox" aria-hidden="true">
+    <button class="logo-lightbox-backdrop" type="button" aria-label="Cerrar ampliación del logo"></button>
+    <div class="logo-lightbox-panel" role="dialog" aria-modal="true" aria-label="Logo ampliado de Construcción Segura">
+      <button class="logo-lightbox-close" type="button" aria-label="Cerrar">Cerrar</button>
+      <img src="assets/brand/logo-marca-construccion-segura-transparente.png" alt="Logo ampliado de Construcción Segura">
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

@@ -96,6 +96,8 @@ a   { color: inherit; text-decoration: none; }
 }
 .brand-lockup img {
   object-position: left center;
+  transform: scale(3);
+  transform-origin: left center;
 }
 
 .brand-copy {
@@ -122,9 +124,13 @@ a   { color: inherit; text-decoration: none; }
   gap: 1.1rem;
   font-size: 0.92rem;
 }
-.site-nav a { color: var(--muted); transition: color 0.2s; }
+.site-nav a {
+  color: #0f2744;
+  font-weight: 800;
+  transition: color 0.2s;
+}
 .site-nav a:hover,
-.site-nav a:focus-visible { color: var(--text); }
+.site-nav a:focus-visible { color: #0a1d33; }
 
 .nav-cta {
   padding: 0.75rem 1.2rem;

@@ -197,8 +197,8 @@ a   { color: inherit; text-decoration: none; }
 /* ── HERO ────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
-  min-height: 100svh;
-  padding: 6.5rem 0 5.5rem;
+  min-height: auto;
+  padding: 6.1rem 0 1.4rem;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   overflow: clip;
@@ -208,7 +208,7 @@ a   { color: inherit; text-decoration: none; }
   content: "";
   position: absolute;
   inset: auto 0 0;
-  height: 14rem;
+  height: 7rem;
   background: linear-gradient(180deg, transparent, rgba(245,237,224,0.98));
   pointer-events: none;
 }
@@ -227,7 +227,7 @@ a   { color: inherit; text-decoration: none; }
   width: auto;
   max-width: 46rem;
   margin-inline: 0 auto;
-  padding: 2rem 2.4rem 4.5rem 0;
+  padding: 1.2rem 2.4rem 1.4rem 0;
 }
 
 .hero-brand {
@@ -380,7 +380,7 @@ a   { color: inherit; text-decoration: none; }
 .hero-media {
   position: relative;
   min-height: 36rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.25rem;
 }
 .hero-image,
 .hero-grid {

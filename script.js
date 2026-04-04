@@ -112,7 +112,10 @@ if (brandZoomTriggers.length && logoLightbox) {
   };
 
   brandZoomTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", openLogoLightbox);
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      openLogoLightbox();
+    });
   });
 
   logoLightboxBackdrop?.addEventListener("click", closeLogoLightbox);

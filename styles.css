@@ -1374,6 +1374,17 @@ a   { color: inherit; text-decoration: none; }
 }
 .error-article p, .error-article li { color: var(--muted); line-height: 1.85; }
 .error-article ul { margin: 1rem 0 0; padding-left: 1.2rem; }
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  color: var(--trust);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.inline-link:hover,
+.inline-link:focus-visible { color: var(--accent-strong); }
 
 .article-cta .cta-panel { align-items: start; }
 

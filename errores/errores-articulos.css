@@ -72,7 +72,8 @@
   box-shadow: var(--shadow-sm);
 }
 
-.article-figure img {
+.article-figure img,
+.article-figure video {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;

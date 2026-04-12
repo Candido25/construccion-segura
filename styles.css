@@ -1345,7 +1345,8 @@ a   { color: inherit; text-decoration: none; }
 .error-article.reverse { grid-template-columns: minmax(0,1.18fr) minmax(0,0.82fr); }
 .error-article.reverse img { order: 2; }
 .error-article.reverse div { order: 1; }
-.error-article img {
+.error-article img,
+.error-article video {
   width: 100%;
   max-width: 44rem;
   aspect-ratio: 4 / 3;

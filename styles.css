@@ -1455,6 +1455,40 @@ a   { color: inherit; text-decoration: none; }
   .hero-panel { right: 0.9rem; left: 0.9rem; bottom: 0.9rem; max-width: none; }
 .hero-review-panel { max-width: none; }
 
+  .hero-resource-strip {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(11.5rem, 74vw);
+    grid-template-columns: none;
+    gap: 0.65rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.35rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+  .hero-resource-strip.section {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+  .home-resource-strip.section {
+    padding-top: 5rem;
+    padding-bottom: 0.45rem;
+  }
+  .hero-resource-link {
+    min-height: 3.15rem;
+    padding: 0.55rem 0.7rem;
+    border-width: 1.5px;
+    border-radius: 1.05rem;
+    font-size: 0.8rem;
+    line-height: 1.12;
+    scroll-snap-align: start;
+  }
+  .hero-resource-link::before {
+    background-size: 64% auto;
+    opacity: 0.16;
+  }
+
   .section { padding: 4.5rem 0; }
   .cta { padding-bottom: 7rem; }
 

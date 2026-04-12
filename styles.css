@@ -227,9 +227,9 @@ a   { color: inherit; text-decoration: none; }
   align-self: stretch;
   min-height: 32rem;
   width: auto;
-  max-width: 46rem;
-  margin-inline: 0 auto;
-  padding: 1.2rem 2.4rem 0 0;
+  max-width: 52rem;
+  margin-inline: auto;
+  padding: 1.2rem 2.4rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -262,14 +262,15 @@ a   { color: inherit; text-decoration: none; }
   font-family: var(--font-display);
   font-size: clamp(2.6rem, 4.2vw, 4.2rem);
   font-weight: 700;
-  line-height: 1.03;
+  line-height: 0.98;
   letter-spacing: -0.04em;
-  max-width: 11.5ch;
+  max-width: 14.5ch;
   margin-inline: auto;
+  text-wrap: balance;
 }
 
 .hero-text {
-  max-width: 38rem;
+  max-width: 31rem;
   margin: 1.4rem 0 0;
   color: var(--muted);
   font-size: 1.03rem;
@@ -1399,6 +1400,7 @@ a   { color: inherit; text-decoration: none; }
     max-width: 15ch;
     font-size: clamp(2.8rem, 8vw, 4.4rem);
     line-height: 0.98;
+    text-wrap: pretty;
   }
   .hero-text {
     max-width: 42rem;

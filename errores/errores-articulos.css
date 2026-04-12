@@ -70,6 +70,40 @@
   border: 1px solid rgba(15, 39, 68, 0.08);
   background: rgba(253, 248, 241, 0.88);
   box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.article-figure::before,
+.article-figure::after {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.article-figure::before {
+  content: "";
+  top: 0.75rem;
+  right: 0.75rem;
+  width: clamp(7.5rem, 16vw, 12.5rem);
+  aspect-ratio: 1276 / 622;
+  background: url("../assets/brand/logo-marca-construccion-segura-transparente.png") right top / contain no-repeat;
+  opacity: 0.28;
+  filter: drop-shadow(0 2px 6px rgba(15, 39, 68, 0.12));
+}
+
+.article-figure::after {
+  content: "www.construccionsegura.org.pe";
+  left: 0.85rem;
+  bottom: 3.15rem;
+  padding: 0.18rem 0.55rem 0.24rem;
+  border-radius: 999px;
+  background: rgba(15, 39, 68, 0.58);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(15, 39, 68, 0.18);
 }
 
 .article-figure img,
@@ -302,5 +336,21 @@
 
   .related-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .article-figure::before {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: clamp(5.5rem, 24vw, 8rem);
+    opacity: 0.24;
+  }
+
+  .article-figure::after {
+    left: 0.55rem;
+    bottom: 3rem;
+    font-size: 0.54rem;
+    padding: 0.16rem 0.42rem 0.2rem;
   }
 }

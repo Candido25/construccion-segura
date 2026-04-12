@@ -390,6 +390,44 @@ a   { color: inherit; text-decoration: none; }
   opacity: 0.55;
 }
 
+.watermark-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.watermark-frame::before,
+.watermark-frame::after {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.watermark-frame::before {
+  content: "";
+  top: 0.75rem;
+  right: 0.75rem;
+  width: clamp(7.5rem, 16vw, 12.5rem);
+  aspect-ratio: 1276 / 622;
+  background: url("assets/brand/logo-marca-construccion-segura-transparente.png") right top / contain no-repeat;
+  opacity: 0.28;
+  filter: drop-shadow(0 2px 6px rgba(15, 39, 68, 0.12));
+}
+
+.watermark-frame::after {
+  content: "www.construccionsegura.org.pe";
+  left: 0.85rem;
+  bottom: 0.8rem;
+  padding: 0.18rem 0.55rem 0.24rem;
+  border-radius: 999px;
+  background: rgba(15, 39, 68, 0.58);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(15, 39, 68, 0.18);
+}
+
 /* Hero media */
 .hero-media {
   position: relative;
@@ -768,6 +806,13 @@ a   { color: inherit; text-decoration: none; }
   background: rgba(201,111,45,0.06);
   box-shadow: var(--shadow-sm);
 }
+.resource-photo,
+.card-photo,
+.error-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
 .resource-highlight span {
   display: inline-block;
   margin-bottom: 0.75rem;
@@ -785,7 +830,7 @@ a   { color: inherit; text-decoration: none; }
   letter-spacing: -0.03em;
 }
 .resource-highlight p { margin: 0 0 1.4rem; color: var(--muted); line-height: 1.85; }
-.resource-highlight img {
+.resource-photo img {
   width: 100%;
   min-height: 18rem;
   object-fit: cover;
@@ -1343,10 +1388,11 @@ a   { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-sm);
 }
 .error-article.reverse { grid-template-columns: minmax(0,1.18fr) minmax(0,0.82fr); }
-.error-article.reverse img { order: 2; }
+.error-article.reverse .error-media { order: 2; }
 .error-article.reverse div { order: 1; }
-.error-article img,
-.error-article video {
+.card-photo img,
+.error-media img,
+.error-media video {
   width: 100%;
   max-width: 44rem;
   aspect-ratio: 4 / 3;
@@ -1444,10 +1490,22 @@ a   { color: inherit; text-decoration: none; }
   .error-article.reverse {
     grid-template-columns: 1fr;
   }
-  .error-article.reverse img,
+  .error-article.reverse .error-media,
   .error-article.reverse div { order: initial; }
   .timeline::before { display: none; }
   .service-layout { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .watermark-frame::before {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: clamp(5.5rem, 24vw, 8rem);
+    opacity: 0.24;
+  }
+  .watermark-frame::after {
+    left: 0.55rem;
+    bottom: 0.55rem;
+    font-size: 0.54rem;
+    padding: 0.16rem 0.42rem 0.2rem;
+  }
 }
 
 @media (max-width: 760px) {

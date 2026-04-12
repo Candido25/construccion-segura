@@ -32,6 +32,8 @@
   color: var(--muted);
   font-size: 1.03rem;
   line-height: 1.84;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .quick-links {
@@ -67,6 +69,8 @@
 .contact-card span {
   color: var(--muted);
   line-height: 1.76;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .page-grid {
@@ -99,6 +103,8 @@
 .content-panel li {
   color: var(--muted);
   line-height: 1.82;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .content-panel ul {

@@ -260,7 +260,7 @@ a   { color: inherit; text-decoration: none; }
   font-weight: 700;
   line-height: 1.03;
   letter-spacing: -0.04em;
-  max-width: 14ch;
+  max-width: 11.5ch;
 }
 
 .hero-text {
@@ -1385,6 +1385,14 @@ a   { color: inherit; text-decoration: none; }
     margin-inline: auto;
     padding: 2rem 0 4.5rem;
   }
+  .hero h1 {
+    max-width: 15ch;
+    font-size: clamp(2.8rem, 8vw, 4.4rem);
+    line-height: 0.98;
+  }
+  .hero-text {
+    max-width: 42rem;
+  }
 
   .hero-points,
   .proof-inner,
@@ -1454,6 +1462,23 @@ a   { color: inherit; text-decoration: none; }
   .hero-media { min-height: 46svh; }
   .hero-panel { right: 0.9rem; left: 0.9rem; bottom: 0.9rem; max-width: none; }
 .hero-review-panel { max-width: none; }
+  .hero-content {
+    width: calc(100% - 1.4rem);
+    padding: 1.2rem 0 3.1rem;
+  }
+  .hero h1 {
+    max-width: none;
+    font-size: clamp(2.2rem, 10.2vw, 3.45rem);
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+  .hero-text {
+    max-width: none;
+    margin-top: 1rem;
+    font-size: 0.98rem;
+    line-height: 1.72;
+  }
 
   .hero-resource-strip {
     grid-auto-flow: column;

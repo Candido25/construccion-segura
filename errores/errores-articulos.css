@@ -113,6 +113,12 @@
   object-fit: cover;
 }
 
+.article-figure-portrait img {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: rgba(253, 248, 241, 0.88);
+}
+
 .article-figure figcaption {
   padding: 0.85rem 1rem 1rem;
   color: var(--muted);

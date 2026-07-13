@@ -1,6 +1,8 @@
 name: Site checks
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [identidad-publica-ingeniero]
 
@@ -9,7 +11,7 @@ permissions:
 
 jobs:
   validate-static-site:
-    if: ${{ !contains(github.event.head_commit.message, '[engineer-label-applied]') }}
+    if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[engineer-label-applied]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out working branch

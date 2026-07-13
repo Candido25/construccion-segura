@@ -25,4 +25,6 @@ jobs:
         run: python scripts/check_site.py
 
       - name: Validate JavaScript syntax
-        run: node --check script.js
+        run: |
+          node --check script.js
+          node --check privacy.js

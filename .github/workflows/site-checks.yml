@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-static-site:
@@ -30,64 +30,16 @@ jobs:
           node --check privacy.js
           node --check site-global.js
 
-      - name: Restore permanent site checks
+      - name: Package transformed files
         run: |
-          cat > .github/workflows/site-checks.yml <<'YAML'
-          name: Site checks
+          git diff --name-only -- '*.html' AGENTS.md scripts/check_site.py > transformed-file-list.txt
+          tar -czf transformed-public-label.tar.gz -T transformed-file-list.txt
 
-          on:
-            pull_request:
-              branches: [main]
-            push:
-              branches: [main]
-
-          permissions:
-            contents: read
-
-          jobs:
-            validate-static-site:
-              runs-on: ubuntu-latest
-              steps:
-                - name: Check out repository
-                  uses: actions/checkout@v4
-                  with:
-                    show-progress: false
-
-                - name: Ensure public identity uses Ingeniero
-                  run: |
-                    matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' . --include='*.html' || true)
-                    if [ -n "$matches" ]; then
-                      echo "Retired specialty found in:"
-                      printf '%s\n' "$matches"
-                      exit 1
-                    fi
-
-                - name: Set up Python
-                  uses: actions/setup-python@v5
-                  with:
-                    python-version: "3.12"
-
-                - name: Validate local links and duplicate IDs
-                  run: python scripts/check_site.py
-
-                - name: Validate JavaScript syntax
-                  run: |
-                    node --check script.js
-                    node --check privacy.js
-                    node --check site-global.js
-          YAML
-
-      - name: Remove one-time migration script
-        run: rm -f scripts/apply_engineer_public_label.py
-
-      - name: Commit updated public identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No public identity changes to commit."
-            exit 0
-          fi
-          git commit -m "Mostrar identidad pública únicamente como Ingeniero [engineer-label-applied]"
-          git push origin HEAD:identidad-publica-ingeniero
+      - name: Upload transformed files
+        uses: actions/upload-artifact@v4
+        with:
+          name: transformed-public-label
+          path: |
+            transformed-public-label.tar.gz
+            transformed-file-list.txt
+          retention-days: 1

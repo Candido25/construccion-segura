@@ -217,3 +217,228 @@ if (errorTopicLibrary && window.location.pathname.endsWith("/errores-frecuentes.
     errorTopicLibrary.prepend(caseLink);
   }
 }
+
+/* Reusable accessible lightbox for technical photographs */
+const technicalPhotoCandidates = Array.from(
+  document.querySelectorAll("main figure img:not([data-no-lightbox]), main img[data-technical-photo]")
+).filter((image) => {
+  const source = image.dataset.fullSrc || image.currentSrc || image.getAttribute("src");
+  const linkedWithoutOptIn = image.closest("a") && !image.hasAttribute("data-technical-photo");
+  return Boolean(source) && !linkedWithoutOptIn;
+});
+
+if (technicalPhotoCandidates.length) {
+  const lightboxStyles = document.createElement("link");
+  lightboxStyles.rel = "stylesheet";
+  lightboxStyles.href = "/technical-lightbox.css";
+  document.head.appendChild(lightboxStyles);
+
+  const absoluteSource = (source) => {
+    try {
+      return new URL(source, document.baseURI).href;
+    } catch {
+      return source;
+    }
+  };
+
+  const captionForImage = (image) => {
+    const explicitCaption = image.dataset.caption?.trim();
+    const figureCaption = image.closest("figure")?.querySelector("figcaption")?.textContent?.replace(/\s+/g, " ").trim();
+    return explicitCaption || figureCaption || image.alt?.trim() || "Fotografía técnica";
+  };
+
+  const itemBySource = new Map();
+  const sourceForImage = new WeakMap();
+
+  technicalPhotoCandidates.forEach((image) => {
+    const source = absoluteSource(image.dataset.fullSrc || image.currentSrc || image.getAttribute("src"));
+    const caption = captionForImage(image);
+    const isDetailedCasePhoto = Boolean(image.closest(".case-photo"));
+    const existingItem = itemBySource.get(source);
+
+    if (!existingItem) {
+      itemBySource.set(source, {
+        source,
+        caption,
+        alt: image.alt?.trim() || caption,
+        preferred: isDetailedCasePhoto
+      });
+    } else if (isDetailedCasePhoto || (!existingItem.preferred && caption.length > existingItem.caption.length)) {
+      existingItem.caption = caption;
+      existingItem.alt = image.alt?.trim() || caption;
+      existingItem.preferred = isDetailedCasePhoto;
+    }
+
+    sourceForImage.set(image, source);
+  });
+
+  const technicalPhotoItems = Array.from(itemBySource.values());
+  const indexBySource = new Map(technicalPhotoItems.map((item, index) => [item.source, index]));
+  let activeIndex = 0;
+  let previouslyFocusedElement = null;
+  let closeTimer = null;
+
+  const lightbox = document.createElement("div");
+  lightbox.className = "technical-lightbox";
+  lightbox.hidden = true;
+  lightbox.setAttribute("aria-hidden", "true");
+  lightbox.innerHTML = `
+    <section class="technical-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Visor de fotografías técnicas">
+      <button class="technical-lightbox-close" type="button" aria-label="Cerrar fotografía ampliada">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="technical-lightbox-stage">
+        <button class="technical-lightbox-nav technical-lightbox-prev" type="button" aria-label="Fotografía anterior">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <img class="technical-lightbox-image" alt="">
+        <button class="technical-lightbox-nav technical-lightbox-next" type="button" aria-label="Fotografía siguiente">
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+      <div class="technical-lightbox-meta">
+        <span class="technical-lightbox-counter" aria-live="polite"></span>
+        <p class="technical-lightbox-caption"></p>
+        <p class="technical-lightbox-help">Usa las flechas para cambiar de fotografía y Esc para cerrar. En celular puedes ampliar con el gesto de pellizcar.</p>
+      </div>
+    </section>
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImage = lightbox.querySelector(".technical-lightbox-image");
+  const lightboxCaption = lightbox.querySelector(".technical-lightbox-caption");
+  const lightboxCounter = lightbox.querySelector(".technical-lightbox-counter");
+  const closeButton = lightbox.querySelector(".technical-lightbox-close");
+  const previousButton = lightbox.querySelector(".technical-lightbox-prev");
+  const nextButton = lightbox.querySelector(".technical-lightbox-next");
+  const navigationButtons = [previousButton, nextButton];
+
+  const updateTechnicalPhoto = (nextIndex) => {
+    activeIndex = (nextIndex + technicalPhotoItems.length) % technicalPhotoItems.length;
+    const item = technicalPhotoItems[activeIndex];
+
+    lightboxImage.classList.add("is-loading");
+    lightboxImage.alt = item.alt;
+    lightboxCaption.textContent = item.caption;
+    lightboxCounter.textContent = `${activeIndex + 1} de ${technicalPhotoItems.length}`;
+    navigationButtons.forEach((button) => {
+      button.hidden = technicalPhotoItems.length < 2;
+    });
+
+    if (lightboxImage.src !== item.source) {
+      lightboxImage.src = item.source;
+    } else if (lightboxImage.complete) {
+      lightboxImage.classList.remove("is-loading");
+    }
+  };
+
+  lightboxImage.addEventListener("load", () => {
+    lightboxImage.classList.remove("is-loading");
+  });
+
+  lightboxImage.addEventListener("error", () => {
+    lightboxImage.classList.remove("is-loading");
+    lightboxCaption.textContent = "No fue posible cargar la fotografía ampliada.";
+  });
+
+  const openTechnicalLightbox = (index, trigger) => {
+    if (closeTimer) window.clearTimeout(closeTimer);
+    previouslyFocusedElement = trigger || document.activeElement;
+    lightbox.hidden = false;
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("technical-lightbox-open");
+    updateTechnicalPhoto(index);
+    requestAnimationFrame(() => lightbox.classList.add("is-open"));
+    closeButton.focus();
+
+    const item = technicalPhotoItems[index];
+    sendAnalyticsEvent("technical_photo_open", {
+      event_category: "engagement",
+      photo_url: item.source,
+      photo_number: index + 1,
+      page_path: window.location.pathname,
+      page_title: document.title
+    });
+  };
+
+  const closeTechnicalLightbox = () => {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("technical-lightbox-open");
+
+    closeTimer = window.setTimeout(() => {
+      if (!lightbox.classList.contains("is-open")) lightbox.hidden = true;
+    }, 220);
+
+    if (previouslyFocusedElement instanceof HTMLElement) {
+      previouslyFocusedElement.focus();
+    }
+  };
+
+  technicalPhotoCandidates.forEach((image) => {
+    const source = sourceForImage.get(image);
+    const itemIndex = indexBySource.get(source) ?? 0;
+    const accessibleCaption = captionForImage(image);
+
+    image.classList.add("technical-photo-zoom");
+    image.setAttribute("role", "button");
+    image.setAttribute("tabindex", "0");
+    image.setAttribute("aria-label", `Ampliar fotografía: ${accessibleCaption}`);
+    image.closest("figure")?.classList.add("has-technical-lightbox");
+
+    image.addEventListener("click", () => openTechnicalLightbox(itemIndex, image));
+    image.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTechnicalLightbox(itemIndex, image);
+      }
+    });
+  });
+
+  previousButton.addEventListener("click", () => updateTechnicalPhoto(activeIndex - 1));
+  nextButton.addEventListener("click", () => updateTechnicalPhoto(activeIndex + 1));
+  closeButton.addEventListener("click", closeTechnicalLightbox);
+
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeTechnicalLightbox();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!lightbox.classList.contains("is-open")) return;
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeTechnicalLightbox();
+      return;
+    }
+
+    if (event.key === "ArrowLeft" && technicalPhotoItems.length > 1) {
+      event.preventDefault();
+      updateTechnicalPhoto(activeIndex - 1);
+      return;
+    }
+
+    if (event.key === "ArrowRight" && technicalPhotoItems.length > 1) {
+      event.preventDefault();
+      updateTechnicalPhoto(activeIndex + 1);
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusable = Array.from(
+        lightbox.querySelectorAll("button:not([hidden]):not([disabled]), [href], [tabindex]:not([tabindex='-1'])")
+      );
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+}

@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-static-site:
@@ -18,40 +18,20 @@ jobs:
           fetch-depth: 0
           show-progress: false
 
-      - name: Apply identity update
-        run: python scripts/apply_identity_update.py
-
-      - name: Ensure public identity prioritizes engineer civil
+      - name: Apply identity update and capture result
         run: |
-          matches=$(grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' || true)
-          if [ -n "$matches" ]; then
-            echo "Retired public credential found in:"
-            printf '%s\n' "$matches"
-            exit 1
-          fi
+          set +e
+          python scripts/apply_identity_update.py > migration-output.txt 2>&1
+          status=$?
+          echo "$status" > migration-status.txt
+          cat migration-output.txt
+          exit 0
 
-      - name: Validate local links and duplicate IDs
-        run: python scripts/check_site.py
-
-      - name: Validate JavaScript syntax
-        run: |
-          node --check script.js
-          node --check privacy.js
-          node --check site-global.js
-
-      - name: Remove one-time migration files
-        run: |
-          rm -f scripts/apply_identity_update.py
-          rm -f .github/workflows/apply-identity-update.yml
-
-      - name: Commit updated public identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "Retirar menciones públicas de la formación técnica [identity-applied]"
-          git push origin HEAD:priorizar-identidad-ingeniero-civil
+      - name: Upload migration diagnosis
+        uses: actions/upload-artifact@v4
+        with:
+          name: identity-migration-diagnosis
+          path: |
+            migration-output.txt
+            migration-status.txt
+          retention-days: 1

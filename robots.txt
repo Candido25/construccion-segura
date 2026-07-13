@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.construccionsegura.org.pe/sitemap.xml
+Sitemap: https://www.construccionsegura.org.pe/sitemap-legal.xml

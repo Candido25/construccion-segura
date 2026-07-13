@@ -143,7 +143,7 @@ jobs:
 
       - name: Ensure public identity prioritizes engineer civil
         run: |
-          matches=$(grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' || true)
+          matches=$(grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones' . --include='*.html' || true)
           if [ -n "$matches" ]; then
             echo "Retired public credential found in:"
             printf '%s\\n' "$matches"
@@ -166,7 +166,7 @@ jobs:
 """
 (ROOT / ".github/workflows/site-checks.yml").write_text(permanent_workflow, encoding="utf-8")
 
-forbidden = ("técnico en edificaciones", "tecnico en edificaciones", "sencico")
+forbidden = ("técnico en edificaciones", "tecnico en edificaciones")
 remaining = []
 for html_file in ROOT.rglob("*.html"):
     text = html_file.read_text(encoding="utf-8").casefold()

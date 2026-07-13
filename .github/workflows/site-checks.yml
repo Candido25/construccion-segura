@@ -23,3 +23,6 @@ jobs:
 
       - name: Validate local links and duplicate IDs
         run: python scripts/check_site.py
+
+      - name: Validate JavaScript syntax
+        run: node --check script.js

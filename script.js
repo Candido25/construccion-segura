@@ -1,22 +1,8 @@
-/* Google Analytics 4 */
-const GA_MEASUREMENT_ID = "G-P6R5L9D52M";
-
-window.dataLayer = window.dataLayer || [];
-window.gtag = window.gtag || function gtag() {
-  window.dataLayer.push(arguments);
-};
-
-window.gtag("js", new Date());
-window.gtag("config", GA_MEASUREMENT_ID, {
-  send_page_view: true,
-  page_title: document.title,
-  page_location: window.location.href
-});
-
-const analyticsScript = document.createElement("script");
-analyticsScript.async = true;
-analyticsScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`;
-document.head.appendChild(analyticsScript);
+/* Privacy and Analytics bootstrap */
+const privacyScript = document.createElement("script");
+privacyScript.src = "/privacy.js";
+privacyScript.async = false;
+document.head.appendChild(privacyScript);
 
 /* Menu toggle */
 const menuToggle = document.querySelector(".menu-toggle");
@@ -180,21 +166,38 @@ const inferTrackingEvent = (link) => {
   return null;
 };
 
+const sendAnalyticsEvent = (eventName, parameters) => {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", eventName, parameters);
+};
+
 document.addEventListener("click", (event) => {
   const link = event.target.closest("a");
   if (!link) return;
 
   const eventName = inferTrackingEvent(link);
-  if (!eventName || typeof window.gtag !== "function") return;
+  if (!eventName) return;
 
   const destination = link.getAttribute("href") || "";
   const linkText = (link.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
-
-  window.gtag("event", eventName, {
+  const eventParameters = {
     event_category: "conversion",
     link_url: destination,
     link_text: linkText,
     page_path: window.location.pathname,
     page_title: document.title
-  });
+  };
+
+  sendAnalyticsEvent(eventName, eventParameters);
+
+  if (["whatsapp_contact", "whatsapp_floating", "whatsapp_click", "email_contact", "email_click", "phone_click"].includes(eventName)) {
+    sendAnalyticsEvent("generate_lead", {
+      ...eventParameters,
+      method: eventName.startsWith("whatsapp")
+        ? "whatsapp"
+        : eventName.startsWith("email")
+          ? "email"
+          : "phone"
+    });
+  }
 });

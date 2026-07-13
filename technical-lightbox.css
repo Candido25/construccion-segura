@@ -12,11 +12,15 @@ figure.has-technical-lightbox {
 }
 
 figure.has-technical-lightbox::after {
-  content: "⌕  Ampliar";
+  content: "Ampliar";
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
+  inset: 0.75rem 0.75rem auto auto;
   z-index: 2;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: auto;
   padding: 0.42rem 0.66rem;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 999px;
@@ -209,8 +213,7 @@ body.technical-lightbox-open {
 
 @media (max-width: 700px) {
   figure.has-technical-lightbox::after {
-    top: 0.55rem;
-    right: 0.55rem;
+    inset: 0.55rem 0.55rem auto auto;
     font-size: 0.66rem;
   }
 

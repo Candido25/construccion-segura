@@ -4,9 +4,10 @@
 
 - Marca: Construcción Segura
 - Responsable: Omar Oswaldo Alcantara Aquino
-- Profesión: Ingeniero civil
+- Profesión e identidad pública principal: Ingeniero civil
 - CIP: 364395
-- Formación técnica: Técnico en Edificaciones — SENCICO
+- Presentación pública: **Ing. Civil Omar Oswaldo Alcantara Aquino · CIP N.° 364395**
+- No mostrar SENCICO ni el título técnico en páginas públicas, firmas, metadatos o datos estructurados.
 - Escritura obligatoria del apellido: **Alcantara**, sin tilde.
 
 ## Objetivo

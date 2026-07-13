@@ -10,6 +10,10 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_SCHEMES = {"http", "https", "mailto", "tel", "data", "javascript"}
+FORBIDDEN_PUBLIC_PHRASES = {
+    "técnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
+    "tecnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
+}
 
 
 class SiteParser(HTMLParser):
@@ -52,7 +56,8 @@ def resolve_local_reference(source: Path, raw_reference: str) -> Path | None:
 
 def check_html_file(path: Path) -> list[str]:
     parser = SiteParser()
-    parser.feed(path.read_text(encoding="utf-8"))
+    source_text = path.read_text(encoding="utf-8")
+    parser.feed(source_text)
     errors: list[str] = []
 
     seen_ids: set[str] = set()
@@ -76,6 +81,13 @@ def check_html_file(path: Path) -> list[str]:
         if not target.exists():
             errors.append(
                 f"{path.relative_to(ROOT)}: missing local target for {attribute}=\"{reference}\""
+            )
+
+    normalized_text = source_text.casefold()
+    for phrase, explanation in FORBIDDEN_PUBLIC_PHRASES.items():
+        if phrase in normalized_text:
+            errors.append(
+                f"{path.relative_to(ROOT)}: forbidden public phrase '{phrase}'. {explanation}"
             )
 
     return errors

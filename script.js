@@ -201,3 +201,19 @@ document.addEventListener("click", (event) => {
     });
   }
 });
+
+/* Latest anonymous case highlighted in the error library */
+const errorTopicLibrary = document.querySelector(".topic-library-grid");
+if (errorTopicLibrary && window.location.pathname.endsWith("/errores-frecuentes.html")) {
+  const caseHref = "errores/caso-anonimo-vivienda-multifamiliar-seis-niveles.html";
+  const alreadyListed = errorTopicLibrary.querySelector(`a[href="${caseHref}"]`);
+
+  if (!alreadyListed) {
+    const caseLink = document.createElement("a");
+    caseLink.className = "topic-library-card";
+    caseLink.href = caseHref;
+    caseLink.dataset.track = "case_multifamily_library";
+    caseLink.innerHTML = "<strong>Caso multifamiliar: cuatro errores de ejecución</strong><span>Dintel improvisado, recubrimiento, escalera y cangrejeras.</span>";
+    errorTopicLibrary.prepend(caseLink);
+  }
+}

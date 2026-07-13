@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-static-site:
@@ -30,16 +30,14 @@ jobs:
           node --check privacy.js
           node --check site-global.js
 
-      - name: Package transformed files
+      - name: Commit transformed public files
         run: |
-          git diff --name-only -- '*.html' AGENTS.md scripts/check_site.py > transformed-file-list.txt
-          tar -czf transformed-public-label.tar.gz -T transformed-file-list.txt
-
-      - name: Upload transformed files
-        uses: actions/upload-artifact@v4
-        with:
-          name: transformed-public-label
-          path: |
-            transformed-public-label.tar.gz
-            transformed-file-list.txt
-          retention-days: 1
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add AGENTS.md casos-de-obra.html casos/*.html condiciones-servicio.html contacto.html errores/*.html index.html nosotros.html politica-privacidad.html scripts/check_site.py servicios.html visita-tecnica-obra-lima.html
+          if git diff --cached --quiet; then
+            echo "No transformed public files to commit."
+            exit 0
+          fi
+          git commit -m "Mostrar identidad pública únicamente como Ingeniero [engineer-label-applied]"
+          git push origin HEAD:identidad-publica-ingeniero

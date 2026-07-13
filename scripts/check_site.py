@@ -11,6 +11,8 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_SCHEMES = {"http", "https", "mailto", "tel", "data", "javascript"}
 FORBIDDEN_PUBLIC_PHRASES = {
+    "ing. civil": "La presentación pública debe usar Ing. y el nombre completo, sin mostrar la especialidad.",
+    "ingeniero civil": "La presentación pública debe usar Ingeniero y CIP N.° 364395, sin mostrar la especialidad.",
     "técnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
     "tecnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
 }

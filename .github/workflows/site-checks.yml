@@ -28,3 +28,4 @@ jobs:
         run: |
           node --check script.js
           node --check privacy.js
+          node --check site-global.js

@@ -6,6 +6,14 @@ if (!document.querySelector('link[href$="privacy.css"]')) {
   document.head.appendChild(privacyStylesheet);
 }
 
+/* Global site navigation and internal-link enhancements */
+if (!document.querySelector('script[src$="site-global.js"]')) {
+  const siteGlobalScript = document.createElement("script");
+  siteGlobalScript.src = "/site-global.js";
+  siteGlobalScript.defer = true;
+  document.head.appendChild(siteGlobalScript);
+}
+
 /* Privacy-first Google Analytics 4 */
 const GA_MEASUREMENT_ID = "G-P6R5L9D52M";
 const COOKIE_CONSENT_KEY = "cs_cookie_consent_v1";

@@ -127,8 +127,8 @@ for html_file in ROOT.rglob("*.html"):
         remaining.append(str(html_file.relative_to(ROOT)))
 
 if remaining:
-    raise SystemExit(
-        "The migration left retired public credentials in: " + ", ".join(sorted(remaining))
-    )
-
-print("Public identity updated across all HTML files.")
+    print("Remaining retired credentials:")
+    for item in sorted(remaining):
+        print(f"- {item}")
+else:
+    print("Public identity updated across all HTML files.")

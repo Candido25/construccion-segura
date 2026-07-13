@@ -3,37 +3,23 @@ name: Site checks
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-static-site:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out working branch
         uses: actions/checkout@v4
         with:
+          ref: priorizar-identidad-ingeniero-civil
+          fetch-depth: 0
           show-progress: false
 
-      - name: Apply identity update in validation workspace
+      - name: Apply identity update
         run: python scripts/apply_identity_update.py
-
-      - name: Package transformed public files
-        run: |
-          git diff --name-only > transformed-file-list.txt
-          tar -czf transformed-public-files.tar.gz -T transformed-file-list.txt
-
-      - name: Upload transformed public files
-        uses: actions/upload-artifact@v4
-        with:
-          name: transformed-public-files
-          path: |
-            transformed-public-files.tar.gz
-            transformed-file-list.txt
-          retention-days: 1
 
       - name: Ensure public identity prioritizes engineer civil
         run: |
@@ -44,11 +30,6 @@ jobs:
             exit 1
           fi
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Validate local links and duplicate IDs
         run: python scripts/check_site.py
 
@@ -57,3 +38,20 @@ jobs:
           node --check script.js
           node --check privacy.js
           node --check site-global.js
+
+      - name: Remove one-time migration files
+        run: |
+          rm -f scripts/apply_identity_update.py
+          rm -f .github/workflows/apply-identity-update.yml
+
+      - name: Commit updated public identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Retirar menciones públicas de la formación técnica [identity-applied]"
+          git push origin HEAD:priorizar-identidad-ingeniero-civil

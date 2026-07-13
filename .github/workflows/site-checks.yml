@@ -18,12 +18,22 @@ jobs:
         with:
           show-progress: false
 
+      - name: Scan retired public credential
+        run: |
+          grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' > retired-credential-matches.txt || true
+
+      - name: Upload credential scan
+        uses: actions/upload-artifact@v4
+        with:
+          name: retired-credential-scan
+          path: retired-credential-matches.txt
+          retention-days: 1
+
       - name: Ensure public identity prioritizes engineer civil
         run: |
-          matches=$(grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' || true)
-          if [ -n "$matches" ]; then
+          if [ -s retired-credential-matches.txt ]; then
             echo "Retired public credential found in:"
-            printf '%s\n' "$matches"
+            cat retired-credential-matches.txt
             exit 1
           fi
 

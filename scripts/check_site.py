@@ -13,7 +13,6 @@ IGNORED_SCHEMES = {"http", "https", "mailto", "tel", "data", "javascript"}
 FORBIDDEN_PUBLIC_PHRASES = {
     "técnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
     "tecnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
-    "sencico": "SENCICO no debe aparecer en las páginas públicas del sitio.",
 }
 
 

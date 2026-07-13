@@ -3,23 +3,34 @@ name: Site checks
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-static-site:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out working branch
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: identidad-publica-ingeniero
-          fetch-depth: 0
           show-progress: false
 
-      - name: Apply public label migration
-        run: python scripts/apply_engineer_public_label.py
+      - name: Ensure public identity uses Ingeniero
+        run: |
+          matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' . --include='*.html' || true)
+          if [ -n "$matches" ]; then
+            echo "Retired specialty found in:"
+            printf '%s\n' "$matches"
+            exit 1
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Validate local links and duplicate IDs
         run: python scripts/check_site.py
@@ -29,15 +40,3 @@ jobs:
           node --check script.js
           node --check privacy.js
           node --check site-global.js
-
-      - name: Commit transformed public files
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add AGENTS.md casos-de-obra.html casos/*.html condiciones-servicio.html contacto.html errores/*.html index.html nosotros.html politica-privacidad.html scripts/check_site.py servicios.html visita-tecnica-obra-lima.html
-          if git diff --cached --quiet; then
-            echo "No transformed public files to commit."
-            exit 0
-          fi
-          git commit -m "Mostrar identidad pública únicamente como Ingeniero [engineer-label-applied]"
-          git push origin HEAD:identidad-publica-ingeniero

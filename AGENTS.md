@@ -41,6 +41,15 @@ Propietarios y familias que construyen, amplían o corrigen viviendas mediante a
 7. Presentar observaciones visibles, señales de alerta y recomendaciones, evitando afirmaciones categóricas sin evidencia suficiente.
 8. Los precios, credenciales, teléfono, correo y condiciones comerciales solo se modifican con autorización expresa del responsable.
 
+## Privacidad y medición
+
+- Google Analytics solo debe cargarse después del consentimiento expreso del visitante.
+- Debe existir una alternativa de “solo necesarias” sin afectar el acceso al contenido.
+- No activar señales publicitarias, personalización de anuncios ni herramientas de remarketing sin autorización expresa.
+- Permitir que el visitante cambie o retire su preferencia de medición.
+- No enviar a Analytics nombres, teléfonos, correos, fotografías, mensajes ni contenido técnico del cliente.
+- Las fotografías, videos o documentos solo pueden publicarse como casos reales con autorización separada y verificable.
+
 ## Reglas de comunicación
 
 - Lenguaje claro para propietarios sin formación técnica.

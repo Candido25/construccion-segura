@@ -232,4 +232,61 @@
     justify-content: center;
     text-align: center;
   }
+
+  /* Keep the final consultation area fully contained on narrow screens. */
+  .home-conversion-hero .cta-panel {
+    width: calc(100% - 1.4rem);
+    gap: 0.8rem;
+    padding: 0.75rem;
+    border-radius: 22px;
+  }
+
+  .home-conversion-hero .cta-panel > div {
+    min-width: 0;
+    width: 100%;
+    padding: 1.2rem;
+    border: 1px solid rgba(28, 42, 51, 0.1);
+    border-radius: 16px;
+    background: rgba(253, 248, 241, 0.94);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .home-conversion-hero .cta-panel .eyebrow {
+    max-width: 100%;
+    margin-inline: 0;
+    letter-spacing: 0.12em;
+    overflow-wrap: anywhere;
+  }
+
+  .home-conversion-hero .cta-panel h2 {
+    max-width: 100%;
+    font-size: clamp(1.9rem, 9vw, 2.55rem);
+    line-height: 1.02;
+    overflow-wrap: anywhere;
+  }
+
+  .home-conversion-hero .cta-panel p,
+  .home-conversion-hero .contact-block {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .home-conversion-hero .contact-block {
+    justify-items: stretch;
+  }
+
+  .home-conversion-hero .contact-block a {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(1rem, 4.7vw, 1.2rem);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .home-conversion-hero .contact-block p {
+    margin: 0;
+    line-height: 1.65;
+  }
 }

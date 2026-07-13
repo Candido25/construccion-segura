@@ -18,22 +18,29 @@ jobs:
         with:
           show-progress: false
 
-      - name: Scan retired public credential
-        run: |
-          grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' > retired-credential-matches.txt || true
+      - name: Apply identity update in validation workspace
+        run: python scripts/apply_identity_update.py
 
-      - name: Upload credential scan
+      - name: Package transformed public files
+        run: |
+          git diff --name-only > transformed-file-list.txt
+          tar -czf transformed-public-files.tar.gz -T transformed-file-list.txt
+
+      - name: Upload transformed public files
         uses: actions/upload-artifact@v4
         with:
-          name: retired-credential-scan
-          path: retired-credential-matches.txt
+          name: transformed-public-files
+          path: |
+            transformed-public-files.tar.gz
+            transformed-file-list.txt
           retention-days: 1
 
       - name: Ensure public identity prioritizes engineer civil
         run: |
-          if [ -s retired-credential-matches.txt ]; then
+          matches=$(grep -RIlE 'Técnico en Edificaciones|Tecnico en Edificaciones|SENCICO' . --include='*.html' || true)
+          if [ -n "$matches" ]; then
             echo "Retired public credential found in:"
-            cat retired-credential-matches.txt
+            printf '%s\n' "$matches"
             exit 1
           fi
 

@@ -3,23 +3,20 @@ name: Site checks
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-static-site:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out working branch
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
-          ref: priorizar-identidad-ingeniero-civil
-          fetch-depth: 0
           show-progress: false
-
-      - name: Apply identity update
-        run: python scripts/apply_identity_update.py
 
       - name: Ensure public identity prioritizes engineer civil
         run: |
@@ -30,6 +27,11 @@ jobs:
             exit 1
           fi
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: Validate local links and duplicate IDs
         run: python scripts/check_site.py
 
@@ -38,15 +40,3 @@ jobs:
           node --check script.js
           node --check privacy.js
           node --check site-global.js
-
-      - name: Commit updated public identity
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add AGENTS.md index.html nosotros.html servicios.html contacto.html condiciones-servicio.html casos/*.html errores/*.html
-          if git diff --cached --quiet; then
-            echo "No public content changes to commit."
-            exit 0
-          fi
-          git commit -m "Retirar menciones públicas de la formación técnica [identity-applied]"
-          git push origin HEAD:priorizar-identidad-ingeniero-civil

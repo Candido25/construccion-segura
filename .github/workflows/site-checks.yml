@@ -39,18 +39,13 @@ jobs:
           node --check privacy.js
           node --check site-global.js
 
-      - name: Remove one-time migration files
-        run: |
-          rm -f scripts/apply_identity_update.py
-          rm -f .github/workflows/apply-identity-update.yml
-
       - name: Commit updated public identity
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add AGENTS.md index.html nosotros.html servicios.html contacto.html condiciones-servicio.html casos/*.html errores/*.html
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No public content changes to commit."
             exit 0
           fi
           git commit -m "Retirar menciones públicas de la formación técnica [identity-applied]"

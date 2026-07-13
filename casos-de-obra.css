@@ -1,0 +1,319 @@
+.cases-page .simple-hero {
+  padding-bottom: 3.2rem;
+}
+
+.cases-intro-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.cases-intro-card {
+  padding: 1.15rem 1.1rem;
+  border: 1px solid rgba(15, 39, 68, 0.09);
+  border-radius: var(--radius-sm);
+  background: rgba(253, 248, 241, 0.82);
+  box-shadow: var(--shadow-sm);
+}
+
+.cases-intro-card span {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--trust);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cases-intro-card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 4vw, 2.15rem);
+  line-height: 1.05;
+}
+
+.cases-intro-card p {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.project-directory {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.project-card {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(15, 39, 68, 0.09);
+  border-radius: var(--radius);
+  background: rgba(253, 248, 241, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.project-card-media {
+  position: relative;
+  min-height: 19rem;
+  margin: 0;
+  overflow: hidden;
+  background: rgba(23, 35, 43, 0.08);
+}
+
+.project-card-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 19rem;
+  object-fit: cover;
+}
+
+.project-card-status {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(17, 29, 36, 0.82);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
+
+.project-card-status::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #7ec899;
+  box-shadow: 0 0 0 4px rgba(126, 200, 153, 0.16);
+}
+
+.project-card-copy {
+  min-width: 0;
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+}
+
+.project-card-copy h2 {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3.7rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.project-card-copy > p {
+  margin: 0 0 1.1rem;
+  color: var(--muted);
+  line-height: 1.82;
+}
+
+.project-tags,
+.project-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.project-tags span,
+.project-metrics span {
+  padding: 0.48rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.project-tags span {
+  background: rgba(61, 122, 146, 0.1);
+  color: #255e75;
+}
+
+.project-metrics span {
+  border: 1px solid rgba(15, 39, 68, 0.09);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--text);
+}
+
+.project-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.case-method-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.case-method-card {
+  padding: 1.25rem 1.15rem;
+  border: 1px solid rgba(15, 39, 68, 0.08);
+  border-radius: var(--radius-sm);
+  background: rgba(253, 248, 241, 0.82);
+  box-shadow: var(--shadow-sm);
+}
+
+.case-method-card span {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: 0.85rem;
+  border-radius: 50%;
+  background: rgba(201, 111, 45, 0.12);
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.case-method-card h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+}
+
+.case-method-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.editorial-principles {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.35rem, 4vw, 2.2rem);
+  border: 1px solid rgba(61, 122, 146, 0.16);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(61, 122, 146, 0.09), rgba(253, 248, 241, 0.9));
+}
+
+.editorial-principles h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.3rem);
+  line-height: 1;
+}
+
+.editorial-principles p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.editorial-principles ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.editorial-principles li {
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.future-project-note {
+  padding: 1.25rem 1.15rem;
+  border: 1px dashed rgba(15, 39, 68, 0.22);
+  border-radius: var(--radius-sm);
+  background: rgba(253, 248, 241, 0.56);
+  text-align: center;
+}
+
+.future-project-note strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 1.05rem;
+}
+
+.future-project-note p {
+  max-width: 52rem;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.home-cases-preview {
+  padding-top: 3.5rem;
+}
+
+.home-case-card {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(15, 39, 68, 0.09);
+  border-radius: var(--radius);
+  background: rgba(253, 248, 241, 0.84);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-case-card figure {
+  min-height: 18rem;
+  margin: 0;
+}
+
+.home-case-card figure img {
+  width: 100%;
+  height: 100%;
+  min-height: 18rem;
+  object-fit: cover;
+}
+
+.home-case-copy {
+  padding: clamp(1.35rem, 4vw, 2.2rem);
+}
+
+.home-case-copy h3 {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1;
+}
+
+.home-case-copy p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+@media (min-width: 720px) {
+  .cases-intro-grid,
+  .case-method-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 920px) {
+  .project-card,
+  .home-case-card {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: stretch;
+  }
+
+  .case-method-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cases-intro-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .project-card-media,
+  .project-card-media img,
+  .home-case-card figure,
+  .home-case-card figure img {
+    min-height: 15rem;
+  }
+
+  .project-card-actions .button {
+    width: 100%;
+  }
+}

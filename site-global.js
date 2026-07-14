@@ -44,7 +44,22 @@ const applyCasesNavigation = () => {
   }
 };
 
+const registerConstruccionSeguraPWA = () => {
+  if (!("serviceWorker" in navigator) || window.location.protocol !== "https:") return;
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
+      .then((registration) => {
+        registration.update().catch(() => {});
+      })
+      .catch((error) => {
+        console.warn("No se pudo activar el modo aplicación de Construcción Segura.", error);
+      });
+  }, { once: true });
+};
+
 applyCasesNavigation();
+registerConstruccionSeguraPWA();
 document.addEventListener("DOMContentLoaded", applyCasesNavigation, { once: true });
 window.setTimeout(applyCasesNavigation, 0);
 window.setTimeout(applyCasesNavigation, 120);

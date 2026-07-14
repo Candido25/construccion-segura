@@ -1,0 +1,197 @@
+:root {
+  --bg: #f3f6f8;
+  --surface: #ffffff;
+  --surface-strong: #ffffff;
+  --text: #071e38;
+  --muted: #536273;
+  --accent: #fab60c;
+  --accent-dark: #b67d00;
+  --accent-soft: #fff2c7;
+  --trust: #1c965a;
+  --trust-soft: #e3f6ec;
+  --danger: #a73b32;
+  --danger-soft: #f9e3df;
+  --line: rgba(7, 30, 56, 0.12);
+  --shadow: 0 16px 42px rgba(7, 30, 56, 0.12);
+}
+
+body {
+  background:
+    radial-gradient(circle at top right, rgba(250, 182, 12, 0.18), transparent 27rem),
+    radial-gradient(circle at 5% 28%, rgba(28, 150, 90, 0.08), transparent 22rem),
+    linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+}
+
+.app-header {
+  min-height: 76px;
+  border-bottom: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 7px 24px rgba(7, 30, 56, 0.08);
+}
+
+.app-brand {
+  min-width: 0;
+  gap: 0;
+}
+
+.app-brand img {
+  width: clamp(170px, 48vw, 230px);
+  height: auto;
+  max-height: 62px;
+  object-fit: contain;
+  object-position: left center;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.app-brand > span {
+  display: none;
+}
+
+.icon-button {
+  border-color: rgba(7, 30, 56, 0.16);
+  background: #ffffff;
+  color: var(--text);
+  box-shadow: 0 7px 18px rgba(7, 30, 56, 0.08);
+}
+
+.welcome-card,
+.help-card,
+.module-shell,
+.stage-card,
+.diagnostic-dialog {
+  background: rgba(255, 255, 255, 0.97);
+}
+
+.welcome-card {
+  border-top: 5px solid var(--accent);
+}
+
+.welcome-card::after {
+  background: rgba(250, 182, 12, 0.16);
+}
+
+.eyebrow,
+.text-button,
+.back-button,
+.topic-toggle span {
+  color: var(--accent-dark);
+}
+
+h1,
+h2,
+h3,
+.app-brand strong {
+  color: var(--text);
+}
+
+.progress-summary strong {
+  color: var(--trust);
+}
+
+.quick-diagnostic {
+  border-color: rgba(250, 182, 12, 0.42);
+  background:
+    linear-gradient(135deg, rgba(7, 30, 56, 0.97), rgba(12, 54, 91, 0.96)),
+    #071e38;
+  box-shadow: 0 18px 42px rgba(7, 30, 56, 0.2);
+}
+
+.quick-diagnostic .eyebrow {
+  color: var(--accent);
+}
+
+.primary-button {
+  background: var(--accent);
+  color: var(--text);
+  box-shadow: 0 10px 22px rgba(182, 125, 0, 0.22);
+}
+
+.primary-button:hover,
+.primary-button:focus-visible {
+  background: #ffc82f;
+}
+
+.quick-diagnostic .primary-button {
+  background: var(--accent);
+  color: var(--text);
+}
+
+.stage-card.available {
+  border-left: 5px solid var(--accent);
+}
+
+.stage-card.available:hover,
+.stage-card.available:focus-visible {
+  border-color: rgba(250, 182, 12, 0.72);
+  box-shadow: 0 12px 30px rgba(7, 30, 56, 0.11);
+}
+
+.stage-icon {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.status-pill {
+  background: var(--trust-soft);
+  color: var(--trust);
+}
+
+.status-pill.muted {
+  background: #e8edf2;
+  color: #657386;
+}
+
+.module-hero {
+  border-bottom: 3px solid var(--accent);
+  background: linear-gradient(140deg, #fff1bd, #ffffff 72%);
+}
+
+.info-block {
+  border-left: 4px solid var(--trust);
+  background: var(--trust-soft);
+}
+
+.warning-block {
+  border-left: 4px solid var(--danger);
+  background: var(--danger-soft);
+}
+
+.design-block {
+  border-left: 4px solid #176798;
+  background: #e6f1f8;
+}
+
+.check-item input {
+  accent-color: var(--trust);
+}
+
+.help-card {
+  border-top: 5px solid var(--trust);
+}
+
+.bottom-nav {
+  border-top: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 18px 48px rgba(7, 30, 56, 0.2);
+}
+
+.bottom-nav a.active {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.diagnostic-result {
+  border-left: 4px solid var(--trust);
+  background: var(--trust-soft);
+}
+
+@media (max-width: 390px) {
+  .app-header {
+    padding-inline: 0.7rem;
+  }
+
+  .app-brand img {
+    width: 158px;
+  }
+}

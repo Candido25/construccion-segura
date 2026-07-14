@@ -47,10 +47,28 @@ jobs:
           NODE
 
       - name: Build responsive homepage images
+        id: build_poster
         shell: bash
         run: |
-          set -o pipefail
-          python scripts/build_home_poster_v6.py 2>&1 | tee /tmp/build-home-poster.log
+          set +e
+          python scripts/build_home_poster_v6.py > build-home-poster.log 2>&1
+          status=$?
+          printf '%s' "$status" > build-home-poster.status
+          cat build-home-poster.log
+          exit 0
+
+      - name: Upload build diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-home-poster-diagnostic
+          path: |
+            build-home-poster.log
+            build-home-poster.status
+          retention-days: 1
+
+      - name: Stop if image build failed
+        run: |
+          test "$(cat build-home-poster.status)" = "0"
 
       - name: Validate generated images
         run: |
@@ -66,10 +84,11 @@ jobs:
           node --check privacy.js
           node --check site-global.js
 
-      - name: Remove temporary builder
+      - name: Remove temporary builder and diagnostics
         run: |
           rm -f scripts/build_home_poster_v6.py
           rm -f .github/workflows/build-home-poster-v6.yml
+          rm -f build-home-poster.log build-home-poster.status
 
       - name: Commit completed homepage
         run: |

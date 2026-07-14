@@ -1,0 +1,58 @@
+name: Build homepage poster v6
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out working branch
+        uses: actions/checkout@v4
+        with:
+          ref: portada-profesional-v6
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --quiet pillow
+
+      - name: Build responsive homepage images
+        run: python scripts/build_home_poster_v6.py
+
+      - name: Validate generated images
+        run: |
+          file assets/brand/portada-construccion-segura-escritorio-v6.webp
+          file assets/brand/portada-construccion-segura-movil-v6.webp
+
+      - name: Validate local links and duplicate IDs
+        run: python scripts/check_site.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js
+
+      - name: Remove temporary builder
+        run: |
+          rm -f scripts/build_home_poster_v6.py
+          rm -f .github/workflows/build-home-poster-v6.yml
+
+      - name: Commit completed homepage
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Implementar portada profesional con imágenes válidas [poster-v6]"
+          git push origin HEAD:portada-profesional-v6

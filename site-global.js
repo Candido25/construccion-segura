@@ -1,4 +1,4 @@
-const FACEBOOK_URL = "https://www.facebook.com/ConstruccionSeguraPeru/";
+const FACEBOOK_URL = "https://www.facebook.com/ConstruccionSeguraOficial/";
 
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
@@ -56,7 +56,7 @@ const applyFacebookLinks = () => {
     facebookLink.rel = "noopener noreferrer";
     facebookLink.dataset.social = "facebook";
     facebookLink.dataset.track = "facebook_navigation";
-    facebookLink.setAttribute("aria-label", "Abrir Facebook de Construcción Segura Perú en una pestaña nueva");
+    facebookLink.setAttribute("aria-label", "Abrir Facebook oficial de Construcción Segura en una pestaña nueva");
 
     const callToAction = navigation.querySelector(".nav-cta");
     navigation.insertBefore(facebookLink, callToAction || null);
@@ -66,12 +66,12 @@ const applyFacebookLinks = () => {
   if (homeContactBlock && !homeContactBlock.querySelector('[data-social="facebook"]')) {
     const facebookContactLink = document.createElement("a");
     facebookContactLink.href = FACEBOOK_URL;
-    facebookContactLink.textContent = "Facebook: Construcción Segura Perú";
+    facebookContactLink.textContent = "Facebook: Construcción Segura Oficial";
     facebookContactLink.target = "_blank";
     facebookContactLink.rel = "noopener noreferrer";
     facebookContactLink.dataset.social = "facebook";
     facebookContactLink.dataset.track = "facebook_home_contact";
-    facebookContactLink.setAttribute("aria-label", "Abrir Facebook de Construcción Segura Perú en una pestaña nueva");
+    facebookContactLink.setAttribute("aria-label", "Abrir Facebook oficial de Construcción Segura en una pestaña nueva");
 
     const emailLink = homeContactBlock.querySelector('a[href^="mailto:"]');
     if (emailLink?.nextSibling) {

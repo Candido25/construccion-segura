@@ -104,7 +104,7 @@ const buildLegalLinks = () => {
     <a href="/politica-privacidad.html">Privacidad</a>
     <a href="/politica-cookies.html">Cookies</a>
     <a href="/condiciones-servicio.html">Condiciones del servicio</a>
-    <a href="https://www.facebook.com/ConstruccionSeguraPeru/" target="_blank" rel="noopener noreferrer" data-track="facebook_footer">Facebook</a>
+    <a href="https://www.facebook.com/ConstruccionSeguraOficial/" target="_blank" rel="noopener noreferrer" data-track="facebook_footer">Facebook</a>
     <button type="button" data-cookie-settings>Configurar cookies</button>
   `;
 

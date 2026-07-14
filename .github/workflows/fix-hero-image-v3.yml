@@ -1,15 +1,14 @@
 name: Fix hero image v3
 
 on:
-  push:
-    branches: [fix-portada-definitiva-v3]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   fix-hero:
-    if: ${{ !contains(github.event.head_commit.message, '[hero-fixed]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repair branch
@@ -58,8 +57,10 @@ jobs:
         <img class="hero-image hero-image-brand" src="assets/brand/portada-principal-construccion-segura-v3.webp" alt="Vivienda terminada, planos y casco de Construcción Segura como representación de una obra planificada y protegida" width="836" height="820" fetchpriority="high" decoding="async">
       </div>'''
           if old_markup not in html:
-              raise SystemExit('Expected hero markup was not found in index.html')
-          html = html.replace(old_markup, new_markup, 1)
+              if 'portada-principal-construccion-segura-v3.webp' not in html:
+                  raise SystemExit('Expected hero markup was not found in index.html')
+          else:
+              html = html.replace(old_markup, new_markup, 1)
           index.write_text(html, encoding='utf-8')
 
           css_path = root / 'conversion.css'
@@ -82,9 +83,10 @@ jobs:
   background: none;
   filter: none;
 }'''
-          if old_css not in css:
+          if old_css in css:
+              css = css.replace(old_css, new_css, 1)
+          elif 'object-fit: cover;' not in css:
               raise SystemExit('Expected hero CSS block was not found in conversion.css')
-          css = css.replace(old_css, new_css, 1)
           css = css.replace('background-position: center, center 42%;', 'object-position: center 42%;')
           css = css.replace('background-position: center, center;', 'object-position: center;')
           css_path.write_text(css, encoding='utf-8')
@@ -102,8 +104,6 @@ jobs:
 };
 
 '''
-          if hero_function not in js:
-              raise SystemExit('Expected JavaScript hero function was not found')
           js = js.replace(hero_function, '', 1)
           js = js.replace('  applyHeroBrandImage();\n', '')
           js_path.write_text(js, encoding='utf-8')
@@ -122,5 +122,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/brand/portada-principal-construccion-segura-v3.webp index.html conversion.css site-global.js
+          if git diff --cached --quiet; then
+            echo "Hero repair is already applied."
+            exit 0
+          fi
           git commit -m "Corregir definitivamente la imagen principal de portada [hero-fixed]"
           git push origin HEAD:fix-portada-definitiva-v3

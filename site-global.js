@@ -1,4 +1,5 @@
 const FACEBOOK_URL = "https://www.facebook.com/ConstruccionSeguraOficial/";
+const HERO_BRAND_WEBP = "/assets/brand/portada-principal-construccion-segura.webp";
 
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
@@ -82,9 +83,19 @@ const applyFacebookLinks = () => {
   }
 };
 
+const applyHeroBrandImage = () => {
+  document.querySelectorAll(".hero-media-brand .hero-image").forEach((heroImage) => {
+    heroImage.style.backgroundImage = `linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)), url("${HERO_BRAND_WEBP}")`;
+    heroImage.style.backgroundPosition = "center, center";
+    heroImage.style.backgroundSize = "cover, cover";
+    heroImage.style.backgroundRepeat = "no-repeat";
+  });
+};
+
 const applyGlobalEnhancements = () => {
   applyCasesNavigation();
   applyFacebookLinks();
+  applyHeroBrandImage();
 };
 
 applyGlobalEnhancements();

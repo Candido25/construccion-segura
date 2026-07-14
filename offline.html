@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c96f2d">
+  <title>Sin conexión | Construcción Segura</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Manrope, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6eee2;
+      color: #1c2a33;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 1.25rem;
+      background:
+        radial-gradient(circle at top right, rgba(201,111,45,.16), transparent 38%),
+        #f6eee2;
+    }
+    main {
+      width: min(540px, 100%);
+      padding: clamp(1.4rem, 5vw, 2.5rem);
+      border: 1px solid rgba(28,42,51,.12);
+      border-radius: 24px;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 22px 60px rgba(28,42,51,.12);
+      text-align: center;
+    }
+    img { width: 88px; height: 88px; object-fit: contain; }
+    h1 { margin: 1rem 0 .65rem; font-size: clamp(1.8rem, 7vw, 2.6rem); }
+    p { margin: 0 auto 1.4rem; max-width: 42ch; color: #5b666d; line-height: 1.65; }
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; }
+    a, button {
+      min-height: 46px;
+      padding: .8rem 1rem;
+      border-radius: 999px;
+      border: 1px solid #c96f2d;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    button { background: #c96f2d; color: #fff; }
+    a { background: transparent; color: #9a4f1d; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="/favicon-192.png" alt="Logo de Construcción Segura">
+    <h1>Ahora no tienes conexión</h1>
+    <p>La aplicación no pudo conectarse a Internet. Revisa tus datos móviles o Wi‑Fi y vuelve a intentarlo. Las páginas visitadas anteriormente pueden seguir disponibles.</p>
+    <div class="actions">
+      <button type="button" onclick="window.location.reload()">Volver a intentar</button>
+      <a href="/">Ir al inicio</a>
+    </div>
+  </main>
+</body>
+</html>

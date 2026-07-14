@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#c96f2d">
-  <meta name="description" content="Asistente práctico para propietarios que van a construir, ampliar o revisar su vivienda.">
+  <meta name="theme-color" content="#071e38">
+  <meta name="description" content="Asistente práctico con recomendaciones y mínimos del Reglamento Nacional de Edificaciones para propietarios que construyen su vivienda.">
   <title>Asistente para construir tu vivienda | Construcción Segura</title>
   <link rel="canonical" href="https://www.construccionsegura.org.pe/app/">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="app.css?v=1">
+  <link rel="stylesheet" href="app.css?v=2">
 </head>
 <body>
   <header class="app-header">
@@ -26,7 +26,7 @@
     <section class="welcome-card" aria-labelledby="welcome-title">
       <p class="eyebrow">Construye informado</p>
       <h1 id="welcome-title">¿En qué etapa está tu vivienda?</h1>
-      <p>Elige una etapa para revisar recomendaciones, señales de alerta y listas de verificación antes de avanzar.</p>
+      <p>Elige una etapa para revisar recomendaciones prácticas, mínimos del Reglamento Nacional de Edificaciones, señales de alerta y listas de verificación antes de avanzar.</p>
       <div class="progress-summary" aria-live="polite">
         <span><strong id="completedCount">0</strong> controles revisados</span>
         <button id="resetProgress" class="text-button" type="button">Reiniciar avance</button>
@@ -61,22 +61,22 @@
           <span class="status-pill">Disponible</span>
         </button>
 
-        <button class="stage-card" type="button" disabled>
+        <button class="stage-card available" type="button" data-module="columnas-muros">
           <span class="stage-icon">▥</span>
-          <span><strong>Columnas y muros</strong><small>Próximo módulo</small></span>
-          <span class="status-pill muted">Próximamente</span>
+          <span><strong>Columnas y muros</strong><small>Confinamiento, continuidad y uniones</small></span>
+          <span class="status-pill">Disponible</span>
         </button>
 
-        <button class="stage-card" type="button" disabled>
+        <button class="stage-card available" type="button" data-module="vigas-techos">
           <span class="stage-icon">⌂</span>
-          <span><strong>Vigas y techos</strong><small>Próximo módulo</small></span>
-          <span class="status-pill muted">Próximamente</span>
+          <span><strong>Vigas y techos</strong><small>Soleras, losas, nervios y vaciado</small></span>
+          <span class="status-pill">Disponible</span>
         </button>
 
-        <button class="stage-card" type="button" disabled>
+        <button class="stage-card available" type="button" data-module="instalaciones">
           <span class="stage-icon">↯</span>
-          <span><strong>Instalaciones</strong><small>Sanitarias y eléctricas</small></span>
-          <span class="status-pill muted">Próximamente</span>
+          <span><strong>Instalaciones</strong><small>Agua, desagüe, ventilación y electricidad</small></span>
+          <span class="status-pill">Disponible</span>
         </button>
 
         <button class="stage-card danger-card" type="button" data-module="problemas">
@@ -156,6 +156,7 @@
   </dialog>
 
   <script src="app.js?v=1"></script>
-  <script src="/site-global.js?v=20260714-app1"></script>
+  <script src="modules-rne.js?v=1"></script>
+  <script src="/site-global.js?v=20260714-app2"></script>
 </body>
 </html>

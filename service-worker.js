@@ -1,12 +1,13 @@
-const CACHE_VERSION = "construccion-segura-pwa-v3";
+const CACHE_VERSION = "construccion-segura-pwa-v4";
 const APP_SHELL = [
   "/",
   "/index.html",
   "/app/",
   "/app/index.html",
-  "/app/app.css?v=1",
+  "/app/app.css?v=2",
   "/app/brand.css?v=20260714-1",
   "/app/app.js?v=1",
+  "/app/modules-rne.js?v=1",
   "/offline.html",
   "/styles.css",
   "/site-pages.css",

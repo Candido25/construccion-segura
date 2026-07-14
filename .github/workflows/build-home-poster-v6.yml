@@ -29,28 +29,22 @@ jobs:
 
       - name: Recover valid source image from current page data
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import base64
-
-          root = Path('.')
-          js = (root / 'site-global.js').read_text(encoding='utf-8')
-          prefix = 'const HERO_BRAND_DATA_URI = "data:image/webp;base64,'
-          start = js.find(prefix)
-          if start < 0:
-              raise SystemExit('No se encontró el inicio de la imagen WebP embebida.')
-          start += len(prefix)
-          end = js.find('";', start)
-          if end < 0:
-              raise SystemExit('No se encontró el final de la imagen WebP embebida.')
-          payload = js[start:end].strip()
-          data = base64.b64decode(payload)
-          if data[:4] != b'RIFF' or data[8:12] != b'WEBP':
-              raise SystemExit('La imagen embebida recuperada no es un WebP válido.')
-          target = root / 'assets/brand/portada-principal-construccion-segura.webp'
-          target.write_bytes(data)
-          print(f'Fuente WebP recuperada: {len(data)} bytes')
-          PY
+          node <<'NODE'
+          const fs = require('fs');
+          const js = fs.readFileSync('site-global.js', 'utf8');
+          const marker = 'data:image/webp;base64,';
+          const markerIndex = js.indexOf(marker);
+          if (markerIndex < 0) throw new Error('No se encontró la imagen WebP embebida.');
+          const start = markerIndex + marker.length;
+          const end = js.indexOf('";', start);
+          if (end < 0) throw new Error('No se encontró el cierre de la imagen WebP embebida.');
+          const data = Buffer.from(js.slice(start, end), 'base64');
+          if (data.subarray(0, 4).toString('ascii') !== 'RIFF' || data.subarray(8, 12).toString('ascii') !== 'WEBP') {
+            throw new Error('La imagen recuperada no contiene una cabecera WebP válida.');
+          }
+          fs.writeFileSync('assets/brand/portada-principal-construccion-segura.webp', data);
+          console.log(`Fuente WebP recuperada: ${data.length} bytes`);
+          NODE
 
       - name: Build responsive homepage images
         run: python scripts/build_home_poster_v6.py

@@ -1,0 +1,48 @@
+name: Apply home brand hero
+
+on:
+  push:
+    branches: [hero-portada-marca]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: ${{ !contains(github.event.head_commit.message, '[home-hero-applied]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out hero branch
+        uses: actions/checkout@v4
+        with:
+          ref: hero-portada-marca
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Apply approved homepage visual
+        run: python scripts/apply_home_brand_hero.py
+
+      - name: Validate image and site files
+        run: |
+          test -s assets/brand/portada-principal-construccion-segura.avif
+          python scripts/check_site.py
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js
+
+      - name: Remove one-time migration files
+        run: |
+          rm -f scripts/apply_home_brand_hero.py
+          rm -f .github/workflows/apply-home-brand-hero.yml
+
+      - name: Commit homepage hero
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No homepage changes to commit."
+            exit 0
+          fi
+          git commit -m "Usar nueva imagen de marca en la portada principal [home-hero-applied]"
+          git push origin HEAD:hero-portada-marca

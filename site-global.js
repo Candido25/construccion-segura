@@ -1,3 +1,5 @@
+const FACEBOOK_URL = "https://www.facebook.com/ConstruccionSeguraPeru/";
+
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
   if (navigation && !navigation.querySelector('a[href$="casos-de-obra.html"]')) {
@@ -44,7 +46,48 @@ const applyCasesNavigation = () => {
   }
 };
 
-applyCasesNavigation();
-document.addEventListener("DOMContentLoaded", applyCasesNavigation, { once: true });
-window.setTimeout(applyCasesNavigation, 0);
-window.setTimeout(applyCasesNavigation, 120);
+const applyFacebookLinks = () => {
+  const navigation = document.querySelector(".site-nav");
+  if (navigation && !navigation.querySelector('[data-social="facebook"]')) {
+    const facebookLink = document.createElement("a");
+    facebookLink.href = FACEBOOK_URL;
+    facebookLink.textContent = "Facebook";
+    facebookLink.target = "_blank";
+    facebookLink.rel = "noopener noreferrer";
+    facebookLink.dataset.social = "facebook";
+    facebookLink.dataset.track = "facebook_navigation";
+    facebookLink.setAttribute("aria-label", "Abrir Facebook de Construcción Segura Perú en una pestaña nueva");
+
+    const callToAction = navigation.querySelector(".nav-cta");
+    navigation.insertBefore(facebookLink, callToAction || null);
+  }
+
+  const homeContactBlock = document.querySelector(".home-conversion-hero .contact-block");
+  if (homeContactBlock && !homeContactBlock.querySelector('[data-social="facebook"]')) {
+    const facebookContactLink = document.createElement("a");
+    facebookContactLink.href = FACEBOOK_URL;
+    facebookContactLink.textContent = "Facebook: Construcción Segura Perú";
+    facebookContactLink.target = "_blank";
+    facebookContactLink.rel = "noopener noreferrer";
+    facebookContactLink.dataset.social = "facebook";
+    facebookContactLink.dataset.track = "facebook_home_contact";
+    facebookContactLink.setAttribute("aria-label", "Abrir Facebook de Construcción Segura Perú en una pestaña nueva");
+
+    const emailLink = homeContactBlock.querySelector('a[href^="mailto:"]');
+    if (emailLink?.nextSibling) {
+      homeContactBlock.insertBefore(facebookContactLink, emailLink.nextSibling);
+    } else {
+      homeContactBlock.appendChild(facebookContactLink);
+    }
+  }
+};
+
+const applyGlobalEnhancements = () => {
+  applyCasesNavigation();
+  applyFacebookLinks();
+};
+
+applyGlobalEnhancements();
+document.addEventListener("DOMContentLoaded", applyGlobalEnhancements, { once: true });
+window.setTimeout(applyGlobalEnhancements, 0);
+window.setTimeout(applyGlobalEnhancements, 120);

@@ -1,3 +1,26 @@
+const applyAppOfficialBranding = () => {
+  if (!window.location.pathname.startsWith("/app")) return;
+
+  if (!document.querySelector('link[data-app-brand="official"]')) {
+    const brandStyles = document.createElement("link");
+    brandStyles.rel = "stylesheet";
+    brandStyles.href = "/app/brand.css?v=20260714-1";
+    brandStyles.dataset.appBrand = "official";
+    document.head.appendChild(brandStyles);
+  }
+
+  const brandImage = document.querySelector(".app-brand img");
+  if (brandImage) {
+    brandImage.src = "/assets/brand/logo-marca-construccion-segura-transparente.png";
+    brandImage.alt = "Construcción Segura";
+    brandImage.removeAttribute("width");
+    brandImage.removeAttribute("height");
+  }
+
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute("content", "#071e38");
+};
+
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
 
@@ -80,8 +103,14 @@ const registerConstruccionSeguraPWA = () => {
   }, { once: true });
 };
 
+applyAppOfficialBranding();
 applyCasesNavigation();
 registerConstruccionSeguraPWA();
-document.addEventListener("DOMContentLoaded", applyCasesNavigation, { once: true });
+document.addEventListener("DOMContentLoaded", () => {
+  applyAppOfficialBranding();
+  applyCasesNavigation();
+}, { once: true });
+window.setTimeout(applyAppOfficialBranding, 0);
 window.setTimeout(applyCasesNavigation, 0);
+window.setTimeout(applyAppOfficialBranding, 120);
 window.setTimeout(applyCasesNavigation, 120);

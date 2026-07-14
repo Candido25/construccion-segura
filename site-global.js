@@ -1,5 +1,8 @@
 const FACEBOOK_URL = "https://www.facebook.com/ConstruccionSeguraOficial/";
-const HERO_BRAND_WEBP = "/assets/brand/portada-principal-construccion-segura.webp";
+const HERO_BRAND_SOURCE = "/assets/brand/portada-principal-construccion-segura.webp?v=20260714-3";
+const HERO_BRAND_FALLBACK = "/assets/site-photos/web/hero-portada.webp";
+let heroBrandObjectUrl = null;
+let heroBrandLoadPromise = null;
 
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
@@ -83,13 +86,56 @@ const applyFacebookLinks = () => {
   }
 };
 
+const readAscii = (bytes, start, length) =>
+  String.fromCharCode(...bytes.subarray(start, start + length));
+
+const buildRepairedHeroUrl = async () => {
+  const response = await fetch(HERO_BRAND_SOURCE, { cache: "force-cache" });
+  if (!response.ok) {
+    throw new Error(`No se pudo cargar la imagen de portada: ${response.status}`);
+  }
+
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (bytes.length < 20 || readAscii(bytes, 0, 4) !== "RIFF") {
+    throw new Error("El archivo de portada no contiene una cabecera RIFF válida.");
+  }
+
+  if (readAscii(bytes, 8, 4) !== "WEBP") {
+    bytes.set([0x57, 0x45, 0x42, 0x50], 8);
+  }
+
+  const webpChunk = readAscii(bytes, 12, 4);
+  if (!webpChunk.startsWith("VP8")) {
+    throw new Error("El archivo reparado no contiene datos WebP reconocibles.");
+  }
+
+  const blob = new Blob([bytes], { type: "image/webp" });
+  heroBrandObjectUrl = URL.createObjectURL(blob);
+  return heroBrandObjectUrl;
+};
+
 const applyHeroBrandImage = () => {
-  document.querySelectorAll(".hero-media-brand .hero-image").forEach((heroImage) => {
-    heroImage.style.backgroundImage = `linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)), url("${HERO_BRAND_WEBP}")`;
+  const heroImages = document.querySelectorAll(".hero-media-brand .hero-image");
+  if (!heroImages.length) return;
+
+  heroImages.forEach((heroImage) => {
+    heroImage.style.backgroundImage = `linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)), url("${HERO_BRAND_FALLBACK}")`;
     heroImage.style.backgroundPosition = "center, center";
     heroImage.style.backgroundSize = "cover, cover";
     heroImage.style.backgroundRepeat = "no-repeat";
   });
+
+  heroBrandLoadPromise ||= buildRepairedHeroUrl();
+  heroBrandLoadPromise
+    .then((imageUrl) => {
+      heroImages.forEach((heroImage) => {
+        heroImage.style.backgroundImage = `linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)), url("${imageUrl}")`;
+        heroImage.dataset.heroBrandReady = "true";
+      });
+    })
+    .catch((error) => {
+      console.error("No fue posible mostrar la imagen principal de Construcción Segura.", error);
+    });
 };
 
 const applyGlobalEnhancements = () => {
@@ -102,3 +148,6 @@ applyGlobalEnhancements();
 document.addEventListener("DOMContentLoaded", applyGlobalEnhancements, { once: true });
 window.setTimeout(applyGlobalEnhancements, 0);
 window.setTimeout(applyGlobalEnhancements, 120);
+window.addEventListener("pagehide", () => {
+  if (heroBrandObjectUrl) URL.revokeObjectURL(heroBrandObjectUrl);
+}, { once: true });

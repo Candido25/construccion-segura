@@ -1,19 +1,60 @@
 {
+  "id": "/",
   "name": "Construcción Segura",
   "short_name": "Construcción Segura",
+  "description": "Asesoría técnica de construcción para propietarios y familias que construyen, amplían o corrigen su vivienda en el Perú.",
+  "lang": "es-PE",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#c96f2d",
+  "background_color": "#f6eee2",
+  "categories": ["business", "education", "productivity", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/favicon-48.png",
       "sizes": "48x48",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/favicon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "theme_color": "#c96f2d",
-  "background_color": "#f6eee2",
-  "display": "standalone"
+  "shortcuts": [
+    {
+      "name": "Consultar mi obra",
+      "short_name": "Consultar",
+      "description": "Abrir el contacto para solicitar orientación técnica.",
+      "url": "/contacto.html?source=pwa-shortcut",
+      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+    },
+    {
+      "name": "Biblioteca técnica",
+      "short_name": "Biblioteca",
+      "description": "Consultar guías y referencias técnicas de construcción.",
+      "url": "/biblioteca-tecnica.html?source=pwa-shortcut",
+      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+    },
+    {
+      "name": "Casos de obra",
+      "short_name": "Casos",
+      "description": "Revisar hallazgos, correcciones y buenas prácticas en obras.",
+      "url": "/casos-de-obra.html?source=pwa-shortcut",
+      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+    }
+  ]
 }

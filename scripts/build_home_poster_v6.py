@@ -4,14 +4,8 @@ from PIL import Image, ImageFilter, ImageEnhance, ImageOps
 import re
 
 root = Path(__file__).resolve().parents[1]
-source = root / 'assets/brand/portada-principal-construccion-segura.webp'
-raw = bytearray(source.read_bytes())
-if raw[:4] != b'RIFF':
-    raise SystemExit('Fuente sin cabecera RIFF válida.')
-raw[8:12] = b'WEBP'
-repaired = root / 'assets/brand/portada-fuente-v6.webp'
-repaired.write_bytes(raw)
-with Image.open(repaired) as opened:
+source = root / 'assets/brand/portada-fuente-decodificada-v6.png'
+with Image.open(source) as opened:
     base = opened.convert('RGB')
 
 # Escritorio 16:9, conservando el afiche completo.
@@ -37,7 +31,10 @@ desktop = root / 'assets/brand/portada-construccion-segura-escritorio-v6.webp'
 bg.convert('RGB').save(desktop, 'WEBP', quality=88, method=6)
 
 # Móvil: recorte visual limpio; los textos y botones permanecen en HTML.
-crop = base.crop((600, 0, 1536, 900))
+right = base.width
+bottom = min(base.height, round(base.height * 0.88))
+left_crop = round(base.width * 0.39)
+crop = base.crop((left_crop, 0, right, bottom))
 mobile_img = ImageOps.fit(crop, (900, 1000), method=Image.Resampling.LANCZOS, centering=(0.52, 0.5))
 mobile = root / 'assets/brand/portada-construccion-segura-movil-v6.webp'
 mobile_img.save(mobile, 'WEBP', quality=86, method=6)
@@ -91,5 +88,5 @@ js = re.sub(r'\n\s*const ensureHeroStyle = \(\) => \{.*?\n\s*const applyGlobalEn
 js = js.replace('    applyHeroBrandImage();\n', '')
 js_path.write_text(js, encoding='utf-8')
 
-repaired.unlink(missing_ok=True)
+source.unlink(missing_ok=True)
 print('Portada v6 generada y documentos actualizados.')

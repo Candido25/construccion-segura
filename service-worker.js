@@ -1,10 +1,11 @@
-const CACHE_VERSION = "construccion-segura-pwa-v2";
+const CACHE_VERSION = "construccion-segura-pwa-v3";
 const APP_SHELL = [
   "/",
   "/index.html",
   "/app/",
   "/app/index.html",
   "/app/app.css?v=1",
+  "/app/brand.css?v=20260714-1",
   "/app/app.js?v=1",
   "/offline.html",
   "/styles.css",
@@ -15,7 +16,8 @@ const APP_SHELL = [
   "/site.webmanifest",
   "/favicon-48.png",
   "/favicon-192.png",
-  "/apple-touch-icon.png"
+  "/apple-touch-icon.png",
+  "/assets/brand/logo-marca-construccion-segura-transparente.png"
 ];
 
 self.addEventListener("install", (event) => {

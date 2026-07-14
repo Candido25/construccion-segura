@@ -3,53 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Construcción Segura | Asesoría y Supervisión de Obra</title>
-    
-    <!-- AQUÍ PEGA TUS SCRIPTS DE ANALYTICS Y VERIFICACIÓN -->
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Construcción Segura | Asesoría Técnica de Obras</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="header">
-        <div class="container header-content">
+        <div class="container">
             <div class="logo">Construcción<span>Segura</span></div>
-            <nav class="nav" id="nav-menu">
-                <ul class="nav-list">
-                    <li><a href="#nosotros">Quiénes Somos</a></li>
-                    <li><a href="#servicios">Servicios</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
+            <nav id="nav">
+                <a href="#nosotros">Nosotros</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#contacto" class="btn">Cotizar</a>
             </nav>
-            <button class="menu-toggle" id="mobile-menu">☰</button>
         </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container text-center">
-                <h1>Construye tu futuro sin errores ni sobrecostos</h1>
-                <p>Protege tu inversión con nuestra asesoría técnica experta y supervisión de obra.</p>
-                <div class="hero-btns">
-                    <a href="https://wa.me/51999999999" class="btn btn-primary">WhatsApp</a>
-                    <a href="#contacto" class="btn btn-secondary">Cotizar</a>
-                </div>
-            </div>
-        </section>
+    <section class="hero">
+        <div class="container">
+            <h1>Construye tu casa sin errores ni sobrecostos</h1>
+            <p>Supervisión técnica, planos y presupuestos para que tu inversión esté protegida.</p>
+            <a href="https://wa.me/51999999999" class="btn-whatsapp">WhatsApp Ahora</a>
+        </div>
+    </section>
 
-        <!-- Aquí integrarías tus secciones de servicios y contacto -->
-        <section class="section" id="contacto">
-            <div class="container form-container">
-                <form name="contacto" method="POST" data-netlify="true">
-                    <input type="text" name="nombre" placeholder="Nombre completo" required>
-                    <input type="tel" name="telefono" placeholder="WhatsApp" required>
-                    <textarea name="mensaje" placeholder="Describe tu proyecto"></textarea>
-                    <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
-                </form>
+    <section id="servicios" class="section">
+        <div class="container">
+            <h2>Nuestros Servicios</h2>
+            <div class="grid">
+                <div class="card"><h3>Asesoría</h3><p>Evaluamos tu terreno y planos.</p></div>
+                <div class="card"><h3>Supervisión</h3><p>Controlamos la calidad de tu obra.</p></div>
+                <div class="card"><h3>Presupuestos</h3><p>Cálculo de materiales sin desperdicio.</p></div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <script src="script.js"></script>
+    <section id="contacto" class="section">
+        <div class="container">
+            <h2>Contáctanos</h2>
+            <form name="contacto" method="POST" data-netlify="true">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="tel" name="whatsapp" placeholder="WhatsApp" required>
+                <textarea name="mensaje" placeholder="Tu proyecto"></textarea>
+                <button type="submit">Enviar Solicitud</button>
+            </form>
+        </div>
+    </section>
 </body>
 </html>

@@ -1,7 +1,11 @@
-const CACHE_VERSION = "construccion-segura-pwa-v1";
+const CACHE_VERSION = "construccion-segura-pwa-v2";
 const APP_SHELL = [
   "/",
   "/index.html",
+  "/app/",
+  "/app/index.html",
+  "/app/app.css?v=1",
+  "/app/app.js?v=1",
   "/offline.html",
   "/styles.css",
   "/site-pages.css",
@@ -60,7 +64,7 @@ self.addEventListener("fetch", (event) => {
         })
         .catch(async () => {
           const cachedPage = await caches.match(request);
-          return cachedPage || caches.match("/offline.html");
+          return cachedPage || caches.match("/app/") || caches.match("/offline.html");
         })
     );
     return;

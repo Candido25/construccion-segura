@@ -32,14 +32,21 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import base64
-          import re
 
           root = Path('.')
           js = (root / 'site-global.js').read_text(encoding='utf-8')
-          match = re.search(r'const HERO_BRAND_DATA_URI = "data:image/webp;base64,([^"]+)";', js)
-          if not match:
-              raise SystemExit('No se encontró la imagen WebP válida embebida en site-global.js.')
-          data = base64.b64decode(match.group(1), validate=True)
+          prefix = 'const HERO_BRAND_DATA_URI = "data:image/webp;base64,'
+          start = js.find(prefix)
+          if start < 0:
+              raise SystemExit('No se encontró el inicio de la imagen WebP embebida.')
+          start += len(prefix)
+          end = js.find('";', start)
+          if end < 0:
+              raise SystemExit('No se encontró el final de la imagen WebP embebida.')
+          payload = js[start:end].strip()
+          data = base64.b64decode(payload)
+          if data[:4] != b'RIFF' or data[8:12] != b'WEBP':
+              raise SystemExit('La imagen embebida recuperada no es un WebP válido.')
           target = root / 'assets/brand/portada-principal-construccion-segura.webp'
           target.write_bytes(data)
           print(f'Fuente WebP recuperada: {len(data)} bytes')

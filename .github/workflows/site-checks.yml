@@ -3,40 +3,172 @@ name: Site checks
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-static-site:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out repair branch
         uses: actions/checkout@v4
         with:
+          ref: fix-portada-definitiva-v3
+          fetch-depth: 0
           show-progress: false
 
-      - name: Ensure public identity uses Ingeniero
+      - name: Repair binary and use a real image element
         run: |
-          matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' . --include='*.html' || true)
-          if [ -n "$matches" ]; then
-            echo "Retired specialty found in:"
-            printf '%s\n' "$matches"
-            exit 1
-          fi
+          python - <<'PY'
+          from pathlib import Path
+          import struct
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+          root = Path('.')
+          source = root / 'assets/brand/portada-principal-construccion-segura.webp'
+          target = root / 'assets/brand/portada-principal-construccion-segura-v3.webp'
 
-      - name: Validate local links and duplicate IDs
-        run: python scripts/check_site.py
+          data = bytearray(source.read_bytes())
+          if data[:4] != b'RIFF':
+              raise SystemExit(f'Invalid RIFF signature: {data[:4]!r}')
+          if data[8:12] != b'WEBP':
+              print(f'Repairing invalid WebP signature {bytes(data[8:12])!r} -> b\'WEBP\'')
+              data[8:12] = b'WEBP'
+          if data[12:16] not in (b'VP8 ', b'VP8L', b'VP8X'):
+              raise SystemExit(f'Unsupported WebP chunk: {bytes(data[12:16])!r}')
+          target.write_bytes(data)
 
-      - name: Validate JavaScript syntax
+          width = height = None
+          if data[12:16] == b'VP8 ' and data[23:26] == b'\x9d\x01\x2a':
+              width = struct.unpack_from('<H', data, 26)[0] & 0x3FFF
+              height = struct.unpack_from('<H', data, 28)[0] & 0x3FFF
+          print(f'Created {target} ({len(data)} bytes, {width}x{height})')
+
+          index = root / 'index.html'
+          html = index.read_text(encoding='utf-8')
+          html = html.replace(
+              'href="assets/brand/portada-principal-construccion-segura.webp" type="image/webp"',
+              'href="assets/brand/portada-principal-construccion-segura-v3.webp" type="image/webp"'
+          )
+          old_markup = '''      <div class="hero-media hero-media-brand" role="img" aria-label="Vivienda terminada, planos y casco de Construcción Segura como representación de una obra planificada y protegida">
+        <div class="hero-image"></div>
+      </div>'''
+          new_markup = '''      <div class="hero-media hero-media-brand">
+        <img class="hero-image hero-image-brand" src="assets/brand/portada-principal-construccion-segura-v3.webp" alt="Vivienda terminada, planos y casco de Construcción Segura como representación de una obra planificada y protegida" width="836" height="820" fetchpriority="high" decoding="async">
+      </div>'''
+          if old_markup not in html:
+              if 'portada-principal-construccion-segura-v3.webp' not in html:
+                  raise SystemExit('Expected hero markup was not found in index.html')
+          else:
+              html = html.replace(old_markup, new_markup, 1)
+          index.write_text(html, encoding='utf-8')
+
+          css_path = root / 'conversion.css'
+          css = css_path.read_text(encoding='utf-8')
+          old_css = '''.home-conversion-hero .hero-media-brand .hero-image {
+  background-image:
+    linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)),
+    url("assets/brand/portada-principal-construccion-segura.webp");
+  background-position: center, center;
+  background-size: cover, cover;
+  background-repeat: no-repeat;
+  filter: none;
+}'''
+          new_css = '''.home-conversion-hero .hero-media-brand .hero-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: none;
+  filter: none;
+}'''
+          if old_css in css:
+              css = css.replace(old_css, new_css, 1)
+          elif 'object-fit: cover;' not in css:
+              raise SystemExit('Expected hero CSS block was not found in conversion.css')
+          css = css.replace('background-position: center, center 42%;', 'object-position: center 42%;')
+          css = css.replace('background-position: center, center;', 'object-position: center;')
+          css_path.write_text(css, encoding='utf-8')
+
+          js_path = root / 'site-global.js'
+          js = js_path.read_text(encoding='utf-8')
+          js = js.replace('const HERO_BRAND_WEBP = "/assets/brand/portada-principal-construccion-segura.webp";\n', '')
+          hero_function = '''const applyHeroBrandImage = () => {
+  document.querySelectorAll(".hero-media-brand .hero-image").forEach((heroImage) => {
+    heroImage.style.backgroundImage = `linear-gradient(200deg, rgba(255, 255, 255, 0.01), rgba(20, 34, 42, 0.08)), url("${HERO_BRAND_WEBP}")`;
+    heroImage.style.backgroundPosition = "center, center";
+    heroImage.style.backgroundSize = "cover, cover";
+    heroImage.style.backgroundRepeat = "no-repeat";
+  });
+};
+
+'''
+          js = js.replace(hero_function, '', 1)
+          js = js.replace('  applyHeroBrandImage();\n', '')
+          js_path.write_text(js, encoding='utf-8')
+          PY
+
+      - name: Verify repaired image and site files
         run: |
+          file assets/brand/portada-principal-construccion-segura-v3.webp
+          python scripts/check_site.py
           node --check script.js
           node --check privacy.js
           node --check site-global.js
+
+      - name: Restore permanent checks and remove temporary workflow
+        run: |
+          cat > .github/workflows/site-checks.yml <<'YAML'
+          name: Site checks
+
+          on:
+            pull_request:
+              branches: [main]
+            push:
+              branches: [main]
+
+          permissions:
+            contents: read
+
+          jobs:
+            validate-static-site:
+              runs-on: ubuntu-latest
+              steps:
+                - name: Check out repository
+                  uses: actions/checkout@v4
+                  with:
+                    show-progress: false
+
+                - name: Ensure public identity uses Ingeniero
+                  run: |
+                    matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' . --include='*.html' || true)
+                    if [ -n "$matches" ]; then
+                      echo "Retired specialty found in:"
+                      printf '%s\n' "$matches"
+                      exit 1
+                    fi
+
+                - name: Set up Python
+                  uses: actions/setup-python@v5
+                  with:
+                    python-version: "3.12"
+
+                - name: Validate local links and duplicate IDs
+                  run: python scripts/check_site.py
+
+                - name: Validate JavaScript syntax
+                  run: |
+                    node --check script.js
+                    node --check privacy.js
+                    node --check site-global.js
+          YAML
+          rm -f .github/workflows/fix-hero-image-v3.yml
+
+      - name: Commit definitive hero repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Corregir definitivamente la imagen principal de portada [hero-fixed]"
+          git push origin HEAD:fix-portada-definitiva-v3

@@ -1,5 +1,18 @@
 const applyCasesNavigation = () => {
   const navigation = document.querySelector(".site-nav");
+
+  if (navigation && !navigation.querySelector('a[href="/app/"]')) {
+    const appLink = document.createElement("a");
+    appLink.href = "/app/";
+    appLink.textContent = "Guía para construir";
+    appLink.dataset.track = "app_navigation";
+
+    const libraryLink = Array.from(navigation.querySelectorAll("a")).find((link) =>
+      (link.getAttribute("href") || "").includes("biblioteca-tecnica.html")
+    );
+    navigation.insertBefore(appLink, libraryLink || navigation.firstChild);
+  }
+
   if (navigation && !navigation.querySelector('a[href$="casos-de-obra.html"]')) {
     const casesLink = document.createElement("a");
     casesLink.href = "/casos-de-obra.html";
@@ -34,6 +47,15 @@ const applyCasesNavigation = () => {
   }
 
   const homeResourcesActions = document.querySelector(".home-conversion-hero .resources .hero-actions");
+  if (homeResourcesActions && !homeResourcesActions.querySelector('a[href="/app/"]')) {
+    const appButton = document.createElement("a");
+    appButton.className = "button button-primary";
+    appButton.href = "/app/";
+    appButton.dataset.track = "app_home_resources";
+    appButton.textContent = "Abrir guía para construir";
+    homeResourcesActions.prepend(appButton);
+  }
+
   if (homeResourcesActions && !homeResourcesActions.querySelector('a[href$="casos-de-obra.html"]')) {
     const casesButton = document.createElement("a");
     casesButton.className = "button button-secondary";

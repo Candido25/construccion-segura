@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#c96f2d">
+  <meta name="description" content="Asistente práctico para propietarios que van a construir, ampliar o revisar su vivienda.">
+  <title>Asistente para construir tu vivienda | Construcción Segura</title>
+  <link rel="canonical" href="https://www.construccionsegura.org.pe/app/">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="app.css?v=1">
+</head>
+<body>
+  <header class="app-header">
+    <a class="app-brand" href="/app/" aria-label="Inicio de Construcción Segura">
+      <img src="/favicon-192.png" alt="" width="44" height="44">
+      <span><strong>Construcción Segura</strong><small>Asistente para tu vivienda</small></span>
+    </a>
+    <button class="icon-button" id="shareApp" type="button" aria-label="Compartir aplicación" title="Compartir">↗</button>
+  </header>
+
+  <main>
+    <section class="welcome-card" aria-labelledby="welcome-title">
+      <p class="eyebrow">Construye informado</p>
+      <h1 id="welcome-title">¿En qué etapa está tu vivienda?</h1>
+      <p>Elige una etapa para revisar recomendaciones, señales de alerta y listas de verificación antes de avanzar.</p>
+      <div class="progress-summary" aria-live="polite">
+        <span><strong id="completedCount">0</strong> controles revisados</span>
+        <button id="resetProgress" class="text-button" type="button">Reiniciar avance</button>
+      </div>
+    </section>
+
+    <section class="quick-diagnostic" aria-labelledby="diagnostic-title">
+      <div>
+        <p class="eyebrow">Diagnóstico inicial</p>
+        <h2 id="diagnostic-title">Antes de construir en un terreno plano o en ladera</h2>
+        <p>Responde cuatro preguntas y recibe alertas iniciales para conversar con un profesional.</p>
+      </div>
+      <button class="primary-button" id="openDiagnostic" type="button">Empezar diagnóstico</button>
+    </section>
+
+    <section class="stage-section" aria-labelledby="stage-title">
+      <div class="section-heading">
+        <p class="eyebrow">Guía por etapas</p>
+        <h2 id="stage-title">Selecciona lo que estás haciendo</h2>
+      </div>
+
+      <div class="stage-grid" id="stageGrid">
+        <button class="stage-card available" type="button" data-module="antes-construir">
+          <span class="stage-icon">⌂</span>
+          <span><strong>Antes de construir</strong><small>Terreno, planos, suelos y permisos</small></span>
+          <span class="status-pill">Disponible</span>
+        </button>
+
+        <button class="stage-card available" type="button" data-module="cimentaciones">
+          <span class="stage-icon">▦</span>
+          <span><strong>Bases y cimentaciones</strong><small>Zapatas, vigas, acero y concreto</small></span>
+          <span class="status-pill">Disponible</span>
+        </button>
+
+        <button class="stage-card" type="button" disabled>
+          <span class="stage-icon">▥</span>
+          <span><strong>Columnas y muros</strong><small>Próximo módulo</small></span>
+          <span class="status-pill muted">Próximamente</span>
+        </button>
+
+        <button class="stage-card" type="button" disabled>
+          <span class="stage-icon">⌂</span>
+          <span><strong>Vigas y techos</strong><small>Próximo módulo</small></span>
+          <span class="status-pill muted">Próximamente</span>
+        </button>
+
+        <button class="stage-card" type="button" disabled>
+          <span class="stage-icon">↯</span>
+          <span><strong>Instalaciones</strong><small>Sanitarias y eléctricas</small></span>
+          <span class="status-pill muted">Próximamente</span>
+        </button>
+
+        <button class="stage-card danger-card" type="button" data-module="problemas">
+          <span class="stage-icon">!</span>
+          <span><strong>Tengo un problema en obra</strong><small>Identifica cuándo detener y consultar</small></span>
+          <span class="status-pill danger">Revisar</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="module-view" id="moduleView" hidden aria-live="polite">
+      <button class="back-button" id="closeModule" type="button">← Volver a las etapas</button>
+      <div id="moduleContent"></div>
+    </section>
+
+    <section class="help-card">
+      <div>
+        <p class="eyebrow">Revisión profesional</p>
+        <h2>¿Ves algo que te preocupa?</h2>
+        <p>Envía fotos, ubicación, etapa de la obra y tu duda principal para definir si corresponde una consulta remota o una visita.</p>
+      </div>
+      <a class="primary-button" href="https://wa.me/51968481482?text=Hola%2C%20estoy%20usando%20la%20app%20Construcci%C3%B3n%20Segura.%20Mi%20obra%20est%C3%A1%20en%20___%2C%20en%20la%20etapa%20de%20___%20y%20mi%20duda%20es%20___" target="_blank" rel="noreferrer">Consultar por WhatsApp</a>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegación de la aplicación">
+    <a class="active" href="/app/"><span>⌂</span>Inicio</a>
+    <a href="/biblioteca-tecnica.html"><span>▤</span>Biblioteca</a>
+    <a href="/casos-de-obra.html"><span>◫</span>Casos</a>
+    <a href="/contacto.html"><span>✆</span>Consulta</a>
+  </nav>
+
+  <dialog class="diagnostic-dialog" id="diagnosticDialog">
+    <form method="dialog" id="diagnosticForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Diagnóstico inicial</p>
+          <h2>Cuéntanos cómo será tu vivienda</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Cerrar">×</button>
+      </div>
+
+      <label>¿Cómo es el terreno?
+        <select name="terrain" required>
+          <option value="">Selecciona una opción</option>
+          <option value="flat">Plano y aparentemente firme</option>
+          <option value="slope">En ladera o falda de cerro</option>
+          <option value="fill">Con relleno o suelo removido</option>
+          <option value="unknown">No estoy seguro</option>
+        </select>
+      </label>
+
+      <label>¿Cuántos pisos piensas construir?
+        <select name="floors" required>
+          <option value="">Selecciona una opción</option>
+          <option value="1">Un piso</option>
+          <option value="2">Dos pisos</option>
+          <option value="3plus">Tres pisos o más</option>
+        </select>
+      </label>
+
+      <fieldset>
+        <legend>¿Tienes estudio de suelos?</legend>
+        <label class="choice"><input type="radio" name="soil" value="yes" required> Sí</label>
+        <label class="choice"><input type="radio" name="soil" value="no"> No</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>¿Tienes planos estructurales firmados?</legend>
+        <label class="choice"><input type="radio" name="plans" value="yes" required> Sí</label>
+        <label class="choice"><input type="radio" name="plans" value="no"> No</label>
+      </fieldset>
+
+      <button class="primary-button full" value="default" type="submit">Ver recomendaciones</button>
+      <div id="diagnosticResult" class="diagnostic-result" hidden></div>
+    </form>
+  </dialog>
+
+  <script src="app.js?v=1"></script>
+  <script src="/site-global.js?v=20260714-app1"></script>
+</body>
+</html>

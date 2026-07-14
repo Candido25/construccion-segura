@@ -27,7 +27,7 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --quiet pillow
 
-      - name: Recover valid source image from current page data
+      - name: Recover source image from current page data
         run: |
           node <<'NODE'
           const fs = require('fs');
@@ -39,12 +39,14 @@ jobs:
           const end = js.indexOf('";', start);
           if (end < 0) throw new Error('No se encontró el cierre de la imagen WebP embebida.');
           const data = Buffer.from(js.slice(start, end), 'base64');
-          if (data.subarray(0, 4).toString('ascii') !== 'RIFF' || data.subarray(8, 12).toString('ascii') !== 'WEBP') {
-            throw new Error('La imagen recuperada no contiene una cabecera WebP válida.');
-          }
-          fs.writeFileSync('assets/brand/portada-principal-construccion-segura.webp', data);
-          console.log(`Fuente WebP recuperada: ${data.length} bytes`);
+          fs.writeFileSync('assets/brand/portada-fuente-embebida-v6.webp', data);
+          console.log(`Fuente recuperada: ${data.length} bytes`);
           NODE
+
+      - name: Decode source with FFmpeg
+        run: |
+          ffmpeg -hide_banner -loglevel error -y -i assets/brand/portada-fuente-embebida-v6.webp -frames:v 1 assets/brand/portada-fuente-decodificada-v6.png
+          file assets/brand/portada-fuente-decodificada-v6.png
 
       - name: Build responsive homepage images
         id: build_poster
@@ -84,10 +86,12 @@ jobs:
           node --check privacy.js
           node --check site-global.js
 
-      - name: Remove temporary builder and diagnostics
+      - name: Remove temporary files and diagnostics
         run: |
           rm -f scripts/build_home_poster_v6.py
           rm -f .github/workflows/build-home-poster-v6.yml
+          rm -f assets/brand/portada-fuente-embebida-v6.webp
+          rm -f assets/brand/portada-fuente-decodificada-v6.png
           rm -f build-home-poster.log build-home-poster.status
 
       - name: Commit completed homepage

@@ -2,10 +2,10 @@
   "id": "/",
   "name": "Construcción Segura",
   "short_name": "Construcción Segura",
-  "description": "Asesoría técnica de construcción para propietarios y familias que construyen, amplían o corrigen su vivienda en el Perú.",
+  "description": "Asistente práctico para propietarios y familias que construyen, amplían o revisan su vivienda en el Perú.",
   "lang": "es-PE",
   "dir": "ltr",
-  "start_url": "/?source=pwa",
+  "start_url": "/app/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
@@ -31,22 +31,22 @@
       "src": "/favicon-192.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
+    {
+      "name": "Guía por etapas",
+      "short_name": "Guía",
+      "description": "Abrir las recomendaciones para construir una vivienda.",
+      "url": "/app/?source=pwa-shortcut",
+      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+    },
     {
       "name": "Consultar mi obra",
       "short_name": "Consultar",
       "description": "Abrir el contacto para solicitar orientación técnica.",
       "url": "/contacto.html?source=pwa-shortcut",
-      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
-    },
-    {
-      "name": "Biblioteca técnica",
-      "short_name": "Biblioteca",
-      "description": "Consultar guías y referencias técnicas de construcción.",
-      "url": "/biblioteca-tecnica.html?source=pwa-shortcut",
       "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
     },
     {

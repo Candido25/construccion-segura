@@ -27,6 +27,24 @@ jobs:
       - name: Install Pillow
         run: python -m pip install --quiet pillow
 
+      - name: Recover valid source image from current page data
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          import re
+
+          root = Path('.')
+          js = (root / 'site-global.js').read_text(encoding='utf-8')
+          match = re.search(r'const HERO_BRAND_DATA_URI = "data:image/webp;base64,([^"]+)";', js)
+          if not match:
+              raise SystemExit('No se encontró la imagen WebP válida embebida en site-global.js.')
+          data = base64.b64decode(match.group(1), validate=True)
+          target = root / 'assets/brand/portada-principal-construccion-segura.webp'
+          target.write_bytes(data)
+          print(f'Fuente WebP recuperada: {len(data)} bytes')
+          PY
+
       - name: Build responsive homepage images
         run: python scripts/build_home_poster_v6.py
 

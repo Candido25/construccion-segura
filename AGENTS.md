@@ -7,7 +7,7 @@
 - Profesión e identidad pública principal: Ingeniero
 - CIP: 364395
 - Presentación pública: **Ing. Omar Oswaldo Alcantara Aquino · CIP N.° 364395**
-- Facebook oficial: **https://www.facebook.com/ConstruccionSeguraPeru/**
+- Facebook oficial: **https://www.facebook.com/ConstruccionSeguraOficial/**
 - LinkedIn: **https://www.linkedin.com/in/ingomaralcantara**
 - No mostrar SENCICO ni el título técnico en páginas públicas, firmas, metadatos o datos estructurados.
 - Escritura obligatoria del apellido: **Alcantara**, sin tilde.

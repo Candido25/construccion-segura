@@ -99,11 +99,12 @@ const buildLegalLinks = () => {
 
   const legalLinks = document.createElement("div");
   legalLinks.className = "legal-links";
-  legalLinks.setAttribute("aria-label", "Información legal y privacidad");
+  legalLinks.setAttribute("aria-label", "Información legal, privacidad y redes sociales");
   legalLinks.innerHTML = `
     <a href="/politica-privacidad.html">Privacidad</a>
     <a href="/politica-cookies.html">Cookies</a>
     <a href="/condiciones-servicio.html">Condiciones del servicio</a>
+    <a href="https://www.facebook.com/ConstruccionSeguraPeru/" target="_blank" rel="noopener noreferrer" data-track="facebook_footer">Facebook</a>
     <button type="button" data-cookie-settings>Configurar cookies</button>
   `;
 

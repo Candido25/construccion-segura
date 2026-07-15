@@ -16,19 +16,13 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/favicon-48.png",
-      "sizes": "48x48",
+      "src": "/app-icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/favicon-192.png",
+      "src": "/app-icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -40,21 +34,21 @@
       "short_name": "Guía",
       "description": "Abrir las recomendaciones para construir una vivienda.",
       "url": "/app/?source=pwa-shortcut",
-      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
     },
     {
       "name": "Consultar mi obra",
       "short_name": "Consultar",
       "description": "Abrir el contacto para solicitar orientación técnica.",
       "url": "/contacto.html?source=pwa-shortcut",
-      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
     },
     {
       "name": "Casos de obra",
       "short_name": "Casos",
       "description": "Revisar hallazgos, correcciones y buenas prácticas en obras.",
       "url": "/casos-de-obra.html?source=pwa-shortcut",
-      "icons": [{"src": "/favicon-192.png", "sizes": "512x512", "type": "image/png"}]
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
     }
   ]
 }

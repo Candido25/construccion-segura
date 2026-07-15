@@ -1,4 +1,4 @@
-const CACHE_VERSION = "construccion-segura-pwa-v5";
+const CACHE_VERSION = "construccion-segura-pwa-v6";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -15,6 +15,8 @@ const APP_SHELL = [
   "/site-global.js",
   "/script.js",
   "/site.webmanifest",
+  "/app-icon-192.png",
+  "/app-icon-maskable-512.png",
   "/favicon-48.png",
   "/favicon-192.png",
   "/apple-touch-icon.png",

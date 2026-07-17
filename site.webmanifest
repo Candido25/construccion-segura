@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Construcción Segura",
-  "short_name": "Construcción Segura",
-  "description": "Asistente práctico para propietarios y familias que construyen, amplían o revisan su vivienda en el Perú.",
+  "name": "Mi Casa Segura: Guía de Obra",
+  "short_name": "Mi Casa Segura",
+  "description": "Guía práctica para construir, ampliar o remodelar tu vivienda con mayor seguridad en el Perú.",
   "lang": "es-PE",
   "dir": "ltr",
   "start_url": "/app/?source=pwa",

@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="app.css?v=2">
+  <link rel="stylesheet" href="faq.css?v=1">
 </head>
 <body>
   <header class="app-header">
@@ -40,6 +41,41 @@
         <p>Responde cuatro preguntas y recibe alertas iniciales para conversar con un profesional.</p>
       </div>
       <button class="primary-button" id="openDiagnostic" type="button">Empezar diagnóstico</button>
+    </section>
+
+    <section class="faq-section" id="dudas" aria-labelledby="faq-title">
+      <p class="eyebrow">Respuestas inmediatas</p>
+      <h2 id="faq-title">¿Qué duda tienes sobre tu obra?</h2>
+      <p>Escribe como lo preguntarías normalmente. Mientras escribes aparecerán preguntas relacionadas y podrás abrir una respuesta práctica revisada para el contexto peruano.</p>
+
+      <div class="faq-search-box">
+        <label class="faq-search-label" for="faqSearch">Busca una pregunta</label>
+        <div class="faq-search-field">
+          <input
+            id="faqSearch"
+            type="search"
+            placeholder="Ejemplo: zapata, grieta, salitre, cable o desagüe"
+            autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="faqSuggestions"
+          >
+        </div>
+        <div class="faq-suggestions" id="faqSuggestions" role="listbox" hidden></div>
+        <p class="faq-empty" id="faqEmpty" aria-live="polite" hidden></p>
+      </div>
+
+      <div class="faq-popular" id="faqPopular" aria-label="Preguntas populares">
+        <button type="button" data-faq-id="profundidad-zapatas">Profundidad de zapatas</button>
+        <button type="button" data-faq-id="desencofrado-puntales">Retirar puntales</button>
+        <button type="button" data-faq-id="rajaduras-techo">Rajaduras en el techo</button>
+        <button type="button" data-faq-id="salitre-humedad">Salitre y humedad</button>
+        <button type="button" data-faq-id="termomagnetico-diferencial">Llave térmica o diferencial</button>
+        <button type="button" data-faq-id="desague-gorgoteo-olor">Mal olor del desagüe</button>
+      </div>
+
+      <article class="faq-answer" id="faqAnswer" aria-live="polite" hidden></article>
     </section>
 
     <section class="stage-section" aria-labelledby="stage-title">
@@ -155,6 +191,8 @@
     </form>
   </dialog>
 
+  <script src="faq-data.js?v=1"></script>
+  <script src="faq-search.js?v=1"></script>
   <script src="app.js?v=1"></script>
   <script src="modules-rne.js?v=1"></script>
   <script src="/site-global.js?v=20260714-app2"></script>

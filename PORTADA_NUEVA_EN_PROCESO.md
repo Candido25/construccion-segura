@@ -1,0 +1,1 @@
+Rama temporal para incorporar el nuevo afiche de portada entregado por el responsable de Construcción Segura. No fusionar hasta validar las imágenes responsive, la ausencia de superposiciones y la caché PWA.

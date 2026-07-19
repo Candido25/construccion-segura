@@ -33,7 +33,7 @@ jobs:
 
       - name: Package exact repository snapshot
         run: |
-          tar --exclude='.git' -czf construccion-segura-main-audit.tar.gz .
+          tar --exclude='.git' --exclude='construccion-segura-main-audit.tar.gz' -czf construccion-segura-main-audit.tar.gz .
 
       - name: Upload audit snapshot
         uses: actions/upload-artifact@v4

@@ -49,12 +49,15 @@ Las fuentes y herramientas externas se sustituyen por respuestas vacías durante
 
 ## 3. Criterio de comparación
 
-La comparación admite únicamente diferencias técnicas mínimas:
+Las capturas deben conservar exactamente las mismas dimensiones. Además, las tres condiciones siguientes deben cumplirse simultáneamente:
 
-- proporción máxima de píxeles modificados: `0.001`;
-- error absoluto medio máximo: `0.20`.
+- proporción máxima de píxeles modificados: `0.012`;
+- error absoluto medio máximo: `0.35`;
+- diferencia máxima permitida en cualquier canal RGB: `24` niveles.
 
-Cuando se supera un umbral, se genera una imagen de diferencias y la tarea falla.
+Los dos primeros límites admiten únicamente pequeñas diferencias subpíxel producidas por mecanismos equivalentes de interpolación gráfica, por ejemplo al migrar una fotografía desde un fondo CSS hacia un elemento `<img>` real. El tercer límite impide que esa tolerancia pueda ocultar cambios relevantes: un desplazamiento, recorte, texto modificado, contraste distinto o alteración de color produce diferencias locales mucho mayores y hace fallar la tarea.
+
+Cuando se supera cualquiera de los tres umbrales, o cuando cambian las dimensiones, se genera una imagen de diferencias y la tarea falla.
 
 ## 4. Cambios visuales deliberados
 

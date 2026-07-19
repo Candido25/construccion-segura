@@ -26,8 +26,30 @@ jobs:
       - name: Install image validator
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0
 
-      - name: Validate images and forbidden paths
-        run: python scripts/check_assets.py
+      - name: Produce asset validation report
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_assets.py > phase-1-validation.txt 2>&1
+          status=$?
+          cat phase-1-validation.txt
+          printf '%s\n' "$status" > phase-1-validation.status
+          exit 0
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-1-validation-report
+          path: |
+            phase-1-validation.txt
+            phase-1-validation.status
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Enforce asset validation result
+        shell: bash
+        run: |
+          test "$(cat phase-1-validation.status)" = "0"
 
       - name: Validate all JavaScript files
         shell: bash

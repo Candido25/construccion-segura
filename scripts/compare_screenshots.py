@@ -16,12 +16,15 @@ BASELINE = ARTIFACTS / "baseline"
 DIFFS = ARTIFACTS / "diffs"
 REPORT = ARTIFACTS / "comparison-report.json"
 
-# Las tres condiciones deben cumplirse simultáneamente. Los límites permiten
-# diferencias subpíxel de interpolación entre un fondo CSS y un <img>, pero
-# bloquean desplazamientos, recortes, cambios de texto o alteraciones de color.
+# Todas las condiciones deben cumplirse simultáneamente. Los límites permiten
+# diferencias subpíxel escasas al migrar entre mecanismos equivalentes de
+# renderizado, pero bloquean desplazamientos, recortes, cambios de texto,
+# alteraciones extensas o diferencias fuertes de color.
 MAX_CHANGED_PIXEL_RATIO = 0.012
 MAX_MEAN_ABSOLUTE_ERROR = 0.35
-MAX_CHANNEL_DIFFERENCE = 24
+STRONG_DIFFERENCE_THRESHOLD = 24
+MAX_STRONG_PIXEL_RATIO = 0.00015
+MAX_CHANNEL_DIFFERENCE = 64
 
 
 def maximum_channel_difference(histogram: list[int]) -> int:
@@ -35,15 +38,26 @@ def maximum_channel_difference(histogram: list[int]) -> int:
     return maximum
 
 
+def maximum_difference_image(difference: Image.Image) -> Image.Image:
+    red, green, blue = difference.split()
+    return ImageChops.lighter(ImageChops.lighter(red, green), blue)
+
+
 def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]:
     with Image.open(current_path) as current_image:
         current = current_image.convert("RGB")
     with Image.open(baseline_path) as baseline_image:
         baseline = baseline_image.convert("RGB")
 
+    def display_path(path: Path) -> str:
+        try:
+            return path.relative_to(ARTIFACTS).as_posix()
+        except ValueError:
+            return path.as_posix()
+
     result: dict[str, object] = {
-        "current": current_path.relative_to(ARTIFACTS).as_posix(),
-        "baseline": baseline_path.relative_to(ARTIFACTS).as_posix(),
+        "current": display_path(current_path),
+        "baseline": display_path(baseline_path),
         "current_size": list(current.size),
         "baseline_size": list(baseline.size),
     }
@@ -55,6 +69,7 @@ def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]
                 "reason": "Las capturas tienen dimensiones diferentes.",
                 "changed_pixel_ratio": 1.0,
                 "mean_absolute_error": 255.0,
+                "strong_pixel_ratio": 1.0,
                 "maximum_channel_difference": 255,
             }
         )
@@ -75,9 +90,18 @@ def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]
     changed_pixels = sum(count for value, count in enumerate(grayscale.histogram()) if value > 3)
     changed_pixel_ratio = changed_pixels / pixels
 
+    per_pixel_maximum = maximum_difference_image(difference)
+    maximum_histogram = per_pixel_maximum.histogram()
+    strong_pixels = sum(
+        maximum_histogram[value]
+        for value in range(STRONG_DIFFERENCE_THRESHOLD + 1, 256)
+    )
+    strong_pixel_ratio = strong_pixels / pixels
+
     passed = (
         changed_pixel_ratio <= MAX_CHANGED_PIXEL_RATIO
         and mean_absolute_error <= MAX_MEAN_ABSOLUTE_ERROR
+        and strong_pixel_ratio <= MAX_STRONG_PIXEL_RATIO
         and maximum_difference <= MAX_CHANNEL_DIFFERENCE
     )
 
@@ -86,10 +110,14 @@ def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]
             "passed": passed,
             "changed_pixel_ratio": changed_pixel_ratio,
             "mean_absolute_error": mean_absolute_error,
+            "strong_pixel_ratio": strong_pixel_ratio,
+            "strong_pixels": strong_pixels,
             "maximum_channel_difference": maximum_difference,
             "thresholds": {
                 "maximum_changed_pixel_ratio": MAX_CHANGED_PIXEL_RATIO,
                 "maximum_mean_absolute_error": MAX_MEAN_ABSOLUTE_ERROR,
+                "strong_difference_threshold": STRONG_DIFFERENCE_THRESHOLD,
+                "maximum_strong_pixel_ratio": MAX_STRONG_PIXEL_RATIO,
                 "maximum_channel_difference": MAX_CHANNEL_DIFFERENCE,
             },
         }
@@ -100,7 +128,7 @@ def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]
         diff_path = DIFFS / current_path.name
         highlighted = ImageEnhance.Contrast(difference).enhance(5.0)
         highlighted.save(diff_path)
-        result["diff"] = diff_path.relative_to(ARTIFACTS).as_posix()
+        result["diff"] = display_path(diff_path)
 
     return result
 
@@ -129,6 +157,7 @@ def main() -> int:
                 f"{current_path.name}: diferencia visual "
                 f"{comparison['changed_pixel_ratio']:.6f}, "
                 f"MAE {comparison['mean_absolute_error']:.4f}, "
+                f"píxeles fuertes {comparison['strong_pixel_ratio']:.7f}, "
                 f"diferencia máxima por canal {comparison['maximum_channel_difference']}"
             )
 

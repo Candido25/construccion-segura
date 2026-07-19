@@ -49,15 +49,28 @@ Las fuentes y herramientas externas se sustituyen por respuestas vacías durante
 
 ## 3. Criterio de comparación
 
-Las capturas deben conservar exactamente las mismas dimensiones. Además, las tres condiciones siguientes deben cumplirse simultáneamente:
+Las capturas deben conservar exactamente las mismas dimensiones. Además, todas las condiciones siguientes deben cumplirse simultáneamente:
 
 - proporción máxima de píxeles modificados: `0.012`;
 - error absoluto medio máximo: `0.35`;
-- diferencia máxima permitida en cualquier canal RGB: `24` niveles.
+- un píxel se considera una diferencia fuerte cuando algún canal RGB cambia más de `24` niveles;
+- proporción máxima de píxeles con diferencia fuerte: `0.00015`;
+- diferencia máxima absoluta permitida en cualquier canal RGB: `64` niveles.
 
-Los dos primeros límites admiten únicamente pequeñas diferencias subpíxel producidas por mecanismos equivalentes de interpolación gráfica, por ejemplo al migrar una fotografía desde un fondo CSS hacia un elemento `<img>` real. El tercer límite impide que esa tolerancia pueda ocultar cambios relevantes: un desplazamiento, recorte, texto modificado, contraste distinto o alteración de color produce diferencias locales mucho mayores y hace fallar la tarea.
+Los primeros límites admiten únicamente pequeñas diferencias subpíxel producidas por mecanismos equivalentes de interpolación gráfica, por ejemplo al migrar una fotografía desde un fondo CSS hacia un elemento `<img>` real. Las condiciones sobre diferencias fuertes impiden que esa tolerancia pueda ocultar una regresión:
 
-Cuando se supera cualquiera de los tres umbrales, o cuando cambian las dimensiones, se genera una imagen de diferencias y la tarea falla.
+- una variación aislada de borde puede admitirse si es escasa y de baja intensidad;
+- un desplazamiento, recorte, texto modificado, contraste distinto o alteración de color genera demasiados píxeles fuertes o una diferencia superior a 64 y hace fallar la tarea.
+
+El comparador incluye pruebas automáticas con imágenes sintéticas para confirmar que:
+
+- una captura idéntica es aceptada;
+- una variación subpíxel aislada es aceptada;
+- una región amplia aunque sea tenue es rechazada;
+- una modificación de alto contraste es rechazada;
+- un cambio de dimensiones es rechazado.
+
+Cuando se supera cualquiera de los umbrales, o cuando cambian las dimensiones, se genera una imagen de diferencias y la tarea falla.
 
 ## 4. Cambios visuales deliberados
 

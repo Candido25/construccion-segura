@@ -1,32 +1,4 @@
 /* Conversion and commercial presentation helpers */
-.home-conversion-hero {
-  padding-top: 0;
-}
-
-.home-conversion-hero .hero-content {
-  align-items: flex-start;
-  text-align: left;
-}
-
-.home-conversion-hero .hero-brand,
-.home-conversion-hero .eyebrow,
-.home-conversion-hero .hero h1,
-.home-conversion-hero .hero-text {
-  margin-inline: 0;
-}
-
-.home-conversion-hero .hero h1 {
-  max-width: 15ch;
-}
-
-.home-conversion-hero .hero-actions {
-  justify-content: flex-start;
-}
-
-.home-conversion-hero .hero-points {
-  width: 100%;
-}
-
 .authority-strip {
   width: min(var(--max), calc(100% - 2.8rem));
   margin: 0 auto;
@@ -206,31 +178,10 @@
   }
 }
 
-@media (max-width: 1080px) {
-  .home-conversion-hero .hero-content {
-    order: -1;
-  }
-
-  .home-conversion-hero .hero-media {
-    order: initial;
-    min-height: 42svh;
-  }
-}
-
 @media (max-width: 760px) {
-  .home-conversion-hero .hero {
-    padding-top: 5.2rem;
-  }
-
   .authority-strip {
     width: calc(100% - 1.4rem);
     grid-template-columns: 1fr;
-  }
-
-  .home-conversion-hero .hero-actions .button {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
   }
 
   /* Keep the final consultation area fully contained on narrow screens. */

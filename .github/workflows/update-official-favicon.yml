@@ -31,16 +31,15 @@ jobs:
           python <<'PY'
           from pathlib import Path
           from PIL import Image
-          import numpy as np
           import hashlib
 
           source_path = Path('assets/brand/logo-marca-construccion-segura-transparente.png')
           source = Image.open(source_path).convert('RGBA')
-          alpha = np.array(source.getchannel('A'))
-          ys, xs = np.where(alpha >= 10)
-          if len(xs) == 0:
+          alpha = source.getchannel('A')
+          visible = alpha.point(lambda value: 255 if value >= 10 else 0)
+          bbox = visible.getbbox()
+          if bbox is None:
               raise SystemExit('El logotipo oficial no contiene píxeles visibles')
-          bbox = (int(xs.min()), int(ys.min()), int(xs.max() + 1), int(ys.max() + 1))
           cropped = source.crop(bbox)
 
           def make_icon(size, padding_ratio=0.04, background=None):

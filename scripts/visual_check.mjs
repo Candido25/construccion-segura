@@ -38,6 +38,12 @@ async function exercisePage(page) {
 
   await page.evaluate(async () => {
     const pause = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+    history.scrollRestoration = "manual";
+    document.documentElement.style.scrollBehavior = "auto";
+    if (document.body) {
+      document.body.style.scrollBehavior = "auto";
+    }
+
     const maximum = Math.max(
       document.documentElement.scrollHeight,
       document.body?.scrollHeight || 0
@@ -51,10 +57,16 @@ async function exercisePage(page) {
 
     window.scrollTo(0, maximum);
     await pause(180);
+    document.activeElement?.blur();
     window.scrollTo(0, 0);
-    await pause(180);
+    document.documentElement.scrollTop = 0;
+    if (document.body) {
+      document.body.scrollTop = 0;
+    }
+    await pause(120);
   });
 
+  await page.waitForFunction(() => Math.abs(window.scrollY) < 1);
   await waitForDocumentFonts(page);
 }
 
@@ -118,6 +130,7 @@ async function inspectPage(page, sameOrigin) {
       missingRequiredSelectors,
       sameOriginResources: sameOriginLinks.length,
       documentHeight: Math.max(root.scrollHeight, body?.scrollHeight || 0),
+      scrollY: window.scrollY,
     };
   }, sameOrigin);
 }

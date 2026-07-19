@@ -1,0 +1,288 @@
+name: Apply official homepage poster v3
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: official-homepage-poster-v3
+  cancel-in-progress: true
+
+jobs:
+  build-validate-and-merge:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out clean branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/nueva-portada-afiche-v3
+          fetch-depth: 0
+
+      - name: Install image tools
+        run: |
+          python -m pip install --quiet pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Materialize historical source branch
+        run: |
+          git fetch origin portada-profesional-v6:refs/remotes/origin/portada-profesional-v6
+          rm -rf /tmp/historical-portada
+          git worktree add --detach /tmp/historical-portada origin/portada-profesional-v6
+
+      - name: Recover the official poster source
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageFilter, ImageStat
+          import base64
+          import hashlib
+          import io
+          import re
+          import subprocess
+
+          root = Path('/tmp/historical-portada')
+          temp = Path('/tmp/poster-recovery')
+          temp.mkdir(exist_ok=True)
+          seen = set()
+          byte_candidates = []
+
+          def add_candidate(label, data, bonus):
+              if not 20_000 <= len(data) <= 15_000_000:
+                  return
+              digest = hashlib.sha256(data).hexdigest()
+              if digest in seen:
+                  return
+              seen.add(digest)
+              byte_candidates.append((label, data, bonus))
+
+          site_global = root / 'site-global.js'
+          if site_global.exists():
+              text = site_global.read_text(encoding='utf-8', errors='ignore')
+              for index, match in enumerate(re.finditer(r'data:image/[^;]+;base64,([A-Za-z0-9+/=]{20000,})', text)):
+                  try:
+                      add_candidate(f'site-global data-uri {index}', base64.b64decode(match.group(1)), 2600)
+                  except Exception:
+                      pass
+
+          keywords = ('portada', 'poster', 'hero', 'fuente', 'principal', 'brand')
+          excluded = ('logo', 'favicon', 'icon', 'maskable', 'touch')
+          for path in root.rglob('*'):
+              if not path.is_file() or '.git' in path.parts:
+                  continue
+              relative = str(path.relative_to(root)).lower()
+              if any(word in relative for word in excluded):
+                  continue
+              if not any(word in relative for word in keywords):
+                  continue
+              try:
+                  data = path.read_bytes()
+              except OSError:
+                  continue
+              bonus = 2200 if ('portada' in relative or 'poster' in relative) else 900
+              add_candidate(relative, data, bonus)
+
+              text = data.decode('utf-8', errors='ignore')
+              for index, match in enumerate(re.finditer(r'(?:data:image/[^;]+;base64,)?([A-Za-z0-9+/=]{20000,})', text)):
+                  try:
+                      add_candidate(f'{relative} base64 {index}', base64.b64decode(match.group(1)), bonus + 500)
+                  except Exception:
+                      pass
+              try:
+                  compact = b''.join(data.split())
+                  add_candidate(f'{relative} whole-base64', base64.b64decode(compact, validate=True), bonus + 300)
+              except Exception:
+                  pass
+
+          def variants(data):
+              yield data
+              if len(data) >= 12 and data[:4] == b'RIFF' and data[8:12] != b'WEBP':
+                  patched = bytearray(data)
+                  patched[8:12] = b'WEBP'
+                  yield bytes(patched)
+
+          recovered = []
+          for item_index, (label, data, bonus) in enumerate(byte_candidates):
+              for variant_index, candidate in enumerate(variants(data)):
+                  image = None
+                  method = None
+                  try:
+                      image = Image.open(io.BytesIO(candidate)).convert('RGB')
+                      image.load()
+                      method = 'Pillow'
+                  except Exception:
+                      source_file = temp / f'candidate-{item_index}-{variant_index}.bin'
+                      output_file = temp / f'candidate-{item_index}-{variant_index}.png'
+                      source_file.write_bytes(candidate)
+                      result = subprocess.run(
+                          ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', str(source_file), '-frames:v', '1', str(output_file)],
+                          capture_output=True,
+                          text=True,
+                      )
+                      if result.returncode == 0 and output_file.exists():
+                          try:
+                              image = Image.open(output_file).convert('RGB')
+                              image.load()
+                              method = 'FFmpeg'
+                          except Exception:
+                              image = None
+                  if image is None or image.width < 800 or image.height < 800:
+                      continue
+                  ratio = image.width / image.height
+                  if not 0.78 <= ratio <= 1.28:
+                      continue
+
+                  sample = image.resize((128, 128), Image.Resampling.LANCZOS)
+                  pixels = list(sample.getdata())
+                  white_share = sum(1 for r, g, b in pixels if r > 220 and g > 220 and b > 220) / len(pixels)
+                  dark_share = sum(1 for r, g, b in pixels if r < 70 and g < 70 and b < 70) / len(pixels)
+                  yellow_share = sum(1 for r, g, b in pixels if r > 170 and 90 < g < 210 and b < 100) / len(pixels)
+                  gray = sample.convert('L')
+                  contrast = ImageStat.Stat(gray).stddev[0]
+                  edges = gray.filter(ImageFilter.FIND_EDGES)
+                  edge_mean = ImageStat.Stat(edges).mean[0]
+
+                  if white_share < 0.18 or dark_share < 0.025 or yellow_share < 0.004:
+                      continue
+                  if contrast < 35 or edge_mean < 12:
+                      continue
+
+                  square_score = 900 - abs(1 - ratio) * 1800
+                  resolution_score = min(image.width, image.height)
+                  detail_score = min(edge_mean * 10, 500)
+                  score = bonus + square_score + resolution_score + detail_score
+                  recovered.append((score, label, method, image.copy(), white_share, dark_share, yellow_share, edge_mean))
+
+          if not recovered:
+              raise SystemExit('No se encontró una fuente cuadrada con las características visuales del afiche oficial.')
+
+          recovered.sort(key=lambda item: item[0], reverse=True)
+          for item in recovered[:6]:
+              score, label, method, image, white, dark, yellow, edges = item
+              print(f'Candidato score={score:.1f} size={image.size} method={method} white={white:.3f} dark={dark:.3f} yellow={yellow:.3f} edges={edges:.1f} source={label}')
+
+          score, label, method, source, *_ = recovered[0]
+          print('Fuente seleccionada:', label, method, source.size, score)
+
+          def fit_canvas(image, size):
+              width, height = size
+              scale = min(width / image.width, height / image.height)
+              resized = image.resize(
+                  (round(image.width * scale), round(image.height * scale)),
+                  Image.Resampling.LANCZOS,
+              )
+              canvas = Image.new('RGB', size, (255, 255, 255))
+              canvas.paste(resized, ((width - resized.width) // 2, (height - resized.height) // 2))
+              return canvas
+
+          out = Path('assets/site-photos/web')
+          out.mkdir(parents=True, exist_ok=True)
+          fit_canvas(source, (1200, 1200)).save(out / 'hero-portada-desktop.webp', 'WEBP', quality=88, method=6)
+          fit_canvas(source, (900, 900)).save(out / 'hero-portada-mobile.webp', 'WEBP', quality=86, method=6)
+          PY
+
+      - name: Apply homepage changes idempotently
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          html = index.read_text(encoding='utf-8')
+          for old_version in ('20260718-1', '20260719-2'):
+              html = html.replace(old_version, '20260719-7')
+          html = html.replace('hero-media hero-media-brand watermark-frame', 'hero-media hero-media-brand')
+
+          overlay_start = html.find('        <div class="hero-grid" aria-hidden="true"></div>')
+          if overlay_start >= 0:
+              content_marker = '      <div class="hero-content">'
+              content_start = html.find(content_marker, overlay_start)
+              if content_start < 0:
+                  raise SystemExit('No se encontró el contenido principal después de las superposiciones.')
+              html = html[:overlay_start] + html[content_start:]
+
+          html = html.replace('width="1920" height="1080"', 'width="1200" height="1200"')
+          html = html.replace(
+              'Vivienda, planos, herramientas y casco de Construcción Segura como representación de una obra planificada y protegida',
+              'Afiche de Construcción Segura con servicios de asesoría técnica, vivienda, planos, casco y canales de atención',
+          )
+          index.write_text(html, encoding='utf-8')
+
+          css_path = Path('hero-responsive.css')
+          css = css_path.read_text(encoding='utf-8')
+          css = css.replace('object-fit: cover;', 'object-fit: contain;')
+          css = css.replace('#eef2f4', '#ffffff')
+          css_path.write_text(css, encoding='utf-8')
+
+          sw_path = Path('service-worker.js')
+          sw = sw_path.read_text(encoding='utf-8')
+          sw = sw.replace('mi-casa-segura-pwa-v9', 'mi-casa-segura-pwa-v10')
+          sw = sw.replace('20260718-1', '20260719-7')
+          sw_path.write_text(sw, encoding='utf-8')
+          PY
+
+      - name: Validate final files and website
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          expected = {
+              'assets/site-photos/web/hero-portada-desktop.webp': (1200, 1200),
+              'assets/site-photos/web/hero-portada-mobile.webp': (900, 900),
+          }
+          for name, dimensions in expected.items():
+              path = Path(name)
+              image = Image.open(path)
+              image.verify()
+              image = Image.open(path)
+              assert image.format == 'WEBP', (name, image.format)
+              assert image.size == dimensions, (name, image.size)
+              assert path.stat().st_size < 350_000, (name, path.stat().st_size)
+              print(name, image.size, path.stat().st_size)
+
+          html = Path('index.html').read_text(encoding='utf-8')
+          assert '20260719-7' in html
+          assert 'hero-badge hero-badge-top' not in html
+          assert 'hero-panel' not in html
+          assert 'width="1200" height="1200"' in html
+          assert 'Afiche de Construcción Segura con servicios de asesoría técnica' in html
+
+          css = Path('hero-responsive.css').read_text(encoding='utf-8')
+          assert 'object-fit: contain;' in css
+          assert 'object-fit: cover;' not in css
+          assert '#ffffff' in css
+
+          sw = Path('service-worker.js').read_text(encoding='utf-8')
+          assert 'mi-casa-segura-pwa-v10' in sw
+          assert '20260719-7' in sw
+          PY
+          python scripts/check_site.py
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js
+          git diff --check
+
+      - name: Remove one-time workflow
+        run: rm -f .github/workflows/apply-official-homepage-poster-v3.yml
+
+      - name: Commit validated result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Actualizar portada con el nuevo afiche oficial'
+          git push origin HEAD:agent/nueva-portada-afiche-v3
+
+      - name: Merge after successful validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr ready "${{ github.event.pull_request.number }}" || true
+          gh pr merge "${{ github.event.pull_request.number }}" --squash --delete-branch=false || \
+          gh pr merge "${{ github.event.pull_request.number }}" --auto --squash --delete-branch=false

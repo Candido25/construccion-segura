@@ -16,24 +16,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create inventory and checksums
+      - name: Create exact tracked snapshot
         run: |
-          python <<'PY'
-          from pathlib import Path
-          import hashlib
-          root = Path('.')
-          files = sorted(p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts)
-          lines = []
-          for p in files:
-              data = p.read_bytes()
-              lines.append(f"{hashlib.sha256(data).hexdigest()}  {len(data):10d}  {p.as_posix()}")
-          Path('AUDIT_INVENTORY_SHA256.txt').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-          print(f'Inventariados {len(files)} archivos')
-          PY
-
-      - name: Package exact repository snapshot
-        run: |
-          tar --exclude='.git' --exclude='construccion-segura-main-audit.tar.gz' -czf construccion-segura-main-audit.tar.gz .
+          git archive --format=tar.gz --output=construccion-segura-main-audit.tar.gz HEAD
 
       - name: Upload audit snapshot
         uses: actions/upload-artifact@v4

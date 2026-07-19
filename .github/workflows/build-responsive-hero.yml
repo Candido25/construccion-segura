@@ -1,0 +1,71 @@
+name: Build responsive homepage hero
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/build-responsive-hero.yml"
+      - "scripts/build_responsive_hero.py"
+      - "assets/site-photos/web/hero-portada.webp"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out working branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pillow
+        run: python -m pip install --quiet pillow
+
+      - name: Generate and patch responsive hero
+        run: python scripts/build_responsive_hero.py
+
+      - name: Validate site links and identifiers
+        run: python scripts/check_site.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js
+          node --check service-worker.js
+
+      - name: Validate generated WebP files
+        run: |
+          file assets/site-photos/web/hero-portada-desktop.webp
+          file assets/site-photos/web/hero-portada-mobile.webp
+
+      - name: Check whitespace errors
+        run: git diff --check
+
+      - name: Remove one-time build files
+        run: |
+          rm -f scripts/build_responsive_hero.py
+          rm -f .github/workflows/build-responsive-hero.yml
+
+      - name: Commit completed responsive hero
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No hay cambios para confirmar."
+            exit 0
+          fi
+          git commit -m "Implementar portada responsive desde main actual"
+          git push origin HEAD:${{ github.head_ref || github.ref_name }}

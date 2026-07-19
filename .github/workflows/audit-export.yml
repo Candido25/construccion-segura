@@ -1,0 +1,44 @@
+name: Export main for exhaustive audit
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create inventory and checksums
+        run: |
+          python <<'PY'
+          from pathlib import Path
+          import hashlib
+          root = Path('.')
+          files = sorted(p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts)
+          lines = []
+          for p in files:
+              data = p.read_bytes()
+              lines.append(f"{hashlib.sha256(data).hexdigest()}  {len(data):10d}  {p.as_posix()}")
+          Path('AUDIT_INVENTORY_SHA256.txt').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print(f'Inventariados {len(files)} archivos')
+          PY
+
+      - name: Package exact repository snapshot
+        run: |
+          tar --exclude='.git' -czf construccion-segura-main-audit.tar.gz .
+
+      - name: Upload audit snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: construccion-segura-main-audit
+          path: construccion-segura-main-audit.tar.gz
+          if-no-files-found: error
+          retention-days: 7

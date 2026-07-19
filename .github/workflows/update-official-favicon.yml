@@ -106,7 +106,7 @@ jobs:
         run: |
           git add -A
           changed=$(git diff --cached --name-only | sort)
-          expected=$(printf '%s\n' apple-touch-icon.png favicon-48.png favicon.ico | sort)
+          expected=$(printf '%s\n' .github/workflows/update-official-favicon.yml apple-touch-icon.png favicon-48.png favicon.ico | sort)
           test "$changed" = "$expected" || { echo 'Cambios inesperados:'; echo "$changed"; exit 1; }
 
       - name: Commit official favicon

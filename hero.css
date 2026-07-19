@@ -247,7 +247,7 @@
     max-width: none;
     margin-inline: auto;
     padding: 2rem 0 4.5rem;
-    align-items: stretch;
+    align-items: flex-start;
     text-align: left;
   }
 
@@ -299,7 +299,7 @@
   }
 
   .home-conversion-hero .hero h1 {
-    max-width: none;
+    max-width: 15ch;
     font-size: clamp(2.2rem, 10.2vw, 3.45rem);
     line-height: 0.96;
     letter-spacing: -0.045em;

@@ -1,0 +1,128 @@
+name: Apply new homepage poster
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/nueva-portada-afiche
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: python -m pip install --quiet pillow
+
+      - name: Recover, verify and generate poster images
+        run: |
+          git fetch origin portada-profesional-v6:refs/remotes/origin/portada-profesional-v6
+          git show origin/portada-profesional-v6:site-global.js > /tmp/old-site-global.js
+          python <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import base64, io, re
+          import numpy as np
+
+          text = Path('/tmp/old-site-global.js').read_text(encoding='utf-8')
+          match = re.search(r'data:image/webp;base64,([A-Za-z0-9+/=]+)', text)
+          if not match:
+              raise SystemExit('No se encontró el afiche WebP conservado en la rama histórica.')
+
+          source_bytes = base64.b64decode(match.group(1))
+          source = Image.open(io.BytesIO(source_bytes)).convert('RGB')
+
+          expected = 'fffd9ff01fe0bfe0ff88079cffa4fd3cfe78ff9cffffbcffffc1ffc100000000'
+          gray = source.convert('L').resize((16, 16), Image.Resampling.LANCZOS)
+          pixels = np.array(gray)
+          bits = (pixels > pixels.mean()).flatten()
+          actual = hex(int(''.join('1' if b else '0' for b in bits), 2))[2:].zfill(64)
+          distance = bin(int(expected, 16) ^ int(actual, 16)).count('1')
+          print(f'Comparación perceptual: {distance} bits de diferencia')
+          if distance > 24:
+              raise SystemExit('La fuente histórica no coincide suficientemente con el nuevo afiche entregado.')
+
+          def fit_canvas(image, size, background=(255, 255, 255)):
+              width, height = size
+              ratio = min(width / image.width, height / image.height)
+              new_size = (round(image.width * ratio), round(image.height * ratio))
+              resized = image.resize(new_size, Image.Resampling.LANCZOS)
+              canvas = Image.new('RGB', size, background)
+              canvas.paste(resized, ((width - new_size[0]) // 2, (height - new_size[1]) // 2))
+              return canvas
+
+          out = Path('assets/site-photos/web')
+          out.mkdir(parents=True, exist_ok=True)
+          fit_canvas(source, (1920, 1080)).save(out / 'hero-portada-desktop.webp', 'WEBP', quality=88, method=6)
+          fit_canvas(source, (900, 1000)).save(out / 'hero-portada-mobile.webp', 'WEBP', quality=88, method=6)
+
+          index = Path('index.html')
+          html = index.read_text(encoding='utf-8')
+          html = html.replace('20260718-1', '20260719-2')
+          html = html.replace('hero-media hero-media-brand watermark-frame', 'hero-media hero-media-brand')
+          html = html.replace('''        <div class="hero-grid" aria-hidden="true"></div>\n        <div class="hero-badge hero-badge-top">Consulta remota nacional</div>\n        <div class="hero-badge hero-badge-bottom">Visitas técnicas en Lima</div>\n        <div class="hero-panel">\n          <span>Responsable técnico</span>\n          <strong>Ing. Omar Oswaldo Alcantara Aquino</strong>\n          <p>Ingeniero<br>CIP N.° 364395</p>\n        </div>\n''', '')
+          html = html.replace('Vivienda, planos, herramientas y casco de Construcción Segura como representación de una obra planificada y protegida', 'Afiche de Construcción Segura con servicios de asesoría técnica, vivienda, planos, casco y canales de atención')
+          index.write_text(html, encoding='utf-8')
+
+          css_path = Path('hero-responsive.css')
+          css = css_path.read_text(encoding='utf-8')
+          css = css.replace('object-fit: cover;', 'object-fit: contain;')
+          css = css.replace('background: #eef2f4 !important;', 'background: #ffffff !important;')
+          css = css.replace('background: #eef2f4;', 'background: #ffffff;')
+          css_path.write_text(css, encoding='utf-8')
+
+          sw_path = Path('service-worker.js')
+          sw = sw_path.read_text(encoding='utf-8')
+          sw = sw.replace('mi-casa-segura-pwa-v9', 'mi-casa-segura-pwa-v10')
+          sw = sw.replace('20260718-1', '20260719-2')
+          sw_path.write_text(sw, encoding='utf-8')
+          PY
+
+      - name: Validate generated files and site
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          expected = {
+              'assets/site-photos/web/hero-portada-desktop.webp': (1920, 1080),
+              'assets/site-photos/web/hero-portada-mobile.webp': (900, 1000),
+          }
+          for path, size in expected.items():
+              image = Image.open(path)
+              image.verify()
+              image = Image.open(path)
+              assert image.format == 'WEBP', (path, image.format)
+              assert image.size == size, (path, image.size)
+              print(path, image.size, Path(path).stat().st_size)
+          PY
+          python scripts/check_site.py
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js
+          git diff --check
+
+      - name: Remove temporary files
+        run: |
+          rm -rf _incoming/nueva-portada
+          rm -f PORTADA_NUEVA_EN_PROCESO.md
+          rm -f .github/workflows/apply-new-poster.yml
+
+      - name: Commit final poster replacement
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Actualizar portada con el nuevo afiche oficial'
+          git push origin HEAD:agent/nueva-portada-afiche

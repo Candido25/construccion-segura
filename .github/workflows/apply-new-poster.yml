@@ -29,20 +29,23 @@ jobs:
       - name: Recover and generate poster images
         run: |
           git fetch origin portada-profesional-v6:refs/remotes/origin/portada-profesional-v6
-          git show origin/portada-profesional-v6:site-global.js > /tmp/old-site-global.js
+          git show origin/portada-profesional-v6:assets/brand/portada-principal-construccion-segura.webp > /tmp/source-poster.webp
           python <<'PY'
           from pathlib import Path
           from PIL import Image
-          import base64, io, re
+          import io
 
-          text = Path('/tmp/old-site-global.js').read_text(encoding='utf-8')
-          match = re.search(r'data:image/webp;base64,([A-Za-z0-9+/=]+)', text)
-          if not match:
-              raise SystemExit('No se encontró el afiche WebP conservado en la rama histórica.')
+          raw = bytearray(Path('/tmp/source-poster.webp').read_bytes())
+          if raw[:4] != b'RIFF':
+              raise SystemExit('La fuente histórica no tiene contenedor RIFF.')
+          if raw[8:12] == b'UGIP':
+              raw[8:12] = b'WEBP'
+          if raw[8:12] != b'WEBP':
+              raise SystemExit(f'Firma WebP inesperada: {bytes(raw[8:12])!r}')
 
-          source_bytes = base64.b64decode(match.group(1))
-          source = Image.open(io.BytesIO(source_bytes)).convert('RGB')
-          print('Fuente recuperada:', source.size, len(source_bytes), 'bytes')
+          source = Image.open(io.BytesIO(raw)).convert('RGB')
+          source.load()
+          print('Fuente reparada y abierta:', source.size, len(raw), 'bytes')
 
           def fit_canvas(image, size, background=(255, 255, 255)):
               width, height = size

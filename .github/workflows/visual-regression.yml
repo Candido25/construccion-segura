@@ -15,21 +15,23 @@ jobs:
       - name: Check out proposed version
         uses: actions/checkout@v4
         with:
+          path: current
           fetch-depth: 1
           show-progress: false
 
-      - name: Prepare sparse stable baseline
-        shell: bash
-        run: |
-          git fetch --no-tags --depth=1 --filter=blob:none origin backup/estable
-          git worktree add --detach --no-checkout ../visual-baseline FETCH_HEAD
-          git -C ../visual-baseline sparse-checkout init --no-cone
-          git -C ../visual-baseline sparse-checkout set --no-cone \
-            '/*' \
-            '!/review_photos/' \
-            '!/_incoming/' \
-            '!/debug.log'
-          git -C ../visual-baseline checkout --force FETCH_HEAD
+      - name: Check out sparse stable baseline
+        uses: actions/checkout@v4
+        with:
+          ref: backup/estable
+          path: baseline
+          fetch-depth: 1
+          show-progress: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/review_photos/
+            !/_incoming/
+            !/debug.log
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -37,6 +39,7 @@ jobs:
           node-version: "24"
 
       - name: Install Playwright
+        working-directory: current
         run: |
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
@@ -50,6 +53,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0
 
       - name: Render and compare current site with stable baseline
+        working-directory: current
         shell: bash
         run: |
           set +e
@@ -58,7 +62,7 @@ jobs:
           current_server=$!
 
           python -m http.server 8001 --bind 127.0.0.1 \
-            --directory ../visual-baseline \
+            --directory ../baseline \
             > visual-baseline-server.log 2>&1 &
           baseline_server=$!
 
@@ -101,8 +105,8 @@ jobs:
         with:
           name: visual-regression-evidence
           path: |
-            visual-artifacts/
-            visual-current-server.log
-            visual-baseline-server.log
+            current/visual-artifacts/
+            current/visual-current-server.log
+            current/visual-baseline-server.log
           if-no-files-found: warn
           retention-days: 7

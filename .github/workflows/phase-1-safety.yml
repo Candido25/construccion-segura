@@ -1,4 +1,4 @@
-name: Phase 1 safety checks
+name: Repository safety checks
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  validate-assets-and-privacy:
+  validate-repository:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -23,40 +23,65 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install image validator
-        run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Install validators
+        run: |
+          python -m pip install --disable-pip-version-check \
+            Pillow==11.3.0 \
+            tinycss2==1.4.0
 
-      - name: Produce asset validation report
+      - name: Produce validation report
         shell: bash
         run: |
           set +e
-          python scripts/check_assets.py > phase-1-validation.txt 2>&1
-          status=$?
-          cat phase-1-validation.txt
-          printf '%s\n' "$status" > phase-1-validation.status
+          {
+            echo "== Imágenes, privacidad y rutas prohibidas =="
+            python scripts/check_assets.py
+            assets_status=$?
+
+            echo
+            echo "== Integridad de HTML, CSS, JavaScript, manifest y service worker =="
+            python scripts/check_resources.py
+            resources_status=$?
+
+            echo
+            echo "== Estructura HTML, enlaces e identidad =="
+            python scripts/check_site.py
+            site_status=$?
+
+            echo
+            echo "== Sintaxis de todos los JavaScript =="
+            javascript_status=0
+            while IFS= read -r -d '' file; do
+              node --check "$file" || javascript_status=1
+            done < <(find . -type f -name '*.js' -not -path './.git/*' -print0)
+
+            if [ "$assets_status" -eq 0 ] \
+              && [ "$resources_status" -eq 0 ] \
+              && [ "$site_status" -eq 0 ] \
+              && [ "$javascript_status" -eq 0 ]; then
+              final_status=0
+            else
+              final_status=1
+            fi
+
+            echo
+            echo "Resultado final: $final_status"
+          } > repository-validation.txt 2>&1
+
+          cat repository-validation.txt
+          printf '%s\n' "$final_status" > repository-validation.status
           exit 0
 
       - name: Upload validation report
         uses: actions/upload-artifact@v4
         with:
-          name: phase-1-validation-report
+          name: repository-validation-report
           path: |
-            phase-1-validation.txt
-            phase-1-validation.status
+            repository-validation.txt
+            repository-validation.status
           if-no-files-found: error
           retention-days: 7
 
-      - name: Enforce asset validation result
+      - name: Enforce validation result
         shell: bash
-        run: |
-          test "$(cat phase-1-validation.status)" = "0"
-
-      - name: Validate all JavaScript files
-        shell: bash
-        run: |
-          while IFS= read -r -d '' file; do
-            node --check "$file"
-          done < <(find . -type f -name '*.js' -not -path './.git/*' -print0)
-
-      - name: Validate site structure
-        run: python scripts/check_site.py
+        run: test "$(cat repository-validation.status)" = "0"

@@ -1,0 +1,93 @@
+name: Extract hero component once
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  extract-hero:
+    if: github.head_ref == 'saneamiento/fase-3-componente-portada-20260719' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the controlled branch
+        uses: actions/checkout@v4
+        with:
+          ref: saneamiento/fase-3-componente-portada-20260719
+          fetch-depth: 0
+          show-progress: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validators
+        run: |
+          python -m pip install --disable-pip-version-check \
+            Pillow==11.3.0 \
+            tinycss2==1.4.0
+
+      - name: Extract the current hero without redesigning it
+        run: python scripts/refactor_hero_once.py
+
+      - name: Validate the transformed repository
+        shell: bash
+        run: |
+          python scripts/check_assets.py
+          python scripts/check_resources.py
+          python scripts/check_site.py
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -type f -name '*.js' -not -path './.git/*' -print0)
+          git diff --check
+
+      - name: Enforce the exact write scope
+        shell: bash
+        run: |
+          python <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          allowed = {
+              "styles.css",
+              "conversion.css",
+              "index.html",
+              "service-worker.js",
+          }
+          output = subprocess.check_output(
+              ["git", "status", "--porcelain=v1"],
+              text=True,
+          )
+          changed = set()
+          for line in output.splitlines():
+              if not line.strip():
+                  continue
+              changed.add(line[3:].strip())
+
+          unexpected = sorted(changed - allowed)
+          if unexpected:
+              raise SystemExit(f"Archivos inesperados modificados: {unexpected}")
+
+          missing = sorted(path for path in allowed if path not in changed)
+          if missing:
+              raise SystemExit(f"La extracción no modificó los archivos previstos: {missing}")
+
+          for required in (
+              Path("hero.css"),
+              Path("scripts/refactor_hero_once.py"),
+          ):
+              if not required.is_file():
+                  raise SystemExit(f"Falta el archivo requerido: {required}")
+          PY
+
+      - name: Commit only the deterministic extraction
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add styles.css conversion.css index.html service-worker.js
+          git commit -m "Extraer la portada hacia un componente único"
+          git push origin HEAD:saneamiento/fase-3-componente-portada-20260719

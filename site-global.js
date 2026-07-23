@@ -92,14 +92,14 @@ const applyCasesNavigation = () => {
 const applyPanderetaObservation = () => {
   const pathname = window.location.pathname;
   const articleUrl = "/errores/ladrillo-pandereta-muro-portante-asentado-de-canto.html";
-  const imageUrl = "/assets/site-photos/casos/multifamiliar-seis-niveles/ladrillo-pandereta-de-canto.svg";
+  const imageUrl = "/assets/site-photos/casos/multifamiliar-seis-niveles/ladrillo-pandereta-de-canto.webp";
 
   if (pathname.endsWith("/errores-frecuentes.html")) {
     const topicLibrary = document.querySelector(".topic-library-grid");
     if (topicLibrary && !topicLibrary.querySelector(`a[href$="${articleUrl.split("/").pop()}"]`)) {
       topicLibrary.insertAdjacentHTML(
         "afterbegin",
-        `<a class="topic-library-card" href="${articleUrl}"><strong>Ladrillo pandereta como muro portante o de canto</strong><span>Una unidad tubular no debe recibir carga ni perder espesor resistente.</span></a>`
+        `<a class="topic-library-card" href="${articleUrl}"><strong>Ladrillo pandereta usado para soportar peso</strong><span>Por qué no debe emplearse como muro portante ni colocarse de canto.</span></a>`
       );
     }
 
@@ -110,20 +110,20 @@ const applyPanderetaObservation = () => {
       summary.id = "error-pandereta-de-canto";
       summary.className = "error-article reveal is-visible";
       summary.innerHTML = `
-        <div class="error-media watermark-frame">
-          <img src="${imageUrl}" alt="Ladrillo pandereta colocado de canto y con juntas irregulares" loading="lazy">
+        <div class="error-media">
+          <img src="${imageUrl}" alt="Ladrillo pandereta colocado de canto y con juntas irregulares" width="640" height="360" loading="lazy" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover">
         </div>
         <div>
-          <span>Albañilería y sismorresistencia</span>
-          <h3>Usar ladrillo pandereta como muro portante o colocarlo de canto.</h3>
-          <p>La pandereta es una unidad tubular destinada principalmente a tabiquería. No debe recibir cargas de una losa, viga o pisos superiores. Al colocarla de canto se reduce el espesor efectivo del paño y disminuye su rigidez frente a acciones perpendiculares.</p>
+          <span>Albañilería y seguridad sísmica</span>
+          <h3>Por qué el ladrillo pandereta no debe soportar cargas ni colocarse de canto.</h3>
+          <p>El ladrillo pandereta está pensado principalmente para dividir ambientes. No debe sostener losas, vigas ni pisos superiores. Cuando se coloca de canto, el muro queda más delgado y ofrece menos resistencia frente a movimientos y empujes perpendiculares, como los que pueden presentarse durante un sismo.</p>
           <ul>
-            <li>Qué problema genera: mayor esbeltez, fisuración, desprendimiento o volcamiento y una respuesta frágil durante un sismo.</li>
-            <li>Qué debería pasar: confirmar que sea un tabique no portante, respetar la orientación normal de la unidad y ejecutar juntas, arriostres y conexiones conforme al proyecto.</li>
-            <li>Qué demuestra: ganar unos centímetros de espacio no justifica reducir la seguridad del muro.</li>
+            <li><strong>Qué puede ocurrir:</strong> el muro puede agrietarse, desprenderse o volcarse con mayor facilidad durante un sismo.</li>
+            <li><strong>Cómo reconocer una ejecución segura:</strong> el muro debe funcionar solamente como división, conservar el espesor previsto y estar correctamente unido o arriostrado.</li>
+            <li><strong>Recomendación principal:</strong> no utilizar este ladrillo para cargar peso ni colocarlo de canto para ganar espacio.</li>
           </ul>
-          <p>Referencia útil: la <a class="inline-link" href="https://cdn.www.gob.pe/uploads/document/file/2366661/56%20E.070%20ALBA%C3%91ILERIA.pdf?v=1677250657" target="_blank" rel="noreferrer">Norma E.070 Albañilería</a> diferencia las unidades tubulares y limita su empleo estructural.</p>
-          <p><a class="inline-link" href="${articleUrl}">Ver observación técnica completa</a></p>
+          <p>La <a class="inline-link" href="https://cdn.www.gob.pe/uploads/document/file/2366661/56%20E.070%20ALBA%C3%91ILERIA.pdf?v=1677250657" target="_blank" rel="noreferrer">Norma E.070 de Albañilería</a> diferencia estas unidades y limita su uso como elemento estructural.</p>
+          <p><a class="inline-link" href="${articleUrl}">Conocer más sobre este error de construcción</a></p>
         </div>`;
       if (firstArticle) {
         firstArticle.before(summary);
@@ -155,7 +155,7 @@ const applyPanderetaObservation = () => {
     if (caseIndex && !caseIndex.querySelector('a[href="#pandereta-de-canto"]')) {
       caseIndex.insertAdjacentHTML(
         "afterbegin",
-        '<a class="case-index-card case-index-alert" href="#pandereta-de-canto"><span>Deficiencia visible</span><strong>Pandereta de canto</strong><small>La unidad tubular no debe recibir carga ni formar un paño resistente improvisado.</small></a>'
+        '<a class="case-index-card case-index-alert" href="#pandereta-de-canto"><span>Deficiencia visible</span><strong>Pandereta de canto</strong><small>Un ladrillo para dividir ambientes no debe emplearse para sostener la edificación.</small></a>'
       );
     }
 
@@ -164,20 +164,20 @@ const applyPanderetaObservation = () => {
       caseList.insertAdjacentHTML(
         "beforeend",
         `<article class="case-item reveal is-visible" id="pandereta-de-canto">
-          <figure class="case-photo watermark-frame">
-            <img src="${imageUrl}" alt="Ladrillo pandereta colocado de canto y con juntas irregulares junto a elementos de concreto">
-            <figcaption>Observación 5. Unidad tubular colocada de canto, con juntas irregulares, registrada el 21 de julio de 2026.</figcaption>
+          <figure class="case-photo">
+            <img src="${imageUrl}" alt="Ladrillo pandereta colocado de canto y con juntas irregulares junto a elementos de concreto" width="640" height="360" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover">
+            <figcaption>Observación 5. Ladrillo pandereta colocado de canto, con juntas irregulares, registrado el 21 de julio de 2026.</figcaption>
           </figure>
           <div class="case-copy">
             <span class="case-number">05 · Albañilería y comportamiento sísmico</span>
             <div class="case-meta"><span>Condición: deficiencia visible</span><span>Elemento: muro con unidad tubular</span></div>
-            <h2>El ladrillo pandereta no debe trabajar como muro portante ni asentarse de canto.</h2>
-            <p class="case-summary"><strong>Descripción:</strong> se observa una unidad tubular tipo pandereta colocada de canto. Las juntas presentan espesores variables y el paño está en contacto con elementos de concreto.</p>
-            <h3>Por qué requiere corrección</h3>
-            <p>La pandereta se emplea principalmente en tabiquería y no debe recibir cargas de losas, vigas o niveles superiores. En una vivienda multifamiliar de seis niveles en Lima no corresponde considerarla una unidad para muros portantes.</p>
-            <p>Al colocarla de canto disminuye el espesor efectivo del paño. Como el momento de inercia geométrico depende fuertemente de esa dimensión, la rigidez frente a flexión fuera del plano se reduce de manera marcada. Esto aumenta la esbeltez y la vulnerabilidad ante aceleraciones sísmicas, empujes perpendiculares, fisuración, desprendimiento o volcamiento.</p>
-            <p class="technical-note">Antes de tarrajear debe verificarse en planos que sea un tabique no portante, impedir que reciba carga estructural y revisar orientación, trabazón, plomo, arriostramiento, conexión con la estructura y las juntas.</p>
-            <p><a class="inline-link" href="${articleUrl}">Ver guía completa sobre pandereta, inercia y sismorresistencia</a></p>
+            <h2>Un ladrillo para dividir ambientes no debe utilizarse para sostener la edificación.</h2>
+            <p class="case-summary"><strong>Descripción:</strong> se observa un ladrillo pandereta colocado de canto. Las juntas presentan espesores variables y el paño está en contacto con elementos de concreto.</p>
+            <h3>Por qué representa un riesgo</h3>
+            <p>La pandereta se utiliza principalmente para separar ambientes. No debe recibir el peso de losas, vigas o pisos superiores. En una edificación de varios niveles, confundir un tabique con un muro portante puede generar una condición insegura.</p>
+            <p>Al colocarla de canto, el muro queda más delgado. Esa reducción disminuye notablemente su rigidez frente a movimientos perpendiculares, aumenta su esbeltez y facilita la aparición de grietas, desprendimientos o volcamiento durante un sismo.</p>
+            <p class="technical-note">Antes de cubrir el muro conviene confirmar que sea únicamente una división, que no esté soportando peso y que su orientación, juntas y unión con la estructura sean las previstas en el proyecto.</p>
+            <p><a class="inline-link" href="${articleUrl}">Leer la explicación completa en lenguaje sencillo</a></p>
           </div>
         </article>`
       );
@@ -187,7 +187,7 @@ const applyPanderetaObservation = () => {
     if (futureGrid && !futureGrid.querySelector('[data-pandereta-verification]')) {
       futureGrid.insertAdjacentHTML(
         "beforeend",
-        '<article class="future-card" data-pandereta-verification><span>05</span><h3>Función del muro de pandereta</h3><p>Confirmar que sea un tabique no portante, que no reciba carga y que su orientación, juntas y arriostramiento correspondan al proyecto.</p></article>'
+        '<article class="future-card" data-pandereta-verification><span>05</span><h3>Comprobar para qué sirve el muro</h3><p>Verificar que solo divida ambientes, que no sostenga peso y que esté colocado y unido de acuerdo con los planos.</p></article>'
       );
     }
 

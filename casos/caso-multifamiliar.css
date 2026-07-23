@@ -341,7 +341,10 @@
 }
 
 @media (min-width: 1040px) {
-  .case-index,
+  .case-index {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .future-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }

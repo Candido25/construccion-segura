@@ -16,6 +16,7 @@ const APP_SHELL = [
   "/site-pages.css",
   "/conversion.css",
   "/hero.css",
+  "/assets/site-photos/web/hero-portada.webp",
   "/site-global.js",
   "/script.js",
   "/site.webmanifest",

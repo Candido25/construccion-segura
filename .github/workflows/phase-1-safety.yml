@@ -49,6 +49,11 @@ jobs:
             site_status=$?
 
             echo
+            echo "== Pruebas del comparador de regresión visual =="
+            python scripts/test_visual_comparator.py
+            comparator_status=$?
+
+            echo
             echo "== Sintaxis de todos los JavaScript =="
             javascript_status=0
             while IFS= read -r -d '' file; do
@@ -58,6 +63,7 @@ jobs:
             if [ "$assets_status" -eq 0 ] \
               && [ "$resources_status" -eq 0 ] \
               && [ "$site_status" -eq 0 ] \
+              && [ "$comparator_status" -eq 0 ] \
               && [ "$javascript_status" -eq 0 ]; then
               final_status=0
             else

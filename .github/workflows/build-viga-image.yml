@@ -38,13 +38,13 @@ jobs:
           import hashlib
           path = Path('assets/site-photos/casos/multifamiliar-seis-niveles/reduccion-viga-ducto-20260721.webp')
           data = path.read_bytes()
-          expected = 'd52c531b0a7c0cb41a96eff6e0a6ed3b58e16049048874c5917bb2877ad7a541'
+          expected = 'ce36fb0cb6ea736970da10ae0998220413a29ecf850581f2212b9e9516da7793'
           actual = hashlib.sha256(data).hexdigest()
           if actual != expected:
               raise SystemExit(f'SHA-256 incorrecto: {actual}')
           with Image.open(path) as image:
               image.load()
-              if image.format != 'WEBP' or image.size != (400, 225):
+              if image.format != 'WEBP' or image.size != (480, 270):
                   raise SystemExit(f'Imagen inválida: {image.format} {image.size}')
           print(f'Imagen verificada: {actual}')
           PY
@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -f assets/site-photos/casos/multifamiliar-seis-niveles/reduccion-viga-ducto-20260721.webp.b64
-          rm -f .viga-image-trigger .viga-image-trigger-2 .pr-trigger-viga
+          rm -f .viga-image-trigger .viga-image-trigger-2 .pr-trigger-viga .pr-trigger-viga-2 .pr-trigger-viga-3
           rm -f .github/workflows/build-viga-image.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

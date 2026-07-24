@@ -1,0 +1,67 @@
+name: Assemble slab observation images
+
+on:
+  push:
+    branches:
+      - content/losa-nervada-modulacion-20260721
+    paths:
+      - .losa-images-trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  assemble-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: content/losa-nervada-modulacion-20260721
+          fetch-depth: 0
+
+      - name: Install image validator
+        run: python -m pip install --quiet Pillow
+
+      - name: Decode and validate WebP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/site-photos/casos/multifamiliar-seis-niveles
+          base64 --decode .tmp/losa/modulacion-480.b64 > assets/site-photos/casos/multifamiliar-seis-niveles/modulacion-losa-vigueta-20260721.webp
+          base64 --decode .tmp/losa/casetones-invasion-480.b64 > assets/site-photos/casos/multifamiliar-seis-niveles/casetones-invaden-viga-20260721.webp
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import hashlib
+
+          expected = {
+              Path('assets/site-photos/casos/multifamiliar-seis-niveles/modulacion-losa-vigueta-20260721.webp'): '30ded5f9621f010fd42d64bc64af05b9cc38b705ca906d2eb2416e444c58187f',
+              Path('assets/site-photos/casos/multifamiliar-seis-niveles/casetones-invaden-viga-20260721.webp'): '66da4bab291bf5af86e199cbc25cdf229e8043f3d13e147bb5d9f058e4404739',
+          }
+          for path, digest in expected.items():
+              data = path.read_bytes()
+              assert hashlib.sha256(data).hexdigest() == digest, path
+              with Image.open(path) as image:
+                  assert image.format == 'WEBP', (path, image.format)
+                  assert image.size == (400, 225), (path, image.size)
+                  assert not image.getexif(), f'EXIF inesperado: {path}'
+                  image.load()
+          PY
+
+      - name: Remove temporary material
+        run: |
+          rm -rf .tmp/losa
+          rm -f .losa-images-trigger
+          rm -f .github/workflows/assemble-losa-observation-images.yml
+
+      - name: Commit verified images
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Construcción Segura Automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'Preparar fotografías verificadas de losa nervada'
+          git push origin HEAD:content/losa-nervada-modulacion-20260721

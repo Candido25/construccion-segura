@@ -73,3 +73,10 @@ applyRecubrimientoObservation();
 document.addEventListener("DOMContentLoaded", applyRecubrimientoObservation, { once: true });
 window.setTimeout(applyRecubrimientoObservation, 0);
 window.setTimeout(applyRecubrimientoObservation, 150);
+
+if (!document.querySelector('script[src*="losa-nervada-observation.js"]')) {
+  const losaObservationScript = document.createElement("script");
+  losaObservationScript.src = "/losa-nervada-observation.js?v=20260724-1";
+  losaObservationScript.defer = true;
+  document.head.appendChild(losaObservationScript);
+}

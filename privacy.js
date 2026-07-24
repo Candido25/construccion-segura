@@ -14,6 +14,15 @@ if (!document.querySelector('script[src$="site-global.js"]')) {
   document.head.appendChild(siteGlobalScript);
 }
 
+
+/* Observation module: beam cover and EPS void former */
+if (!document.querySelector('script[src*="recubrimiento-observation.js"]')) {
+  const recubrimientoScript = document.createElement("script");
+  recubrimientoScript.src = "/recubrimiento-observation.js?v=20260723-1";
+  recubrimientoScript.defer = true;
+  document.head.appendChild(recubrimientoScript);
+}
+
 /* Privacy-first Google Analytics 4 */
 const GA_MEASUREMENT_ID = "G-P6R5L9D52M";
 const COOKIE_CONSENT_KEY = "cs_cookie_consent_v1";

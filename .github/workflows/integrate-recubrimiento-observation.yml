@@ -1,0 +1,219 @@
+name: Integrate recubrimiento observation
+
+on:
+  push:
+    branches:
+      - content/recubrimiento-viga-caseton-20260721
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-content:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: content/recubrimiento-viga-caseton-20260721
+          fetch-depth: 0
+
+      - name: Integrate educational content
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('.')
+          image_url = '/assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp'
+
+          observation_js = r'''const applyRecubrimientoObservation = () => {
+            if (!window.location.pathname.endsWith("/casos/seguimiento-vivienda-multifamiliar-seis-niveles.html")) return;
+
+            const imageUrl = "/assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp";
+            const guideUrl = "/errores/falta-recubrimiento-acero.html";
+
+            document.title = document.title.replace(/(?:Cuatro|Cinco|Seis) observaciones/i, "Seis observaciones");
+            document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Seis observaciones técnicas en una vivienda multifamiliar de seis niveles");
+
+            const heading = document.querySelector(".article-copy h1");
+            if (heading) heading.textContent = "Vivienda multifamiliar de seis niveles: seis observaciones técnicas.";
+
+            const lead = document.querySelector(".article-copy .article-lead");
+            if (lead) lead.textContent = "Las fotografías permiten reconocer errores de albañilería, recubrimiento del acero y ejecución de elementos estructurales. Cada observación diferencia lo visible de aquello que todavía debe medirse o compararse con los planos.";
+
+            const status = document.querySelector(".project-status strong");
+            if (status) status.textContent = "6 fotografías analizadas · Lima";
+
+            const reviewedFact = Array.from(document.querySelectorAll(".project-fact")).find((item) =>
+              item.querySelector("span")?.textContent.trim() === "Elementos revisados"
+            );
+            reviewedFact?.querySelector("strong")?.replaceChildren("Albañilería, recubrimiento, vano, columna, escalera y viga");
+
+            const caseIndex = document.querySelector(".case-index");
+            if (caseIndex && !caseIndex.querySelector('a[href="#recubrimiento-viga-caseton"]')) {
+              const card = document.createElement("a");
+              card.className = "case-index-card case-index-alert";
+              card.href = "#recubrimiento-viga-caseton";
+              card.innerHTML = '<span>Pendiente de medición</span><strong>Recubrimiento de viga</strong><small>El acero debe quedar separado del encofrado y rodeado por suficiente concreto.</small>';
+              const panderetaCard = caseIndex.querySelector('a[href="#pandereta-de-canto"]');
+              if (panderetaCard) panderetaCard.after(card); else caseIndex.prepend(card);
+            }
+
+            const caseList = document.querySelector(".case-list");
+            if (caseList && !document.querySelector("#recubrimiento-viga-caseton")) {
+              const article = document.createElement("article");
+              article.className = "case-item reveal is-visible";
+              article.id = "recubrimiento-viga-caseton";
+              article.innerHTML = `
+                <figure class="case-photo">
+                  <img src="${imageUrl}" alt="Armadura de una viga aparentemente muy próxima al encofrado y a casetones de tecnopor" width="800" height="450" loading="lazy" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover">
+                  <figcaption>Observación 6. Armadura de viga y casetones de tecnopor registrados el 21 de julio de 2026. La distancia exacta debe comprobarse mediante medición directa.</figcaption>
+                </figure>
+                <div class="case-copy">
+                  <span class="case-number">06 · Concreto armado y durabilidad</span>
+                  <div class="case-meta"><span>Condición: pendiente de medición</span><span>Elemento: viga junto a casetones de EPS</span></div>
+                  <h2>El acero de una viga debe quedar rodeado por suficiente concreto.</h2>
+                  <p class="case-summary"><strong>Qué se observa:</strong> el estribo inferior y lateral aparenta estar muy próximo al encofrado. Los casetones de tecnopor también dejan pasos estrechos junto al armado. La fotografía alerta sobre el problema, pero no permite confirmar una medida exacta.</p>
+                  <h3>Por qué importa el recubrimiento</h3>
+                  <p>La capa de concreto protege el acero frente a humedad, corrosión, fuego y desprendimientos. También ayuda a que el refuerzo quede correctamente adherido y trabaje dentro de la sección prevista.</p>
+                  <p><strong>¿De dónde salen los 4 cm?</strong> En una viga vaciada en obra que no está expuesta al suelo ni directamente a la intemperie, la Norma E.060 establece un recubrimiento mínimo de 40 mm. Esa distancia se mide desde la cara del concreto hasta el acero más exterior, que normalmente es el estribo. En otras condiciones el proyecto puede exigir una distancia mayor.</p>
+                  <p><strong>¿Y junto al casetón?</strong> No se aplica automáticamente una regla de 4 cm a cada barra. Lo indispensable es respetar los planos y dejar espacio suficiente para que el concreto ingrese, rodee las barras y pueda vibrarse sin formar vacíos o cangrejeras.</p>
+                  <p class="technical-note">Antes del vaciado debe medirse el recubrimiento en todas las caras, colocar separadores firmes y asegurar que el armado y los casetones no se desplacen. Si no existe la separación prevista, la corrección debe realizarse antes de cubrir el acero.</p>
+                  <p><a class="inline-link" href="${guideUrl}">Leer la explicación completa sobre recubrimiento del acero</a></p>
+                </div>`;
+
+              const panderetaArticle = document.querySelector("#pandereta-de-canto");
+              if (panderetaArticle) panderetaArticle.after(article); else caseList.appendChild(article);
+            }
+
+            const futureGrid = document.querySelector(".future-grid");
+            if (futureGrid && !futureGrid.querySelector("[data-recubrimiento-verification]")) {
+              futureGrid.insertAdjacentHTML("beforeend", '<article class="future-card" data-recubrimiento-verification><span>06</span><h3>Medir el recubrimiento de la viga</h3><p>Comprobar la distancia desde el encofrado hasta el estribo y el espacio disponible para colocar y compactar el concreto junto a los casetones.</p></article>');
+            }
+
+            const footerStatus = document.querySelector(".article-footer span");
+            if (footerStatus?.textContent.includes("Revisión técnica")) {
+              footerStatus.textContent = "Revisión técnica actualizada: 23 de julio de 2026 · Proyecto ubicado en Lima";
+            }
+          };
+
+          applyRecubrimientoObservation();
+          document.addEventListener("DOMContentLoaded", applyRecubrimientoObservation, { once: true });
+          window.setTimeout(applyRecubrimientoObservation, 0);
+          window.setTimeout(applyRecubrimientoObservation, 150);
+          '''
+          (root / 'recubrimiento-observation.js').write_text(observation_js, encoding='utf-8')
+
+          privacy = (root / 'privacy.js').read_text(encoding='utf-8')
+          loader = '''\n/* Observation module: beam cover and EPS void former */\nif (!document.querySelector('script[src*="recubrimiento-observation.js"]')) {\n  const recubrimientoScript = document.createElement("script");\n  recubrimientoScript.src = "/recubrimiento-observation.js?v=20260723-1";\n  recubrimientoScript.defer = true;\n  document.head.appendChild(recubrimientoScript);\n}\n'''
+          anchor = '/* Privacy-first Google Analytics 4 */'
+          assert anchor in privacy
+          if 'recubrimiento-observation.js' not in privacy:
+              privacy = privacy.replace(anchor, loader + '\n' + anchor, 1)
+          (root / 'privacy.js').write_text(privacy, encoding='utf-8')
+
+          service_worker = (root / 'service-worker.js').read_text(encoding='utf-8')
+          service_worker = service_worker.replace('mi-casa-segura-pwa-v11', 'mi-casa-segura-pwa-v12')
+          if 'recubrimiento-observation.js?v=20260723-1' not in service_worker:
+              service_worker = service_worker.replace('  "/site-global.js",', '  "/site-global.js",\n  "/recubrimiento-observation.js?v=20260723-1",')
+          (root / 'service-worker.js').write_text(service_worker, encoding='utf-8')
+
+          guide = r'''<!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Recubrimiento insuficiente del acero en vigas | Construcción Segura</title>
+            <meta name="description" content="Cómo reconocer si el acero de una viga está demasiado cerca del encofrado o del casetón, por qué importa el recubrimiento y cuándo se aplican los 4 cm.">
+            <meta name="keywords" content="recubrimiento del acero, recubrimiento viga 4 cm, acero pegado al encofrado, casetón tecnopor, separadores concreto">
+            <meta name="author" content="Omar Oswaldo Alcantara Aquino">
+            <meta name="theme-color" content="#c96f2d">
+            <meta name="robots" content="index,follow,max-image-preview:large">
+            <link rel="canonical" href="https://www.construccionsegura.org.pe/errores/falta-recubrimiento-acero.html">
+            <meta property="og:title" content="Recubrimiento insuficiente del acero en vigas">
+            <meta property="og:description" content="El acero necesita una capa suficiente de concreto y espacio para que el vaciado pueda envolverlo sin dejar vacíos.">
+            <meta property="og:type" content="article">
+            <meta property="og:url" content="https://www.construccionsegura.org.pe/errores/falta-recubrimiento-acero.html">
+            <meta property="og:image" content="https://www.construccionsegura.org.pe/assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp">
+            <meta name="twitter:card" content="summary_large_image">
+            <link rel="icon" href="../favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48.png"><link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png"><link rel="manifest" href="../site.webmanifest">
+            <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="errores-articulos.css"><link rel="stylesheet" href="article-trust.css">
+            <script type="application/ld+json">
+            {"@context":"https://schema.org","@type":"Article","headline":"Recubrimiento insuficiente del acero en vigas","description":"Guía educativa sobre la distancia entre el acero, el encofrado y los casetones antes del vaciado.","dateModified":"2026-07-23","image":"https://www.construccionsegura.org.pe/assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp","author":{"@type":"Person","name":"Omar Oswaldo Alcantara Aquino","jobTitle":"Ingeniero","description":"Ingeniero colegiado, CIP N.° 364395"},"publisher":{"@type":"Organization","name":"Construcción Segura"},"mainEntityOfPage":"https://www.construccionsegura.org.pe/errores/falta-recubrimiento-acero.html"}
+            </script>
+          </head>
+          <body>
+            <a class="brand-corner" href="../index.html" aria-label="Ir al inicio de Construcción Segura"><img src="../assets/brand/logo-marca-construccion-segura-transparente.png" alt="Logo de Construcción Segura"></a>
+            <header class="site-header"><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menú</button><nav id="site-nav" class="site-nav" aria-label="Principal"><a href="../index.html">Inicio</a><a href="../servicios.html">Servicios</a><a href="../biblioteca-tecnica.html">Biblioteca técnica</a><a href="../errores-frecuentes.html">Errores frecuentes</a><a href="../nosotros.html">Sobre el ingeniero</a><a class="nav-cta" href="../contacto.html">Consultar</a></nav></header>
+
+            <main class="article-page">
+              <section class="article-hero"><div class="article-shell"><div class="article-copy reveal">
+                <nav class="breadcrumb" aria-label="Breadcrumb"><a href="../index.html">Inicio</a><span>/</span><a href="../errores-frecuentes.html">Errores frecuentes</a><span>/</span><span>Falta de recubrimiento</span></nav>
+                <p class="eyebrow">Acero, concreto y durabilidad</p><h1>Recubrimiento insuficiente: cuando el acero de una viga queda demasiado cerca del encofrado o del casetón.</h1>
+                <p class="article-lead">El recubrimiento es la capa de concreto que protege las barras. Antes del vaciado debe existir una separación real y estable para que el concreto rodee el acero, lo proteja y pueda compactarse sin dejar vacíos.</p>
+                <div class="hero-keywords"><span>recubrimiento del acero</span><span>vigas</span><span>separadores</span><span>antes del vaciado</span></div>
+                <div class="article-byline"><strong>Revisado por Ing. Omar Oswaldo Alcantara Aquino</strong><span>Ingeniero · CIP N.° 364395</span><time datetime="2026-07-23">Última revisión: 23 de julio de 2026</time></div>
+              </div><figure class="article-figure reveal"><img src="../assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp" alt="Armadura de viga aparentemente próxima al encofrado y a casetones de tecnopor" width="800" height="450" loading="eager"><figcaption>Registro real del 21 de julio de 2026. La fotografía permite advertir una posible falta de separación, pero la distancia exacta debe medirse antes del vaciado.</figcaption></figure></div></section>
+
+              <section class="section article-content reveal"><div class="article-grid">
+                <article class="article-card"><h2>¿Qué se observa?</h2><p>El estribo inferior y lateral aparenta estar muy cerca del encofrado. Los casetones de tecnopor también dejan pasos reducidos junto al armado. Una fotografía no permite confirmar milímetros, por lo que corresponde medir.</p></article>
+                <article class="article-card"><h2>¿Por qué importa?</h2><p>Una capa insuficiente de concreto deja al acero con menor protección frente a humedad, corrosión y fuego. También aumenta el riesgo de fisuras y desprendimientos en la superficie.</p></article>
+                <article class="article-card"><h2>¿Siempre son 4 cm?</h2><p>En vigas y columnas vaciadas en obra, no expuestas al suelo ni directamente a la intemperie, la E.060 establece 40 mm. Se mide desde la cara del concreto hasta el refuerzo más exterior, normalmente el estribo. Otras exposiciones pueden requerir más.</p></article>
+                <article class="article-card"><h2>¿Qué ocurre junto al casetón?</h2><p>No existe una regla automática de 4 cm para toda barra frente al tecnopor. Debe respetarse el plano y dejar un paso que permita al concreto ingresar, envolver el acero y vibrarse sin formar cangrejeras.</p></article>
+              </div></section>
+
+              <section class="section warning-block reveal"><div class="article-content"><div class="warning-card"><p class="eyebrow">No basta con mirar</p><h2>El recubrimiento se comprueba con una medición directa antes del vaciado.</h2><p>La distancia se toma desde el encofrado hasta la cara exterior del estribo. Si el acero se mueve, los separadores se hunden o el casetón invade el espacio, la medida prevista puede perderse.</p></div></div></section>
+
+              <section class="section article-content article-section reveal"><h2>Qué revisar antes de colocar el concreto</h2><div class="steps-grid">
+                <article class="step-card"><h3>Medir todas las caras</h3><p>Revisa el fondo, los costados, encuentros y zonas próximas a los casetones. No midas hasta el centro de la barra.</p></article>
+                <article class="step-card"><h3>Usar separadores firmes</h3><p>Los dados o distanciadores deben mantener el armado en su posición durante el tránsito, el vaciado y el vibrado.</p></article>
+                <article class="step-card"><h3>Dejar paso al concreto</h3><p>Entre barras, encofrado y tecnopor debe quedar espacio suficiente para llenar y compactar la sección sin vacíos.</p></article>
+              </div></section>
+
+              <section class="section article-content article-section reveal"><h2>Lectura sencilla para propietarios</h2><div class="checklist-grid">
+                <article class="check-card"><h3>La regla práctica</h3><ul><li>El fierro no debe tocar el encofrado.</li><li>Debe verse una separación uniforme.</li><li>Los separadores no deben improvisarse.</li></ul></article>
+                <article class="check-card"><h3>La referencia de 4 cm</h3><ul><li>Corresponde a una condición habitual de viga interior.</li><li>Se mide hasta el estribo exterior.</li><li>El plano puede exigir una medida mayor.</li></ul></article>
+                <article class="check-card"><h3>Si parece insuficiente</h3><ul><li>No autorices el vaciado todavía.</li><li>Mide y registra la zona.</li><li>Corrige la posición del armado o casetón.</li></ul></article>
+              </div><div class="article-disclaimer"><strong>Alcance del contenido</strong><p>La fotografía muestra una posible deficiencia, no una medición certificada. El valor definitivo depende de la exposición, el elemento, los planos y las especificaciones del proyecto.</p></div></section>
+
+              <section class="section article-content related-errors reveal"><p class="eyebrow">Caso documentado</p><h2>Esta imagen pertenece al seguimiento de una vivienda multifamiliar.</h2><div class="related-grid">
+                <a class="related-link" href="../casos/seguimiento-vivienda-multifamiliar-seis-niveles.html#recubrimiento-viga-caseton"><strong>Ver observación 6</strong><span>Recubrimiento aparente y paso de concreto junto a casetones.</span></a>
+                <a class="related-link" href="columnas-mal-vibradas-cangrejeras.html"><strong>Cangrejeras en concreto</strong><span>Vacíos que pueden aparecer cuando el concreto no logra llenar la sección.</span></a>
+                <a class="related-link" href="mala-colocacion-estribos.html"><strong>Estribos mal colocados</strong><span>El refuerzo transversal también debe conservar su posición.</span></a>
+              </div></section>
+
+              <section class="section article-content reveal"><div class="cta-panel cta-panel-article"><div><p class="eyebrow">Referencia normativa</p><h2>Compara la ejecución con los planos antes de vaciar.</h2><p>El Reglamento Nacional de Edificaciones contiene los requisitos mínimos aplicables. La revisión en obra debe considerar la Norma E.060 y las especificaciones del proyecto.</p><p><a class="inline-link" href="https://www.gob.pe/institucion/vivienda/informes-publicaciones/2309793-reglamento-nacional-de-edificaciones-rne" target="_blank" rel="noreferrer">Consultar el RNE oficial</a></p></div><div class="cta-actions"><a class="button button-primary" data-track="whatsapp_article_recubrimiento" href="https://wa.me/51968481482?text=Hola%2C%20tengo%20una%20duda%20sobre%20el%20recubrimiento%20del%20acero.%0A%0ACiudad%20o%20distrito%3A%20___%0AElemento%3A%20___%0AProblema%20visible%3A%20___" target="_blank" rel="noreferrer">Consultar por WhatsApp</a><a class="button button-secondary" href="../servicios.html">Ver servicios y precios</a></div></div></section>
+            </main>
+
+            <footer class="article-footer"><div class="article-footer-inner"><strong>Construcción Segura</strong><span>Contenido revisado por Omar Oswaldo Alcantara Aquino, ingeniero CIP N.° 364395.</span></div></footer><script src="../script.js"></script>
+          </body>
+          </html>
+          '''
+          lines = [line[10:] if line.startswith('          ') else line for line in guide.splitlines()]
+          (root / 'errores/falta-recubrimiento-acero.html').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          assert image_url.lstrip('/') in (root / 'recubrimiento-observation.js').read_text(encoding='utf-8')
+          assert '40 mm' in (root / 'errores/falta-recubrimiento-acero.html').read_text(encoding='utf-8')
+          assert 'mi-casa-segura-pwa-v12' in (root / 'service-worker.js').read_text(encoding='utf-8')
+          PY
+
+          node --check recubrimiento-observation.js
+          git diff --check
+
+      - name: Remove temporary workflow
+        run: rm -f .github/workflows/integrate-recubrimiento-observation.yml
+
+      - name: Commit integrated observation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Publicar observación sobre recubrimiento de viga y casetón'
+          git push origin HEAD:content/recubrimiento-viga-caseton-20260721

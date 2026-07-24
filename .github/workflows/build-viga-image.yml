@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -f assets/site-photos/casos/multifamiliar-seis-niveles/reduccion-viga-ducto-20260721.webp.b64
-          rm -f .viga-image-trigger .viga-image-trigger-2
+          rm -f .viga-image-trigger .viga-image-trigger-2 .pr-trigger-viga
           rm -f .github/workflows/build-viga-image.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

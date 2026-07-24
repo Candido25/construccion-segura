@@ -1,3 +1,15 @@
+const loadObservationModule = (src, marker) => {
+  if (document.querySelector(`script[data-observation-module="${marker}"]`)) return;
+  const script = document.createElement("script");
+  script.src = src;
+  script.async = false;
+  script.dataset.observationModule = marker;
+  document.head.appendChild(script);
+};
+
+loadObservationModule("/losa-nervada-observation.js?v=20260724-1", "losa-nervada");
+loadObservationModule("/viga-discontinuidad-observation.js?v=20260724-1", "viga-discontinuidad");
+
 const applyRecubrimientoObservation = () => {
   if (!window.location.pathname.endsWith("/casos/seguimiento-vivienda-multifamiliar-seis-niveles.html")) return;
 
@@ -73,10 +85,3 @@ applyRecubrimientoObservation();
 document.addEventListener("DOMContentLoaded", applyRecubrimientoObservation, { once: true });
 window.setTimeout(applyRecubrimientoObservation, 0);
 window.setTimeout(applyRecubrimientoObservation, 150);
-
-if (!document.querySelector('script[src*="losa-nervada-observation.js"]')) {
-  const losaObservationScript = document.createElement("script");
-  losaObservationScript.src = "/losa-nervada-observation.js?v=20260724-1";
-  losaObservationScript.defer = true;
-  document.head.appendChild(losaObservationScript);
-}

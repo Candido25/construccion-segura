@@ -112,6 +112,21 @@
   padding-left: 1.15rem;
 }
 
+.page-grid-4 .content-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.page-grid-4 .content-panel h2 {
+  font-size: clamp(1.75rem, 2.7vw, 2.45rem);
+}
+
+.page-grid-4 .content-panel .cta-actions {
+  margin-top: auto !important;
+  padding-top: 1rem;
+}
+
 .resource-directory {
   display: grid;
   gap: 1rem;
@@ -178,5 +193,11 @@
 
   .resource-directory {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .page-grid.page-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

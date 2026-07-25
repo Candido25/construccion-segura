@@ -1,0 +1,23 @@
+# Archivos privados, temporales y generados
+/review_photos/
+/_incoming/
+/debug.log
+*.log
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+
+# Archivos de sistema y caché
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+.cache/
+
+# Exportaciones y respaldos locales
+/AUDIT_*
+/Respaldo_privado_*
+*.tmp
+*.bak

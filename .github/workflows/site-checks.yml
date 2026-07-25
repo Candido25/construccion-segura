@@ -1,0 +1,42 @@
+name: Site checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-static-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Ensure public identity uses Ingeniero
+        run: |
+          matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' . --include='*.html' || true)
+          if [ -n "$matches" ]; then
+            echo "Retired specialty found in:"
+            printf '%s\n' "$matches"
+            exit 1
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate local links and duplicate IDs
+        run: python scripts/check_site.py
+
+      - name: Validate JavaScript syntax
+        run: |
+          node --check script.js
+          node --check privacy.js
+          node --check site-global.js

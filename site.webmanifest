@@ -1,19 +1,54 @@
 {
-  "name": "Construcción Segura",
-  "short_name": "Construcción Segura",
+  "id": "/",
+  "name": "Mi Casa Segura: Guía de Obra",
+  "short_name": "Mi Casa Segura",
+  "description": "Guía práctica para construir, ampliar o remodelar tu vivienda con mayor seguridad en el Perú.",
+  "lang": "es-PE",
+  "dir": "ltr",
+  "start_url": "/app/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#071e38",
+  "background_color": "#f3f6f8",
+  "categories": ["business", "education", "productivity", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/favicon-48.png",
-      "sizes": "48x48",
-      "type": "image/png"
+      "src": "/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/favicon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "/app-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "theme_color": "#c96f2d",
-  "background_color": "#f6eee2",
-  "display": "standalone"
+  "shortcuts": [
+    {
+      "name": "Guía por etapas",
+      "short_name": "Guía",
+      "description": "Abrir las recomendaciones para construir una vivienda.",
+      "url": "/app/?source=pwa-shortcut",
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
+    },
+    {
+      "name": "Consultar mi obra",
+      "short_name": "Consultar",
+      "description": "Abrir el contacto para solicitar orientación técnica.",
+      "url": "/contacto.html?source=pwa-shortcut",
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
+    },
+    {
+      "name": "Casos de obra",
+      "short_name": "Casos",
+      "description": "Revisar hallazgos, correcciones y buenas prácticas en obras.",
+      "url": "/casos-de-obra.html?source=pwa-shortcut",
+      "icons": [{"src": "/app-icon-192.png", "sizes": "192x192", "type": "image/png"}]
+    }
+  ]
 }

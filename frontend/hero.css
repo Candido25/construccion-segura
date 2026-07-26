@@ -189,11 +189,14 @@
 }
 
 .home-conversion-hero .hero-image img {
+  position: absolute;
+  top: 0;
+  left: 50%;
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: none;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  transform: translateX(-50%);
 }
 
 .home-conversion-hero .hero-image::after {

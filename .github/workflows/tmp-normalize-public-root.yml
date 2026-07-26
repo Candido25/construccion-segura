@@ -1,0 +1,189 @@
+name: Temporary normalize public root
+
+on:
+  push:
+    branches: ["agent/normalizar-raiz-publica-20260726"]
+
+permissions:
+  contents: write
+
+jobs:
+  normalize-public-root:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/normalizar-raiz-publica-20260726
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Move every public page under frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          for directory in errores casos; do
+            if [ -e "frontend/$directory" ]; then
+              echo "frontend/$directory ya existe; se detiene para evitar sobrescrituras." >&2
+              exit 1
+            fi
+            if [ ! -d "$directory" ]; then
+              echo "No existe la carpeta pública de origen: $directory" >&2
+              exit 1
+            fi
+            git mv "$directory" "frontend/$directory"
+          done
+
+      - name: Simplify frontend preparation and enforce structure
+        shell: bash
+        run: |
+          cat > scripts/prepare_frontend.py <<'PY'
+          #!/usr/bin/env python3
+          """Valida y prepara la única raíz pública del sitio: `frontend/`."""
+
+          from __future__ import annotations
+
+          import shutil
+          from pathlib import Path
+
+          REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+          FRONTEND_ROOT = REPOSITORY_ROOT / "frontend"
+          REQUIRED_PUBLIC_DIRECTORIES = ("errores", "casos")
+
+
+          def validate_public_structure() -> int:
+              public_files = 0
+              for name in REQUIRED_PUBLIC_DIRECTORIES:
+                  legacy_path = REPOSITORY_ROOT / name
+                  public_path = FRONTEND_ROOT / name
+                  if legacy_path.exists():
+                      raise RuntimeError(
+                          f"La carpeta pública {name}/ no debe permanecer en la raíz del repositorio."
+                      )
+                  if not public_path.is_dir():
+                      raise FileNotFoundError(
+                          f"No se encontró la carpeta pública requerida: {public_path}"
+                      )
+                  public_files += sum(1 for path in public_path.rglob("*") if path.is_file())
+              return public_files
+
+
+          def ensure_icon_alias() -> None:
+              source = FRONTEND_ROOT / "app-icon-192.png"
+              destination = FRONTEND_ROOT / "favicon-192.png"
+              if not source.is_file():
+                  raise FileNotFoundError(f"No se encontró el icono fuente: {source}")
+              shutil.copy2(source, destination)
+
+
+          def main() -> int:
+              if not FRONTEND_ROOT.is_dir():
+                  raise FileNotFoundError(f"No se encontró la carpeta frontend: {FRONTEND_ROOT}")
+
+              public_files = validate_public_structure()
+              ensure_icon_alias()
+              print(
+                  "Frontend preparado correctamente: "
+                  f"raíz pública única en frontend/, {public_files} archivos históricos "
+                  "y favicon-192.png disponibles."
+              )
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+          chmod +x scripts/prepare_frontend.py
+
+      - name: Isolate the visual baseline from the repository root
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path(".github/workflows/visual-regression.yml")
+          text = path.read_text(encoding="utf-8")
+
+          marker = '''      - name: Install screenshot comparator
+                run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+          '''
+          insertion = '''      - name: Prepare isolated stable baseline
+                shell: bash
+                run: |
+                  rm -rf baseline-public
+                  mkdir -p baseline-public
+                  rsync -a --delete \\
+                    --exclude='.git/' \\
+                    --exclude='.github/' \\
+                    --exclude='backend/' \\
+                    --exclude='docs/' \\
+                    --exclude='scripts/' \\
+                    --exclude='review_photos/' \\
+                    --exclude='_incoming/' \\
+                    --exclude='debug.log' \\
+                    --exclude='requirements.txt' \\
+                    --exclude='render.yaml' \\
+                    baseline/ baseline-public/
+
+              - name: Install screenshot comparator
+                run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+          '''
+
+          if "Prepare isolated stable baseline" not in text:
+              if marker not in text:
+                  raise SystemExit("No se encontró el punto de inserción de la línea base visual.")
+              text = text.replace(marker, insertion, 1)
+
+          old = '''          python -m http.server 8001 --bind 127.0.0.1 \\
+                --directory ../baseline \\
+                > visual-baseline-server.log 2>&1 &
+          '''
+          new = '''          python -m http.server 8001 --bind 127.0.0.1 \\
+                --directory ../baseline-public \\
+                > visual-baseline-server.log 2>&1 &
+          '''
+          if old not in text:
+              raise SystemExit("No se encontró el servidor antiguo de la línea base.")
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Validate the repaired repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e errores
+          test ! -e casos
+          test -d frontend/errores
+          test -d frontend/casos
+
+          python -m pip install --disable-pip-version-check Pillow==11.3.0 tinycss2==1.4.0
+          python scripts/prepare_frontend.py
+          python scripts/run_frontend_validator.py check_assets
+          python scripts/run_frontend_validator.py check_resources
+          python scripts/run_frontend_validator.py check_site
+          python -m py_compile backend/api.py scripts/prepare_frontend.py scripts/run_frontend_validator.py
+
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find frontend -type f -name '*.js' -print0)
+
+          grep -q -- '--directory frontend' .github/workflows/visual-regression.yml
+          grep -q -- '--directory ../baseline-public' .github/workflows/visual-regression.yml
+          ! grep -q -- '--directory ../baseline \\' .github/workflows/visual-regression.yml
+
+      - name: Commit the structural repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/tmp-normalize-public-root.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Normalizar raíz pública y aislar pruebas visuales"
+          git push origin HEAD:agent/normalizar-raiz-publica-20260726

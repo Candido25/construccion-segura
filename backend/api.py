@@ -26,6 +26,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=[
+        "https://www.construccionsegura.org.pe",
+        "https://construccionsegura.org.pe",
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
     allow_origins=ORIGENES_PERMITIDOS,
     allow_credentials=False,
     allow_methods=["GET"],
@@ -34,6 +40,12 @@ app.add_middleware(
 
 
 def normalizar(texto: str) -> str:
+    """Convierte texto a una forma comparable, sin tildes y en minúsculas."""
+    descompuesto = unicodedata.normalize("NFD", texto or "")
+    sin_tildes = "".join(
+        caracter for caracter in descompuesto if unicodedata.category(caracter) != "Mn"
+    )
+    return " ".join(sin_tildes.lower().split())
     """Normaliza mayúsculas, tildes y espacios para mejorar las búsquedas."""
     texto_normalizado = unicodedata.normalize("NFD", texto.lower().strip())
     sin_tildes = "".join(
@@ -45,6 +57,15 @@ def normalizar(texto: str) -> str:
 
 @lru_cache(maxsize=1)
 def cargar_base_datos() -> dict:
+    """Carga la base una sola vez y valida su estructura principal."""
+    if not RUTA_JSON.is_file():
+        raise RuntimeError(f"Base de datos JSON no encontrada: {RUTA_JSON}")
+
+    with RUTA_JSON.open("r", encoding="utf-8") as archivo:
+        datos = json.load(archivo)
+
+    if not isinstance(datos, dict) or not isinstance(datos.get("categorias"), list):
+        raise RuntimeError("La base JSON no contiene una lista válida de categorías.")
     """Carga y valida una sola vez la base JSON incluida en el despliegue."""
     if not RUTA_JSON.exists():
         raise HTTPException(status_code=500, detail="Base de datos JSON no encontrada en el servidor.")
@@ -63,6 +84,14 @@ def cargar_base_datos() -> dict:
     return datos
 
 
+def obtener_datos() -> dict:
+    try:
+        return cargar_base_datos()
+    except (OSError, json.JSONDecodeError, RuntimeError) as error:
+        raise HTTPException(
+            status_code=500,
+            detail="La base de preguntas no está disponible temporalmente.",
+        ) from error
 @lru_cache(maxsize=1)
 def obtener_indice() -> tuple[dict, ...]:
     """Prepara un índice normalizado para no releer ni reprocesar el JSON en cada consulta."""
@@ -123,6 +152,31 @@ def home():
         "estado": "activo",
         "proyecto": "Construcción Segura API",
         "version": app.version,
+        "mensaje": "Servidor backend operando correctamente.",
+    }
+
+
+@app.get("/salud")
+def salud():
+    datos = obtener_datos()
+    total_preguntas = sum(
+        len(categoria.get("preguntas", []))
+        for categoria in datos.get("categorias", [])
+    )
+    return {
+        "estado": "activo",
+        "categorias": len(datos.get("categorias", [])),
+        "preguntas": total_preguntas,
+    }
+
+
+@app.get("/categorias")
+def obtener_categorias():
+    datos = obtener_datos()
+    categorias = [
+        categoria.get("nombre", "Sin categoría")
+        for categoria in datos.get("categorias", [])
+    ]
         "total_preguntas": len(obtener_indice()),
         "documentacion": "/docs",
     }
@@ -147,6 +201,46 @@ def obtener_categorias():
 
 @app.get("/buscar")
 def buscar_preguntas(
+    termino: str = Query(min_length=2, max_length=100),
+    limite: int = Query(default=10, ge=1, le=50),
+):
+    datos = obtener_datos()
+    termino_normalizado = normalizar(termino)
+    resultados = []
+
+    for categoria in datos.get("categorias", []):
+        nombre_categoria = categoria.get("nombre", "Sin categoría")
+        categoria_normalizada = normalizar(nombre_categoria)
+
+        for item in categoria.get("preguntas", []):
+            pregunta = str(item.get("pregunta", "")).strip()
+            respuesta = str(item.get("respuesta", "")).strip()
+            texto_busqueda = " ".join(
+                [normalizar(pregunta), normalizar(respuesta), categoria_normalizada]
+            )
+
+            if termino_normalizado not in texto_busqueda:
+                continue
+
+            resultados.append(
+                {
+                    "categoria": nombre_categoria,
+                    "id": item.get("id"),
+                    "pregunta": pregunta,
+                    "respuesta": respuesta,
+                }
+            )
+
+            if len(resultados) >= limite:
+                break
+
+        if len(resultados) >= limite:
+            break
+
+    return {
+        "termino_buscado": termino.strip(),
+        "total_encontrados": len(resultados),
+        "limite": limite,
     termino: Annotated[str, Query(min_length=2, max_length=120, description="Texto que desea buscar")],
     limite: Annotated[int, Query(ge=1, le=50, description="Número máximo de resultados")] = 10,
 ):

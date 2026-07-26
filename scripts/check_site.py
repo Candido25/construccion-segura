@@ -8,13 +8,14 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+SITE_ROOT = REPOSITORY_ROOT / "frontend"
 IGNORED_SCHEMES = {"http", "https", "mailto", "tel", "data", "javascript"}
 FORBIDDEN_PUBLIC_PHRASES = {
     "ing. civil": "La presentación pública debe usar Ing. y el nombre completo, sin mostrar la especialidad.",
     "ingeniero civil": "La presentación pública debe usar Ingeniero y CIP N.° 364395, sin mostrar la especialidad.",
-    "técnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
-    "tecnico en edificaciones": "La identidad pública debe priorizar Ingeniero civil y CIP N.° 364395.",
+    "técnico en edificaciones": "La identidad pública debe priorizar Ingeniero y CIP N.° 364395.",
+    "tecnico en edificaciones": "La identidad pública debe priorizar Ingeniero y CIP N.° 364395.",
 }
 
 
@@ -49,7 +50,7 @@ def resolve_local_reference(source: Path, raw_reference: str) -> Path | None:
         return None
 
     if clean_path.startswith("/"):
-        target = ROOT / clean_path.lstrip("/")
+        target = SITE_ROOT / clean_path.lstrip("/")
     else:
         target = source.parent / clean_path
 
@@ -65,7 +66,7 @@ def check_html_file(path: Path) -> list[str]:
     seen_ids: set[str] = set()
     for element_id in parser.ids:
         if element_id in seen_ids:
-            errors.append(f"{path.relative_to(ROOT)}: duplicate id #{element_id}")
+            errors.append(f"{path.relative_to(SITE_ROOT)}: duplicate id #{element_id}")
         seen_ids.add(element_id)
 
     for attribute, reference in parser.references:
@@ -73,32 +74,34 @@ def check_html_file(path: Path) -> list[str]:
         if target is None:
             continue
         try:
-            target.relative_to(ROOT)
+            target.relative_to(SITE_ROOT)
         except ValueError:
             errors.append(
-                f"{path.relative_to(ROOT)}: {attribute} escapes repository: {reference}"
+                f"{path.relative_to(SITE_ROOT)}: {attribute} escapes public site: {reference}"
             )
             continue
 
         if not target.exists():
             errors.append(
-                f"{path.relative_to(ROOT)}: missing local target for {attribute}=\"{reference}\""
+                f"{path.relative_to(SITE_ROOT)}: missing local target for {attribute}=\"{reference}\""
             )
 
     normalized_text = source_text.casefold()
     for phrase, explanation in FORBIDDEN_PUBLIC_PHRASES.items():
         if phrase in normalized_text:
             errors.append(
-                f"{path.relative_to(ROOT)}: forbidden public phrase '{phrase}'. {explanation}"
+                f"{path.relative_to(SITE_ROOT)}: forbidden public phrase '{phrase}'. {explanation}"
             )
 
     return errors
 
 
 def main() -> int:
-    html_files = sorted(
-        path for path in ROOT.rglob("*.html") if ".git" not in path.parts
-    )
+    if not SITE_ROOT.is_dir():
+        print(f"Public site directory not found: {SITE_ROOT}", file=sys.stderr)
+        return 1
+
+    html_files = sorted(SITE_ROOT.rglob("*.html"))
     all_errors: list[str] = []
 
     for html_file in html_files:
@@ -110,7 +113,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"Static site checks passed for {len(html_files)} HTML files.")
+    print(f"Static site checks passed for {len(html_files)} HTML files in frontend/.")
     return 0
 
 

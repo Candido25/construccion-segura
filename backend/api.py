@@ -32,6 +32,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from pydantic import BaseModel
+from typing import List, Dict, Optional
+
+class ParametrosMinimos(BaseModel):
+    f_c_minimo: Optional[str] = None
+    dimension_menor_minima: Optional[str] = None
+    recubrimiento_libre: Optional[str] = None
+    peralte_minimo: Optional[str] = None
+    concreto_ciclopeo_cimiento: Optional[str] = None
+
+class ToleranciasAdmisibles(BaseModel):
+    plumb_verticalidad: Optional[str] = None
+    posicion_acero: Optional[str] = None
+    nivelacion_fondo: Optional[str] = None
+    recubrimiento_inferior: Optional[str] = None
+
+class ElementoNormativo(BaseModel):
+    id: str
+    categoria: str
+    elemento: str
+    codigo_normativo: str
+    parametros_minimos: ParametrosMinimos
+    tolerancias_admisibles: ToleranciasAdmisibles
+    recomendacion_tecnica: str
+    nivel_riesgo_si_se_ignora: str
+
 
 def normalizar(texto: str) -> str:
     """Normaliza mayúsculas, tildes y espacios para mejorar las búsquedas."""
@@ -43,6 +69,54 @@ def normalizar(texto: str) -> str:
     )
     return " ".join(sin_tildes.split())
 
+RUTA_NORMATIVA_JSON = BASE_DIR / "normativa_tecnica.json"
+
+@lru_cache(maxsize=1)
+def cargar_normativa_tecnica() -> dict:
+    """Carga y valida el archivo de parámetros y tolerancias técnicas."""
+    if not RUTA_NORMATIVA_JSON.is_file():
+        raise HTTPException(
+            status_code=500,
+            detail="Base de datos de normativa técnica no encontrada en el servidor.",
+        )
+    try:
+        with RUTA_NORMATIVA_JSON.open("r", encoding="utf-8") as archivo:
+            return json.load(archivo)
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail="Error al procesar la base de datos normativa.",
+        ) from error
+
+@app.get("/normativa")
+def obtener_normativa(
+    elemento_id: Annotated[
+        Optional[str],
+        Query(description="Filtrar por ID específico del elemento estructural")
+    ] = None
+):
+    """
+    Expone los parámetros mínimos, normativas y tolerancias para la autoconstrucción.
+    Consumido tanto por la web estática como por el futuro aplicativo Android.
+    """
+    datos = cargar_normativa_tecnica()
+    elementos = datos.get("elementos", [])
+    
+    if elemento_id:
+        filtrados = [el for el in elementos if el.get("id") == elemento_id]
+        if not filtrados:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No se encontró el elemento con ID '{elemento_id}'."
+            )
+        return {"total": len(filtrados), "resultados": filtrados}
+    
+    return {
+        "version": datos.get("version", "1.0.0"),
+        "descripcion": datos.get("descripcion"),
+        "total_elementos": len(elementos),
+        "resultados": elementos
+    }
 
 @lru_cache(maxsize=1)
 def cargar_base_datos() -> dict:

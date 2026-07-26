@@ -1,4 +1,4 @@
-const CACHE_VERSION = "mi-casa-segura-pwa-v14";
+const CACHE_VERSION = "mi-casa-segura-pwa-v15";
 const APP_SHELL = [
   "/",
   "/index.html",

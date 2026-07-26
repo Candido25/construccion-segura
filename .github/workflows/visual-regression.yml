@@ -109,6 +109,10 @@ jobs:
             fi
           done
 
+          APP_BASE_URL=http://127.0.0.1:8000 \
+            node scripts/normative_ui_check.mjs
+          normative_status=$?
+
           CURRENT_BASE_URL=http://127.0.0.1:8000 \
           BASELINE_BASE_URL=http://127.0.0.1:8001 \
           VISUAL_OUTPUT_DIR=visual-artifacts \
@@ -118,7 +122,9 @@ jobs:
           python scripts/compare_screenshots.py
           comparison_status=$?
 
-          if [ "$browser_status" -ne 0 ] || [ "$comparison_status" -ne 0 ]; then
+          if [ "$normative_status" -ne 0 ] \
+            || [ "$browser_status" -ne 0 ] \
+            || [ "$comparison_status" -ne 0 ]; then
             exit 1
           fi
 

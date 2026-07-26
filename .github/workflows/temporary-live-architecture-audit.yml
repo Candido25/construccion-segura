@@ -1,0 +1,129 @@
+name: Temporary live architecture audit
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-live-services:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit GitHub Pages and Render
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p audit
+          report="audit/report.txt"
+          failures=0
+
+          check_url() {
+            local name="$1"
+            local url="$2"
+            local body="audit/${name}.body"
+            local headers="audit/${name}.headers"
+            local metrics="audit/${name}.metrics"
+            local code
+            code=$(curl --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 90 \
+              -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -D "$headers" -o "$body" -sS \
+              -w '%{http_code} %{time_total} %{url_effective}' "$url" || true)
+            printf '%s: %s\n' "$name" "$code" | tee -a "$report"
+            printf '%s\n' "$code" > "$metrics"
+            if [[ "$code" != 200\ * ]]; then
+              failures=$((failures + 1))
+            fi
+          }
+
+          echo '=== STATIC: GITHUB PAGES ===' | tee -a "$report"
+          check_url homepage 'https://www.construccionsegura.org.pe/'
+          check_url app 'https://www.construccionsegura.org.pe/app/'
+          check_url manifest 'https://www.construccionsegura.org.pe/site.webmanifest'
+          check_url service_worker 'https://www.construccionsegura.org.pe/service-worker.js'
+
+          if grep -Fq 'Ing. Omar Oswaldo Alcantara Aquino' audit/homepage.body; then
+            echo 'homepage_identity=current' | tee -a "$report"
+          else
+            echo 'homepage_identity=stale_or_unexpected' | tee -a "$report"
+            failures=$((failures + 1))
+          fi
+
+          if grep -Fq 'Ing. Civil Omar Oswaldo Alcantara Aquino' audit/homepage.body; then
+            echo 'homepage_old_identity=present' | tee -a "$report"
+            failures=$((failures + 1))
+          else
+            echo 'homepage_old_identity=absent' | tee -a "$report"
+          fi
+
+          if grep -Fq 'Mi Casa Segura: Guía de Obra' audit/app.body; then
+            echo 'app_shell=present' | tee -a "$report"
+          else
+            echo 'app_shell=missing' | tee -a "$report"
+            failures=$((failures + 1))
+          fi
+
+          if grep -Fq 'mi-casa-segura-pwa-v17' audit/service_worker.body; then
+            echo 'service_worker=v17' | tee -a "$report"
+          else
+            echo 'service_worker=unexpected_version' | tee -a "$report"
+            failures=$((failures + 1))
+          fi
+
+          echo '=== DYNAMIC: RENDER ===' | tee -a "$report"
+          check_url render_root 'https://construccion-segura.onrender.com/'
+          check_url render_health 'https://construccion-segura.onrender.com/salud'
+          check_url render_categories 'https://construccion-segura.onrender.com/categorias'
+          check_url render_search_escalera 'https://construccion-segura.onrender.com/buscar?termino=escalera&limite=5'
+          check_url render_search_cimiento 'https://construccion-segura.onrender.com/buscar?termino=cimiento&limite=5'
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path('audit/report.txt')
+          checks = []
+          for name in ('render_root', 'render_health', 'render_categories', 'render_search_escalera', 'render_search_cimiento'):
+              path = Path(f'audit/{name}.body')
+              try:
+                  data = json.loads(path.read_text(encoding='utf-8'))
+                  checks.append(f'{name}_json=valid')
+                  if name == 'render_health':
+                      checks.append(f"render_total_preguntas={data.get('total_preguntas')}")
+                  if name == 'render_categories':
+                      checks.append(f"render_total_categorias={data.get('total_categorias')}")
+                  if name.startswith('render_search_'):
+                      checks.append(f"{name}_found={data.get('total_encontrados')}")
+                      checks.append(f"{name}_shown={data.get('mostrados')}")
+              except Exception as exc:
+                  checks.append(f'{name}_json=invalid:{type(exc).__name__}')
+          with report.open('a', encoding='utf-8') as fh:
+              for item in checks:
+                  print(item)
+                  fh.write(item + '\n')
+          PY
+
+          cors_code=$(curl --connect-timeout 20 --max-time 90 -sS -o audit/cors.body -D audit/cors.headers \
+            -H 'Origin: https://www.construccionsegura.org.pe' \
+            'https://construccion-segura.onrender.com/salud' \
+            -w '%{http_code}' || true)
+          echo "cors_status=$cors_code" | tee -a "$report"
+          if grep -iEq '^access-control-allow-origin: https://www\.construccionsegura\.org\.pe' audit/cors.headers; then
+            echo 'cors_origin=allowed' | tee -a "$report"
+          else
+            echo 'cors_origin=missing' | tee -a "$report"
+            failures=$((failures + 1))
+          fi
+
+          echo "failures=$failures" | tee -a "$report"
+          cat "$report"
+          exit "$failures"
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-architecture-audit
+          path: audit/
+          retention-days: 7

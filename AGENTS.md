@@ -72,3 +72,12 @@ Propietarios y familias que construyen, amplían o corrigen viviendas mediante a
 - Usar una rama por sprint.
 - Abrir pull request con resumen, alcance, riesgos y comprobaciones realizadas.
 - No fusionar cambios de alto impacto sin revisión final.
+
+## Arquitectura oficial
+
+- La raíz del repositorio contiene la web institucional estática y sus recursos públicos.
+- `frontend/app/` contiene el cliente dinámico Mi Casa Segura y el código reutilizable para la futura aplicación.
+- `backend/` contiene FastAPI y las bases técnicas desplegadas en Render.
+- `public/` es un paquete generado y no versionado; GitHub Pages publica exclusivamente ese paquete.
+- Nunca publicar directamente la raíz completa ni exponer `backend/`, `scripts/`, `.github/` o archivos internos.
+- Las funciones dinámicas deben consumir la API; la web institucional debe seguir siendo utilizable aunque Render no responda.

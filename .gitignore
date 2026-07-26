@@ -21,3 +21,6 @@ __pycache__/
 /Respaldo_privado_*
 *.tmp
 *.bak
+
+# Paquete generado para GitHub Pages
+/public/

@@ -1,73 +1,143 @@
-from fastapi import FastAPI, HTTPException
+from functools import lru_cache
+from pathlib import Path
 import json
-import os
+import unicodedata
 
-# Inicializamos la aplicación de la API con metadatos profesionales
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+
+BASE_DIR = Path(__file__).resolve().parent
+RUTA_JSON = BASE_DIR / "preguntas_tecnicas.json"
+
 app = FastAPI(
     title="API de Consultas Técnicas - Construcción Segura",
-    description="Servidor backend para responder preguntas técnicas sobre ingeniería civil y normativas.",
-    version="1.0.0"
+    description="Servidor backend para responder preguntas técnicas sobre construcción y normativa peruana.",
+    version="1.1.0",
 )
 
-# Ruta del archivo JSON que contiene las 1519 preguntas
-RUTA_JSON = "backend/preguntas_tecnicas.json"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://www.construccionsegura.org.pe",
+        "https://construccionsegura.org.pe",
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
-def cargar_base_datos():
-    """Función de soporte para leer de forma segura el archivo JSON en el servidor."""
-    if not os.path.exists(RUTA_JSON):
-        raise HTTPException(status_code=500, detail="Base de datos JSON no encontrada en el servidor.")
-    
-    with open(RUTA_JSON, "r", encoding="utf-8") as f:
-        return json.load(f)
+
+def normalizar(texto: str) -> str:
+    """Convierte texto a una forma comparable, sin tildes y en minúsculas."""
+    descompuesto = unicodedata.normalize("NFD", texto or "")
+    sin_tildes = "".join(
+        caracter for caracter in descompuesto if unicodedata.category(caracter) != "Mn"
+    )
+    return " ".join(sin_tildes.lower().split())
+
+
+@lru_cache(maxsize=1)
+def cargar_base_datos() -> dict:
+    """Carga la base una sola vez y valida su estructura principal."""
+    if not RUTA_JSON.is_file():
+        raise RuntimeError(f"Base de datos JSON no encontrada: {RUTA_JSON}")
+
+    with RUTA_JSON.open("r", encoding="utf-8") as archivo:
+        datos = json.load(archivo)
+
+    if not isinstance(datos, dict) or not isinstance(datos.get("categorias"), list):
+        raise RuntimeError("La base JSON no contiene una lista válida de categorías.")
+
+    return datos
+
+
+def obtener_datos() -> dict:
+    try:
+        return cargar_base_datos()
+    except (OSError, json.JSONDecodeError, RuntimeError) as error:
+        raise HTTPException(
+            status_code=500,
+            detail="La base de preguntas no está disponible temporalmente.",
+        ) from error
+
 
 @app.get("/")
 def home():
-    """Ruta raíz para verificar que el servidor de la API está en línea."""
     return {
         "estado": "activo",
         "proyecto": "Construcción Segura API",
-        "mensaje": "Servidor backend operando correctamente."
+        "version": app.version,
+        "mensaje": "Servidor backend operando correctamente.",
     }
+
+
+@app.get("/salud")
+def salud():
+    datos = obtener_datos()
+    total_preguntas = sum(
+        len(categoria.get("preguntas", []))
+        for categoria in datos.get("categorias", [])
+    )
+    return {
+        "estado": "activo",
+        "categorias": len(datos.get("categorias", [])),
+        "preguntas": total_preguntas,
+    }
+
 
 @app.get("/categorias")
 def obtener_categorias():
-    """Endpoint para listar todas las categorías de ingeniería civil disponibles."""
-    datos = cargar_base_datos()
-    # Extraemos solo los nombres de las categorías para una vista rápida
-    lista_categorias = [cat["nombre"] for cat in datos.get("categorias", [])]
-    return {"total_categorias": len(lista_categorias), "categorias": lista_categorias}
+    datos = obtener_datos()
+    categorias = [
+        categoria.get("nombre", "Sin categoría")
+        for categoria in datos.get("categorias", [])
+    ]
+    return {"total_categorias": len(categorias), "categorias": categorias}
+
 
 @app.get("/buscar")
-def buscar_preguntas(termino: str):
-    """
-    Endpoint principal del motor de búsqueda.
-    Ejemplo de uso: /buscar?termino=zapatas
-    """
-    datos = cargar_base_datos()
-    termino = termino.lower().strip()
+def buscar_preguntas(
+    termino: str = Query(min_length=2, max_length=100),
+    limite: int = Query(default=10, ge=1, le=50),
+):
+    datos = obtener_datos()
+    termino_normalizado = normalizar(termino)
     resultados = []
 
-    # Recorremos la estructura jerárquica del JSON buscando coincidencias
-    for cat in datos.get("categorias", []):
-        nombre_cat = cat["nombre"]
-        for item in cat.get("preguntas", []):
-            preg = item.get("pregunta", "")
-            resp = item.get("respuesta", "")
-            
-            # Si el término coincide en la pregunta o respuesta, lo guardamos
-            if termino in preg.lower() or termino in resp.lower():
-                resultados.append({
-                    "categoria": nombre_cat,
-                    "id": item.get("id"),
-                    "pregunta": preg,
-                    "respuesta": resp
-                })
+    for categoria in datos.get("categorias", []):
+        nombre_categoria = categoria.get("nombre", "Sin categoría")
+        categoria_normalizada = normalizar(nombre_categoria)
 
-    if not resultados:
-        return {"mensaje": f"No se encontraron resultados para el término: '{termino}'"}
+        for item in categoria.get("preguntas", []):
+            pregunta = str(item.get("pregunta", "")).strip()
+            respuesta = str(item.get("respuesta", "")).strip()
+            texto_busqueda = " ".join(
+                [normalizar(pregunta), normalizar(respuesta), categoria_normalizada]
+            )
+
+            if termino_normalizado not in texto_busqueda:
+                continue
+
+            resultados.append(
+                {
+                    "categoria": nombre_categoria,
+                    "id": item.get("id"),
+                    "pregunta": pregunta,
+                    "respuesta": respuesta,
+                }
+            )
+
+            if len(resultados) >= limite:
+                break
+
+        if len(resultados) >= limite:
+            break
 
     return {
-        "termino_buscado": termino,
+        "termino_buscado": termino.strip(),
         "total_encontrados": len(resultados),
-        "resultados": resultados
+        "limite": limite,
+        "resultados": resultados,
     }

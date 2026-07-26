@@ -189,6 +189,14 @@
   filter: saturate(0.9) contrast(1.03);
 }
 
+.home-conversion-hero .hero-image img {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .home-conversion-hero .hero-grid {
   background-image:
     linear-gradient(rgba(255,255,255,0.14) 1px, transparent 1px),

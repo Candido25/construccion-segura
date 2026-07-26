@@ -1,4 +1,4 @@
-const CACHE_VERSION = "mi-casa-segura-pwa-v16";
+const CACHE_VERSION = "mi-casa-segura-pwa-v17";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -27,6 +27,7 @@ const APP_SHELL = [
   "/favicon-48.png",
   "/favicon-192.png",
   "/apple-touch-icon.png",
+  "/assets/site-photos/web/hero-portada.webp",
   "/assets/brand/logo-marca-construccion-segura-transparente.png"
 ];
 

@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Prepare public frontend
+      - name: Prepare isolated public package
         run: python scripts/prepare_frontend.py
 
       - name: Install validators
@@ -52,11 +52,11 @@ jobs:
             site_status=$?
 
             echo
-            echo "== Sintaxis de todos los JavaScript =="
+            echo "== Sintaxis de todos los JavaScript públicos =="
             javascript_status=0
             while IFS= read -r -d '' file; do
               node --check "$file" || javascript_status=1
-            done < <(find frontend -type f -name '*.js' -print0)
+            done < <(find public -type f -name '*.js' -print0)
 
             if [ "$assets_status" -eq 0 ] \
               && [ "$resources_status" -eq 0 ] \

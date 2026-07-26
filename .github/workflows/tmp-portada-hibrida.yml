@@ -1,0 +1,86 @@
+name: Temporary integrate hybrid hero image
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-hybrid-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/portada-imagen-html-20260726
+          fetch-depth: 0
+
+      - name: Preserve exact rendering with HTML preload
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("frontend/hero.css")
+          text = path.read_text(encoding="utf-8")
+          old = '''.home-conversion-hero .hero-image {
+            display: block;
+            overflow: hidden;
+            border-radius: 0 0 0 var(--radius);
+            filter: saturate(0.9) contrast(1.03);
+          }
+
+          .home-conversion-hero .hero-image img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            display: block;
+            width: auto;
+            max-width: none;
+            height: 100%;
+            transform: translateX(-50%);
+          }
+
+          .home-conversion-hero .hero-image::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(200deg, rgba(255,244,232,0.06), rgba(30,52,62,0.42));
+            pointer-events: none;
+          }
+          '''
+          new = '''.home-conversion-hero .hero-image {
+            background:
+              linear-gradient(200deg, rgba(255,244,232,0.06), rgba(30,52,62,0.42)),
+              url("assets/site-photos/web/hero-portada.webp") center/cover;
+            border-radius: 0 0 0 var(--radius);
+            filter: saturate(0.9) contrast(1.03);
+          }
+
+          .home-conversion-hero .hero-image img {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+          }
+          '''
+          if old not in text:
+              raise SystemExit("No se encontró el bloque de portada pendiente de integración híbrida")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Validate and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/prepare_frontend.py
+          python scripts/run_frontend_validator.py check_resources
+          python scripts/run_frontend_validator.py check_site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/hero.css
+          git commit -m "Integrar precarga HTML sin alterar la portada"
+          git push origin HEAD:agent/portada-imagen-html-20260726

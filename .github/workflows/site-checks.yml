@@ -18,22 +18,22 @@ jobs:
         with:
           show-progress: false
 
-      - name: Ensure public identity uses Ingeniero
-        run: |
-          matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' frontend --include='*.html' || true)
-          if [ -n "$matches" ]; then
-            echo "Retired specialty found in:"
-            printf '%s\n' "$matches"
-            exit 1
-          fi
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Prepare public frontend
+      - name: Prepare isolated public package
         run: python scripts/prepare_frontend.py
+
+      - name: Ensure public identity uses Ingeniero
+        run: |
+          matches=$(grep -RIlE 'Ing\. Civil|Ingeniero civil|ingeniero civil' public --include='*.html' || true)
+          if [ -n "$matches" ]; then
+            echo "Retired specialty found in:"
+            printf '%s\n' "$matches"
+            exit 1
+          fi
 
       - name: Validate local links and duplicate IDs
         run: python scripts/run_frontend_validator.py check_site
@@ -41,10 +41,9 @@ jobs:
       - name: Validate backend API syntax
         run: python -m py_compile backend/api.py
 
-      - name: Validate JavaScript syntax
+      - name: Validate all public JavaScript syntax
+        shell: bash
         run: |
-          node --check frontend/script.js
-          node --check frontend/privacy.js
-          node --check frontend/site-global.js
-          node --check frontend/service-worker.js
-          node --check frontend/app/faq-search.js
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find public -type f -name '*.js' -print0)

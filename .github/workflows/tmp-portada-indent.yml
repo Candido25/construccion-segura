@@ -1,0 +1,46 @@
+name: Temporary format hero HTML
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  format-hero-html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/portada-imagen-html-20260726
+          fetch-depth: 0
+
+      - name: Format hero markup
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("frontend/index.html")
+          text = path.read_text(encoding="utf-8")
+          old = '''        <picture class="hero-image">
+                <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">
+              </picture>'''
+          new = '''        <picture class="hero-image">
+                  <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">
+                </picture>'''
+          if old not in text:
+              raise SystemExit("No se encontró el bloque de portada pendiente de formato")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Commit formatting
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/index.html
+          git commit -m "Alinear marcado HTML de la portada"
+          git push origin HEAD:agent/portada-imagen-html-20260726

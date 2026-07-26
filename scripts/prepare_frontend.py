@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Prepara el artefacto estático que GitHub Pages publicará desde `frontend/`.
-
-La reorganización conserva temporalmente las guías y expedientes históricos en la
-raíz del repositorio. Este paso los copia al artefacto público sin duplicarlos en
-Git y crea los alias de recursos que esperan las páginas existentes.
-"""
+"""Valida y prepara la única raíz pública del sitio: `frontend/`."""
 
 from __future__ import annotations
 
@@ -13,17 +8,24 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 FRONTEND_ROOT = REPOSITORY_ROOT / "frontend"
-LEGACY_PUBLIC_DIRECTORIES = ("errores", "casos")
+REQUIRED_PUBLIC_DIRECTORIES = ("errores", "casos")
 
 
-def copy_public_directory(name: str) -> int:
-    source = REPOSITORY_ROOT / name
-    destination = FRONTEND_ROOT / name
-    if not source.is_dir():
-        raise FileNotFoundError(f"No se encontró la carpeta pública de origen: {source}")
-
-    shutil.copytree(source, destination, dirs_exist_ok=True)
-    return sum(1 for path in destination.rglob("*") if path.is_file())
+def validate_public_structure() -> int:
+    public_files = 0
+    for name in REQUIRED_PUBLIC_DIRECTORIES:
+        legacy_path = REPOSITORY_ROOT / name
+        public_path = FRONTEND_ROOT / name
+        if legacy_path.exists():
+            raise RuntimeError(
+                f"La carpeta pública {name}/ no debe permanecer en la raíz del repositorio."
+            )
+        if not public_path.is_dir():
+            raise FileNotFoundError(
+                f"No se encontró la carpeta pública requerida: {public_path}"
+            )
+        public_files += sum(1 for path in public_path.rglob("*") if path.is_file())
+    return public_files
 
 
 def ensure_icon_alias() -> None:
@@ -38,14 +40,12 @@ def main() -> int:
     if not FRONTEND_ROOT.is_dir():
         raise FileNotFoundError(f"No se encontró la carpeta frontend: {FRONTEND_ROOT}")
 
-    copied_files = 0
-    for directory in LEGACY_PUBLIC_DIRECTORIES:
-        copied_files += copy_public_directory(directory)
-
+    public_files = validate_public_structure()
     ensure_icon_alias()
     print(
         "Frontend preparado correctamente: "
-        f"{copied_files} archivos históricos y favicon-192.png disponibles."
+        f"raíz pública única en frontend/, {public_files} archivos históricos "
+        "y favicon-192.png disponibles."
     )
     return 0
 

@@ -243,13 +243,14 @@
     if (normalizedQuery.length < 2) return;
 
     if (searchController) searchController.abort();
-    searchController = new AbortController();
+    const controller = new AbortController();
+    searchController = controller;
     const currentRequest = ++requestSequence;
-    const timeoutId = window.setTimeout(() => searchController.abort(), API_TIMEOUT_MS);
+    const timeoutId = window.setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     setBusy(true);
 
     try {
-      const remoteResults = await fetchRemoteResults(rawQuery, searchController.signal);
+      const remoteResults = await fetchRemoteResults(rawQuery, controller.signal);
       if (currentRequest !== requestSequence || normalize(input.value) !== normalizedQuery) return;
 
       const combined = mergeResults(localResults, remoteResults);

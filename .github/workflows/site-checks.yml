@@ -32,12 +32,19 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Prepare public frontend
+        run: python scripts/prepare_frontend.py
+
       - name: Validate local links and duplicate IDs
-        run: python scripts/check_site.py
+        run: python scripts/run_frontend_validator.py check_site
+
+      - name: Validate backend API syntax
+        run: python -m py_compile backend/api.py
 
       - name: Validate JavaScript syntax
         run: |
           node --check frontend/script.js
           node --check frontend/privacy.js
           node --check frontend/site-global.js
+          node --check frontend/service-worker.js
           node --check frontend/app/faq-search.js

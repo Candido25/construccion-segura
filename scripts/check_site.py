@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-SITE_ROOT = REPOSITORY_ROOT / "frontend"
+SITE_ROOT = REPOSITORY_ROOT / "public"
 IGNORED_SCHEMES = {"http", "https", "mailto", "tel", "data", "javascript"}
 FORBIDDEN_PUBLIC_PHRASES = {
     "ing. civil": "La presentación pública debe usar Ing. y el nombre completo, sin mostrar la especialidad.",
@@ -113,7 +113,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"Static site checks passed for {len(html_files)} HTML files in frontend/.")
+    print(f"Static site checks passed for {len(html_files)} HTML files in public/.")
     return 0
 
 

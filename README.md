@@ -2,36 +2,32 @@
 
 Sitio web de asesoría técnica para propietarios y familias que construyen, amplían o corrigen viviendas en el Perú.
 
-## Cobertura
-
-- Consultas remotas en todo el Perú.
-- Visitas técnicas presenciales en Lima, previa coordinación.
-
 ## Responsable técnico
 
-**Omar Oswaldo Alcantara Aquino**  
-Ingeniero civil — CIP N.° 364395  
-Técnico en Edificaciones — SENCICO
+**Ing. Omar Oswaldo Alcantara Aquino · CIP N.° 364395**
+
+## Arquitectura
+
+- La web institucional estática vive en la raíz del repositorio.
+- `frontend/app/` contiene Mi Casa Segura, el cliente dinámico que consume la API.
+- `backend/` contiene FastAPI y las bases técnicas desplegadas en Render.
+- `public/` se genera automáticamente y es el único contenido que GitHub Pages publica.
 
 ## Desarrollo local
 
-El sitio es estático. Puede revisarse con cualquier servidor HTTP local, por ejemplo:
-
 ```bash
-python -m http.server 8000
+python scripts/prepare_frontend.py
+python -m http.server 8000 --directory public
 ```
 
 Luego abre `http://localhost:8000`.
 
 ## Verificaciones
 
-Ejecuta:
-
 ```bash
-python scripts/check_site.py
+python scripts/prepare_frontend.py
+python scripts/run_frontend_validator.py check_site
 ```
-
-El script revisa enlaces y recursos locales faltantes, referencias que salen del repositorio e identificadores duplicados.
 
 ## Flujo de cambios
 
@@ -41,4 +37,4 @@ El script revisa enlaces y recursos locales faltantes, referencias que salen del
 4. Abrir un pull request.
 5. Fusionar solo después de revisar el resultado.
 
-Las reglas de identidad, alcance, SEO y seguridad técnica están en `AGENTS.md`.
+Las reglas permanentes están en `AGENTS.md`.

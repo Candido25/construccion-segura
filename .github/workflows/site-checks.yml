@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Prepare public frontend
+        run: python scripts/prepare_frontend.py
+
       - name: Validate local links and duplicate IDs
         run: python scripts/run_frontend_validator.py check_site
 

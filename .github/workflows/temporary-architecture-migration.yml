@@ -23,13 +23,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo '=== TOP LEVEL ==='
-          find . -maxdepth 1 -mindepth 1 -printf '%f\n' | sort
-          echo '=== FRONTEND TOP LEVEL ==='
-          find frontend -maxdepth 1 -mindepth 1 -printf '%f\n' | sort
-          echo '=== WORKFLOWS ==='
-          find .github/workflows -maxdepth 1 -type f -printf '%f\n' | sort
-          echo '=== FRONTEND REFERENCES IN SCRIPTS/WORKFLOWS ==='
-          grep -RIn --exclude='temporary-architecture-migration.yml' -E 'frontend|baseline-public|prepare_frontend|check_site' scripts .github/workflows || true
-          echo '=== GITIGNORE ==='
-          test -f .gitignore && cat .gitignore || true
+          {
+            echo '=== TOP LEVEL ==='
+            find . -maxdepth 1 -mindepth 1 -printf '%f\n' | sort
+            echo '=== FRONTEND TOP LEVEL ==='
+            find frontend -maxdepth 1 -mindepth 1 -printf '%f\n' | sort
+            echo '=== WORKFLOWS ==='
+            find .github/workflows -maxdepth 1 -type f -printf '%f\n' | sort
+            echo '=== FRONTEND REFERENCES IN SCRIPTS/WORKFLOWS ==='
+            grep -RIn --exclude='temporary-architecture-migration.yml' -E 'frontend|baseline-public|prepare_frontend|check_site' scripts .github/workflows || true
+            echo '=== GITIGNORE ==='
+            test -f .gitignore && cat .gitignore || true
+          } > architecture-inspection.txt
+          tail -n 80 architecture-inspection.txt
+
+      - name: Upload architecture inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-inspection
+          path: architecture-inspection.txt
+          retention-days: 1

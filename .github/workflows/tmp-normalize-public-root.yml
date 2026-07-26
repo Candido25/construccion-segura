@@ -3,6 +3,8 @@ name: Temporary normalize public root
 on:
   push:
     branches: ["agent/normalizar-raiz-publica-20260726"]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write

@@ -1,0 +1,60 @@
+name: Temporary Pages live check
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-published-pages:
+    if: github.head_ref == 'audit/pages-publicadas-20260726'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check default and custom Pages URLs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p pages-live
+          report="pages-live/report.txt"
+          failures=0
+
+          check_url() {
+            local name="$1"
+            local url="$2"
+            local expected="$3"
+            local body="pages-live/${name}.body"
+            local code
+            code=$(curl --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 90 \
+              -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -o "$body" -sS -w '%{http_code}' "$url" || true)
+            printf '%s=%s %s\n' "$name" "$code" "$url" | tee -a "$report"
+            if [[ "$code" != "200" ]]; then
+              failures=$((failures + 1))
+              return
+            fi
+            if [[ -n "$expected" ]] && ! grep -Fq "$expected" "$body"; then
+              printf '%s_expected_content=missing\n' "$name" | tee -a "$report"
+              failures=$((failures + 1))
+            else
+              printf '%s_expected_content=present\n' "$name" | tee -a "$report"
+            fi
+          }
+
+          check_url default_home 'https://candido25.github.io/construccion-segura/' 'Ing. Omar Oswaldo Alcantara Aquino'
+          check_url default_app 'https://candido25.github.io/construccion-segura/app/' 'Mi Casa Segura: Guía de Obra'
+          check_url default_manifest 'https://candido25.github.io/construccion-segura/site.webmanifest' 'Mi Casa Segura'
+          check_url default_service_worker 'https://candido25.github.io/construccion-segura/service-worker.js' 'mi-casa-segura-pwa-v17'
+          check_url custom_home 'https://www.construccionsegura.org.pe/' 'Ing. Omar Oswaldo Alcantara Aquino'
+
+          printf 'failures=%s\n' "$failures" | tee -a "$report"
+          exit "$failures"
+
+      - name: Upload live-check evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-live-check
+          path: pages-live
+          retention-days: 1

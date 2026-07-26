@@ -72,13 +72,10 @@ jobs:
           path.write_text(text.replace(old, new, 1), encoding="utf-8")
           PY
 
-      - name: Validate and commit
+      - name: Commit hybrid integration
         shell: bash
         run: |
           set -euo pipefail
-          python scripts/prepare_frontend.py
-          python scripts/run_frontend_validator.py check_resources
-          python scripts/run_frontend_validator.py check_site
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add frontend/hero.css

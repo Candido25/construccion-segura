@@ -182,28 +182,18 @@
 }
 
 .home-conversion-hero .hero-image {
-  display: block;
-  overflow: hidden;
+  background:
+    linear-gradient(200deg, rgba(255,244,232,0.06), rgba(30,52,62,0.42)),
+    url("assets/site-photos/web/hero-portada.webp") center/cover;
   border-radius: 0 0 0 var(--radius);
   filter: saturate(0.9) contrast(1.03);
 }
 
 .home-conversion-hero .hero-image img {
   position: absolute;
-  top: 0;
-  left: 50%;
-  display: block;
-  width: auto;
-  max-width: none;
-  height: 100%;
-  transform: translateX(-50%);
-}
-
-.home-conversion-hero .hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(200deg, rgba(255,244,232,0.06), rgba(30,52,62,0.42));
+  width: 1px;
+  height: 1px;
+  opacity: 0;
   pointer-events: none;
 }
 

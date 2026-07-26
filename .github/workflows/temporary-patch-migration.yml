@@ -1,0 +1,43 @@
+name: Temporary patch migration
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-migration-generator:
+    if: github.head_ref == 'agent/arquitectura-raiz-estatica-20260726' || github.ref_name == 'agent/arquitectura-raiz-estatica-20260726'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/arquitectura-raiz-estatica-20260726
+          fetch-depth: 0
+
+      - name: Patch indentation normalization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/temporary-architecture-migration.yml')
+          text = path.read_text(encoding='utf-8')
+          old = '.replace("          ", "")'
+          new = '.replace("\\n          ", "\\n")'
+          count = text.count(old)
+          if count < 1:
+              raise SystemExit('No se encontró el patrón de sangría que debía corregirse.')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          print(f'Patrones corregidos: {count}')
+          PY
+          rm -f .github/workflows/temporary-patch-migration.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Corregir generador de migración"
+          git push origin HEAD:agent/arquitectura-raiz-estatica-20260726

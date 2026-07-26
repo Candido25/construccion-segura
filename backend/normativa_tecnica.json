@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Base de datos de parámetros mínimos, normativas y tolerancias para autoconstrucción",
+  "elementos": [
+    {
+      "id": "columna-confinamiento",
+      "categoria": "Estructuras - Confinamiento",
+      "elemento": "Columna de Confinamiento",
+      "codigo_normativo": "Norma E.070 - Albañilería",
+      "parametros_minimos": {
+        "f_c_minimo": "175 kg/cm2",
+        "dimension_menor_minima": "15 cm (igual al espesor del muro)",
+        "recubrimiento_libre": "2.5 cm"
+      },
+      "tolerancias_admisibles": {
+        "plumb_verticalidad": "Máximo 4 mm por metro de altura, con un límite total de 20 mm.",
+        "posicion_acero": "± 10 mm respecto al plano de encofrado"
+      },
+      "recomendacion_tecnica": "No se permite el uso de piedra chancada mayor a 1 pulgada en secciones estrechas para evitar cangrejeras.",
+      "nivel_riesgo_si_se_ignora": "Alto (Falla frágil ante sismos de mediana intensidad)"
+    },
+    {
+      "id": "zapata-aislada",
+      "categoria": "Estructuras - Cimentación",
+      "elemento": "Zapata Aislada",
+      "codigo_normativo": "Norma E.050 - Suelos y Cimentaciones / E.060",
+      "parametros_minimos": {
+        "f_c_minimo": "210 kg/cm2",
+        "peralte_minimo": "40 cm (según cálculo de punzonamiento)",
+        "concreto_ciclopeo_cimiento": "10% piedra desplazadora max. 6\" + f'c = 100 kg/cm2"
+      },
+      "tolerancias_admisibles": {
+        "nivelacion_fondo": "± 10 mm sobre el plano de solado",
+        "recubrimiento_inferior": "7.5 cm (por estar en contacto con el suelo)"
+      },
+      "recomendacion_tecnica": "Nunca vaciar sobre suelo arcilloso o relleno suelto sin un estudio previo o mejoramiento de terreno con material granular compactado.",
+      "nivel_riesgo_si_se_ignora": "Crítico (Asentamientos diferenciales y fisuras severas en la estructura)"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+name: Temporary Render normative audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-render-normativa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-render-normativa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit Render API 1.2.0 and normative routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://construccion-segura.onrender.com'
+          mkdir -p audit
+
+          request() {
+            local name="$1"
+            local path="$2"
+            local code
+            code=$(curl --retry 4 --retry-delay 5 --connect-timeout 20 --max-time 120 \
+              -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -D "audit/${name}.headers" -o "audit/${name}.json" -sS \
+              -w '%{http_code}' "${base}${path}")
+            echo "${name}_http=${code}" | tee -a audit/report.txt
+            test "$code" = '200'
+          }
+
+          request root '/'
+          request health '/salud'
+          request elements '/api/v1/normativa/elementos'
+          request parameters '/api/v1/normativa/parametros?limite=3'
+          request detail '/api/v1/normativa/parametros/a010-escalera-contrahuella-maxima'
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          audit = Path('audit')
+          root = json.loads((audit / 'root.json').read_text())
+          health = json.loads((audit / 'health.json').read_text())
+          elements = json.loads((audit / 'elements.json').read_text())
+          parameters = json.loads((audit / 'parameters.json').read_text())
+          detail = json.loads((audit / 'detail.json').read_text())
+
+          checks = {
+              'api_version': root.get('version'),
+              'root_total_parametros': root.get('total_parametros_normativos'),
+              'health_version_normativa': health.get('version_normativa'),
+              'health_total_parametros': health.get('total_parametros_normativos'),
+              'elements_total': elements.get('total_elementos'),
+              'parameters_version': parameters.get('version'),
+              'parameters_total': parameters.get('total_encontrados'),
+              'parameters_shown': parameters.get('mostrados'),
+              'detail_id': detail.get('id'),
+              'detail_value': detail.get('valor', {}).get('valor'),
+              'detail_classification': detail.get('clasificacion'),
+          }
+          with (audit / 'report.txt').open('a', encoding='utf-8') as report:
+              for key, value in checks.items():
+                  report.write(f'{key}={value}\n')
+
+          assert root.get('version') == '1.2.0', checks
+          assert root.get('total_parametros_normativos') == 20, checks
+          assert health.get('version_normativa') == '1.0.0-piloto', checks
+          assert health.get('total_parametros_normativos') == 20, checks
+          assert elements.get('total_elementos', 0) >= 10, checks
+          assert parameters.get('version') == '1.0.0-piloto', checks
+          assert parameters.get('total_encontrados') == 20, checks
+          assert parameters.get('mostrados') == 3, checks
+          assert detail.get('id') == 'a010-escalera-contrahuella-maxima', checks
+          assert detail.get('valor', {}).get('valor') == 0.18, checks
+          assert detail.get('clasificacion') == 'maximo_normativo', checks
+          PY
+
+          cors=$(curl --retry 3 --connect-timeout 20 --max-time 90 -sSI \
+            -H 'Origin: https://www.construccionsegura.org.pe' \
+            "${base}/api/v1/normativa/parametros?limite=1" \
+            | tr -d '\r' | awk -F': ' 'tolower($1)=="access-control-allow-origin" {print $2}')
+          echo "cors_origin=${cors}" | tee -a audit/report.txt
+          test "$cors" = 'https://www.construccionsegura.org.pe'
+
+          cat audit/report.txt
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-normativa-audit
+          path: audit/
+          retention-days: 1

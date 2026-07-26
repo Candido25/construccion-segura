@@ -58,6 +58,7 @@ jobs:
         run: |
           set +e
           python -m http.server 8000 --bind 127.0.0.1 \
+            --directory frontend \
             > visual-current-server.log 2>&1 &
           current_server=$!
 

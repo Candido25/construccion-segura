@@ -21,18 +21,25 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
+          import re
           from pathlib import Path
+
           path = Path("frontend/index.html")
           text = path.read_text(encoding="utf-8")
-          old = '''        <picture class="hero-image">
-                <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">
-              </picture>'''
-          new = '''        <picture class="hero-image">
-                  <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">
-                </picture>'''
-          if old not in text:
-              raise SystemExit("No se encontró el bloque de portada pendiente de formato")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          pattern = re.compile(
+              r'(?m)^\s*<picture class="hero-image">\n'
+              r'\s*<img src="assets/site-photos/web/hero-portada\.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">\n'
+              r'\s*</picture>'
+          )
+          replacement = "\n".join([
+              '        <picture class="hero-image">',
+              '          <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">',
+              '        </picture>',
+          ])
+          updated, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f"Se esperaban 1 bloque de portada y se encontraron {count}")
+          path.write_text(updated, encoding="utf-8")
           PY
 
       - name: Commit formatting
@@ -42,5 +49,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add frontend/index.html
+          if git diff --cached --quiet; then
+            echo "El marcado ya tiene el formato esperado."
+            exit 0
+          fi
           git commit -m "Alinear marcado HTML de la portada"
           git push origin HEAD:agent/portada-imagen-html-20260726

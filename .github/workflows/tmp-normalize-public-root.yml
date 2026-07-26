@@ -34,14 +34,11 @@ jobs:
               echo "frontend/$directory ya existe; se detiene para evitar sobrescrituras." >&2
               exit 1
             fi
-            if [ ! -d "$directory" ]; then
-              echo "No existe la carpeta pública de origen: $directory" >&2
-              exit 1
-            fi
+            test -d "$directory"
             git mv "$directory" "frontend/$directory"
           done
 
-      - name: Simplify frontend preparation and enforce structure
+      - name: Enforce a single public root
         shell: bash
         run: |
           cat > scripts/prepare_frontend.py <<'PY'
@@ -110,11 +107,8 @@ jobs:
 
           path = Path(".github/workflows/visual-regression.yml")
           text = path.read_text(encoding="utf-8")
-
-          marker = '''      - name: Install screenshot comparator
-                run: python -m pip install --disable-pip-version-check Pillow==11.3.0
-          '''
-          insertion = '''      - name: Prepare isolated stable baseline
+          anchor = "      - name: Install screenshot comparator\n"
+          isolated_step = """      - name: Prepare isolated stable baseline
                 shell: bash
                 run: |
                   rm -rf baseline-public
@@ -132,26 +126,21 @@ jobs:
                     --exclude='render.yaml' \\
                     baseline/ baseline-public/
 
-              - name: Install screenshot comparator
-                run: python -m pip install --disable-pip-version-check Pillow==11.3.0
-          '''
+          """
 
           if "Prepare isolated stable baseline" not in text:
-              if marker not in text:
-                  raise SystemExit("No se encontró el punto de inserción de la línea base visual.")
-              text = text.replace(marker, insertion, 1)
+              position = text.find(anchor)
+              if position < 0:
+                  raise SystemExit("No se encontró el paso del comparador visual.")
+              text = text[:position] + isolated_step + text[position:]
 
-          old = '''          python -m http.server 8001 --bind 127.0.0.1 \\
-                --directory ../baseline \\
-                > visual-baseline-server.log 2>&1 &
-          '''
-          new = '''          python -m http.server 8001 --bind 127.0.0.1 \\
-                --directory ../baseline-public \\
-                > visual-baseline-server.log 2>&1 &
-          '''
-          if old not in text:
+          if "--directory ../baseline \\" not in text:
               raise SystemExit("No se encontró el servidor antiguo de la línea base.")
-          text = text.replace(old, new, 1)
+          text = text.replace(
+              "--directory ../baseline \\",
+              "--directory ../baseline-public \\",
+              1,
+          )
           path.write_text(text, encoding="utf-8")
           PY
 

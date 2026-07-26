@@ -1,8 +1,6 @@
 name: Temporary normalize public root
 
 on:
-  push:
-    branches: ["agent/normalizar-raiz-publica-20260726"]
   pull_request:
     branches: [main]
 
@@ -30,12 +28,14 @@ jobs:
         run: |
           set -euo pipefail
           for directory in errores casos; do
-            if [ -e "frontend/$directory" ]; then
-              echo "frontend/$directory ya existe; se detiene para evitar sobrescrituras." >&2
+            if [ -d "$directory" ] && [ ! -e "frontend/$directory" ]; then
+              git mv "$directory" "frontend/$directory"
+            elif [ ! -e "$directory" ] && [ -d "frontend/$directory" ]; then
+              echo "$directory/ ya está normalizada dentro de frontend/."
+            else
+              echo "Estado ambiguo para $directory/: se detiene para evitar sobrescrituras." >&2
               exit 1
             fi
-            test -d "$directory"
-            git mv "$directory" "frontend/$directory"
           done
 
       - name: Enforce a single public root
@@ -99,51 +99,6 @@ jobs:
           PY
           chmod +x scripts/prepare_frontend.py
 
-      - name: Isolate the visual baseline from the repository root
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path(".github/workflows/visual-regression.yml")
-          text = path.read_text(encoding="utf-8")
-          anchor = "      - name: Install screenshot comparator\n"
-          isolated_step = """      - name: Prepare isolated stable baseline
-                shell: bash
-                run: |
-                  rm -rf baseline-public
-                  mkdir -p baseline-public
-                  rsync -a --delete \\
-                    --exclude='.git/' \\
-                    --exclude='.github/' \\
-                    --exclude='backend/' \\
-                    --exclude='docs/' \\
-                    --exclude='scripts/' \\
-                    --exclude='review_photos/' \\
-                    --exclude='_incoming/' \\
-                    --exclude='debug.log' \\
-                    --exclude='requirements.txt' \\
-                    --exclude='render.yaml' \\
-                    baseline/ baseline-public/
-
-          """
-
-          if "Prepare isolated stable baseline" not in text:
-              position = text.find(anchor)
-              if position < 0:
-                  raise SystemExit("No se encontró el paso del comparador visual.")
-              text = text[:position] + isolated_step + text[position:]
-
-          if "--directory ../baseline \\" not in text:
-              raise SystemExit("No se encontró el servidor antiguo de la línea base.")
-          text = text.replace(
-              "--directory ../baseline \\",
-              "--directory ../baseline-public \\",
-              1,
-          )
-          path.write_text(text, encoding="utf-8")
-          PY
-
       - name: Validate the repaired repository
         shell: bash
         run: |
@@ -164,17 +119,16 @@ jobs:
             node --check "$file"
           done < <(find frontend -type f -name '*.js' -print0)
 
-          grep -q -- '--directory frontend' .github/workflows/visual-regression.yml
-          grep -q -- '--directory ../baseline-public' .github/workflows/visual-regression.yml
-          ! grep -q -- '--directory ../baseline \\' .github/workflows/visual-regression.yml
-
-      - name: Commit the structural repair
+      - name: Commit public-root repair
         shell: bash
         run: |
           set -euo pipefail
-          git rm .github/workflows/tmp-normalize-public-root.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Normalizar raíz pública y aislar pruebas visuales"
+          if git diff --cached --quiet; then
+            echo "La reparación de contenido ya está confirmada en la rama."
+            exit 0
+          fi
+          git commit -m "Mover contenido público histórico a frontend"
           git push origin HEAD:agent/normalizar-raiz-publica-20260726

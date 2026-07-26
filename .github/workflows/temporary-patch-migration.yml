@@ -48,15 +48,14 @@ jobs:
           test ! -e public/backend
           test ! -e public/scripts
 
-      - name: Remove temporary migration automation
+      - name: Preserve workflows for connector-managed update
         shell: bash
         run: |
+          set -euo pipefail
+          git restore --source=HEAD -- .github/workflows
           rm -f scripts/phase0_migration.py
-          rm -f .github/workflows/temporary-architecture-migration.yml
-          rm -f .github/workflows/temporary-architecture-debug.yml
-          rm -f .github/workflows/temporary-patch-migration.yml
 
-      - name: Commit migrated architecture
+      - name: Commit migrated source architecture
         shell: bash
         run: |
           set -euo pipefail

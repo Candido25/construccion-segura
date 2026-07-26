@@ -49,6 +49,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Prepare public frontend
+        working-directory: current
+        run: python scripts/prepare_frontend.py
+
       - name: Install screenshot comparator
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0
 

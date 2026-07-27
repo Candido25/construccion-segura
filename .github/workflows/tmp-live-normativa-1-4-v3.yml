@@ -1,0 +1,129 @@
+name: Temporary live normative 1.4 audit v3
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normativa-1-4-v3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-normative-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Verify Render normative deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-audit-1-4
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import urllib.request
+          from pathlib import Path
+
+          BASE = 'https://construccion-segura.onrender.com'
+
+          def fetch(path: str) -> dict:
+              request = urllib.request.Request(
+                  BASE + path,
+                  headers={
+                      'User-Agent': 'ConstruccionSegura-live-audit/1.4-v3',
+                      'Accept': 'application/json',
+                      'Cache-Control': 'no-cache',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=45) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{path}: HTTP {response.status}')
+                  return json.loads(response.read().decode('utf-8'))
+
+          root = fetch('/')
+          listing = fetch('/api/v1/normativa/parametros')
+          development = fetch('/api/v1/normativa/parametros/e060-desarrollo-traccion-longitud-minima')
+          separation = fetch('/api/v1/normativa/parametros/e030-separacion-edificios-formula-minima')
+          drift = fetch('/api/v1/normativa/parametros/e030-albanileria-distorsion-entrepiso-maxima')
+          diaphragm = fetch('/api/v1/normativa/parametros/e030-diafragma-aberturas-irregularidad')
+          pilot_detail = fetch('/api/v1/normativa/parametros/e060-escalera-garganta-sin-minimo-universal')
+
+          results = (
+              listing.get('resultados')
+              or listing.get('parametros')
+              or listing.get('datos')
+              or []
+          )
+          version = listing.get('version_normativa') or listing.get('version')
+          total = listing.get('total_encontrados', len(results))
+          validated = sum(item.get('estado_revision') == 'validado_con_numeral' for item in results)
+          pilot = sum(item.get('estado_revision') == 'piloto_verificado' for item in results)
+          formula = separation.get('valor', {}).get('formula', '')
+
+          checks = {
+              'version_normativa': version == '1.4.0',
+              'total_parametros': total == 100,
+              'lista_completa': len(results) == 100,
+              'validados': validated == 99,
+              'piloto': pilot == 1,
+              'detalle_piloto': pilot_detail.get('estado_revision') == 'piloto_verificado',
+              'preguntas': root.get('total_preguntas') == 1569,
+              'root_parametros': root.get('total_parametros_normativos') == 100,
+              'desarrollo_300_mm': development.get('valor', {}).get('valor') == 300,
+              'desarrollo_numeral': development.get('fuente', {}).get('numeral') == '12.2.1-12.2.4',
+              'separacion_formula': '0.02' in formula and '0.03' in formula,
+              'separacion_e030': separation.get('fuente', {}).get('norma') == 'E.030',
+              'deriva_albanileria': drift.get('valor', {}).get('valor') == 0.005,
+              'abertura_diafragma': diaphragm.get('valor', {}).get('valor') == 50,
+          }
+
+          report = {
+              'claves_listado': sorted(listing.keys()),
+              'version_normativa': version,
+              'total_parametros': total,
+              'resultados_recibidos': len(results),
+              'validados_con_numeral': validated,
+              'piloto_verificado': pilot,
+              'total_preguntas': root.get('total_preguntas'),
+              'desarrollo_traccion_mm': development.get('valor', {}).get('valor'),
+              'desarrollo_numeral': development.get('fuente', {}).get('numeral'),
+              'separacion_formula': formula,
+              'deriva_albanileria': drift.get('valor', {}).get('valor'),
+              'abertura_diafragma_porcentaje': diaphragm.get('valor', {}).get('valor'),
+              'comprobaciones': checks,
+          }
+          Path('live-audit-1-4/report.json').write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          Path('live-audit-1-4/report.txt').write_text(
+              '\n'.join([
+                  f'version_normativa={version}',
+                  f'total_parametros={total}',
+                  f'resultados_recibidos={len(results)}',
+                  f'validados_con_numeral={validated}',
+                  f'piloto_verificado={pilot}',
+                  f"total_preguntas={root.get('total_preguntas')}",
+                  f"desarrollo_traccion_mm={development.get('valor', {}).get('valor')}",
+                  f"desarrollo_numeral={development.get('fuente', {}).get('numeral')}",
+                  f'separacion_formula={formula}',
+                  f"deriva_albanileria={drift.get('valor', {}).get('valor')}",
+                  f"abertura_diafragma_porcentaje={diaphragm.get('valor', {}).get('valor')}",
+                  f'comprobaciones_correctas={sum(checks.values())}/{len(checks)}',
+              ]) + '\n',
+              encoding='utf-8',
+          )
+          failed = [name for name, passed in checks.items() if not passed]
+          if failed:
+              raise SystemExit('Comprobaciones fallidas: ' + ', '.join(failed))
+          PY
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-normativa-1-4-audit-v3
+          path: live-audit-1-4
+          retention-days: 1

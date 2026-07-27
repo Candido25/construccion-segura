@@ -95,7 +95,7 @@ def criterio(
             "La solución final depende del material, dimensiones, exposición, fabricante, sistema de anclaje y especificaciones del proyecto."
         ],
         "fuente": {
-            "tipo": "manual_oficial",
+            "tipo": "criterio_tecnico",
             "norma": "Formación técnica SENCICO",
             "denominacion": "Carpintería de acabados de obras de edificación",
             "dispositivo": None,

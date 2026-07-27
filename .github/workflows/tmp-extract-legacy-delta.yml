@@ -1,0 +1,210 @@
+name: Temporary extract legacy solar transport delta
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-extract-legacy-delta.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  extract-delta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out current branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Reconstruct and adapt legacy generator
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p legacy-delta/current legacy-delta/output legacy-delta/source
+          git fetch origin agent/gas-energia-equipos-20260727
+          for part in 00 01 02 03; do
+            git show origin/agent/gas-energia-equipos-20260727:.tmp/bloque9.part${part} >> legacy-delta/source/payload.b64
+          done
+          base64 -d legacy-delta/source/payload.b64 | gzip -dc > legacy-delta/source/original.py
+          cp backend/normativa_tecnica.json legacy-delta/current/normativa_tecnica.json
+          cp backend/preguntas_tecnicas.json legacy-delta/current/preguntas_tecnicas.json
+          cp scripts/check_normativa.py legacy-delta/current/check_normativa.py
+
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('legacy-delta/source/original.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace("BASE=Path('/mnt/data/bloques89/block8')", "BASE=Path('legacy-delta/current')", 1)
+          text = text.replace("OUT=Path('/mnt/data/bloques89/block9')", "OUT=Path('legacy-delta/output')", 1)
+          text = text.replace("norm.get('version')!='1.8.0' or len(norm.get('parametros',[]))!=697", "norm.get('version')!='1.9.0' or len(norm.get('parametros',[]))!=748", 1)
+          text = text.replace("!=2160", "!=2211", 1)
+
+          old = """existing={p['id'] for p in norm['parametros']}\nids=[s['id'] for s in specs]\nif len(ids)!=len(set(ids)) or existing.intersection(ids): raise SystemExit('IDs duplicados')\nstart=2161\n"""
+          new = """existing={p['id'] for p in norm['parametros']}\nall_specs=list(specs)\noverlap_specs=[s for s in all_specs if s['id'] in existing]\nspecs=[s for s in all_specs if s['id'] not in existing]\nids=[s['id'] for s in specs]\nif len(ids)!=len(set(ids)): raise SystemExit('IDs duplicados en el delta')\nstart=2212\n"""
+          if old not in text:
+              raise SystemExit('No se encontró el bloque de deduplicación del generador legado.')
+          text = text.replace(old, new, 1)
+
+          replacements = [
+              ("norm['version']='1.9.0'", "norm['version']='2.0.0'"),
+              ("'if len(base.parametros) < 697:'", "'if len(base.parametros) < 748:'"),
+              ("'por lo menos 697 parámetros revisados'", "'por lo menos 748 parámetros revisados'"),
+              ("'if validados < 663:'", "'if validados < 714:'"),
+              ("'al menos 663 numerales RNE validados'", "'al menos 714 numerales RNE validados'"),
+              ("'if base.version != \"1.8.0\":'", "'if base.version != \"1.9.0\":'"),
+              ("'La versión normativa esperada es 1.8.0'", "'La versión normativa esperada es 1.9.0'"),
+              ("'if len(todas) < 2160:'", "'if len(todas) < 2211:'"),
+              ("'El bloque de accesibilidad y seguridad requiere por lo menos 2160 preguntas técnicas.'", "'El bloque de gas y equipos especiales requiere por lo menos 2211 preguntas técnicas.'"),
+              ("663+len(specs)", "714+len(specs)"),
+              ("Versión normativa: `1.9.0`", "Versión normativa: `2.0.0`"),
+          ]
+          for old_value, new_value in replacements:
+              if old_value not in text:
+                  raise SystemExit(f'No se encontró el texto esperado: {old_value}')
+              text = text.replace(old_value, new_value)
+
+          marker = "print('new',len(specs),'target',count,qcount,'states',Counter(p['estado_revision'] for p in norm['parametros']))"
+          insertion = """print('legacy_total', len(all_specs), 'overlap', len(overlap_specs), 'delta', len(specs))\n(OUT/'overlap_specs.json').write_text(json.dumps(overlap_specs, ensure_ascii=False, indent=2)+'\\n', encoding='utf-8')\n(OUT/'delta_specs.json').write_text(json.dumps(specs, ensure_ascii=False, indent=2)+'\\n', encoding='utf-8')\n"""
+          if marker not in text:
+              raise SystemExit('No se encontró el punto de informe del generador legado.')
+          text = text.replace(marker, insertion + marker, 1)
+          Path('legacy-delta/source/adapted.py').write_text(text, encoding='utf-8')
+          PY
+
+      - name: Execute adapted generator
+        run: python legacy-delta/source/adapted.py
+
+      - name: Validate and analyze candidate delta
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          import sys
+          import unicodedata
+          from collections import Counter
+          from difflib import SequenceMatcher
+          from pathlib import Path
+
+          sys.path.insert(0, str(Path('backend').resolve()))
+          from normativa import BaseNormativa  # noqa: E402
+
+          root = Path('legacy-delta')
+          current = json.loads((root / 'current/normativa_tecnica.json').read_text(encoding='utf-8'))
+          generated = json.loads((root / 'output/normativa_tecnica.json').read_text(encoding='utf-8'))
+          faq = json.loads((root / 'output/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          delta = json.loads((root / 'output/delta_specs.json').read_text(encoding='utf-8'))
+          overlap = json.loads((root / 'output/overlap_specs.json').read_text(encoding='utf-8'))
+
+          BaseNormativa.model_validate(generated)
+          current_ids = {item['id'] for item in current['parametros']}
+          generated_ids = [item['id'] for item in generated['parametros']]
+          if len(generated_ids) != len(set(generated_ids)):
+              raise SystemExit('La salida adaptada contiene IDs duplicados.')
+          if len(generated['parametros']) != len(current['parametros']) + len(delta):
+              raise SystemExit('El total generado no coincide con el delta filtrado.')
+
+          qids = [
+              item.get('id')
+              for category in faq.get('categorias', [])
+              for item in category.get('preguntas', [])
+              if isinstance(item, dict)
+          ]
+          if len(qids) != len(set(qids)):
+              raise SystemExit('La salida adaptada contiene preguntas duplicadas.')
+
+          def normalize(value: str) -> str:
+              text = unicodedata.normalize('NFD', str(value).lower())
+              text = ''.join(ch for ch in text if unicodedata.category(ch) != 'Mn')
+              text = re.sub(r'[^a-z0-9]+', ' ', text)
+              return ' '.join(text.split())
+
+          def signature(item: dict) -> str:
+              return normalize(' '.join([
+                  item.get('elemento', ''), item.get('parametro', ''),
+                  item.get('valor', {}).get('texto', ''),
+              ]))
+
+          current_signatures = [(item['id'], signature(item)) for item in current['parametros']]
+          semantic_flags = []
+          for item in delta:
+              sig = signature(item)
+              best_id = ''
+              best_score = 0.0
+              for existing_id, existing_sig in current_signatures:
+                  score = SequenceMatcher(None, sig, existing_sig).ratio()
+                  if score > best_score:
+                      best_id, best_score = existing_id, score
+              if best_score >= 0.68:
+                  semantic_flags.append({
+                      'candidate_id': item['id'],
+                      'existing_id': best_id,
+                      'similarity': round(best_score, 3),
+                      'candidate': sig,
+                  })
+
+          by_norm = Counter(item.get('fuente', {}).get('norma') for item in delta)
+          by_category = Counter(item.get('categoria') for item in delta)
+          by_class = Counter(item.get('clasificacion') for item in delta)
+          summary = {
+              'current_version': current.get('version'),
+              'current_parameters': len(current['parametros']),
+              'legacy_total': len(delta) + len(overlap),
+              'overlap_by_id': len(overlap),
+              'candidate_delta': len(delta),
+              'generated_version': generated.get('version'),
+              'generated_parameters': len(generated['parametros']),
+              'generated_questions': len(qids),
+              'by_norm': dict(by_norm),
+              'by_category': dict(by_category),
+              'by_classification': dict(by_class),
+              'semantic_flags': len(semantic_flags),
+          }
+          (root / 'output/delta-summary.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+          (root / 'output/semantic-flags.json').write_text(
+              json.dumps(semantic_flags, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+          )
+
+          report = ['# Delta recuperado del PR 78', '']
+          for key, value in summary.items():
+              if isinstance(value, dict):
+                  report += [f'## {key}', '']
+                  report.extend(f'- `{k}`: {v}' for k, v in value.items())
+                  report.append('')
+              else:
+                  report.append(f'- **{key}:** {value}')
+          report += ['', '## Candidatos por norma', '']
+          for norm_name in sorted(by_norm):
+              report += [f'### {norm_name}', '']
+              for item in delta:
+                  if item.get('fuente', {}).get('norma') == norm_name:
+                      report.append(
+                          f"- `{item['id']}` — {item['elemento']} / {item['parametro']} / "
+                          f"{item['fuente'].get('numeral')}"
+                      )
+              report.append('')
+          report += ['## Posibles duplicados semánticos', '']
+          if not semantic_flags:
+              report.append('_Ninguno por encima del umbral._')
+          for flag in semantic_flags:
+              report.append(
+                  f"- `{flag['candidate_id']}` ↔ `{flag['existing_id']}` — similitud {flag['similarity']}"
+              )
+          (root / 'output/delta-report.md').write_text('\n'.join(report) + '\n', encoding='utf-8')
+          PY
+
+      - name: Upload delta evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-solar-transport-delta
+          path: legacy-delta/output
+          retention-days: 3

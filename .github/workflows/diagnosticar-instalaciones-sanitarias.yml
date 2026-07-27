@@ -1,18 +1,18 @@
-name: Diagnosticar instalaciones sanitarias
+name: Aplicar ampliación de instalaciones sanitarias
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - scripts/diagnosticar_instalaciones_sanitarias.py
+      - scripts/aplicar_ampliacion_instalaciones_sanitarias.py
       - .github/workflows/diagnosticar-instalaciones-sanitarias.yml
 
 permissions:
   contents: write
 
 jobs:
-  diagnosticar:
+  aplicar:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar rama
@@ -25,13 +25,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generar diagnóstico
-        run: python scripts/diagnosticar_instalaciones_sanitarias.py
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
 
-      - name: Confirmar diagnóstico
+      - name: Aplicar inventario sanitario
+        run: python scripts/aplicar_ampliacion_instalaciones_sanitarias.py
+
+      - name: Validar base y API
+        run: python scripts/check_normativa.py
+
+      - name: Confirmar archivos generados
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/DIAGNOSTICO_INSTALACIONES_SANITARIAS_2026-07-27.md
-          git diff --cached --quiet || git commit -m "Registrar diagnóstico de instalaciones sanitarias"
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_INSTALACIONES_SANITARIAS_2026-07-27.md
+          git diff --cached --quiet || git commit -m "Ampliar instalaciones sanitarias en ejecución"
           git push origin HEAD:agent/ampliar-instalaciones-sanitarias-20260727

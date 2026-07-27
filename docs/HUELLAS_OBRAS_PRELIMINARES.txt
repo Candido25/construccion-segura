@@ -1,11 +1,13 @@
  5200 scripts/data_obras_preliminares/part01.txt
+ 5200 scripts/data_obras_preliminares/part02-fixed.txt
  5200 scripts/data_obras_preliminares/part02.txt
  5200 scripts/data_obras_preliminares/part03.txt
  5200 scripts/data_obras_preliminares/part04.txt
  5200 scripts/data_obras_preliminares/part05.txt
  4668 scripts/data_obras_preliminares/part06.txt
-30668 total
+35868 total
 f3924de233fe3f52f793a2f8ee2d586faaaae465b6a9ee9b7a950052727f3434  scripts/data_obras_preliminares/part01.txt
+27df2fed804f94f77b49fe4e512ee9c613310283054f77f69e539019ed568756  scripts/data_obras_preliminares/part02-fixed.txt
 27df2fed804f94f77b49fe4e512ee9c613310283054f77f69e539019ed568756  scripts/data_obras_preliminares/part02.txt
 0c9bc126bd1568905c197f4823f9a1bcea86b6457f7728e2679c49807b45efe4  scripts/data_obras_preliminares/part03.txt
 904e0afd080c2693307a597ce7876fbba9f23652f236a549413194a3e1740477  scripts/data_obras_preliminares/part04.txt

@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 41:
-        raise SystemExit("La base normativa debe contener por lo menos 41 parámetros validados.")
+    if len(base.parametros) < 70:
+        raise SystemExit("La base normativa debe contener por lo menos 70 parámetros validados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 40:
+    if validados < 69:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 40 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 69 numerales validados; hay {validados}."
         )
-    if base.version == "1.0.0-piloto":
-        raise SystemExit("La versión piloto inicial ya no debe permanecer activa.")
+    if base.version != "1.3.0":
+        raise SystemExit(f"La versión normativa esperada es 1.3.0 y se recibió {base.version}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -101,6 +101,29 @@ def main() -> None:
     )
     if detalle["valor"]["valor"] != 0.18:
         raise SystemExit("El detalle normativo de prueba no conserva el valor esperado.")
+
+    recubrimiento = api.detalle_parametro_normativo(
+        "e060-recubrimiento-contra-suelo-minimo"
+    )
+    if recubrimiento["valor"]["valor"] != 70:
+        raise SystemExit("El recubrimiento contra suelo debe conservar 70 mm.")
+
+    preguntas = json.loads(
+        (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
+    )
+    todas = [
+        item
+        for categoria in preguntas.get("categorias", [])
+        for item in categoria.get("preguntas", [])
+        if isinstance(item, dict)
+    ]
+    if len(todas) < 1539:
+        raise SystemExit("El lote 3 requiere por lo menos 1539 preguntas técnicas.")
+    respuesta_q307 = next(
+        item.get("respuesta", "") for item in todas if item.get("id") == "q307"
+    )
+    if "70 mm" not in respuesta_q307 or "75 mm" in respuesta_q307:
+        raise SystemExit("La FAQ q307 debe indicar el recubrimiento correcto de 70 mm.")
 
     print(
         "Normativa técnica válida:",

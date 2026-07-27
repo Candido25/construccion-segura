@@ -1,0 +1,55 @@
+name: Temporary diagnose installations and habitability
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-diagnose-instalaciones-habitabilidad.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Recreate proposal
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat scripts/.tmp_install_00.b64 scripts/.tmp_install_01.b64 scripts/.tmp_install_02.b64 scripts/.tmp_install_03.b64 scripts/.tmp_install_04.b64 \
+            | base64 --decode | gzip --decompress > /tmp/apply.py
+          python /tmp/apply.py > /tmp/generator.txt 2>&1
+          python -m pip install --disable-pip-version-check -q -r requirements.txt
+      - name: Capture validation
+        shell: bash
+        run: |
+          mkdir -p diagnosis
+          cp /tmp/generator.txt diagnosis/generator.txt
+          set +e
+          python scripts/check_normativa.py > diagnosis/check.txt 2>&1
+          echo "check_status=$?" >> diagnosis/check.txt
+          python -m py_compile backend/api.py backend/normativa.py > diagnosis/compile.txt 2>&1
+          echo "compile_status=$?" >> diagnosis/compile.txt
+          python - <<'PY' > diagnosis/counts.txt 2>&1
+          import json
+          from pathlib import Path
+          n=json.loads(Path('backend/normativa_tecnica.json').read_text())
+          f=json.loads(Path('backend/preguntas_tecnicas.json').read_text())
+          print('version',n.get('version'))
+          print('parameters',len(n.get('parametros',[])))
+          print('validated',sum(p.get('estado_revision')=='validado_con_numeral' for p in n.get('parametros',[])))
+          print('pilot',sum(p.get('estado_revision')=='piloto_verificado' for p in n.get('parametros',[])))
+          print('questions',sum(len(c.get('preguntas',[])) for c in f.get('categorias',[])))
+          PY
+          exit 0
+      - name: Upload diagnosis
+        uses: actions/upload-artifact@v4
+        with:
+          name: installations-habitability-diagnosis
+          path: diagnosis
+          retention-days: 2

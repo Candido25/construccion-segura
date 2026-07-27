@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 1126:
-        raise SystemExit("La base normativa debe contener por lo menos 1126 parámetros revisados.")
+    if len(base.parametros) < 1376:
+        raise SystemExit("La base normativa debe contener por lo menos 1376 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,11 +68,11 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 1092:
+    if validados < 1171:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 1092 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 1171 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.2.0":
+    if base.version != "2.3.0":
         raise SystemExit(f"La versión normativa esperada es 2.2.0 y se recibió {base.version}.")
 
     oficiales = sum(
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 16:
-        raise SystemExit(f"El bloque requiere al menos 16 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 187:
+        raise SystemExit(f"El bloque requiere al menos 187 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -258,6 +258,22 @@ def main() -> None:
     if recubrimiento["valor"]["valor"] != 70:
         raise SystemExit("El recubrimiento contra suelo debe conservar 70 mm.")
 
+    vidrio_junta = api.detalle_parametro_normativo("e040-paneles-separacion-minima")
+    if vidrio_junta["valor"]["valor"] != 4:
+        raise SystemExit("La separación mínima general entre paneles de vidrio debe conservar 4 mm.")
+
+    vidrio_cinta = api.detalle_parametro_normativo("e040-cinta-espesor-minimo")
+    if vidrio_cinta["valor"]["valor"] != 2:
+        raise SystemExit("La cinta de doble contacto debe conservar 2 mm mínimos.")
+
+    vidrio_insulado = api.detalle_parametro_normativo("e040-insulado-espera-manipulacion")
+    if vidrio_insulado["valor"]["valor"] != 24:
+        raise SystemExit("El vidrio insulado debe conservar 24 horas antes de manipularse.")
+
+    acabado = api.detalle_parametro_normativo("criterio-enchape-juntas-no-cero")
+    if acabado["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("Las juntas de enchape deben conservarse como criterio técnico revisado.")
+
     preguntas = json.loads(
         (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
     )
@@ -267,8 +283,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2589:
-        raise SystemExit("La base ampliada de obras preliminares y seguridad requiere por lo menos 2589 preguntas técnicas.")
+    if len(todas) < 2839:
+        raise SystemExit("La base ampliada de acabados de construcción requiere por lo menos 2839 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

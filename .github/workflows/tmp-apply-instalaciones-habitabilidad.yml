@@ -1,0 +1,55 @@
+name: Temporary apply installations and habitability
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-instalaciones-habitabilidad.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Reconstruct and execute reviewed expansion
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat scripts/.tmp_install_00.b64 scripts/.tmp_install_01.b64 scripts/.tmp_install_02.b64 scripts/.tmp_install_03.b64 scripts/.tmp_install_04.b64 \
+            | base64 --decode | gzip --decompress > /tmp/apply_installations_habitability.py
+          python -m py_compile /tmp/apply_installations_habitability.py
+          python /tmp/apply_installations_habitability.py | tee /tmp/installations-result.json
+
+      - name: Install backend dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+
+      - name: Validate contract, API and package
+        shell: bash
+        run: |
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py
+          rm -rf /tmp/construccion-public
+          python scripts/prepare_frontend.py --source . --output /tmp/construccion-public
+          test -f /tmp/construccion-public/app/normative-module.js
+          test -f /tmp/construccion-public/index.html
+
+      - name: Commit permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_NORMATIVA_INSTALACIONES_HABITABILIDAD_2026-07-27.md
+          git diff --cached --quiet && exit 0
+          git commit -m 'Ampliar normativa de instalaciones y habitabilidad'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

@@ -1,0 +1,80 @@
+name: Temporary apply pathologies repairs v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-patologias-reparaciones-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Reconstruct complete data and execute reviewed script
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat \
+            scripts/.tmp_pathologies_records_00.b64 \
+            scripts/.tmp_pathologies_records_01.b64 \
+            scripts/.tmp_pathologies_records_02.b64 \
+            scripts/.tmp_pathologies_records_03.b64 \
+            > scripts/.tmp_pathologies_records.b64
+          test "$(wc -c < scripts/.tmp_pathologies_records.b64)" -eq 45204
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/tmp-apply-patologias-reparaciones.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          script = textwrap.dedent(workflow[start:end])
+          exec(compile(script, 'apply-pathologies-reviewed.py', 'exec'), {})
+          PY
+
+      - name: Install backend dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+
+      - name: Validate contract API and frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py scripts/check_normativa.py
+          node --check frontend/app/normative-module.js
+          rm -rf public
+          python scripts/prepare_frontend.py
+          test -f public/index.html
+          test -f public/app/normative-module.js
+          test ! -e public/backend
+          test ! -e public/scripts
+
+      - name: Commit permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            backend/normativa_tecnica.json \
+            backend/preguntas_tecnicas.json \
+            backend/normativa.py \
+            frontend/app/normative-module.js \
+            docs/CONTRATO_NORMATIVA.md \
+            docs/VALIDACION_NORMATIVA_PATOLOGIAS_REPARACIONES_2026-07-27.md \
+            scripts/check_normativa.py
+          git diff --cached --quiet && exit 0
+          git commit -m 'Ampliar normativa de patologías y reparaciones'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

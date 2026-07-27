@@ -1,0 +1,47 @@
+name: Temporary diagnose pathologies repairs v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-diagnose-patologias-reparaciones-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Reconstruct and capture apply output
+        shell: bash
+        run: |
+          mkdir -p diagnosis-v2
+          cat \
+            scripts/.tmp_pathologies_records_00.b64 \
+            scripts/.tmp_pathologies_records_01.b64 \
+            scripts/.tmp_pathologies_records_02.b64 \
+            scripts/.tmp_pathologies_records_03.b64 \
+            > scripts/.tmp_pathologies_records.b64
+          echo "base64_bytes=$(wc -c < scripts/.tmp_pathologies_records.b64)" > diagnosis-v2/output.txt
+          set +e
+          python - <<'PY' >> diagnosis-v2/output.txt 2>&1
+          from pathlib import Path
+          import textwrap
+          workflow = Path('.github/workflows/tmp-apply-patologias-reparaciones.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          script = textwrap.dedent(workflow[start:end])
+          exec(compile(script, 'apply-pathologies-reviewed.py', 'exec'), {})
+          PY
+          echo "exit_status=$?" >> diagnosis-v2/output.txt
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pathologies-apply-diagnosis-v2
+          path: diagnosis-v2
+          retention-days: 2

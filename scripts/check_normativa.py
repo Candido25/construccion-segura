@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 1604:
-        raise SystemExit("La base normativa debe contener por lo menos 1604 parámetros revisados.")
+    if len(base.parametros) < 1680:
+        raise SystemExit("La base normativa debe contener por lo menos 1680 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 1230:
+    if validados < 1245:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 1230 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 1245 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.6.0":
-        raise SystemExit(f"La versión normativa esperada es 2.6.0 y se recibió {base.version}.")
+    if base.version != "2.7.0":
+        raise SystemExit(f"La versión normativa esperada es 2.7.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 356:
-        raise SystemExit(f"El bloque requiere al menos 356 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 417:
+        raise SystemExit(f"El bloque requiere al menos 417 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -295,6 +295,19 @@ def main() -> None:
     if puerta_corredera["estado_revision"] != "criterio_tecnico_revisado":
         raise SystemExit("El antidescarrilamiento debe conservarse como criterio técnico revisado.")
 
+
+    gas_prueba = api.detalle_parametro_normativo("em040-prueba-hermeticidad-previa")
+    if gas_prueba["estado_revision"] != "validado_con_numeral":
+        raise SystemExit("La prueba de hermeticidad debe conservar numeral confirmado.")
+
+    gas_llama = api.detalle_parametro_normativo("em040-prueba-sin-llama")
+    if gas_llama["clasificacion"] != "prohibicion":
+        raise SystemExit("La búsqueda de fugas con llama debe conservarse como prohibición.")
+
+    gas_manguera = api.detalle_parametro_normativo("criterio-gas-manguera-sin-tension")
+    if gas_manguera["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("La conexión flexible debe conservarse como criterio técnico revisado.")
+
     preguntas = json.loads(
         (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
     )
@@ -304,8 +317,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 3067:
-        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3067 preguntas técnicas.")
+    if len(todas) < 3143:
+        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3143 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

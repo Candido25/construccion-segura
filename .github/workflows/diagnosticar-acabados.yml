@@ -1,18 +1,19 @@
-name: Diagnosticar acabados
+name: Aplicar ampliación de acabados
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - scripts/diagnosticar_acabados.py
+      - scripts/aplicar_ampliacion_acabados.py
+      - scripts/data_acabados/**
       - .github/workflows/diagnosticar-acabados.yml
 
 permissions:
   contents: write
 
 jobs:
-  diagnosticar:
+  aplicar:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar rama
@@ -25,13 +26,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generar diagnóstico
-        run: python scripts/diagnosticar_acabados.py
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
 
-      - name: Confirmar diagnóstico
+      - name: Aplicar inventario normativo y técnico
+        run: python scripts/aplicar_ampliacion_acabados.py
+
+      - name: Validar base y API
+        run: python scripts/check_normativa.py
+
+      - name: Confirmar archivos generados
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/DIAGNOSTICO_ACABADOS_2026-07-27.md
-          git diff --cached --quiet || git commit -m "Registrar diagnóstico de acabados"
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_ACABADOS_CONSTRUCCION_2026-07-27.md
+          git diff --cached --quiet || git commit -m "Ampliar acabados de construcción"
           git push origin HEAD:agent/ampliar-acabados-construccion-20260727

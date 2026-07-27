@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 697:
-        raise SystemExit("La base normativa debe contener por lo menos 697 parámetros revisados.")
+    if len(base.parametros) < 748:
+        raise SystemExit("La base normativa debe contener por lo menos 748 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 663:
+    if validados < 714:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 663 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 714 numerales RNE validados; hay {validados}."
         )
-    if base.version != "1.8.0":
-        raise SystemExit(f"La versión normativa esperada es 1.8.0 y se recibió {base.version}.")
+    if base.version != "1.9.0":
+        raise SystemExit(f"La versión normativa esperada es 1.9.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -218,6 +218,22 @@ def main() -> None:
     if incendio["valor"]["valor"] != 28:
         raise SystemExit("La reserva contra incendios debe conservar 28 m³.")
 
+    gas_presion = api.detalle_parametro_normativo("em040-glp-presion-maxima-despues-regulador")
+    if gas_presion["valor"]["valor"] != 20:
+        raise SystemExit("La presión máxima de GLP debe conservar 20 psig.")
+
+    pozo_luz = api.detalle_parametro_normativo("em070-pozo-iluminacion-minima")
+    if pozo_luz["valor"]["valor"] != 50:
+        raise SystemExit("El pozo de ascensor debe conservar 50 lux.")
+
+    minicarga = api.detalle_parametro_normativo("em070-minicarga-capacidad-maxima")
+    if minicarga["valor"]["valor"] != 300:
+        raise SystemExit("La minicarga debe conservar 300 kg.")
+
+    chimenea = api.detalle_parametro_normativo("em060-chimenea-metalica-vivienda-prohibida")
+    if chimenea["clasificacion"] != "prohibicion":
+        raise SystemExit("La chimenea metálica en vivienda debe conservarse como prohibición.")
+
     detalle = api.detalle_parametro_normativo(
         "a010-escalera-contrahuella-maxima"
     )
@@ -239,8 +255,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2160:
-        raise SystemExit("El bloque de accesibilidad y seguridad requiere por lo menos 2160 preguntas técnicas.")
+    if len(todas) < 2211:
+        raise SystemExit("El bloque de gas y equipos especiales requiere por lo menos 2211 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

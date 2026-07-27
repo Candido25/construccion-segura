@@ -1,0 +1,208 @@
+name: Temporary audit installations and habitability
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-audit-instalaciones-habitabilidad.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-official-standards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install PDF text tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Download official RNE PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-instalaciones
+          python - <<'PY'
+          from __future__ import annotations
+          import pathlib
+          import urllib.request
+
+          files = {
+              'A010.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366528/35%20A.010%20CONDICIONES%20GENERALES%20DE%20DISE%C3%91O%20-%20RM%20N%C2%B0%20191-2021-VIVIENDA.pdf?v=1636058378',
+              'A020.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366560/36%20A.020%20VIVIENDA%20-%20RM%20N%C2%BA%20188-2021-VIVIENDA.pdf?v=1636059082',
+              'IS010.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366675/60%20IS.010%20INSTALACIONES%20SANITARIAS%20PARA%20EDIFICACIONES%20DS%20N%C2%B0%20017-2012.pdf?v=1677250657',
+              'EM010.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366690/62%20EM.010%20INSTALACIONES%20EL%C3%89CTRICAS%20INTERIORES%20-%20RM%20N%C2%B0%20083-2019-VIVIENDA.pdf?v=1677250657',
+              'EM020.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366691/63%20EM.020%20INSTALACIONES%20DE%20TELECOMUNICACIONES%20RM%20N%C2%B0%20400-2018-VIVIENDA.pdf?v=1677250657',
+              'EM030.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366692/64%20EM.030%20INSTALACIONES%20DE%20VENTILACI%C3%93N%20-%20DS%20N%C2%B0%20005-2014-VIVIENDA.pdf?v=1677250657',
+              'EM110.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366726/72%20EM.110%20CONFORT%20T%C3%89RMICO%20Y%20LUM%C3%8DNICO%20CON%20EFICIENCIA%20ENERG%C3%89TICA.pdf?v=1677250657',
+              'IS010-mod-2025.pdf': 'https://cdn.www.gob.pe/uploads/document/file/8056558/RM%20107-2025-VIVIENDA.pdf?v=1744724971',
+          }
+          out = pathlib.Path('audit-instalaciones')
+          for name, url in files.items():
+              request = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 ConstruccionSegura/1.0'})
+              with urllib.request.urlopen(request, timeout=90) as response:
+                  (out / name).write_bytes(response.read())
+          PY
+          for pdf in audit-instalaciones/*.pdf; do
+            pdftotext -layout "$pdf" "${pdf%.pdf}.txt"
+          done
+
+      - name: Build clause and repository audit report
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          import unicodedata
+          from pathlib import Path
+
+          root = Path('audit-instalaciones')
+          norm = json.loads(Path('backend/normativa_tecnica.json').read_text(encoding='utf-8'))
+          faq = json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+
+          def normalize(value: str) -> str:
+              text = unicodedata.normalize('NFD', str(value).lower())
+              return ' '.join(''.join(ch for ch in text if unicodedata.category(ch) != 'Mn').split())
+
+          documents = {
+              path.stem: path.read_text(encoding='utf-8', errors='ignore')
+              for path in root.glob('*.txt')
+          }
+          questions = []
+          for category in faq.get('categorias', []):
+              category_name = category.get('nombre') or category.get('categoria') or ''
+              for item in category.get('preguntas', []):
+                  if isinstance(item, dict):
+                      questions.append({
+                          'id': item.get('id'),
+                          'category': category_name,
+                          'question': item.get('pregunta', ''),
+                          'answer': item.get('respuesta', ''),
+                          'search': normalize(f"{category_name} {item.get('pregunta', '')} {item.get('respuesta', '')}"),
+                      })
+
+          searches = {
+              'A010': [
+                  r'iluminacion natural', r'ventilacion natural', r'area de vano', r'pozo de luz',
+                  r'altura libre', r'pasajes', r'puertas', r'servicios sanitarios', r'impermeabil',
+              ],
+              'A020': [
+                  r'area minima', r'dormitorio', r'cocina', r'lavanderia', r'patio', r'azotea',
+                  r'iluminacion', r'ventilacion', r'proteccion contra humedad', r'altura', r'estacionamiento',
+              ],
+              'IS010': [
+                  r'presion minima', r'presion maxima', r'dotacion', r'diametro minimo', r'pendiente',
+                  r'ventilacion sanitaria', r'registro', r'trampa', r'sello de agua', r'cisterna', r'tanque elevado',
+                  r'agua caliente', r'prueba hidraulica', r'desague', r'aguas pluviales', r'valvula', r'medidor',
+              ],
+              'IS010-mod-2025': [r'vivienda', r'dotacion', r'litros', r'dormitorio'],
+              'EM010': [
+                  r'tablero', r'interruptor diferencial', r'puesta a tierra', r'tomacorriente', r'circuito',
+                  r'carga minima', r'conductor', r'canalizacion', r'proteccion', r'bano', r'cocina',
+                  r'alumbrado', r'caida de tension', r'medidor', r'pozo a tierra',
+              ],
+              'EM020': [
+                  r'caja', r'canalizacion', r'registro', r'telecomunicaciones', r'ducto', r'tuberia',
+                  r'punto de acceso', r'vivienda', r'gabinete',
+              ],
+              'EM030': [
+                  r'renovaciones por hora', r'caudal minimo', r'ventilacion mecanica', r'extraccion',
+                  r'cocina', r'bano', r'servicios higienicos', r'garaje', r'ducto',
+              ],
+              'EM110': [
+                  r'transmitancia', r'iluminancia', r'eficiencia energetica', r'factor solar',
+                  r'aislamiento', r'zona bioclimatica', r'ventilacion', r'iluminacion natural',
+              ],
+          }
+
+          def contexts(text: str, patterns: list[str], limit: int = 60) -> list[str]:
+              lines = text.splitlines()
+              normalized = [normalize(line) for line in lines]
+              blocks = []
+              for index, line in enumerate(normalized):
+                  if any(re.search(pattern, line) for pattern in patterns):
+                      start = max(0, index - 5)
+                      end = min(len(lines), index + 11)
+                      block = '\n'.join(lines[start:end]).strip()
+                      if block and block not in blocks:
+                          blocks.append(block)
+                      if len(blocks) >= limit:
+                          break
+              return blocks
+
+          report = [
+              '# Auditoría de instalaciones y habitabilidad', '',
+              f"- Versión normativa actual: `{norm.get('version')}`",
+              f"- Parámetros actuales: {len(norm.get('parametros', []))}",
+              f"- Preguntas actuales: {len(questions)}", '',
+              '## Fuentes oficiales consideradas', '',
+              '- A.010 Condiciones Generales de Diseño — RM N.° 191-2021-VIVIENDA.',
+              '- A.020 Vivienda — RM N.° 188-2021-VIVIENDA.',
+              '- IS.010 Instalaciones Sanitarias para Edificaciones — DS N.° 017-2012-VIVIENDA, con modificación de dotaciones por RM N.° 107-2025-VIVIENDA.',
+              '- EM.010 Instalaciones Eléctricas Interiores — RM N.° 083-2019-VIVIENDA.',
+              '- EM.020 Instalaciones de Telecomunicaciones — RM N.° 400-2018-VIVIENDA.',
+              '- EM.030 Instalaciones de Ventilación — DS N.° 005-2014-VIVIENDA.',
+              '- EM.110 Confort Térmico y Lumínico con Eficiencia Energética.', '',
+          ]
+
+          for name, patterns in searches.items():
+              text = documents.get(name, '')
+              report += [f'## {name}', '']
+              blocks = contexts(text, patterns)
+              if not blocks:
+                  report.append('_Sin coincidencias extraídas._')
+              for number, block in enumerate(blocks, 1):
+                  report += [f'### Contexto {number}', '```text', block[:6000], '```', '']
+
+          faq_terms = [
+              'ventilacion natural', 'iluminacion natural', 'pozo de luz', 'altura libre', 'humedad',
+              'cisterna', 'tanque elevado', 'presion de agua', 'pendiente de desague', 'ventilacion sanitaria',
+              'registro sanitario', 'trampa', 'sello de agua', 'agua caliente', 'prueba hidraulica',
+              'tablero electrico', 'interruptor diferencial', 'puesta a tierra', 'tomacorriente',
+              'circuito electrico', 'caida de tension', 'caja de paso', 'telecomunicaciones',
+              'ventilacion mecanica', 'extractor', 'bano', 'cocina', 'dormitorio', 'lavanderia',
+          ]
+          report += ['## Mapeo de preguntas existentes', '']
+          for term in faq_terms:
+              token = normalize(term)
+              matches = [q for q in questions if token in q['search']][:20]
+              report += [f'### {term}', '']
+              if not matches:
+                  report.append('_Sin coincidencias directas._')
+              for item in matches:
+                  answer = ' '.join(str(item['answer']).split())
+                  report.append(f"- `{item['id']}` [{item['category']}]: **{item['question']}** — {answer[:450]}")
+              report.append('')
+
+          report += ['## Parámetros existentes relacionados', '']
+          related_tokens = [
+              'sanitari', 'electr', 'ventil', 'ilumin', 'habit', 'humedad', 'agua', 'desague',
+              'cisterna', 'tanque', 'tuberia', 'ducto', 'dormitorio', 'cocina', 'bano',
+          ]
+          for item in norm.get('parametros', []):
+              haystack = normalize(' '.join([
+                  item.get('id', ''), item.get('categoria', ''), item.get('elemento', ''),
+                  item.get('parametro', ''), item.get('valor', {}).get('texto', ''),
+              ]))
+              if any(token in haystack for token in related_tokens):
+                  report.append(
+                      f"- `{item.get('id')}` — {item.get('categoria')} / {item.get('elemento')} / "
+                      f"{item.get('parametro')} / {item.get('fuente', {}).get('norma')} {item.get('fuente', {}).get('numeral')}"
+                  )
+
+          Path('audit-instalaciones/report.md').write_text('\n'.join(report) + '\n', encoding='utf-8')
+          PY
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: installations-habitability-audit
+          path: audit-instalaciones
+          retention-days: 3

@@ -1,10 +1,11 @@
-name: Verificar fragmentos de obras preliminares
+name: Aplicar ampliación de obras preliminares
 
 on:
   pull_request:
     branches:
       - main
     paths:
+      - scripts/aplicar_ampliacion_obras_preliminares.py
       - scripts/data_obras_preliminares/**
       - .github/workflows/diagnosticar-obras-preliminares.yml
 
@@ -12,7 +13,7 @@ permissions:
   contents: write
 
 jobs:
-  verificar:
+  aplicar:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar rama
@@ -20,15 +21,59 @@ jobs:
         with:
           ref: agent/ampliar-obras-preliminares-seguridad-20260727
 
-      - name: Calcular huellas
-        run: |
-          wc -c scripts/data_obras_preliminares/part*.txt > docs/HUELLAS_OBRAS_PRELIMINARES.txt
-          sha256sum scripts/data_obras_preliminares/part*.txt >> docs/HUELLAS_OBRAS_PRELIMINARES.txt
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-      - name: Confirmar huellas
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
+
+      - name: Reparar fragmento alterado
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          ruta = Path("scripts/data_obras_preliminares/part02.txt")
+          texto = ruta.read_text(encoding="utf-8").strip()
+          objetivo = "4615c2796550deb7780c8d03e446e6afc1609c421b6e06562e9b030146e56fce"
+          alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+          if hashlib.sha256(texto.encode()).hexdigest() != objetivo:
+              encontrado = None
+              for posicion, original in enumerate(texto):
+                  prefijo = texto[:posicion]
+                  sufijo = texto[posicion + 1:]
+                  for reemplazo in alfabeto:
+                      if reemplazo == original:
+                          continue
+                      candidato = prefijo + reemplazo + sufijo
+                      if hashlib.sha256(candidato.encode()).hexdigest() == objetivo:
+                          encontrado = candidato
+                          print(f"Fragmento reparado en la posición {posicion}.")
+                          break
+                  if encontrado is not None:
+                      break
+              if encontrado is None:
+                  raise SystemExit("No se pudo reconstruir el fragmento con una sustitución Base64.")
+              ruta.write_text(encontrado, encoding="utf-8")
+
+          Path("scripts/data_obras_preliminares/part02-fixed.txt").unlink(missing_ok=True)
+          if hashlib.sha256(ruta.read_bytes()).hexdigest() != objetivo:
+              raise SystemExit("La huella reparada no coincide con el inventario original.")
+          PY
+
+      - name: Aplicar inventario normativo
+        run: python scripts/aplicar_ampliacion_obras_preliminares.py
+
+      - name: Validar base y API
+        run: python scripts/check_normativa.py
+
+      - name: Confirmar archivos generados
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/HUELLAS_OBRAS_PRELIMINARES.txt
-          git commit -m "Registrar huellas de obras preliminares"
+          git add -A backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_OBRAS_PRELIMINARES_SEGURIDAD_2026-07-27.md scripts/data_obras_preliminares/part02.txt scripts/data_obras_preliminares/part02-fixed.txt
+          git diff --cached --quiet || git commit -m "Ampliar obras preliminares y seguridad"
           git push origin HEAD:agent/ampliar-obras-preliminares-seguridad-20260727

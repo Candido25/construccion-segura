@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 20:
-        raise SystemExit("La fase piloto debe contener por lo menos 20 parámetros.")
+    if len(base.parametros) < 41:
+        raise SystemExit("La base normativa debe contener por lo menos 41 parámetros validados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,9 +68,9 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 19:
+    if validados < 40:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 19 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 40 numerales validados; hay {validados}."
         )
     if base.version == "1.0.0-piloto":
         raise SystemExit("La versión piloto inicial ya no debe permanecer activa.")

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -18,6 +19,23 @@ REPORT = ARTIFACTS / "comparison-report.json"
 
 MAX_CHANGED_PIXEL_RATIO = 0.001
 MAX_MEAN_ABSOLUTE_ERROR = 0.20
+
+
+def required_prefixes() -> tuple[str, ...]:
+    """Limita el bloqueo visual a perfiles declarados como estables.
+
+    Cuando la variable no existe, conserva el comportamiento histórico y
+    compara todas las capturas. Los perfiles omitidos siguen generándose y
+    quedan disponibles como evidencia para revisión humana.
+    """
+    raw = os.getenv("VISUAL_REQUIRED_PREFIXES", "").strip()
+    if not raw:
+        return ()
+    return tuple(prefix.strip() for prefix in raw.split(",") if prefix.strip())
+
+
+def is_required(name: str, prefixes: tuple[str, ...]) -> bool:
+    return not prefixes or name.startswith(prefixes)
 
 
 def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]:
@@ -88,6 +106,8 @@ def compare_images(current_path: Path, baseline_path: Path) -> dict[str, object]
 def main() -> int:
     errors: list[str] = []
     comparisons: list[dict[str, object]] = []
+    evidence_only: list[str] = []
+    prefixes = required_prefixes()
 
     if not CURRENT.is_dir() or not BASELINE.is_dir():
         print("No se encontraron ambas carpetas de capturas.", file=sys.stderr)
@@ -99,7 +119,14 @@ def main() -> int:
     for current_path in current_files:
         baseline_path = BASELINE / current_path.name
         if not baseline_path.exists():
-            errors.append(f"Falta captura base: {current_path.name}")
+            if is_required(current_path.name, prefixes):
+                errors.append(f"Falta captura base: {current_path.name}")
+            else:
+                evidence_only.append(current_path.name)
+            continue
+
+        if not is_required(current_path.name, prefixes):
+            evidence_only.append(current_path.name)
             continue
 
         comparison = compare_images(current_path, baseline_path)
@@ -113,11 +140,14 @@ def main() -> int:
 
     current_names = {path.name for path in current_files}
     for extra_name in sorted(baseline_names - current_names):
-        errors.append(f"Falta captura actual: {extra_name}")
+        if is_required(extra_name, prefixes):
+            errors.append(f"Falta captura actual: {extra_name}")
 
     report = {
         "passed": not errors,
+        "required_prefixes": list(prefixes),
         "comparisons": comparisons,
+        "evidence_only": evidence_only,
         "errors": errors,
     }
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
@@ -129,7 +159,11 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"Visual regression comparison passed for {len(comparisons)} screenshots.")
+    mode = "todos los perfiles" if not prefixes else ", ".join(prefixes)
+    print(
+        f"Visual regression comparison passed for {len(comparisons)} screenshots "
+        f"(perfiles bloqueantes: {mode}; evidencia adicional: {len(evidence_only)})."
+    )
     return 0
 
 

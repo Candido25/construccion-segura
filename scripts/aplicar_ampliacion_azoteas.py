@@ -36,11 +36,20 @@ def main() -> None:
     base = json.loads(NORMATIVA.read_text(encoding="utf-8"))
     banco = json.loads(PREGUNTAS.read_text(encoding="utf-8"))
 
-    registros = payload["registros"]
+    registros_payload = payload["registros"]
     ids_existentes = {item["id"] for item in base["parametros"]}
-    repetidos = [item["id"] for item in registros if item["id"] in ids_existentes]
-    if repetidos:
-        raise SystemExit("Los siguientes parámetros ya existen: " + ", ".join(repetidos))
+    repetidos = [
+        item["id"] for item in registros_payload if item["id"] in ids_existentes
+    ]
+    duplicados_esperados = ["a020-piso-exterior-antideslizante"]
+    if repetidos != duplicados_esperados:
+        raise SystemExit(
+            "La depuración de duplicados no coincide con lo previsto: "
+            + ", ".join(repetidos)
+        )
+    registros = [
+        item for item in registros_payload if item["id"] not in ids_existentes
+    ]
 
     todas_preguntas = [
         pregunta
@@ -111,12 +120,12 @@ def main() -> None:
         for item in base["parametros"]
     )
 
-    if total_parametros != 983:
-        raise SystemExit(f"Se esperaban 983 parámetros y se obtuvieron {total_parametros}.")
-    if total_preguntas != 2446:
-        raise SystemExit(f"Se esperaban 2446 preguntas y se obtuvieron {total_preguntas}.")
-    if total_validados != 949:
-        raise SystemExit(f"Se esperaban 949 registros validados con numeral y se obtuvieron {total_validados}.")
+    if total_parametros != 982:
+        raise SystemExit(f"Se esperaban 982 parámetros y se obtuvieron {total_parametros}.")
+    if total_preguntas != 2445:
+        raise SystemExit(f"Se esperaban 2445 preguntas y se obtuvieron {total_preguntas}.")
+    if total_validados != 948:
+        raise SystemExit(f"Se esperaban 948 registros validados con numeral y se obtuvieron {total_validados}.")
 
     NORMATIVA.write_text(
         json.dumps(base, ensure_ascii=False, separators=(",", ":")),
@@ -128,16 +137,16 @@ def main() -> None:
     )
 
     check = CHECK.read_text(encoding="utf-8")
-    check = reemplazar_unico(check, "if len(base.parametros) < 886:", "if len(base.parametros) < 983:")
-    check = reemplazar_unico(check, "por lo menos 886 parámetros revisados", "por lo menos 983 parámetros revisados")
-    check = reemplazar_unico(check, "if validados < 852:", "if validados < 949:")
-    check = reemplazar_unico(check, "al menos 852 numerales RNE validados", "al menos 949 numerales RNE validados")
+    check = reemplazar_unico(check, "if len(base.parametros) < 886:", "if len(base.parametros) < 982:")
+    check = reemplazar_unico(check, "por lo menos 886 parámetros revisados", "por lo menos 982 parámetros revisados")
+    check = reemplazar_unico(check, "if validados < 852:", "if validados < 948:")
+    check = reemplazar_unico(check, "al menos 852 numerales RNE validados", "al menos 948 numerales RNE validados")
     check = reemplazar_unico(check, 'if base.version != "2.0.0":', 'if base.version != "2.1.0":')
-    check = reemplazar_unico(check, "if len(todas) < 2349:", "if len(todas) < 2446:")
+    check = reemplazar_unico(check, "if len(todas) < 2349:", "if len(todas) < 2445:")
     check = reemplazar_unico(
         check,
         "El bloque de gas, energía solar y transporte mecánico requiere por lo menos 2349 preguntas técnicas.",
-        "La base ampliada de azoteas, drenaje pluvial y estacionamientos requiere por lo menos 2446 preguntas técnicas.",
+        "La base ampliada de azoteas, drenaje pluvial y estacionamientos requiere por lo menos 2445 preguntas técnicas.",
     )
     CHECK.write_text(check, encoding="utf-8")
 
@@ -174,6 +183,7 @@ Se incorporaron **{len(nuevos_parametros)} parámetros** y **{len(nuevas_pregunt
 ## Criterios editoriales
 
 - Se separaron valores mínimos, máximos, fórmulas, condiciones, dependencias de cálculo y prohibiciones.
+- Se descartó `a020-piso-exterior-antideslizante` porque ya estaba incorporado correctamente en la versión 2.0.0.
 - Las pendientes de techo de 12%, 30% y 45% se condicionaron expresamente a la clasificación climática de SENAMHI.
 - Se distinguió el parapeto general de A.010 (1.80 m hacia colindantes) del requisito específico de vivienda de A.020 (2.10 m).
 - Se evitó presentar impermeabilizantes, espesores de membrana o marcas comerciales como mínimos del RNE.

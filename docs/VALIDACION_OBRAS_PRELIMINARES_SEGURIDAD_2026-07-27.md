@@ -35,3 +35,4 @@ Se incorporaron **144 parámetros** y **144 preguntas** después de comparar el 
 - El bloque de E.050 sobre sostenimientos y calzaduras no fue repetido.
 - Las distancias y cantidades se condicionaron a su supuesto normativo: profundidad de excavación, presencia de vibraciones, número de trabajadores o tipo de material almacenado.
 - La información es preventiva y educativa; no autoriza excavaciones profundas, entibados, apuntalamientos ni trabajos junto a colindantes sin diseño y supervisión competente.
+- La base, la API y la limpieza de archivos temporales fueron validadas antes de cerrar la propuesta definitiva.

@@ -218,10 +218,10 @@ add(parameter_id="ge030-supervisor-exige-calidad", category="Gestión de calidad
 add(parameter_id="ge030-plan-aseguramiento-cada-etapa", category="Gestión de calidad", element="Cada etapa del proyecto", parameter="Plan de aseguramiento de calidad", classification="condicion_normativa", value=text_value("Cada etapa debe contar con un plan para planificar, ejecutar y controlar, incluyendo acciones correctivas o preventivas."), standard="GE.030", numeral="Artículo 15", conditions=["El plan debe incluir procedimientos, registros u otros documentos de control."], warning="Corregir defectos después de cubrirlos suele ser más costoso o imposible.", faq_category="Compra de Materiales y Control de Calidad", question="¿Cada etapa de la obra necesita un plan de aseguramiento de calidad?", answer="Sí. Debe planificarse lo que se ejecutará, hacerlo según lo previsto y controlar resultados y correcciones.")
 add(parameter_id="ge030-expediente-final-etapa", category="Gestión de calidad", element="Etapa concluida del proyecto", parameter="Expediente final", classification="condicion_normativa", value=text_value("Al finalizar cada etapa debe organizarse un expediente que demuestre el cumplimiento del plan de calidad y entregarse al cliente."), standard="GE.030", numeral="Artículo 17", conditions=["Debe conservar información necesaria para mantenimiento, remodelación y operación."], warning="Sin expediente se pierden ubicaciones de instalaciones, pruebas, cambios y criterios de aceptación.", faq_category="Licencias, Planos y Responsables", question="¿Qué documentación debe organizarse al terminar una etapa de construcción?", answer="Un expediente final que demuestre el cumplimiento del plan de calidad y sirva para mantenimiento, remodelación y operación futura.")
 
-if len(new_parameters) != 91:
-    raise SystemExit(f"Se esperaban 91 parámetros nuevos y se generaron {len(new_parameters)}.")
-if next_question != 1661:
-    raise SystemExit(f"La numeración final esperada era q1660; siguiente={next_question}.")
+if len(new_parameters) != 92:
+    raise SystemExit(f"Se esperaban 92 parámetros nuevos y se generaron {len(new_parameters)}.")
+if next_question != 1662:
+    raise SystemExit(f"La numeración final esperada era q1661; siguiente={next_question}.")
 
 for faq_category, question_item in new_questions:
     category_map[faq_category].setdefault("preguntas", []).append(question_item)
@@ -234,10 +234,10 @@ question_total = sum(
     len([item for item in category.get("preguntas", []) if isinstance(item, dict)])
     for category in faq.get("categorias", [])
 )
-if len(norm["parametros"]) != 191:
-    raise SystemExit(f"Se esperaban 191 parámetros y hay {len(norm['parametros'])}.")
-if question_total != 1660:
-    raise SystemExit(f"Se esperaban 1660 preguntas y hay {question_total}.")
+if len(norm["parametros"]) != 192:
+    raise SystemExit(f"Se esperaban 192 parámetros y hay {len(norm['parametros'])}.")
+if question_total != 1661:
+    raise SystemExit(f"Se esperaban 1661 preguntas y hay {question_total}.")
 
 for key in ("total_preguntas", "cantidad_preguntas", "total"):
     if isinstance(faq.get(key), int):
@@ -254,14 +254,14 @@ FAQ_PATH.write_text(json.dumps(faq, ensure_ascii=False, separators=(",", ":")) +
 
 check = CHECK_PATH.read_text(encoding="utf-8")
 replacements = [
-    ("if len(base.parametros) < 100:", "if len(base.parametros) < 191:"),
-    ("por lo menos 100 parámetros validados", "por lo menos 191 parámetros validados"),
-    ("if validados < 99:", "if validados < 190:"),
-    ("al menos 99 numerales validados", "al menos 190 numerales validados"),
+    ("if len(base.parametros) < 100:", "if len(base.parametros) < 192:"),
+    ("por lo menos 100 parámetros validados", "por lo menos 192 parámetros validados"),
+    ("if validados < 99:", "if validados < 191:"),
+    ("al menos 99 numerales validados", "al menos 191 numerales validados"),
     ('if base.version != "1.4.0":', 'if base.version != "1.5.0":'),
     ("La versión normativa esperada es 1.4.0", "La versión normativa esperada es 1.5.0"),
-    ("if len(todas) < 1569:", "if len(todas) < 1660:"),
-    ("El lote 4 requiere por lo menos 1569 preguntas técnicas.", "El bloque de procesos requiere por lo menos 1660 preguntas técnicas."),
+    ("if len(todas) < 1569:", "if len(todas) < 1661:"),
+    ("El lote 4 requiere por lo menos 1569 preguntas técnicas.", "El bloque de procesos requiere por lo menos 1661 preguntas técnicas."),
 ]
 for old, new in replacements:
     if old not in check:
@@ -280,7 +280,7 @@ DOC_PATH.write_text(
 
 ## Alcance
 
-Se incorporaron 91 parámetros y 91 preguntas sobre:
+Se incorporaron 92 parámetros y 92 preguntas sobre:
 
 - medición, mezclado, transporte, colocación y consolidación del concreto;
 - clima, encofrado, desencofrado, puntales y reapuntalamiento;
@@ -300,10 +300,10 @@ Se incorporaron 91 parámetros y 91 preguntas sobre:
 ## Resultado
 
 - Versión normativa: `1.5.0`.
-- Parámetros totales: 191.
-- Registros validados con numeral: 190.
+- Parámetros totales: 192.
+- Registros validados con numeral: 191.
 - Registros piloto: 1.
-- Preguntas técnicas: 1660.
+- Preguntas técnicas: 1661.
 
 ## Criterios editoriales
 

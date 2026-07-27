@@ -35,3 +35,4 @@ Se incorporaron **96 parámetros** y **96 preguntas** sin fijar una cuota artifi
 - Se distinguió el parapeto general de A.010 (1.80 m hacia colindantes) del requisito específico de vivienda de A.020 (2.10 m).
 - Se evitó presentar impermeabilizantes, espesores de membrana o marcas comerciales como mínimos del RNE.
 - Las dimensiones mínimas de canaletas y montantes se acompañaron de la advertencia de que el cálculo hidráulico puede exigir secciones mayores.
+- La aplicación automatizada y la validación de la API se ejecutaron correctamente antes de retirar los archivos temporales.

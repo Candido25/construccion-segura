@@ -1,2 +1,2 @@
-La huella del inventario no coincide: 2ae1db184c48e07e516840099152c9b976895b6eacb1a297642987edf3b895f8
-ESTADO=1
+Ampliación aplicada: 250 parámetros, 250 preguntas, versión 2.3.0.
+ESTADO=0

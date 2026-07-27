@@ -11,7 +11,7 @@ estructura valores, condiciones, fórmulas y reglas.
 
 1. Cada registro representa un solo parámetro o regla.
 2. Un valor normativo se distingue de una recomendación o de un dato sujeto a cálculo.
-3. Toda atribución al RNE conserva norma, dispositivo y URL oficial.
+3. Toda atribución oficial conserva tipo de fuente, norma o manual, dispositivo, referencia y URL oficial.
 4. Cada registro enlaza las preguntas de las que fue extraído.
 5. Los numerales no se inventan. Mientras no estén confirmados, se conserva
    `numeral: null`, `numeral_confirmado: false` y el estado piloto.
@@ -28,10 +28,20 @@ estructura valores, condiciones, fórmulas y reglas.
 - `prohibicion`
 - `recomendacion`
 
+## Tipos de fuente
+
+- `RNE`: norma integrante del Reglamento Nacional de Edificaciones.
+- `normativa_nacional`: ley, decreto, reglamento o trámite oficial distinto del RNE.
+- `manual_oficial`: manual o guía aprobada por una entidad pública.
+- `criterio_tecnico`: criterio profesional que no se presenta como obligación normativa.
+- `fuente_interna`: contenido editorial interno.
+
 ## Estados editoriales
 
 - `piloto_verificado`: valor revisado para el piloto; numeral aún pendiente.
-- `validado_con_numeral`: norma y numeral confirmados.
+- `validado_con_numeral`: cláusula del RNE y numeral confirmados.
+- `validado_con_fuente_oficial`: referencia confirmada de normativa nacional o manual oficial.
+- `criterio_tecnico_revisado`: recomendación o decisión sujeta a diagnóstico o cálculo profesional.
 - `borrador`: no se entrega por defecto.
 - `retirado`: excluido incluso de consultas editoriales.
 

@@ -36,6 +36,8 @@
   const reviewLabels = {
     piloto_verificado: "Piloto revisado",
     validado_con_numeral: "Validado con numeral",
+    validado_con_fuente_oficial: "Validado con fuente oficial",
+    criterio_tecnico_revisado: "Criterio técnico revisado",
     borrador: "Borrador editorial",
     retirado: "Retirado"
   };
@@ -175,9 +177,10 @@
     const device = source.dispositivo
       ? `<span>${escapeHtml(source.dispositivo)}</span>`
       : "";
+    const referenceLabel = source.tipo === "RNE" ? "Numeral" : "Referencia";
     const numeral = source.numeral_confirmado && source.numeral
-      ? `<span>Numeral ${escapeHtml(source.numeral)}</span>`
-      : '<span class="is-pending">Numeral específico pendiente de verificación editorial</span>';
+      ? `<span>${referenceLabel} ${escapeHtml(source.numeral)}</span>`
+      : `<span class="is-pending">${referenceLabel} específica pendiente de verificación editorial</span>`;
     const titleMarkup = officialUrl
       ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(title)}</a>`
       : `<strong>${escapeHtml(title)}</strong>`;

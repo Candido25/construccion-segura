@@ -1,0 +1,147 @@
+name: Temporary live normative 1.4 audit v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normativa-1-4-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-normative-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Wait for and verify Render deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-audit-1-4
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import time
+          import urllib.request
+          from pathlib import Path
+
+          BASE = 'https://construccion-segura.onrender.com'
+
+          def fetch(path: str) -> dict:
+              request = urllib.request.Request(
+                  BASE + path,
+                  headers={
+                      'User-Agent': 'ConstruccionSegura-live-audit/1.4-v2',
+                      'Accept': 'application/json',
+                      'Cache-Control': 'no-cache',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=45) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{path}: HTTP {response.status}')
+                  return json.loads(response.read().decode('utf-8'))
+
+          last_state = None
+          listing = None
+          root = None
+          for attempt in range(1, 25):
+              try:
+                  listing = fetch('/api/v1/normativa/parametros')
+                  root = fetch('/')
+                  version = listing.get('version_normativa') or listing.get('version')
+                  total = listing.get('total_encontrados', len(listing.get('parametros', [])))
+                  questions = root.get('total_preguntas')
+                  root_parameters = root.get('total_parametros_normativos')
+                  last_state = {
+                      'attempt': attempt,
+                      'version': version,
+                      'total': total,
+                      'questions': questions,
+                      'root_parameters': root_parameters,
+                  }
+                  if version == '1.4.0' and total == 100 and questions == 1569 and root_parameters == 100:
+                      break
+              except Exception as error:  # noqa: BLE001
+                  last_state = {'attempt': attempt, 'error': str(error)}
+              time.sleep(min(15, 3 + attempt))
+          else:
+              Path('live-audit-1-4/report.json').write_text(
+                  json.dumps({'ultimo_estado': last_state}, ensure_ascii=False, indent=2) + '\n',
+                  encoding='utf-8',
+              )
+              raise SystemExit(f'Render no publicó 1.4.0 dentro del tiempo de espera: {last_state}')
+
+          development = fetch('/api/v1/normativa/parametros/e060-desarrollo-traccion-longitud-minima')
+          separation = fetch('/api/v1/normativa/parametros/e030-separacion-edificios-formula-minima')
+          drift = fetch('/api/v1/normativa/parametros/e030-albanileria-distorsion-entrepiso-maxima')
+          diaphragm = fetch('/api/v1/normativa/parametros/e030-diafragma-aberturas-irregularidad')
+
+          parameters = listing.get('parametros', [])
+          version = listing.get('version_normativa') or listing.get('version')
+          total = listing.get('total_encontrados', len(parameters))
+          validated = sum(p.get('estado_revision') == 'validado_con_numeral' for p in parameters)
+          pilot = sum(p.get('estado_revision') == 'piloto_verificado' for p in parameters)
+          formula = separation.get('valor', {}).get('formula', '')
+
+          checks = {
+              'version_normativa': version == '1.4.0',
+              'total_parametros': total == 100 and len(parameters) == 100,
+              'validados': validated == 99,
+              'piloto': pilot == 1,
+              'preguntas': root.get('total_preguntas') == 1569,
+              'root_parametros': root.get('total_parametros_normativos') == 100,
+              'desarrollo_300_mm': development.get('valor', {}).get('valor') == 300,
+              'desarrollo_numeral': development.get('fuente', {}).get('numeral') == '12.2.1-12.2.4',
+              'separacion_formula': '0.02' in formula and '0.03' in formula,
+              'separacion_e030': separation.get('fuente', {}).get('norma') == 'E.030',
+              'deriva_albanileria': drift.get('valor', {}).get('valor') == 0.005,
+              'abertura_diafragma': diaphragm.get('valor', {}).get('valor') == 50,
+          }
+
+          report = {
+              'intentos_hasta_despliegue': last_state.get('attempt'),
+              'version_normativa': version,
+              'total_parametros': total,
+              'validados_con_numeral': validated,
+              'piloto_verificado': pilot,
+              'total_preguntas': root.get('total_preguntas'),
+              'desarrollo_traccion': development,
+              'separacion_sismica': separation,
+              'deriva_albanileria': drift,
+              'abertura_diafragma': diaphragm,
+              'comprobaciones': checks,
+          }
+          Path('live-audit-1-4/report.json').write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          Path('live-audit-1-4/report.txt').write_text(
+              '\n'.join([
+                  f"intentos_hasta_despliegue={last_state.get('attempt')}",
+                  f"version_normativa={version}",
+                  f"total_parametros={total}",
+                  f"validados_con_numeral={validated}",
+                  f"piloto_verificado={pilot}",
+                  f"total_preguntas={root.get('total_preguntas')}",
+                  f"desarrollo_traccion_mm={development.get('valor', {}).get('valor')}",
+                  f"separacion_formula={formula}",
+                  f"deriva_albanileria={drift.get('valor', {}).get('valor')}",
+                  f"abertura_diafragma_porcentaje={diaphragm.get('valor', {}).get('valor')}",
+                  f"comprobaciones_correctas={sum(checks.values())}/{len(checks)}",
+              ]) + '\n',
+              encoding='utf-8',
+          )
+          failed = [name for name, passed in checks.items() if not passed]
+          if failed:
+              raise SystemExit('Comprobaciones fallidas: ' + ', '.join(failed))
+          PY
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-normativa-1-4-audit-v2
+          path: live-audit-1-4
+          retention-days: 1

@@ -25,7 +25,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /mnt/data/bloques89/current /mnt/data/bloques89/block8
+          sudo mkdir -p /mnt/data/bloques89/current /mnt/data/bloques89/block8
+          sudo chown -R "$USER":"$USER" /mnt/data/bloques89
           cp backend/normativa_tecnica.json /mnt/data/bloques89/current/
           cp backend/preguntas_tecnicas.json /mnt/data/bloques89/current/
           cp scripts/check_normativa.py /mnt/data/bloques89/current/

@@ -1,11 +1,12 @@
 # Diagnóstico de cobertura — impermeabilización y humedad
 
 Versión revisada: `2.7.0`. Parámetros totales: `1680`.
-Parámetros relacionados encontrados: `352`.
+Parámetros relacionados encontrados: `371`.
 
-## A.010 — 19
+## A.010 — 22
 
 - `a010-aire-acondicionado-humedad-relativa` | Arquitectura y Habitabilidad de la Vivienda | Ambiente con aire acondicionado | Humedad relativa de diseño | 40.1
+- `a010-altura-equipo-deposito-minima` | Arquitectura y Habitabilidad de la Vivienda | Ambiente para equipo o depósito | Altura libre | 18.2
 - `a010-azotea-area-techada-maxima` | Azoteas, techos y cubiertas | Azotea | Área techada | 14.2
 - `a010-azotea-manejo-aguas-pluviales` | Azoteas, techos y cubiertas | Techo, azotea o patio descubierto | Manejo de aguas pluviales | 14.4
 - `a010-azotea-parapeto-colindante-minimo` | Azoteas, techos y cubiertas | Parapeto de azotea | Altura hacia propiedades vecinas | 14.3
@@ -13,6 +14,7 @@ Parámetros relacionados encontrados: `352`.
 - `a010-azotea-uso-acceso` | Azoteas, techos y cubiertas | Azotea | Uso y acceso | 14.1
 - `a010-baranda-altura-especial-minima` | Escaleras | Baranda en gran desnivel o azotea | Altura | 35.a
 - `a010-cajon-pendiente-maxima` | Estacionamientos | Cajón de estacionamiento | Pendiente | 54.1.a, nota (*)
+- `a010-cuarto-residuos-superficies-ventilacion` | Arquitectura y Habitabilidad de la Vivienda | Cuarto de residuos | Condiciones constructivas | 43.2
 - `a010-ducto-techo-accesible-proteccion-caidas` | Arquitectura y Habitabilidad de la Vivienda | Ducto en techo accesible | Protección contra caídas | Artículo 44
 - `a010-escalera-protegida-continuidad` | Evacuación y protección contra incendios | Escalera protegida | Continuidad vertical | Artículo 25.3.b
 - `a010-estacionamiento-dotacion-pdu` | Estacionamientos | Dotación de estacionamientos | Cantidad mínima | 51.1
@@ -23,6 +25,7 @@ Parámetros relacionados encontrados: `352`.
 - `a010-rampa-transicion-pendiente-maxima` | Estacionamientos | Rampa vehicular | Pendiente del tramo inicial | 53.1.c
 - `a010-retiro-frontal-estacionamiento-cubierta-espesor` | Instalaciones exteriores y retiros | Retiro frontal | Cubierta ligera de estacionamiento | 8.3.d
 - `a010-retiro-lateral-bicicletas-cubierta-espesor` | Instalaciones exteriores y retiros | Retiro lateral o posterior | Cubierta ligera para bicicletas | 8.2.f
+- `a010-servicio-sanitario-acabados` | Arquitectura y Habitabilidad de la Vivienda | Servicio sanitario | Pisos y paredes | Artículo 49
 - `a010-servicio-sanitario-sumidero-piso` | Arquitectura y Habitabilidad de la Vivienda | Servicio sanitario | Sumidero de piso | Artículo 49
 
 ## A.020 — 32
@@ -196,13 +199,14 @@ Parámetros relacionados encontrados: `352`.
 - `e030-diafragma-aberturas-irregularidad` | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad | Artículos 23-24 y Tabla N.° 12
 - `e030-diafragma-rigidez-resistencia-conexion` | Diseño sismorresistente | Diafragma de piso o techo | Verificación para considerarlo rígido | Artículo 30.3-30.6
 
-## E.040 — 7
+## E.040 — 8
 
 - `e040-almacenamiento-lugar-protegido` | Vidrios, ventanas y cerramientos | Vidrio almacenado | Protección ambiental | 18.1.a
 - `e040-almacenamiento-vidrio-mojado-prohibido` | Vidrios, ventanas y cerramientos | Vidrio almacenado | Condición de humedad | 18.2.d
 - `e040-carga-descarga-lluvia-prohibida` | Vidrios, ventanas y cerramientos | Carga y descarga de vidrio | Condición climática | 19.4
 - `e040-ducha-vidrio-seguridad` | Vidrios, ventanas y cerramientos | Mampara de ducha, tina o baño | Vidrio de seguridad | 6.2.a
 - `e040-piso-vidrio-pendiente-maxima` | Vidrios, ventanas y cerramientos | Superficie transitable de vidrio | Pendiente máxima | 5.13.c
+- `e040-piso-vidrio-sellado-agua-aire` | Vidrios, ventanas y cerramientos | Superficie transitable de vidrio | Hermeticidad | 5.13.b
 - `e040-techo-vidrio-cargas` | Vidrios, ventanas y cerramientos | Techo de vidrio | Cargas de diseño | 5.14.a
 - `e040-techo-vidrio-excepcion-carga-agua` | Vidrios, ventanas y cerramientos | Techo de vidrio | Excepción de carga de agua | 5.14.b
 
@@ -214,9 +218,10 @@ Parámetros relacionados encontrados: `352`.
 - `e050-calzadura-paneles-alternados` | Excavaciones, sostenimiento y calzaduras | Calzadura | Secuencia de paños | 39.12.3
 - `e050-its-condiciones-aplicacion` | Terreno y estudio de suelos | Informe Técnico de Suelos | Condiciones del supuesto simplificado | 5.36 y 6.3.1-6.3.4
 
-## E.060 — 10
+## E.060 — 11
 
 - `e060-colocacion-plastica-continua` | Procesos de concreto | Vaciado de concreto | Continuidad y estado plástico | 5.10.2 y 5.10.5
+- `e060-encofrado-hermeticidad` | Encofrados y apuntalamiento | Encofrado | Hermeticidad | 6.1.2
 - `e060-junta-construccion-preparacion` | Concreto y acero de refuerzo | Junta de construcción | Preparación antes de continuar el vaciado | 6.4.2 y 6.4.3
 - `e060-junta-pisos-techos-tercio-central` | Juntas de construcción | Junta en piso, losa o viga | Ubicación | 6.4.4
 - `e060-junta-viga-principal-desplazamiento-minimo` | Juntas de construcción | Junta en viga principal | Distancia respecto a viga interceptante | 6.4.5
@@ -253,7 +258,7 @@ Parámetros relacionados encontrados: `352`.
 - `em030-renovaciones-bano-residencial` | Arquitectura y Habitabilidad de la Vivienda | Baño residencial | Renovaciones de aire | Artículo 7, Tabla N.° 3
 - `em030-renovaciones-duchas` | Arquitectura y Habitabilidad de la Vivienda | Zona de duchas | Renovaciones de aire | Artículo 7, Tabla N.° 3
 
-## EM.040 — 16
+## EM.040 — 19
 
 - `em040-abertura-superior-distancia-techo-maxima` | Instalaciones de Gas en Viviendas | Abertura superior de ventilación para gas | Distancia máxima bajo el techo | 8.2(c)(i)
 - `em040-ambiente-abierto-techo-area-minima` | Instalaciones de gas | Ambiente abierto hacia el exterior | Área mínima absoluta de abertura en techo | 3.7.b
@@ -265,12 +270,15 @@ Parámetros relacionados encontrados: `352`.
 - `em040-glp-linea-carga-exterior` | Instalaciones de gas | Línea de carga a tanque estacionario | Recorrido exterior | 5.3.b
 - `em040-glp-linea-carga-no-empotrada` | Instalaciones de gas | Línea de carga a tanque estacionario | Prohibición de empotramiento e ingreso | 5.3.b.i
 - `em040-glp-linea-carga-ventilacion` | Instalaciones de gas | Cubierta de línea de carga de GLP | Aberturas de ventilación | 5.3.b.i
+- `em040-glp-prueba-hermeticidad-total` | Instalaciones de gas | Instalación interna de GLP | Prueba de hermeticidad | 5.3.i
 - `em040-glp-tanque-altura-hasta-16m` | Instalaciones de Gas en Viviendas | Tanque estacionario de GLP hasta 16 m | Opciones de llenado | 5.3(e)(i)
 - `em040-glp-tanque-altura-transferencia-obligatoria` | Instalaciones de gas | Tanque estacionario de GLP elevado | Punto de transferencia y línea de llenado | 5.3.e
 - `em040-glp-tanque-exterior-sin-techo` | Instalaciones de gas | Tanque estacionario de GLP | Ubicación general | 5.3.d
 - `em040-glp-tanque-perimetro-libre` | Instalaciones de gas | Tanque estacionario de GLP | Perímetro lateral libre | 5.3.d
 - `em040-glp-tuberia-empotrada-metalica` | Instalaciones de Gas en Viviendas | Tubería interna de GLP empotrada | Material y uniones | 5.3(g)(ii)
 - `em040-glp-tuberia-oculta-canaleta` | Instalaciones de Gas en Viviendas | Tubería interna de GLP oculta | Canaleta | 5.3(g)(iii)
+- `em040-prueba-hermeticidad-previa` | Instalaciones de gas y combustión | Red interna | Prueba de hermeticidad | Artículo 14
+- `em040-puesta-servicio-verificada` | Instalaciones de gas y combustión | Instalación terminada | Puesta en servicio | Artículo 15
 
 ## EM.070 — 4
 
@@ -279,8 +287,9 @@ Parámetros relacionados encontrados: `352`.
 - `em070-montavehiculo-drenaje-fosa` | Ascensores y Transporte Mecánico | Montavehículos expuesto a intemperie | Drenaje del foso | 9.5
 - `em070-tablero-independiente-por-equipo` | Transporte mecánico y equipos especiales | Instalación eléctrica de ascensor | Tablero independiente | 5.8.b
 
-## EM.080 — 9
+## EM.080 — 10
 
+- `em080-fv-alejado-almacenamiento-agua` | Energía Solar en Viviendas | Panel fotovoltaico | Proximidad a almacenamiento de agua | 6.2.2
 - `em080-fv-sellar-perforaciones-techo` | Energía Solar en Viviendas | Anclajes de paneles en azotea | Impermeabilización | 6.2.4
 - `em080-fv-separacion-cubierta-ventilacion` | Energía Solar en Viviendas | Panel fotovoltaico sobre techo | Separación para ventilación | 6.2.2 y 6.2.4
 - `em080-fv-verificar-superficie-soporte` | Energía Solar en Viviendas | Paneles sobre cubierta | Resistencia del soporte | 6.2.5
@@ -315,16 +324,21 @@ Parámetros relacionados encontrados: `352`.
 - `criterio-grieta-no-clasificar-solo-ancho` | Diagnóstico, mantenimiento y reparación | Diagnóstico de grietas | Ancho no determina por sí solo el riesgo | Aplicación profesional caso por caso
 - `criterio-humedad-corregir-origen` | Diagnóstico, mantenimiento y reparación | Patologías por humedad | Corrección de la fuente | Aplicación profesional caso por caso
 
-## Formación técnica SENCICO — 50
+## Formación técnica SENCICO — 56
 
 - `criterio-carpinteria-lista-observaciones` | Control de calidad de acabados | Recepción | Lista de pendientes | Aplicación práctica supervisada
 - `criterio-electrico-bano-grado-proteccion` | Accesorios y luminarias | Baño y exterior | Protección | Aplicación práctica supervisada
 - `criterio-electrico-tablero-ubicacion-seca` | Tableros y protecciones | Tablero | Ubicación | Aplicación práctica supervisada
 - `criterio-entrega-manual-mantenimiento` | Mantenimiento de la vivienda | Puertas y ventanas | Instrucciones | Aplicación práctica supervisada
 - `criterio-gas-cilindro-no-subterraneo` | Instalaciones de gas y combustión | Cilindro de GLP | Ubicación | Aplicación práctica supervisada
+- `criterio-gas-detector-no-sustituye` | Instalaciones de gas y combustión | Detector de gas | Alcance | Aplicación práctica supervisada
 - `criterio-gas-ducto-pendiente` | Instalaciones de gas y combustión | Conducto de evacuación | Trazado | Aplicación práctica supervisada
 - `criterio-gas-no-contacto-suelo` | Instalaciones de gas y combustión | Tubería expuesta | Apoyo | Aplicación práctica supervisada
 - `criterio-gas-proteger-corrosion` | Instalaciones de gas y combustión | Tubería metálica | Corrosión | Aplicación práctica supervisada
+- `criterio-gas-prueba-componentes` | Instalaciones de gas y combustión | Prueba de hermeticidad | Aislamiento de equipos | Aplicación práctica supervisada
+- `criterio-gas-prueba-manometro` | Instalaciones de gas y combustión | Prueba de hermeticidad | Instrumento | Aplicación práctica supervisada
+- `criterio-gas-prueba-tiempo-registro` | Instalaciones de gas y combustión | Prueba de hermeticidad | Registro | Aplicación práctica supervisada
+- `criterio-gas-prueba-tramos` | Instalaciones de gas y combustión | Prueba de hermeticidad | Ejecución | Aplicación práctica supervisada
 - `criterio-gas-regulador-no-manipular` | Instalaciones de gas y combustión | Regulador | Ajuste | Aplicación práctica supervisada
 - `criterio-gas-rosca-limpia` | Instalaciones de gas y combustión | Unión roscada | Preparación | Aplicación práctica supervisada
 - `criterio-herraje-lubricante-compatible` | Mantenimiento de la vivienda | Herrajes | Lubricación | Aplicación práctica supervisada
@@ -351,6 +365,7 @@ Parámetros relacionados encontrados: `352`.
 - `criterio-sanitaria-pendiente-verificar-instrumento` | Ejecución y control de instalaciones sanitarias | Desagüe horizontal | Control de pendiente | sin numeral
 - `criterio-sanitaria-proteger-tuberia-concreto` | Ejecución y control de instalaciones sanitarias | Tubería embebida | Protección durante vaciado | sin numeral
 - `criterio-sanitaria-prueba-descarga-simultanea` | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Prueba funcional | sin numeral
+- `criterio-sanitaria-rebose-visible` | Ejecución y control de instalaciones sanitarias | Rebose de depósito | Detección de falla | sin numeral
 - `criterio-sanitaria-sellar-pasamuros` | Ejecución y control de instalaciones sanitarias | Paso de tuberías | Sellado | sin numeral
 - `criterio-sanitaria-tapa-cisterna-hermetica` | Ejecución y control de instalaciones sanitarias | Cisterna | Tapa de inspección | sin numeral
 - `criterio-sanitaria-trampas-con-agua` | Ejecución y control de instalaciones sanitarias | Aparato sanitario | Sello hidráulico | sin numeral
@@ -368,12 +383,14 @@ Parámetros relacionados encontrados: `352`.
 - `criterio-ventana-sello-compatible` | Carpinterías, sellos y herrajes | Encuentro marco-muro | Sellante perimetral | Aplicación práctica supervisada
 - `criterio-ventana-superficie-sello` | Carpinterías, sellos y herrajes | Junta de sellado | Preparación | Aplicación práctica supervisada
 
-## G.050 — 18
+## G.050 — 20
 
 - `g050-almacenes-separados-naturaleza` | Almacenamiento y acopio en obra | Almacenes de materiales | Separación por naturaleza | 19.1
 - `g050-apilamiento-no-bloquear-emergencia` | Almacenamiento y acopio en obra | Material almacenado | Accesos y equipos críticos | 19.1
 - `g050-caida-cercania-borde` | Seguridad durante la construcción | Trabajo cerca de borde sin baranda | Distancia de protección | 20.1
+- `g050-comedor-mesas-lavables` | Servicios provisionales y bienestar en obra | Comedor provisional | Mesas y bancas | 7.10
 - `g050-conductor-provisional-agua-humedad` | Obras preliminares e instalaciones provisionales | Conductor eléctrico provisional | Protección frente al agua y humedad | 7.3
+- `g050-cuarto-electrico-no-almacen` | Almacenamiento y acopio en obra | Cuarto con controles eléctricos | Uso como depósito | 19.1
 - `g050-demolicion-canaletas-cerradas` | Demoliciones y seguridad de intervención | Retiro de escombros | Descarga desde niveles altos | 25.4
 - `g050-demolicion-estudio-estructural-previo` | Demoliciones y seguridad de intervención | Evaluación previa | Estudio estructural inicial | 25.2
 - `g050-electricidad-provisional-intemperie-lluvia` | Obras preliminares e instalaciones provisionales | Instalación eléctrica provisional | Protección en zonas lluviosas | 7.3
@@ -395,7 +412,7 @@ Parámetros relacionados encontrados: `352`.
 - `ge040-techos-drenaje-no-afectar-vecino` | Uso, mantenimiento y conservación | Techos y cubiertas | Drenaje sin afectar colindantes | Artículo 16
 - `ge040-uso-evitar-agentes-daninos` | Uso, mantenimiento y conservación | Uso y conservación | Agentes que pueden dañar la edificación | Artículo 9
 
-## IS.010 — 25
+## IS.010 — 27
 
 - `is010-agua-desague-separacion-ducto` | Instalaciones Sanitarias en Viviendas | Alimentador de agua y montante de desagüe en un ducto | Separación | 2.3
 - `is010-caja-registro-cambios-red` | Instalaciones sanitarias en ejecución | Red exterior de desagüe | Caja en cambios de trazado | 6.2.k
@@ -406,7 +423,9 @@ Parámetros relacionados encontrados: `352`.
 - `is010-cuarto-bombas-pendiente-piso` | Instalaciones Sanitarias en Viviendas | Cuarto de bombas | Pendiente del piso | 2.5
 - `is010-deposito-entrada-techo-separacion-minima` | Instalaciones sanitarias en ejecución | Cisterna o tanque | Separación entre techo y eje de entrada | 2.4.i
 - `is010-deposito-material-resistente-impermeable` | Instalaciones sanitarias en ejecución | Cisterna o tanque | Material y paredes | 2.4.g
+- `is010-deposito-obligatorio-abastecimiento-discontinuo` | Instalaciones sanitarias en ejecución | Almacenamiento de agua | Obligación por discontinuidad o baja presión | 2.4.b
 - `is010-deposito-preservar-calidad-agua` | Instalaciones sanitarias en ejecución | Cisterna o tanque | Protección de la calidad del agua | 2.4.a
+- `is010-deposito-rebose-brecha-aire` | Instalaciones sanitarias en ejecución | Rebose de depósito | Brecha de aire de descarga | 2.4.l
 - `is010-deposito-rebose-entrada-separacion` | Instalaciones sanitarias en ejecución | Cisterna o tanque | Separación entre rebose y entrada | 2.4.j
 - `is010-deposito-rebose-nivel-maximo-separacion` | Instalaciones sanitarias en ejecución | Cisterna o tanque | Separación entre rebose y nivel máximo | 2.4.k
 - `is010-desague-pendiente-hasta-75` | Instalaciones Sanitarias en Viviendas | Tubería horizontal de desagüe de hasta 75 mm | Pendiente mínima | 6.2

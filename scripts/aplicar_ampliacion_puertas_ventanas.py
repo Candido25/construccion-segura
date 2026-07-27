@@ -222,8 +222,8 @@ def construir_registros() -> list[dict]:
     for item in criterios:
         registros.append(criterio(*item))
 
-    if len(registros) != 84:
-        raise SystemExit(f"Se esperaban 84 registros y se generaron {len(registros)}.")
+    if len(registros) != 85:
+        raise SystemExit(f"Se esperaban 85 registros y se generaron {len(registros)}.")
     return registros
 
 
@@ -283,7 +283,7 @@ def main() -> None:
     total_preguntas = len(faq_finales)
     total_validados = sum(item.get("estado_revision") == "validado_con_numeral" for item in base["parametros"])
     total_criterios = sum(item.get("estado_revision") == "criterio_tecnico_revisado" for item in base["parametros"])
-    if (total_parametros, total_preguntas, total_validados, total_criterios) != (1603, 3066, 1229, 356):
+    if (total_parametros, total_preguntas, total_validados, total_criterios) != (1604, 3067, 1230, 356):
         raise SystemExit(
             f"Totales inesperados: parámetros={total_parametros}, preguntas={total_preguntas}, "
             f"validados={total_validados}, criterios={total_criterios}."
@@ -293,19 +293,19 @@ def main() -> None:
     PREGUNTAS.write_text(json.dumps(banco, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     check = CHECK.read_text(encoding="utf-8")
-    check = reemplazar_unico(check, "if len(base.parametros) < 1519:", "if len(base.parametros) < 1603:")
-    check = reemplazar_unico(check, "por lo menos 1519 parámetros revisados", "por lo menos 1603 parámetros revisados")
-    check = reemplazar_unico(check, "if validados < 1210:", "if validados < 1229:")
-    check = reemplazar_unico(check, "al menos 1210 numerales RNE validados", "al menos 1229 numerales RNE validados")
+    check = reemplazar_unico(check, "if len(base.parametros) < 1519:", "if len(base.parametros) < 1604:")
+    check = reemplazar_unico(check, "por lo menos 1519 parámetros revisados", "por lo menos 1604 parámetros revisados")
+    check = reemplazar_unico(check, "if validados < 1210:", "if validados < 1230:")
+    check = reemplazar_unico(check, "al menos 1210 numerales RNE validados", "al menos 1230 numerales RNE validados")
     check = reemplazar_unico(check, 'if base.version != "2.5.0":', 'if base.version != "2.6.0":')
     check = reemplazar_unico(check, "La versión normativa esperada es 2.5.0", "La versión normativa esperada es 2.6.0")
     check = reemplazar_unico(check, "if criterios < 291:", "if criterios < 356:")
     check = reemplazar_unico(check, "al menos 291 criterios técnicos revisados", "al menos 356 criterios técnicos revisados")
-    check = reemplazar_unico(check, "if len(todas) < 2982:", "if len(todas) < 3066:")
+    check = reemplazar_unico(check, "if len(todas) < 2982:", "if len(todas) < 3067:")
     check = reemplazar_unico(
         check,
         "La base ampliada de instalaciones sanitarias requiere por lo menos 2982 preguntas técnicas.",
-        "La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3066 preguntas técnicas.",
+        "La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3067 preguntas técnicas.",
     )
 
     pruebas = '''\n    puerta_vivienda = api.detalle_parametro_normativo("a020-vano-puerta-principal-vivienda-ancho-minimo")\n    if puerta_vivienda["valor"]["valor"] != 0.90:\n        raise SystemExit("La puerta principal de vivienda debe conservar 0.90 m.")\n\n    puerta_fuego = api.detalle_parametro_normativo("a130-puerta-cortafuego-resistencia-relativa")\n    if puerta_fuego["valor"]["valor"] != 75:\n        raise SystemExit("La puerta cortafuego debe conservar la relación de 75%.")\n\n    puerta_corredera = api.detalle_parametro_normativo("criterio-puerta-corredera-antidescarrilamiento")\n    if puerta_corredera["estado_revision"] != "criterio_tecnico_revisado":\n        raise SystemExit("El antidescarrilamiento debe conservarse como criterio técnico revisado.")\n\n'''

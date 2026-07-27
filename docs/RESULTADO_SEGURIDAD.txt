@@ -1,4 +1,0 @@
-Aplicados 174 parámetros y preguntas; versión 2.9.0
-APLICACION=0
-Normativa técnica válida: 1976 parámetros, 1372 elementos, 78 categorías.
-VALIDACION=0

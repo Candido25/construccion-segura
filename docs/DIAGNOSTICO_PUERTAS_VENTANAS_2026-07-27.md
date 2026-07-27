@@ -1,7 +1,7 @@
 # Diagnóstico de cobertura — puertas, ventanas y cerrajería
 
-Versión revisada: `2.5.0`. Parámetros totales: `1519`.
-Parámetros relacionados encontrados: `306`.
+Versión revisada: `2.6.0`. Parámetros totales: `1604`.
+Parámetros relacionados encontrados: `391`.
 
 ## A.010 — 27
 
@@ -33,22 +33,30 @@ Parámetros relacionados encontrados: `306`.
 - `a010-ventilacion-mecanica-cuando-no-hay-exterior` | Arquitectura y Habitabilidad de la Vivienda | Ambiente sin ventilación directa | Renovación de aire | Artículo 39
 - `a010-ventilacion-natural-vano-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente con ventilación natural | Área de abertura al exterior | 38.2
 
-## A.020 — 9
+## A.020 — 15
 
 - `a020-azotea-baranda-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Azotea accesible | Altura de protección | Artículo 18
 - `a020-azotea-baranda-resistencia-puntual` | Azoteas, techos y cubiertas | Baranda de azotea | Resistencia horizontal | 18.4
 - `a020-azotea-medicion-parapeto` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Punto de medición | 18.5
 - `a020-azotea-parapeto-colindante-minimo` | Azoteas, techos y cubiertas | Parapeto de azotea | Altura hacia vecino o unidad contigua | 18.4
 - `a020-azotea-parapeto-general-minimo` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Altura general | 18.4
+- `a020-puerta-varias-hojas-hoja-minima` | Puertas, ventanas y cerrajería | Puerta residencial de varias hojas | Ancho mínimo de una hoja | 12.3
+- `a020-vano-cierre-clima-material-compatible` | Puertas, ventanas y cerrajería | Vano de puerta o ventana | Compatibilidad del cierre | 12.1
 - `a020-vano-iluminacion-natural-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de vano para iluminación | ¿Qué área mínima de ventana se considera para iluminación natural?
+- `a020-vano-puerta-ambientes-principales-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de dormitorio, sala, comedor o cocina | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-bano-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de baño o ambiente de servicio | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-principal-multifamiliar-ancho-minimo` | Puertas, ventanas y cerrajería | Ingreso principal de vivienda multifamiliar | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-principal-vivienda-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta principal de vivienda | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
 - `a020-vano-ventilacion-natural-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de abertura para ventilación | ¿Qué parte de la ventana debe poder abrirse para ventilar?
 - `a020-ventana-alfeizar-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Ventana de vivienda | Altura del alfeizar | Artículo 12
 - `a020-ventana-proteccion-abertura-maxima` | Arquitectura y Habitabilidad de la Vivienda | Protección de ventana con alfeizar bajo | Abertura máxima | Artículo 12
 
-## A.120 — 32
+## A.120 — 35
 
 - `a120-alerta-emergencia-sonora-luminosa` | Evacuación y protección contra incendios | Sistema de alerta accesible | Modalidades | Artículo 30.h
 - `a120-ascensor-puerta-ancho-segun-carga` | Ascensores y plataformas accesibles | Puerta automática de ascensor | Ancho mínimo | Artículo 8.e
+- `a120-bano-accesible-apertura-compatible` | Servicios higiénicos accesibles | Puerta de baño accesible | Tipo y sentido de apertura | Artículo 13.1.b
+- `a120-bano-accesible-espacio-giro-puerta` | Servicios higiénicos accesibles | Puerta de baño accesible | Espacio de maniobra | Artículo 13.1.b
 - `a120-bano-accesible-puerta-vano-minimo` | Servicios higiénicos accesibles | Puerta de baño accesible | Ancho mínimo de vano | Artículo 13.1.b
 - `a120-bano-agarradera-puerta-altura` | Servicios higiénicos accesibles | Agarradera interior de puerta de baño | Rango de altura | Artículo 13.1.c
 - `a120-baranda-altura-minima` | Rampas y rutas accesibles | Baranda accesible | Altura mínima | Artículo 7.d
@@ -57,6 +65,7 @@ Parámetros relacionados encontrados: `306`.
 - `a120-braille-altura-ubicacion` | Señalización accesible | Placa braille junto a puerta | Ubicación | Artículo 29.b
 - `a120-cerradura-altura-maxima` | Accesibilidad universal en vivienda | Cerradura accesible | Altura máxima | Artículo 5.g
 - `a120-manija-tipo-palanca` | Accesibilidad universal en vivienda | Manija de puerta accesible | Tipo de accionamiento | Artículo 5.g
+- `a120-marco-bano-no-invadir-ruta` | Servicios higiénicos accesibles | Marco de puerta accesible | Invasión de la ruta | Artículo 13.1.b
 - `a120-puerta-automatica-emergencia` | Accesibilidad universal en vivienda | Puerta automática o cierre controlado | Funcionamiento en emergencia | Artículo 4.b
 - `a120-puerta-contraste-pared` | Accesibilidad universal en vivienda | Puerta accesible | Contraste visual | Artículo 4.e
 - `a120-puerta-doble-hoja-seccion-accesible` | Accesibilidad universal en vivienda | Puerta de dos hojas | Hoja operativa accesible | Artículo 4.b
@@ -80,7 +89,7 @@ Parámetros relacionados encontrados: `306`.
 - `a120-tirador-puerta-altura-maxima` | Accesibilidad universal en vivienda | Tirador de puerta translúcida | Altura máxima | Artículo 4.g
 - `a120-tirador-puerta-translucida-seccion` | Accesibilidad universal en vivienda | Tirador de puerta translúcida | Diámetro o sección | Artículo 4.g
 
-## A.130 — 30
+## A.130 — 41
 
 - `a130-alarma-acustica-altura-estacion-manual-maxima` | Evacuación y protección contra incendios | Estación manual de alarma | Altura máxima | Artículo 62
 - `a130-alarma-acustica-altura-estacion-manual-minima` | Evacuación y protección contra incendios | Estación manual de alarma | Altura mínima | Artículo 62
@@ -101,11 +110,22 @@ Parámetros relacionados encontrados: `306`.
 - `a130-iluminacion-emergencia-nivel-minimo` | Evacuación y protección contra incendios | Iluminación de emergencia | Iluminancia mínima en piso | Artículo 40.a
 - `a130-iluminacion-emergencia-transferencia-maxima` | Evacuación y protección contra incendios | Fuente automática de emergencia | Tiempo máximo de transferencia | Artículo 40.b
 - `a130-montante-seca-diametro-minimo` | Evacuación y protección contra incendios | Montante seca en vivienda de 6 a 10 niveles | Diámetro mínimo | Artículo 67
+- `a130-puerta-cortafuego-accesorios-certificados` | Evacuación y protección contra incendios | Accesorios de puerta cortafuego | Certificación para uso cortafuego | Artículo 10
+- `a130-puerta-cortafuego-alteracion-certificacion` | Evacuación y protección contra incendios | Puerta cortafuego certificada | Conservación de la certificación | Artículo 10
+- `a130-puerta-cortafuego-autocierre` | Evacuación y protección contra incendios | Puerta cortafuego | Cierre automático | Artículo 10
+- `a130-puerta-cortafuego-cierrapuertas-aprobado` | Evacuación y protección contra incendios | Puerta en cerramiento cortafuego | Dispositivo de cierre | Artículo 8.a
+- `a130-puerta-cortafuego-conjunto-certificado` | Evacuación y protección contra incendios | Puerta cortafuego | Certificación del conjunto | Artículo 10
+- `a130-puerta-cortafuego-resistencia-relativa` | Evacuación y protección contra incendios | Puerta cortafuego | Resistencia respecto del cerramiento | Artículo 10
+- `a130-puerta-cortahumo-sellos-contorno` | Evacuación y protección contra incendios | Puerta cortahumo | Sellos de humo | Artículo 10
+- `a130-puerta-doble-hoja-coordinador-cierre` | Evacuación y protección contra incendios | Puerta de evacuación de doble hoja | Orden de cierre | Artículo 8.b
 - `a130-puerta-empuje-fuerza-maxima` | Evacuación y protección contra incendios | Puerta de evacuación | Fuerza máxima de empuje | Artículo 7
+- `a130-puerta-evacuacion-cerradura-llave-senal` | Evacuación y protección contra incendios | Puerta de evacuación con cerradura | Señal de permanencia sin llave | Artículo 5
 - `a130-puerta-evacuacion-giro-flujo` | Evacuación y protección contra incendios | Puerta de evacuación de ambiente con más de 50 personas | Sentido de apertura | Artículo 6
+- `a130-puerta-evacuacion-manija-certificada` | Evacuación y protección contra incendios | Puerta de evacuación sin barra antipánico | Manija de operación | Artículo 8.c
 - `a130-puerta-pestillo-fuerza-maxima` | Evacuación y protección contra incendios | Pestillo o barra antipánico | Fuerza máxima para destrabar | Artículo 7
 - `a130-rampa-evacuacion-pendiente-maxima` | Evacuación y protección contra incendios | Rampa usada como medio de evacuación | Pendiente máxima | Artículo 16
 - `a130-ruta-evacuacion-sin-obstaculos` | Evacuación y protección contra incendios | Pasajes, escaleras y salidas de evacuación | Obstrucciones | Artículo 13
+- `a130-salida-emergencia-apertura-simple-empuje` | Evacuación y protección contra incendios | Salida de emergencia | Apertura desde el interior | Artículo 5
 - `a130-senal-ascensor-no-usar-emergencia` | Evacuación y protección contra incendios | Ascensor | Señal de prohibición | Artículo 39.c
 - `a130-senal-evacuacion-iluminancia-minima` | Evacuación y protección contra incendios | Señalización de evacuación | Iluminancia mínima | Artículo 39.g
 - `a130-tiempo-evacuacion-no-base-calculo` | Evacuación y protección contra incendios | Tiempo de evacuación | Uso del indicador | Artículo 25
@@ -317,15 +337,80 @@ Parámetros relacionados encontrados: `306`.
 
 - `criterio-abrir-vano-evaluar-camino-cargas` | Diagnóstico, mantenimiento y reparación | Remodelación estructural | Apertura o ampliación de vanos | Aplicación profesional caso por caso
 
-## Formación técnica SENCICO — 7
+## Formación técnica SENCICO — 72
 
+- `criterio-barra-antipanico-operacion` | Evacuación y protección contra incendios | Barra antipánico | Funcionamiento | Aplicación práctica supervisada
+- `criterio-bisagra-exterior-seguridad` | Protección frente a caídas y seguridad | Puerta exterior con bisagras expuestas | Protección contra desmontaje | Aplicación práctica supervisada
+- `criterio-carpinteria-ciclos-operacion` | Control de calidad de acabados | Puertas y ventanas | Prueba funcional | Aplicación práctica supervisada
+- `criterio-carpinteria-conforme-obra` | Control de calidad de acabados | Planos conforme a obra | Actualización | Aplicación práctica supervisada
+- `criterio-carpinteria-limpieza-no-abrasiva-final` | Mantenimiento de la vivienda | Perfiles, vidrio y herrajes | Limpieza | Aplicación práctica supervisada
+- `criterio-carpinteria-lista-observaciones` | Control de calidad de acabados | Recepción | Lista de pendientes | Aplicación práctica supervisada
+- `criterio-carpinteria-registro-fotografico` | Control de calidad de acabados | Carpintería instalada | Trazabilidad | Aplicación práctica supervisada
+- `criterio-cerradura-altura-usuario` | Puertas, ventanas y cerrajería | Cerradura y manija | Altura de instalación | Aplicación práctica supervisada
+- `criterio-cerradura-cerradero-alineado` | Puertas, ventanas y cerrajería | Cerradura y cerradero | Alineación | Aplicación práctica supervisada
+- `criterio-cerradura-no-bloquear-salida` | Evacuación y protección contra incendios | Cerradura electrónica o control de acceso | Liberación de emergencia | Aplicación práctica supervisada
+- `criterio-cerradura-no-doble-llave-evacuacion` | Evacuación y protección contra incendios | Puerta en ruta de salida | Liberación interior | Aplicación práctica supervisada
+- `criterio-cierrapuerta-ajuste` | Puertas, ventanas y cerrajería | Cierrapuertas | Velocidad y golpe final | Aplicación práctica supervisada
+- `criterio-cortafuego-no-perforar` | Evacuación y protección contra incendios | Puerta cortafuego | Intervenciones posteriores | Aplicación práctica supervisada
 - `criterio-electrico-luminaria-calor` | Accesorios y luminarias | Luminaria | Temperatura | Aplicación práctica supervisada
+- `criterio-entrega-llaves-cuadro-herrajes` | Control de calidad de acabados | Cerrajería terminada | Entrega | Aplicación práctica supervisada
+- `criterio-entrega-manual-mantenimiento` | Mantenimiento de la vivienda | Puertas y ventanas | Instrucciones | Aplicación práctica supervisada
+- `criterio-herraje-lubricante-compatible` | Mantenimiento de la vivienda | Herrajes | Lubricación | Aplicación práctica supervisada
+- `criterio-herraje-tornillo-sustrato` | Puertas, ventanas y cerrajería | Herraje | Fijaciones | Aplicación práctica supervisada
+- `criterio-manija-palanca` | Puertas, ventanas y cerrajería | Manija | Facilidad de operación | Aplicación práctica supervisada
+- `criterio-marco-anclaje-sustrato` | Carpinterías, sellos y herrajes | Marco | Tipo de anclaje | Aplicación práctica supervisada
+- `criterio-marco-calces-anclajes` | Carpinterías, sellos y herrajes | Marco | Ubicación de calces | Aplicación práctica supervisada
+- `criterio-marco-coordinar-piso` | Carpinterías, sellos y herrajes | Puerta | Cota de piso terminado | Aplicación práctica supervisada
+- `criterio-marco-metal-control-soldadura` | Puertas, ventanas y cerrajería | Marco metálico | Deformación por soldadura | Aplicación práctica supervisada
+- `criterio-marco-no-anclar-tarrajeo` | Carpinterías, sellos y herrajes | Marco | Base resistente | Aplicación práctica supervisada
+- `criterio-marco-no-forzar-vano` | Carpinterías, sellos y herrajes | Marco | Montaje sin deformación | Aplicación práctica supervisada
+- `criterio-marco-proteger-obra` | Carpinterías, sellos y herrajes | Marco instalado | Protección temporal | Aplicación práctica supervisada
+- `criterio-marco-registro-anclajes` | Control de calidad de acabados | Anclajes ocultos | Registro fotográfico | Aplicación práctica supervisada
+- `criterio-metal-retocar-proteccion` | Carpinterías, sellos y herrajes | Carpintería metálica | Retoque | Aplicación práctica supervisada
+- `criterio-mirilla-altura-usuarios` | Puertas, ventanas y cerrajería | Mirilla de puerta | Altura y campo visual | Aplicación práctica supervisada
+- `criterio-mosquitero-fijacion` | Puertas, ventanas y cerrajería | Mosquitero | Fijación | Aplicación práctica supervisada
+- `criterio-perfil-retirar-pelicula` | Carpinterías, sellos y herrajes | Perfil protegido | Retiro de película | Aplicación práctica supervisada
+- `criterio-porton-automatizado-deteccion` | Protección frente a caídas y seguridad | Portón automatizado | Protección de atrapamiento | Aplicación práctica supervisada
+- `criterio-porton-topes-seguros` | Puertas, ventanas y cerrajería | Portón | Topes y retención | Aplicación práctica supervisada
+- `criterio-puerta-bano-material-humedad` | Puertas, ventanas y cerrajería | Puerta de baño | Resistencia a humedad | Aplicación práctica supervisada
+- `criterio-puerta-bisagras-alineadas` | Puertas, ventanas y cerrajería | Bisagras | Alineación y capacidad | Aplicación práctica supervisada
+- `criterio-puerta-coordinar-barrido` | Puertas, ventanas y cerrajería | Puerta batiente | Área de barrido | Aplicación práctica supervisada
+- `criterio-puerta-corredera-antidescarrilamiento` | Puertas, ventanas y cerrajería | Puerta corrediza | Antidescarrilamiento | Aplicación práctica supervisada
+- `criterio-puerta-exterior-intemperie` | Puertas, ventanas y cerrajería | Puerta exterior | Exposición climática | Aplicación práctica supervisada
+- `criterio-puerta-holgura-inferior-funcion` | Puertas, ventanas y cerrajería | Borde inferior de puerta | Holgura funcional | Aplicación práctica supervisada
+- `criterio-puerta-holguras-uniformes` | Puertas, ventanas y cerrajería | Hoja y marco | Holguras | Aplicación práctica supervisada
+- `criterio-puerta-madera-humedad` | Puertas, ventanas y cerrajería | Puerta de madera | Acondicionamiento | Aplicación práctica supervisada
+- `criterio-puerta-madera-sellar-caras` | Puertas, ventanas y cerrajería | Puerta de madera | Protección integral | Aplicación práctica supervisada
+- `criterio-puerta-metal-proteccion` | Puertas, ventanas y cerrajería | Puerta metálica | Protección anticorrosiva | Aplicación práctica supervisada
+- `criterio-puerta-no-roce-descuelgue` | Puertas, ventanas y cerrajería | Hoja de puerta | Funcionamiento | Aplicación práctica supervisada
+- `criterio-puerta-probar-con-sellos` | Control de calidad de acabados | Puerta con burletes | Cierre completo | Aplicación práctica supervisada
+- `criterio-puerta-refuerzo-cerradura` | Puertas, ventanas y cerrajería | Hoja de puerta | Refuerzo para cerradura | Aplicación práctica supervisada
 - `criterio-sanitaria-aparato-fijacion-firme` | Ejecución y control de instalaciones sanitarias | Aparato sanitario | Fijación | sin numeral
 - `criterio-sanitaria-prueba-descarga-simultanea` | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Prueba funcional | sin numeral
 - `criterio-sanitaria-sellar-pasamuros` | Ejecución y control de instalaciones sanitarias | Paso de tuberías | Sellado | sin numeral
 - `criterio-sanitaria-terminal-ventilacion-libre` | Ejecución y control de instalaciones sanitarias | Terminal de ventilación | Área libre | sin numeral
 - `criterio-sanitaria-trampas-con-agua` | Ejecución y control de instalaciones sanitarias | Aparato sanitario | Sello hidráulico | sin numeral
 - `criterio-sanitaria-ventilacion-no-taponar` | Ejecución y control de instalaciones sanitarias | Ventilación sanitaria | Continuidad | sin numeral
+- `criterio-seguro-infantil-no-reemplaza-baranda` | Protección frente a caídas y seguridad | Seguro infantil | Alcance de protección | Aplicación práctica supervisada
+- `criterio-seguro-ventana-operable` | Puertas, ventanas y cerrajería | Cierre de ventana | Accionamiento | Aplicación práctica supervisada
+- `criterio-vano-aplomo-nivel` | Carpinterías, sellos y herrajes | Vano y marco | Aplomo y nivel | Aplicación práctica supervisada
+- `criterio-vano-diagonales` | Carpinterías, sellos y herrajes | Vano | Escuadra | Aplicación práctica supervisada
+- `criterio-vano-medir-acabado-final` | Carpinterías, sellos y herrajes | Vano terminado | Medición final | Aplicación práctica supervisada
+- `criterio-vano-verificar-cuadro` | Carpinterías, sellos y herrajes | Cuadro de vanos | Verificación documental | Aplicación práctica supervisada
+- `criterio-ventana-alfeizar-pendiente` | Puertas, ventanas y cerrajería | Alféizar exterior | Evacuación de agua | Aplicación práctica supervisada
+- `criterio-ventana-corredera-antielevacion` | Protección frente a caídas y seguridad | Ventana corrediza | Antielevación | Aplicación práctica supervisada
+- `criterio-ventana-drenajes-libres` | Puertas, ventanas y cerrajería | Ventana con drenaje | Orificios de evacuación | Aplicación práctica supervisada
+- `criterio-ventana-empaques-continuos` | Puertas, ventanas y cerrajería | Empaques y junquillos | Continuidad | Aplicación práctica supervisada
+- `criterio-ventana-fondo-junta` | Carpinterías, sellos y herrajes | Junta perimetral | Fondo de junta | Aplicación práctica supervisada
+- `criterio-ventana-infiltracion-revisar-origen` | Control de calidad de acabados | Ventana exterior | Diagnóstico de filtración | Aplicación práctica supervisada
+- `criterio-ventana-no-sellar-drenaje` | Puertas, ventanas y cerrajería | Perfil de ventana | Continuidad del drenaje | Aplicación práctica supervisada
+- `criterio-ventana-operacion-limpieza` | Puertas, ventanas y cerrajería | Ventana operable | Uso y limpieza | Aplicación práctica supervisada
+- `criterio-ventana-prueba-rociado` | Control de calidad de acabados | Ventana exterior | Prueba de agua | Aplicación práctica supervisada
+- `criterio-ventana-restrictor-infantil` | Protección frente a caídas y seguridad | Ventana en altura | Limitador de apertura | Aplicación práctica supervisada
+- `criterio-ventana-sello-compatible` | Carpinterías, sellos y herrajes | Encuentro marco-muro | Sellante perimetral | Aplicación práctica supervisada
+- `criterio-ventana-superficie-sello` | Carpinterías, sellos y herrajes | Junta de sellado | Preparación | Aplicación práctica supervisada
+- `criterio-ventana-vidrio-calzos` | Puertas, ventanas y cerrajería | Vidrio en marco | Calzos de apoyo | Aplicación práctica supervisada
+- `criterio-ventana-vidrio-holgura` | Puertas, ventanas y cerrajería | Vidrio | Holgura de borde | Aplicación práctica supervisada
 
 ## G.050 — 18
 

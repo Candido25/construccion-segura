@@ -272,6 +272,73 @@ Versión revisada: `2.1.0`. Parámetros totales: `982`.
 - `em070-incendio-fase-i-todos` | Ascensores y Transporte Mecánico | Todos los ascensores | Operación de emergencia Fase I | EM.070 6.6(d)
 - `em070-incendio-fase-ii-mas-7-niveles` | Ascensores y Transporte Mecánico | Edificación de más de siete niveles | Operación de emergencia Fase II | EM.070 6.6(d)
 
+## Inventario completo de parámetros G.050
+
+Total: `62`
+
+- `g050-orden-limpieza-rutas-libres` | Seguridad durante la construcción | Áreas y rutas de obra | Orden y limpieza | G.050 15
+- `g050-residuos-segregacion` | Seguridad durante la construcción | Residuos de obra | Segregación | G.050 16
+- `g050-caida-altura-arnes-umbral` | Seguridad durante la construcción | Trabajo con caída libre | Altura para sistema de detención | G.050 20.1
+- `g050-caida-anclaje-resistencia-minima` | Seguridad durante la construcción | Punto de anclaje de sistema anticaídas | Resistencia mínima | G.050 20.1
+- `g050-caida-cercania-borde` | Seguridad durante la construcción | Trabajo cerca de borde sin baranda | Distancia de protección | G.050 20.1
+- `g050-caida-libre-distancia-maxima` | Seguridad durante la construcción | Sistema de detención de caídas | Caída libre máxima de diseño | G.050 20.1
+- `g050-andamio-distancia-electricidad` | Seguridad durante la construcción | Andamio próximo a sistema eléctrico | Distancia mínima | G.050 21.4
+- `g050-andamio-movimiento-sin-personas` | Seguridad durante la construcción | Andamio móvil | Movimiento | G.050 21.4
+- `g050-andamio-inspeccion-diaria` | Seguridad durante la construcción | Andamio o plataforma | Inspección | G.050 21.4 y 21.6
+- `g050-demolicion-supervision-profesional` | Demoliciones y seguridad de intervención | Supervisión de demolición | Supervisión frecuente | G.050 25.1 y 25.3.1
+- `g050-demolicion-personal-competente` | Demoliciones y seguridad de intervención | Personal de demolición | Competencia del personal | G.050 25.1, 25.2.4 y 25.3.1
+- `g050-demolicion-desconexion-servicios` | Demoliciones y seguridad de intervención | Preparación de demolición | Interrupción de servicios | G.050 25.2
+- `g050-demolicion-edificio-vacio` | Demoliciones y seguridad de intervención | Preparación de demolición | Desocupación previa | G.050 25.2
+- `g050-demolicion-entorno-sensible` | Demoliciones y seguridad de intervención | Evaluación previa | Entorno sensible a polvo y vibraciones | G.050 25.2
+- `g050-demolicion-estudio-estructural-previo` | Demoliciones y seguridad de intervención | Evaluación previa | Estudio estructural inicial | G.050 25.2
+- `g050-demolicion-informacion-planos` | Demoliciones y seguridad de intervención | Evaluación previa | Información de estructuras y planos | G.050 25.2
+- `g050-demolicion-metodo-documentado` | Demoliciones y seguridad de intervención | Plan de demolición | Método documentado | G.050 25.2
+- `g050-demolicion-uso-previo-contaminacion` | Demoliciones y seguridad de intervención | Evaluación previa | Contaminación por uso anterior | G.050 25.2
+- `g050-demolicion-riesgo-peso-area` | Demoliciones y seguridad de intervención | Evaluación previa | Peso y área comprometida | G.050 25.2.1
+- `g050-demolicion-acceso-escaleras-seguras` | Demoliciones y seguridad de intervención | Acceso de demolición | Escaleras provisionales | G.050 25.2.2
+- `g050-demolicion-metodo-coordinacion-ingenieria` | Demoliciones y seguridad de intervención | Plan de demolición | Coordinación con ingeniería | G.050 25.2.2
+- `g050-demolicion-plano-progreso-diario` | Demoliciones y seguridad de intervención | Plan de demolición | Plano de avance y riesgos | G.050 25.2.2
+- `g050-demolicion-protecciones-provisionales` | Demoliciones y seguridad de intervención | Protecciones colectivas | Protecciones del área | G.050 25.2.2
+- `g050-demolicion-zonas-publico-descarga` | Demoliciones y seguridad de intervención | Control del área | Tránsito público y descarga | G.050 25.2.2
+- `g050-demolicion-capacitacion-especifica` | Demoliciones y seguridad de intervención | Personal de demolición | Capacitación específica | G.050 25.2.4
+- `g050-demolicion-cerco-altura-minima` | Seguridad durante la construcción | Área de demolición | Altura del cerco de protección | G.050 25.3.1
+- `g050-demolicion-cimiento-colindante-apuntalar` | Demoliciones y seguridad de intervención | Protección de colindantes | Cimientos y terraplenes vecinos | G.050 25.3.1
+- `g050-demolicion-control-polvo-riego` | Demoliciones y seguridad de intervención | Control ambiental | Control de polvo | G.050 25.3.1
+- `g050-demolicion-inflamables-prevencion` | Demoliciones y seguridad de intervención | Riesgos especiales | Materiales inflamables | G.050 25.3.1
+- `g050-demolicion-maquinaria-compatible` | Demoliciones y seguridad de intervención | Maquinaria de demolición | Compatibilidad del equipo | G.050 25.3.1
+- `g050-demolicion-material-contaminado` | Demoliciones y seguridad de intervención | Residuos de demolición | Materiales contaminados | G.050 25.3.1
+- `g050-demolicion-no-dejar-inestable` | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Estado seguro al detener trabajos | G.050 25.3.1
+- `g050-demolicion-no-retirar-estabilidad` | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Elementos estabilizadores | G.050 25.3.1
+- `g050-demolicion-partes-expuestas-arriostrar` | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Arriostramiento previo | G.050 25.3.1
+- `g050-demolicion-plataforma-proteccion` | Seguridad durante la construcción | Plataforma exterior contra caída de materiales | Carga y ancho | G.050 25.3.1
+- `g050-demolicion-senalizacion-peligro` | Demoliciones y seguridad de intervención | Control del área | Señalización de zona peligrosa | G.050 25.3.1
+- `g050-demolicion-servicios-activos-protegidos` | Demoliciones y seguridad de intervención | Servicios durante demolición | Protección de conductos activos | G.050 25.3.1
+- `g050-demolicion-viento-fuerte-suspension` | Demoliciones y seguridad de intervención | Condiciones ambientales | Suspensión por viento | G.050 25.3.1
+- `g050-demolicion-vivalva-zona-seguridad` | Demoliciones y seguridad de intervención | Maquinaria de demolición | Zona de cuchara vivalva | G.050 25.3.1
+- `g050-demolicion-muros-arriba-abajo` | Demoliciones y seguridad de intervención | Demolición de muros | Secuencia vertical | G.050 25.3.2
+- `g050-demolicion-muros-no-sustentados` | Demoliciones y seguridad de intervención | Demolición de muros | Apuntalamiento de muros libres | G.050 25.3.2
+- `g050-demolicion-pisos-aberturas-proteger` | Demoliciones y seguridad de intervención | Demolición de pisos | Protección de aberturas | G.050 25.3.3
+- `g050-demolicion-pisos-no-debilitar-apoyos` | Demoliciones y seguridad de intervención | Demolición de pisos | Apoyos de vigas | G.050 25.3.3
+- `g050-demolicion-pisos-plataformas` | Demoliciones y seguridad de intervención | Demolición de pisos | Plataformas y pasarelas | G.050 25.3.3
+- `g050-demolicion-armaduras-rebote-torsion` | Demoliciones y seguridad de intervención | Demolición estructural | Corte de acero y concreto armado | G.050 25.3.4
+- `g050-demolicion-metal-piso-por-piso` | Demoliciones y seguridad de intervención | Demolición estructural | Desmontaje metálico | G.050 25.3.4
+- `g050-demolicion-no-dejar-caer-metal` | Demoliciones y seguridad de intervención | Demolición estructural | Descenso de elementos metálicos | G.050 25.3.4
+- `g050-demolicion-asbesto-control-especial` | Demoliciones y seguridad de intervención | Materiales peligrosos | Materiales con asbesto | G.050 25.3.5
+- `g050-demolicion-canaletas-cerradas` | Demoliciones y seguridad de intervención | Retiro de escombros | Descarga desde niveles altos | G.050 25.4
+- `g050-demolicion-cierre-limpieza-verificacion` | Demoliciones y seguridad de intervención | Cierre de demolición | Limpieza y verificación final | G.050 25.4
+- `g050-demolicion-emergencia-botiquin-camilla` | Demoliciones y seguridad de intervención | Emergencias en demolición | Botiquín y camilla | G.050 25.5 y Anexo B
+- `g050-electricidad-provisional-persona-competente` | Seguridad durante la construcción | Instalación eléctrica provisional | Responsable de ejecución y mantenimiento | G.050 7.3
+- `g050-electricidad-provisional-puesta-tierra` | Seguridad durante la construcción | Circuitos eléctricos provisionales | Puesta a tierra | G.050 7.3
+- `g050-extension-electrica-calibre-minimo` | Seguridad durante la construcción | Extensión eléctrica temporal | Conductor mínimo | G.050 7.3
+- `g050-extension-electrica-empalme-maximo` | Seguridad durante la construcción | Extensión eléctrica temporal | Frecuencia de empalmes | G.050 7.3
+- `g050-tablero-diferenciales-sensibilidad` | Seguridad durante la construcción | Tablero eléctrico provisional | Interruptores diferenciales | G.050 7.3
+- `g050-via-circulacion-ancho-minimo` | Seguridad durante la construcción | Vía peatonal o de acarreo manual | Ancho mínimo | G.050 7.4
+- `g050-obra-menos-25-supervisor-prevencion` | Seguridad durante la construcción | Obra con menos de 25 trabajadores | Representación preventiva | G.050 8.1
+- `g050-obra-25-comite-seguridad` | Seguridad durante la construcción | Obra con 25 o más trabajadores | Comité de seguridad | G.050 8.2
+- `g050-comite-reunion-maximo` | Seguridad durante la construcción | Comité Técnico de Seguridad y Salud | Frecuencia de reunión | G.050 8.5
+- `g050-plan-seguridad-obligatorio` | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud | G.050 9
+- `g050-plan-seguridad-partida-presupuesto` | Seguridad durante la construcción | Presupuesto de obra | Partida de seguridad | G.050 9
+
 ## Total de parámetros únicos relacionados
 
 `136`

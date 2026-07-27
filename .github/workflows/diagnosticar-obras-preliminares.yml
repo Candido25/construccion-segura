@@ -1,18 +1,19 @@
-name: Diagnosticar obras preliminares
+name: Aplicar ampliación de obras preliminares
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - scripts/diagnosticar_obras_preliminares.py
+      - scripts/aplicar_ampliacion_obras_preliminares.py
+      - scripts/data_obras_preliminares/**
       - .github/workflows/diagnosticar-obras-preliminares.yml
 
 permissions:
   contents: write
 
 jobs:
-  diagnosticar:
+  aplicar:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar rama
@@ -25,13 +26,34 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Generar diagnóstico
-        run: python scripts/diagnosticar_obras_preliminares.py
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
 
-      - name: Confirmar diagnóstico
+      - name: Aplicar inventario normativo
+        id: aplicar
+        continue-on-error: true
+        run: python scripts/aplicar_ampliacion_obras_preliminares.py > docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt 2>&1
+
+      - name: Registrar diagnóstico si falla
+        if: steps.aplicar.outcome == 'failure'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/DIAGNOSTICO_OBRAS_PRELIMINARES_2026-07-27.md
-          git diff --cached --quiet || git commit -m "Registrar diagnóstico de obras preliminares"
+          git add docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt
+          git commit -m "Registrar diagnóstico de obras preliminares"
+          git push origin HEAD:agent/ampliar-obras-preliminares-seguridad-20260727
+          exit 1
+
+      - name: Validar base y API
+        if: steps.aplicar.outcome == 'success'
+        run: python scripts/check_normativa.py
+
+      - name: Confirmar archivos generados
+        if: steps.aplicar.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt
+          git add -A backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_OBRAS_PRELIMINARES_SEGURIDAD_2026-07-27.md docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt
+          git diff --cached --quiet || git commit -m "Ampliar obras preliminares y seguridad"
           git push origin HEAD:agent/ampliar-obras-preliminares-seguridad-20260727

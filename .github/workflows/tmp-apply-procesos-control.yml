@@ -1,0 +1,49 @@
+name: Temporary apply construction processes and control
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-procesos-control.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Apply verified expansion
+        run: python scripts/tmp_apply_procesos_control.py
+
+      - name: Install backend dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+
+      - name: Validate contract and backend
+        run: |
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py
+          python scripts/prepare_frontend.py
+
+      - name: Commit permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            backend/normativa_tecnica.json \
+            backend/preguntas_tecnicas.json \
+            scripts/check_normativa.py \
+            docs/VALIDACION_NORMATIVA_PROCESOS_2026-07-27.md
+          git diff --cached --quiet && exit 0
+          git commit -m 'Ampliar procesos constructivos, control y seguridad'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

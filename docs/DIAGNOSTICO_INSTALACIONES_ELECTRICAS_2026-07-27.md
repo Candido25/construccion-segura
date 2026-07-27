@@ -1,7 +1,7 @@
 # Diagnóstico de cobertura — instalaciones eléctricas
 
-Versión revisada: `2.4.0`. Parámetros totales: `1447`.
-Parámetros relacionados encontrados: `169`.
+Versión revisada: `2.5.0`. Parámetros totales: `1519`.
+Parámetros relacionados encontrados: `241`.
 
 ## A.010 — 9
 
@@ -100,12 +100,23 @@ Parámetros relacionados encontrados: `169`.
 - `e070-confinamiento-concreto-resistencia-minima` | Albañilería confinada y armada | Columna y viga de confinamiento | Resistencia del concreto | 9.1, 11.6 y 20.1(f)
 - `e070-grout-resistencia-minima` | Albañilería confinada y armada | Concreto líquido o grout | Resistencia a compresión | 7.5
 
-## EM.010 — 18
+## EM.010 — 36
 
+- `em010-alumbrado-niveles-normativos` | Instalaciones eléctricas en ejecución | Iluminación | Niveles de alumbrado | Artículo 6
+- `em010-ambiente-humedo-proteccion` | Instalaciones eléctricas en ejecución | Instalación en zona húmeda | Grado de protección | Artículo 11
+- `em010-cajas-accesibles-no-ocultas` | Instalaciones eléctricas en ejecución | Cajas de paso | Accesibilidad | Artículo 10
 - `em010-calculo-iluminacion-obligatorio` | Instalaciones Eléctricas en Viviendas | Sistema de iluminación | Cálculo del alumbrado | Artículo 6
+- `em010-canalizacion-material-aprobado` | Instalaciones eléctricas en ejecución | Canalizaciones | Materiales | Artículo 10
+- `em010-carga-calculo-demanda` | Instalaciones eléctricas en ejecución | Carga instalada | Cálculo de demanda | Artículo 5
+- `em010-circuitos-independientes-cargas` | Instalaciones eléctricas en ejecución | Circuitos derivados | Separación de cargas | Artículo 9
+- `em010-cne-utilizacion-obligatorio` | Instalaciones eléctricas en ejecución | Instalación interior | Código aplicable | Artículo 3
+- `em010-conductores-material-certificado` | Instalaciones eléctricas en ejecución | Conductores | Conformidad | Artículo 10
 - `em010-construccion-etapas-reservas` | Instalaciones Eléctricas en Viviendas | Instalación eléctrica de construcción progresiva | Proyecto y reservas | Artículo 9
+- `em010-coordinacion-otras-instalaciones` | Instalaciones eléctricas en ejecución | Coordinación de obra | Interferencias | Artículo 12
 - `em010-ejecucion-personal-calificado` | Instalaciones Eléctricas en Viviendas | Instalación eléctrica interior | Personal de ejecución | Artículo 5
 - `em010-emergencia-rutas-multifamiliar` | Instalaciones Eléctricas en Viviendas | Ruta de evacuación en vivienda multifamiliar | Alumbrado de emergencia | Artículo 11
+- `em010-emergencia-segun-uso` | Instalaciones eléctricas en ejecución | Iluminación de emergencia | Aplicación | Artículo 7
+- `em010-expediente-conforme-obra` | Instalaciones eléctricas en ejecución | Documentación final | Conforme a obra | Artículo 13
 - `em010-iluminacion-sin-parpadeo` | Instalaciones Eléctricas en Viviendas | Sistema de iluminación | Parpadeo y efecto estroboscópico | Artículo 6
 - `em010-iluminancia-bano-minima` | Instalaciones Eléctricas en Viviendas | Baño | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
 - `em010-iluminancia-circulacion-comun-minima` | Instalaciones Eléctricas en Viviendas | Circulación común | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
@@ -119,7 +130,14 @@ Parámetros relacionados encontrados: `169`.
 - `em010-iluminancia-frente-ascensor-minima` | Instalaciones Eléctricas en Viviendas | Frente de ascensor | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
 - `em010-iluminancia-patio-abierto-minima` | Instalaciones Eléctricas en Viviendas | Patio o área abierta | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
 - `em010-iluminancia-sala-minima` | Instalaciones Eléctricas en Viviendas | Sala | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
+- `em010-planos-especificaciones-obligatorios` | Instalaciones eléctricas en ejecución | Documentación | Planos y especificaciones | Artículo 4
+- `em010-proteccion-contacto-directo` | Instalaciones eléctricas en ejecución | Protección eléctrica | Contacto directo | Artículo 8
+- `em010-proteccion-contacto-indirecto` | Instalaciones eléctricas en ejecución | Protección eléctrica | Contacto indirecto | Artículo 8
+- `em010-proyecto-profesional-responsable` | Instalaciones eléctricas en ejecución | Proyecto eléctrico | Responsabilidad profesional | Artículo 2
 - `em010-pruebas-finales-instalacion` | Instalaciones Eléctricas en Viviendas | Instalación eléctrica terminada | Pruebas y documentación final | Artículo 8
+- `em010-pruebas-previas-energizacion` | Instalaciones eléctricas en ejecución | Pruebas eléctricas | Recepción | Artículo 13
+- `em010-puesta-tierra-obligatoria` | Instalaciones eléctricas en ejecución | Protección eléctrica | Puesta a tierra | Artículo 8
+- `em010-tablero-accesible-identificado` | Instalaciones eléctricas en ejecución | Tablero eléctrico | Accesibilidad e identificación | Artículo 9
 
 ## EM.020 — 25
 
@@ -189,8 +207,62 @@ Parámetros relacionados encontrados: `169`.
 - `criterio-abrir-vano-evaluar-camino-cargas` | Diagnóstico, mantenimiento y reparación | Remodelación estructural | Apertura o ampliación de vanos | Aplicación profesional caso por caso
 - `criterio-reparacion-material-compatible` | Diagnóstico, mantenimiento y reparación | Materiales de reparación | Compatibilidad y preparación | Aplicación profesional caso por caso
 
-## Formación técnica SENCICO — 6
+## Formación técnica SENCICO — 60
 
+- `criterio-electrico-acta-pruebas` | Pruebas y recepción eléctrica | Entrega | Registro | Aplicación práctica supervisada
+- `criterio-electrico-apriete-torque` | Tableros y protecciones | Bornes | Ajuste | Aplicación práctica supervisada
+- `criterio-electrico-balance-fases` | Tableros y protecciones | Circuitos | Balance | Aplicación práctica supervisada
+- `criterio-electrico-bano-grado-proteccion` | Accesorios y luminarias | Baño y exterior | Protección | Aplicación práctica supervisada
+- `criterio-electrico-breaker-no-sobredimensionar` | Tableros y protecciones | Interruptor automático | Calibre | Aplicación práctica supervisada
+- `criterio-electrico-cajas-a-plomo` | Canalizaciones eléctricas | Cajas empotradas | Alineación | Aplicación práctica supervisada
+- `criterio-electrico-cajas-tapadas` | Canalizaciones eléctricas | Cajas durante obra | Protección | Aplicación práctica supervisada
+- `criterio-electrico-canalizacion-continuidad` | Canalizaciones eléctricas | Conduit | Continuidad | Aplicación práctica supervisada
+- `criterio-electrico-conector-aprobado` | Conductores y empalmes | Empalme | Conectores | Aplicación práctica supervisada
+- `criterio-electrico-curvas-sin-estrangular` | Canalizaciones eléctricas | Tubería conduit | Curvas | Aplicación práctica supervisada
+- `criterio-electrico-diferencial-probar` | Tableros y protecciones | Interruptor diferencial | Prueba | Aplicación práctica supervisada
+- `criterio-electrico-electrodo-accesible` | Puesta a tierra | Pozo o electrodo | Inspección | Aplicación práctica supervisada
+- `criterio-electrico-empalme-en-caja` | Conductores y empalmes | Caja de derivación | Ubicación | Aplicación práctica supervisada
+- `criterio-electrico-energizacion-controlada` | Pruebas y recepción eléctrica | Puesta en servicio | Energización | Aplicación práctica supervisada
+- `criterio-electrico-equipotencial-metal` | Puesta a tierra | Masas metálicas | Unión equipotencial | Aplicación práctica supervisada
+- `criterio-electrico-fotos-ocultos` | Pruebas y recepción eléctrica | Trabajos ocultos | Registro | Aplicación práctica supervisada
+- `criterio-electrico-guia-canalizacion` | Canalizaciones eléctricas | Tuberías vacías | Guía | Aplicación práctica supervisada
+- `criterio-electrico-identificar-conductores` | Conductores y empalmes | Conductores | Identificación | Aplicación práctica supervisada
+- `criterio-electrico-limpiar-antes-cablear` | Canalizaciones eléctricas | Tubería | Limpieza | Aplicación práctica supervisada
+- `criterio-electrico-llenado-canalizacion` | Conductores y empalmes | Tubería | Ocupación | Aplicación práctica supervisada
+- `criterio-electrico-lubricante-compatible` | Conductores y empalmes | Tendido | Lubricación | Aplicación práctica supervisada
+- `criterio-electrico-luminaria-calor` | Accesorios y luminarias | Luminaria | Temperatura | Aplicación práctica supervisada
+- `criterio-electrico-luminaria-soporte` | Accesorios y luminarias | Luminaria | Soporte | Aplicación práctica supervisada
+- `criterio-electrico-no-cortar-acero` | Canalizaciones eléctricas | Estructura | Interferencia con acero | Aplicación práctica supervisada
+- `criterio-electrico-no-danar-aislamiento` | Conductores y empalmes | Cableado | Aislamiento | Aplicación práctica supervisada
+- `criterio-electrico-no-doble-conductor` | Tableros y protecciones | Borne | Número de conductores | Aplicación práctica supervisada
+- `criterio-electrico-no-empalme-tuberia` | Conductores y empalmes | Canalización | Empalmes ocultos | Aplicación práctica supervisada
+- `criterio-electrico-no-extension-permanente` | Accesorios y luminarias | Alimentación | Extensiones | Aplicación práctica supervisada
+- `criterio-electrico-no-retorcido-solo` | Conductores y empalmes | Empalme | Método | Aplicación práctica supervisada
+- `criterio-electrico-pases-previstos` | Canalizaciones eléctricas | Muros y losas | Pases | Aplicación práctica supervisada
+- `criterio-electrico-placa-cubre-caja` | Accesorios y luminarias | Placa | Cobertura | Aplicación práctica supervisada
+- `criterio-electrico-plano-conforme-obra` | Pruebas y recepción eléctrica | Documentación | Conforme a obra | Aplicación práctica supervisada
+- `criterio-electrico-prueba-aislamiento` | Pruebas y recepción eléctrica | Conductores | Aislamiento | Aplicación práctica supervisada
+- `criterio-electrico-prueba-caida-tension` | Pruebas y recepción eléctrica | Carga | Caída de tensión | Aplicación práctica supervisada
+- `criterio-electrico-prueba-continuidad` | Pruebas y recepción eléctrica | Circuitos | Continuidad | Aplicación práctica supervisada
+- `criterio-electrico-prueba-polaridad` | Pruebas y recepción eléctrica | Salidas | Polaridad | Aplicación práctica supervisada
+- `criterio-electrico-prueba-protecciones` | Pruebas y recepción eléctrica | Protecciones | Funcionamiento | Aplicación práctica supervisada
+- `criterio-electrico-prueba-tension` | Pruebas y recepción eléctrica | Circuitos | Tensión | Aplicación práctica supervisada
+- `criterio-electrico-replanteo-puntos` | Canalizaciones eléctricas | Replanteo | Ubicación de puntos | Aplicación práctica supervisada
+- `criterio-electrico-reserva-cajas` | Conductores y empalmes | Caja | Longitud de reserva | Aplicación práctica supervisada
+- `criterio-electrico-reserva-tablero` | Tableros y protecciones | Tablero | Capacidad futura | Aplicación práctica supervisada
+- `criterio-electrico-seccion-proyecto` | Conductores y empalmes | Conductor | Sección | Aplicación práctica supervisada
+- `criterio-electrico-separar-energia-datos` | Canalizaciones eléctricas | Energía y comunicaciones | Separación | Aplicación práctica supervisada
+- `criterio-electrico-tablero-directorio` | Tableros y protecciones | Tablero | Directorio | Aplicación práctica supervisada
+- `criterio-electrico-tablero-firme` | Tableros y protecciones | Tablero | Fijación | Aplicación práctica supervisada
+- `criterio-electrico-tablero-neutro-tierra` | Tableros y protecciones | Barras | Separación | Aplicación práctica supervisada
+- `criterio-electrico-tablero-ubicacion-seca` | Tableros y protecciones | Tablero | Ubicación | Aplicación práctica supervisada
+- `criterio-electrico-termografia-tablero` | Pruebas y recepción eléctrica | Tablero | Calentamiento | Aplicación práctica supervisada
+- `criterio-electrico-tierra-continuidad` | Puesta a tierra | Conductor de protección | Continuidad | Aplicación práctica supervisada
+- `criterio-electrico-tierra-medir` | Puesta a tierra | Sistema | Medición | Aplicación práctica supervisada
+- `criterio-electrico-tierra-no-interrumpida` | Puesta a tierra | Conductor de protección | Integridad | Aplicación práctica supervisada
+- `criterio-electrico-tierra-uniones-corrosion` | Puesta a tierra | Conexiones | Corrosión | Aplicación práctica supervisada
+- `criterio-electrico-tomacorriente-firme` | Accesorios y luminarias | Tomacorriente | Fijación | Aplicación práctica supervisada
+- `criterio-electrico-tomacorriente-polaridad` | Accesorios y luminarias | Tomacorriente | Polaridad | Aplicación práctica supervisada
 - `criterio-sanitaria-bomba-no-trabajar-seco` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Protección | sin numeral
 - `criterio-sanitaria-plano-conforme-obra` | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Plano conforme a obra | sin numeral
 - `criterio-sanitaria-sellar-pasamuros` | Ejecución y control de instalaciones sanitarias | Paso de tuberías | Sellado | sin numeral

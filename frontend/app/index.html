@@ -8,18 +8,19 @@
   <title>Mi Casa Segura: Guía de Obra | Construcción Segura</title>
   <link rel="canonical" href="https://www.construccionsegura.org.pe/app/">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/app-icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="brand.css?v=20260714-1">
   <link rel="stylesheet" href="app.css?v=2">
   <link rel="stylesheet" href="faq.css?v=1">
   <link rel="stylesheet" href="normative.css?v=1">
   <link rel="stylesheet" href="app-experience.css?v=1">
+  <link rel="stylesheet" href="faq-answer-v2.css?v=1">
 </head>
 <body>
   <header class="app-header">
     <a class="app-brand" href="/app/" aria-label="Inicio de Mi Casa Segura">
-      <img src="/favicon-192.png" alt="" width="44" height="44">
+      <img src="/app-icon-192.png" alt="" width="44" height="44">
       <span><strong>Mi Casa Segura</strong><small>Guía de Obra por Construcción Segura</small></span>
     </a>
     <button class="icon-button" id="shareApp" type="button" aria-label="Compartir aplicación" title="Compartir">↗</button>
@@ -242,10 +243,11 @@
   </main>
 
   <nav class="bottom-nav" aria-label="Navegación de la aplicación">
-    <a class="active" href="/app/"><span>⌂</span>Inicio</a>
-    <a href="/biblioteca-tecnica.html"><span>▤</span>Biblioteca</a>
-    <a href="/casos-de-obra.html"><span>◫</span>Casos</a>
-    <a href="/contacto.html"><span>✆</span>Consulta</a>
+    <a class="active" href="#inicio"><span>⌂</span>Inicio</a>
+    <a href="#guia-etapas"><span>☷</span>Guía</a>
+    <a href="#dudas"><span>⌕</span>Consultar</a>
+    <button type="button"><span>▣</span>Mi obra</button>
+    <a href="#ayuda"><span>?</span>Ayuda</a>
   </nav>
 
   <dialog class="diagnostic-dialog" id="diagnosticDialog">
@@ -294,9 +296,11 @@
     </form>
   </dialog>
 
-  <script src="faq-data.js?v=1"></script>
-  <script src="faq-search.js?v=2"></script>
-  <script src="app-experience.js?v=1"></script>
+  <script src="faq-data-v2.js?v=1"></script>
+  <script src="faq-search-v3.js?v=1"></script>
+  <script src="home-navigation.js?v=1"></script>
+  <script src="work-profile.js?v=1"></script>
+  <script src="risk-evaluator.js?v=1"></script>
   <script src="normative-module.js?v=1"></script>
   <script src="app.js?v=1"></script>
   <script src="modules-rne.js?v=1"></script>

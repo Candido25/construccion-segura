@@ -1,0 +1,33 @@
+name: Temporary fix apply workflow batch 4
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-fix-apply-lote-4.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-workflow:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Correct requirements path
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed -i 's#-r backend/requirements.txt#-r requirements.txt#' .github/workflows/tmp-apply-normativa-lote-4.yml
+          grep -F -- '-r requirements.txt' .github/workflows/tmp-apply-normativa-lote-4.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/tmp-apply-normativa-lote-4.yml
+          git commit -m 'Corregir ruta de dependencias del lote 4'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

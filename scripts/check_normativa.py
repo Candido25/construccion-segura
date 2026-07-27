@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 1447:
-        raise SystemExit("La base normativa debe contener por lo menos 1447 parámetros revisados.")
+    if len(base.parametros) < 1519:
+        raise SystemExit("La base normativa debe contener por lo menos 1519 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 1192:
+    if validados < 1210:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 1192 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 1210 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.4.0":
-        raise SystemExit(f"La versión normativa esperada es 2.4.0 y se recibió {base.version}.")
+    if base.version != "2.5.0":
+        raise SystemExit(f"La versión normativa esperada es 2.5.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 237:
-        raise SystemExit(f"El bloque requiere al menos 237 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 291:
+        raise SystemExit(f"El bloque requiere al menos 291 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -291,8 +291,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2910:
-        raise SystemExit("La base ampliada de instalaciones sanitarias requiere por lo menos 2910 preguntas técnicas.")
+    if len(todas) < 2982:
+        raise SystemExit("La base ampliada de instalaciones sanitarias requiere por lo menos 2982 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

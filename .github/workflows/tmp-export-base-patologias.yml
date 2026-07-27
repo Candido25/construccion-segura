@@ -24,6 +24,8 @@ jobs:
             backend/preguntas_tecnicas.json
             backend/normativa.py
             backend/api.py
+            frontend/app/normative-module.js
+            docs/CONTRATO_NORMATIVA.md
             scripts/check_normativa.py
             scripts/prepare_frontend.py
           retention-days: 2

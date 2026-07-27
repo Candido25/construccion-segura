@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/runner/work/construccion-segura/construccion-segura/scripts/ampliar_control_calidad_cierre.py", line 282, in <module>
+    main()
+  File "/home/runner/work/construccion-segura/construccion-segura/scripts/ampliar_control_calidad_cierre.py", line 68, in main
+    inventario = json.loads(bz2.decompress(base64.b64decode(payload)).decode("utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/bz2.py", line 333, in decompress
+    res = decomp.decompress(data)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+OSError: Invalid data stream
+APLICACION=1

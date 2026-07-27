@@ -1,12 +1,12 @@
 # Diagnóstico de cobertura — seguridad durante la construcción
 
-Versión revisada: `2.8.0`. Parámetros totales: `1802`.
-Parámetros relacionados encontrados: `839`.
+Versión revisada: `2.9.0`. Parámetros totales: `1976`.
+Parámetros relacionados encontrados: `1013`.
 
 ## Resumen por fuente
 
+- Formación técnica SENCICO: 283
 - G.050: 206
-- Formación técnica SENCICO: 109
 - A.120: 64
 - A.010: 59
 - A.020: 58
@@ -36,15 +36,189 @@ Parámetros relacionados encontrados: `839`.
 
 ## Cobertura temática
 
-### Planificación, IPERC, ATS y permisos — 5 registros, 0 criterios revisados
+### Planificación, IPERC, ATS y permisos — 179 registros, 174 criterios revisados
 
 - `g050-plan-seguridad-obligatorio` | validado_con_numeral | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud
 - `g050-plan-seguridad-partida-presupuesto` | validado_con_numeral | Seguridad durante la construcción | Presupuesto de obra | Partida de seguridad
 - `g050-senalizacion-segun-riesgo` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización de obra | Determinación por análisis de riesgos
 - `g050-psst-implementacion-antes-inicio` | validado_con_numeral | Planificación y protecciones de seguridad | Plan de Seguridad y Salud en el Trabajo | Inicio y permanencia
 - `g050-psst-visible-copia-trabajadores` | validado_con_numeral | Planificación y protecciones de seguridad | Plan de Seguridad y Salud | Disponibilidad
+- `criterio-seguridad-responsable-designado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Responsable de seguridad
+- `criterio-seguridad-induccion-ingreso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Inducción de ingreso
+- `criterio-seguridad-charla-inicio-jornada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Charla previa
+- `criterio-seguridad-ats-tarea-no-rutinaria` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | ATS
+- `criterio-seguridad-cambio-condiciones-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Cambio de condiciones
+- `criterio-seguridad-permiso-altura` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de altura
+- `criterio-seguridad-permiso-caliente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de trabajo en caliente
+- `criterio-seguridad-permiso-confinado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de espacio confinado
+- `criterio-seguridad-coordinacion-frentes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Frentes simultáneos
+- `criterio-seguridad-subcontratista-reglas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Subcontratistas
+- `criterio-seguridad-visitante-acompanado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Visitantes
+- `criterio-seguridad-reporte-casi-accidente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Casi accidente
+- `criterio-seguridad-inspeccion-tras-incidente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Reinicio después de incidente
+- `criterio-seguridad-registro-inspecciones` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Registro de inspecciones
+- `criterio-seguridad-correctiva-responsable-plazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Acción correctiva
+- `criterio-seguridad-clima-revision-diaria` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Revisión climática
+- `criterio-seguridad-rescate-antes-trabajo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Plan de rescate
+- `criterio-seguridad-contactos-emergencia-visibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Contactos de emergencia
+- `criterio-seguridad-epp-seleccion-riesgo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de EPP
+- `criterio-seguridad-epp-inspeccion-previa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Inspección previa
+- `criterio-seguridad-casco-impacto-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Casco después de impacto
+- `criterio-seguridad-casco-no-modificar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Modificación de casco
+- `criterio-seguridad-casco-barboquejo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Barboquejo
+- `criterio-seguridad-pantalla-no-reemplaza-lentes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección ocular
+- `criterio-seguridad-lente-rayado-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Lentes dañados
+- `criterio-seguridad-respirador-segun-contaminante` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de respirador
+- `criterio-seguridad-respirador-ajuste-facial` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Ajuste de respirador
+- `criterio-seguridad-filtro-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Cambio de filtros
+- `criterio-seguridad-protector-auditivo-seleccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección auditiva
+- `criterio-seguridad-guante-rotacion-prohibido` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes y partes rotativas
+- `criterio-seguridad-guante-quimico-compatible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes químicos
+- `criterio-seguridad-calzado-suela-estado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Calzado deteriorado
+- `criterio-seguridad-alta-visibilidad-transito` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Alta visibilidad
+- `criterio-seguridad-epp-personal-higiene` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | EPP compartido
+- `criterio-seguridad-epp-seco-almacenado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Almacenamiento del EPP
+- `criterio-seguridad-epp-no-sustituye-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Jerarquía de control
+- `criterio-seguridad-escalera-tipo-correcto` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Selección de escalera
+- `criterio-seguridad-escalera-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Inspección
+- `criterio-seguridad-escalera-base-firme` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Base
+- `criterio-seguridad-escalera-sujecion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Sujeción
+- `criterio-seguridad-escalera-tres-puntos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Tres puntos de contacto
+- `criterio-seguridad-escalera-manos-libres` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Transporte de materiales
+- `criterio-seguridad-escalera-no-peldano-superior` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Peldaños superiores
+- `criterio-seguridad-escalera-tijera-seguros` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Escalera de tijera
+- `criterio-seguridad-escalera-no-horizontal` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Uso indebido
+- `criterio-seguridad-escalera-no-unir` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Extensión improvisada
+- `criterio-seguridad-escalera-metal-electricidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Escalera metálica
+- `criterio-seguridad-escalera-un-usuario` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Ocupación
+- `criterio-seguridad-escalera-no-mover-ocupada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Movimiento
+- `criterio-seguridad-escalera-desembarco-libre` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Desembarco
+- `criterio-seguridad-escalera-control-transito` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Zona inferior
+- `criterio-seguridad-escalera-retirar-defectuosa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Equipo defectuoso
+- `criterio-seguridad-andamio-base-placa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Base del andamio
+- `criterio-seguridad-andamio-no-ladrillos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Nivelación
+- `criterio-seguridad-andamio-aplomo-nivel` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Geometría
+- `criterio-seguridad-andamio-componentes-compatibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Componentes
+- `criterio-seguridad-andamio-plataforma-completa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Plataforma
+- `criterio-seguridad-andamio-tabla-fijada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Tablones
+- `criterio-seguridad-andamio-acceso-interno` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Acceso
+- `criterio-seguridad-andamio-baranda-rodapie` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Protección lateral
+- `criterio-seguridad-andamio-carga-distribuida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Carga
+- `criterio-seguridad-andamio-capacidad-visible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Capacidad
+- `criterio-seguridad-andamio-ruedas-bloqueadas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Andamio móvil
+- `criterio-seguridad-andamio-no-escalera-sobre-plataforma` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Aumento de altura
+- `criterio-seguridad-andamio-separacion-muro-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Separación al frente
+- `criterio-seguridad-andamio-anclajes-no-retirar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Anclajes
+- `criterio-seguridad-andamio-modificacion-reinspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Reinspección
+- `criterio-seguridad-andamio-etiqueta-estado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Estado de uso
+- `criterio-seguridad-altura-cubrir-hueco-fijado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Hueco en piso
+- `criterio-seguridad-altura-baranda-no-cinta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Borde abierto
+- `criterio-seguridad-altura-anclaje-verificado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Punto de anclaje
+- `criterio-seguridad-altura-linea-independiente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Línea de vida
+- `criterio-seguridad-altura-calcular-espacio-caida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Distancia libre
+- `criterio-seguridad-altura-efecto-pendulo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Anclaje lateral
+- `criterio-seguridad-altura-conectores-compatibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Conectores
+- `criterio-seguridad-altura-inspeccion-arnes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Arnés
+- `criterio-seguridad-altura-retirar-tras-caida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Equipo que detuvo una caída
+- `criterio-seguridad-altura-herramienta-amarrada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Herramientas
+- `criterio-seguridad-altura-zona-exclusion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Zona inferior
+- `criterio-seguridad-altura-material-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Materiales en borde
+- `criterio-seguridad-herramienta-inspeccion-previa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta
+- `criterio-seguridad-herramienta-defectuosa-retirar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo defectuoso
+- `criterio-seguridad-herramienta-correcta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Selección
+- `criterio-seguridad-esmeril-guarda` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Esmeril angular
+- `criterio-seguridad-disco-rpm-compatible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo
+- `criterio-seguridad-disco-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo
+- `criterio-seguridad-cambiar-disco-desenergizado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cambio de accesorio
+- `criterio-seguridad-herramienta-dos-manos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta de dos empuñaduras
+- `criterio-seguridad-cable-no-reparacion-cinta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cable eléctrico
+- `criterio-seguridad-extension-desenrollada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Extensión enrollable
+- `criterio-seguridad-enchufe-no-tirar-cable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Desconexión
+- `criterio-seguridad-manos-secas-electricidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo eléctrico
+- `criterio-seguridad-bloqueo-mantenimiento` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Mantenimiento
+- `criterio-seguridad-taladro-pieza-sujeta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Taladro
+- `criterio-seguridad-sierra-empujador` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Sierra de banco
+- `criterio-seguridad-clavadora-no-apuntar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Clavadora
+- `criterio-seguridad-manguera-aire-retencion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Manguera neumática
+- `criterio-seguridad-compresor-valvula` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Compresor
+- `criterio-seguridad-bateria-carga-ventilada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Carga de baterías
+- `criterio-seguridad-caliente-retirar-combustibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Área de trabajo
+- `criterio-seguridad-caliente-vigia-fuego` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Vigilancia de fuego
+- `criterio-seguridad-caliente-extintor-cercano` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Extinción
+- `criterio-seguridad-caliente-pantalla-chispas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Pantallas
+- `criterio-seguridad-caliente-ventilacion-humos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Humos
+- `criterio-seguridad-cilindro-vertical-asegurado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Cilindro comprimido
+- `criterio-seguridad-cilindro-no-rodar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Traslado de cilindro
+- `criterio-seguridad-oxigeno-sin-grasa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Oxígeno
+- `criterio-seguridad-mangueras-gas-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Mangueras de gas
+- `criterio-seguridad-arrestallama` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Equipo de oxicorte
+- `criterio-seguridad-cerrar-cilindros-fin` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Fin de trabajo
+- `criterio-seguridad-izaje-plan` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maniobra de izaje
+- `criterio-seguridad-izaje-eslinga-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-capacidad-legible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Aparejo
+- `criterio-seguridad-izaje-angulo-reduce-capacidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslingado
+- `criterio-seguridad-izaje-aristas-protegidas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga sobre arista
+- `criterio-seguridad-izaje-no-nudos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-gancho-seguro` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Gancho
+- `criterio-seguridad-izaje-sin-personas-debajo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga suspendida
+- `criterio-seguridad-izaje-cuerda-guia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga
+- `criterio-seguridad-izaje-prueba-baja-altura` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Inicio de izaje
+- `criterio-seguridad-izaje-senalero-unico` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-izaje-perder-vision-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-maquinaria-alarma-retroceso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria móvil
+- `criterio-seguridad-maquinaria-freno-calzas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Equipo estacionado
+- `criterio-seguridad-maquinaria-no-pasajeros` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria
+- `criterio-seguridad-excavacion-servicios-localizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Servicios enterrados
+- `criterio-seguridad-excavacion-inspeccion-lluvia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Excavación
+- `criterio-seguridad-excavacion-no-entrar-sin-soporte` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Zanja inestable
+- `criterio-seguridad-excavacion-suelo-cambio-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Condición del suelo
+- `criterio-seguridad-excavacion-equipo-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Vehículo junto a borde
+- `criterio-seguridad-excavacion-no-bajo-cucharon` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Equipo de excavación
+- `criterio-seguridad-excavacion-agua-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Agua en excavación
+- `criterio-seguridad-excavacion-no-trabajo-solo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Personal en zanja
+- `criterio-seguridad-confinado-medicion-atmosfera` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado
+- `criterio-seguridad-confinado-vigia-permanente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado
+- `criterio-seguridad-confinado-rescate-no-ingreso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Rescate
+- `criterio-seguridad-confinado-ventilacion-no-oxigeno` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Ventilación
+- `criterio-seguridad-encofrado-inspeccion-prevaciado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado
+- `criterio-seguridad-encofrado-no-modificar-carga` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado cargado
+- `criterio-seguridad-desencofrado-zona-exclusion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Desencofrado
+- `criterio-seguridad-acero-puntas-protegidas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Acero sobresaliente
+- `criterio-seguridad-acero-no-caminar-inestable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Armadura
+- `criterio-seguridad-bomba-concreto-manguera` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Manguera de bombeo
+- `criterio-seguridad-concreto-contacto-piel` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Concreto fresco
+- `criterio-seguridad-vibrador-cable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Vibrador
+- `criterio-seguridad-panel-encofrado-izaje` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Panel de encofrado
+- `criterio-seguridad-apuntalamiento-mantener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Apuntalamiento
+- `criterio-seguridad-ruta-peaton-vehiculo-separada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Circulación
+- `criterio-seguridad-vigia-retroceso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Retroceso vehicular
+- `criterio-seguridad-velocidad-obra` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Vehículos
+- `criterio-seguridad-entrega-programada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Entrega de materiales
+- `criterio-seguridad-publico-caida-objetos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Zona colindante
+- `criterio-seguridad-noche-iluminacion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Trabajo nocturno
+- `criterio-seguridad-polvo-control-fuente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo
+- `criterio-seguridad-silice-no-barrer-seco` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo de sílice
+- `criterio-seguridad-ruido-tiempo-exposicion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Ruido
+- `criterio-seguridad-vibracion-descansos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Herramienta vibratoria
+- `criterio-seguridad-calor-hidratacion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Calor
+- `criterio-seguridad-calor-sintomas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Estrés térmico
+- `criterio-seguridad-viento-suspender` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Viento fuerte
+- `criterio-seguridad-lluvia-superficie-revisar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Lluvia
+- `criterio-seguridad-tormenta-electrica` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Tormenta eléctrica
+- `criterio-seguridad-derrame-limpiar-aislar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Derrame
+- `criterio-seguridad-cables-ruta-protegida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Cables y mangueras
+- `criterio-seguridad-clavos-recipiente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Clavos y puntas
+- `criterio-seguridad-quimico-etiqueta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico
+- `criterio-seguridad-hoja-seguridad-disponible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico
+- `criterio-seguridad-alimentos-separados-quimicos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Alimentos
+- `criterio-seguridad-extintor-no-bloqueado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Extintor
+- `criterio-seguridad-botiquin-accesible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Botiquín
+- `criterio-seguridad-primer-auxilio-persona-capacitada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Primeros auxilios
+- `criterio-seguridad-simulacro-actualizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Emergencia
+- `criterio-seguridad-ruta-cambio-actualizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Ruta de evacuación
+- `criterio-seguridad-escena-incidente-preservar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Accidente
 
-### EPP y protección respiratoria/auditiva — 7 registros, 1 criterios revisados
+### EPP y protección respiratoria/auditiva — 25 registros, 19 criterios revisados
 
 - `g050-plan-seguridad-obligatorio` | validado_con_numeral | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud
 - `g050-demolicion-protecciones-provisionales` | validado_con_numeral | Demoliciones y seguridad de intervención | Protecciones colectivas | Protecciones del área
@@ -53,8 +227,26 @@ Parámetros relacionados encontrados: `839`.
 - `g050-excavacion-epp-segun-riesgo` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Personal dentro de excavación | Equipo de protección
 - `e040-manipulacion-epp` | validado_con_numeral | Vidrios, ventanas y cerramientos | Manipulación e instalación de vidrio | Equipo de protección personal
 - `criterio-pintura-ventilacion-epp` | criterio_tecnico_revisado | Pinturas y protección de superficies | Trabajo de pintura | Ventilación y protección
+- `criterio-seguridad-epp-seleccion-riesgo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de EPP
+- `criterio-seguridad-epp-inspeccion-previa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Inspección previa
+- `criterio-seguridad-casco-impacto-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Casco después de impacto
+- `criterio-seguridad-casco-no-modificar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Modificación de casco
+- `criterio-seguridad-casco-barboquejo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Barboquejo
+- `criterio-seguridad-pantalla-no-reemplaza-lentes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección ocular
+- `criterio-seguridad-lente-rayado-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Lentes dañados
+- `criterio-seguridad-respirador-segun-contaminante` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de respirador
+- `criterio-seguridad-respirador-ajuste-facial` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Ajuste de respirador
+- `criterio-seguridad-filtro-reemplazo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Cambio de filtros
+- `criterio-seguridad-protector-auditivo-seleccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección auditiva
+- `criterio-seguridad-guante-rotacion-prohibido` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes y partes rotativas
+- `criterio-seguridad-guante-quimico-compatible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes químicos
+- `criterio-seguridad-calzado-suela-estado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Calzado deteriorado
+- `criterio-seguridad-alta-visibilidad-transito` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Alta visibilidad
+- `criterio-seguridad-epp-personal-higiene` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | EPP compartido
+- `criterio-seguridad-epp-seco-almacenado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Almacenamiento del EPP
+- `criterio-seguridad-epp-no-sustituye-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Jerarquía de control
 
-### Trabajos en altura y protección de bordes — 131 registros, 30 criterios revisados
+### Trabajos en altura y protección de bordes — 147 registros, 46 criterios revisados
 
 - `a010-escalera-baranda-inclinada-altura-minima` | validado_con_numeral | Escaleras | Baranda en tramo inclinado | Altura
 - `a010-escalera-baranda-descanso-altura-minima` | validado_con_numeral | Escaleras | Baranda en descanso con abertura en altura | Altura
@@ -187,12 +379,44 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-cubierta-coronacion-goteron` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Coronación o borde | Goterón
 - `criterio-zona-humeda-nicho-ducha` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Nicho de ducha | Pendiente y continuidad
 - `criterio-humedad-parche-compatible` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Reparación localizada | Compatibilidad del parche
+- `criterio-seguridad-coordinacion-frentes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Frentes simultáneos
+- `criterio-seguridad-epp-no-sustituye-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Jerarquía de control
+- `criterio-seguridad-andamio-no-ladrillos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Nivelación
+- `criterio-seguridad-andamio-plataforma-completa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Plataforma
+- `criterio-seguridad-andamio-acceso-interno` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Acceso
+- `criterio-seguridad-andamio-baranda-rodapie` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Protección lateral
+- `criterio-seguridad-altura-cubrir-hueco-fijado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Hueco en piso
+- `criterio-seguridad-altura-baranda-no-cinta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Borde abierto
+- `criterio-seguridad-altura-linea-independiente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Línea de vida
+- `criterio-seguridad-altura-calcular-espacio-caida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Distancia libre
+- `criterio-seguridad-altura-inspeccion-arnes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Arnés
+- `criterio-seguridad-altura-retirar-tras-caida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Equipo que detuvo una caída
+- `criterio-seguridad-altura-zona-exclusion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Zona inferior
+- `criterio-seguridad-altura-material-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Materiales en borde
+- `criterio-seguridad-excavacion-equipo-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Vehículo junto a borde
+- `criterio-seguridad-publico-caida-objetos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Zona colindante
 
-### Andamios y plataformas — 3 registros, 0 criterios revisados
+### Andamios y plataformas — 19 registros, 16 criterios revisados
 
 - `g050-andamio-distancia-electricidad` | validado_con_numeral | Seguridad durante la construcción | Andamio próximo a sistema eléctrico | Distancia mínima
 - `g050-andamio-movimiento-sin-personas` | validado_con_numeral | Seguridad durante la construcción | Andamio móvil | Movimiento
 - `g050-andamio-inspeccion-diaria` | validado_con_numeral | Seguridad durante la construcción | Andamio o plataforma | Inspección
+- `criterio-seguridad-andamio-base-placa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Base del andamio
+- `criterio-seguridad-andamio-no-ladrillos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Nivelación
+- `criterio-seguridad-andamio-aplomo-nivel` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Geometría
+- `criterio-seguridad-andamio-componentes-compatibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Componentes
+- `criterio-seguridad-andamio-plataforma-completa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Plataforma
+- `criterio-seguridad-andamio-tabla-fijada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Tablones
+- `criterio-seguridad-andamio-acceso-interno` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Acceso
+- `criterio-seguridad-andamio-baranda-rodapie` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Protección lateral
+- `criterio-seguridad-andamio-carga-distribuida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Carga
+- `criterio-seguridad-andamio-capacidad-visible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Capacidad
+- `criterio-seguridad-andamio-ruedas-bloqueadas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Andamio móvil
+- `criterio-seguridad-andamio-no-escalera-sobre-plataforma` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Aumento de altura
+- `criterio-seguridad-andamio-separacion-muro-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Separación al frente
+- `criterio-seguridad-andamio-anclajes-no-retirar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Anclajes
+- `criterio-seguridad-andamio-modificacion-reinspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Reinspección
+- `criterio-seguridad-andamio-etiqueta-estado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Estado de uso
 
 ### Escaleras portátiles y provisionales — 3 registros, 0 criterios revisados
 
@@ -200,7 +424,7 @@ Parámetros relacionados encontrados: `839`.
 - `a020-azotea-uso-comun-escalera-comun` | validado_con_numeral | Azoteas, techos y cubiertas | Azotea de uso común | Acceso
 - `g050-excavacion-escalera-sobresale` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Escalera de acceso a excavación | Prolongación y sujeción
 
-### Excavaciones y zanjas — 71 registros, 2 criterios revisados
+### Excavaciones y zanjas — 86 registros, 17 criterios revisados
 
 - `g050-caida-cercania-borde` | validado_con_numeral | Seguridad durante la construcción | Trabajo cerca de borde sin baranda | Distancia de protección
 - `e050-sostenimiento-evaluacion-ems` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación y sostenimiento | Evaluación de necesidad en el EMS
@@ -273,8 +497,23 @@ Parámetros relacionados encontrados: `839`.
 - `g050-napa-bombeo-estabilidad-vecinos` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Abatimiento de agua subterránea | Protección de colindantes
 - `g050-napa-tablestacado-caisson` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Sistema de contención
 - `criterio-enterrado-napa-evaluacion` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Elemento bajo nivel del terreno | Presión hidrostática
+- `criterio-seguridad-permiso-confinado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de espacio confinado
+- `criterio-seguridad-clima-revision-diaria` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Revisión climática
+- `criterio-seguridad-rescate-antes-trabajo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Plan de rescate
+- `criterio-seguridad-excavacion-servicios-localizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Servicios enterrados
+- `criterio-seguridad-excavacion-inspeccion-lluvia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Excavación
+- `criterio-seguridad-excavacion-no-entrar-sin-soporte` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Zanja inestable
+- `criterio-seguridad-excavacion-suelo-cambio-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Condición del suelo
+- `criterio-seguridad-excavacion-equipo-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Vehículo junto a borde
+- `criterio-seguridad-excavacion-no-bajo-cucharon` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Equipo de excavación
+- `criterio-seguridad-excavacion-agua-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Agua en excavación
+- `criterio-seguridad-excavacion-no-trabajo-solo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Personal en zanja
+- `criterio-seguridad-confinado-medicion-atmosfera` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado
+- `criterio-seguridad-confinado-vigia-permanente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado
+- `criterio-seguridad-confinado-rescate-no-ingreso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Rescate
+- `criterio-seguridad-confinado-ventilacion-no-oxigeno` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Ventilación
 
-### Herramientas manuales y eléctricas — 18 registros, 7 criterios revisados
+### Herramientas manuales y eléctricas — 42 registros, 31 criterios revisados
 
 - `e030-diafragma-aberturas-irregularidad` | validado_con_numeral | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad
 - `e060-vibrador-no-desplaza-concreto` | validado_con_numeral | Procesos de concreto | Vibrador de concreto | Uso permitido
@@ -294,8 +533,32 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-jardinera-proteccion-membrana` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Jardinera | Protección mecánica
 - `criterio-impermeabilizacion-proteger-transito` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana fresca | Restricción de tránsito
 - `criterio-impermeabilizacion-limpieza-compatible` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana expuesta | Limpieza
+- `criterio-seguridad-permiso-caliente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de trabajo en caliente
+- `criterio-seguridad-epp-seco-almacenado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Almacenamiento del EPP
+- `criterio-seguridad-epp-no-sustituye-control` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Jerarquía de control
+- `criterio-seguridad-altura-herramienta-amarrada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Herramientas
+- `criterio-seguridad-herramienta-inspeccion-previa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta
+- `criterio-seguridad-herramienta-defectuosa-retirar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo defectuoso
+- `criterio-seguridad-herramienta-correcta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Selección
+- `criterio-seguridad-esmeril-guarda` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Esmeril angular
+- `criterio-seguridad-disco-rpm-compatible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo
+- `criterio-seguridad-disco-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo
+- `criterio-seguridad-cambiar-disco-desenergizado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cambio de accesorio
+- `criterio-seguridad-herramienta-dos-manos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta de dos empuñaduras
+- `criterio-seguridad-cable-no-reparacion-cinta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cable eléctrico
+- `criterio-seguridad-extension-desenrollada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Extensión enrollable
+- `criterio-seguridad-enchufe-no-tirar-cable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Desconexión
+- `criterio-seguridad-manos-secas-electricidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo eléctrico
+- `criterio-seguridad-bloqueo-mantenimiento` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Mantenimiento
+- `criterio-seguridad-taladro-pieza-sujeta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Taladro
+- `criterio-seguridad-sierra-empujador` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Sierra de banco
+- `criterio-seguridad-clavadora-no-apuntar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Clavadora
+- `criterio-seguridad-manguera-aire-retencion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Manguera neumática
+- `criterio-seguridad-compresor-valvula` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Compresor
+- `criterio-seguridad-bateria-carga-ventilada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Herramientas y equipos | Carga de baterías
+- `criterio-seguridad-vibracion-descansos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Herramienta vibratoria
 
-### Izaje, grúas y aparejos — 11 registros, 0 criterios revisados
+### Izaje, grúas y aparejos — 29 registros, 18 criterios revisados
 
 - `e070-columna-confinamiento-estribo-cierre` | validado_con_numeral | Albañilería confinada y armada | Columna de confinamiento | Cierre de estribos
 - `e060-gancho-no-desarrolla-barra-compresion` | validado_con_numeral | Concreto y acero de refuerzo | Gancho estándar de barra | Uso en barras a compresión
@@ -308,8 +571,26 @@ Parámetros relacionados encontrados: `839`.
 - `em070-accesos-tecnicos-cartel-peligro` | validado_con_numeral | Transporte mecánico y equipos especiales | Puertas de inspección y sala de máquinas | Señal de acceso restringido
 - `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
 - `g050-psst-procedimientos-alto-riesgo` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Procedimientos de trabajo
+- `criterio-seguridad-clima-revision-diaria` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Revisión climática
+- `criterio-seguridad-escalera-manos-libres` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Transporte de materiales
+- `criterio-seguridad-izaje-plan` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maniobra de izaje
+- `criterio-seguridad-izaje-eslinga-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-capacidad-legible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Aparejo
+- `criterio-seguridad-izaje-angulo-reduce-capacidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslingado
+- `criterio-seguridad-izaje-aristas-protegidas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga sobre arista
+- `criterio-seguridad-izaje-no-nudos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-gancho-seguro` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Gancho
+- `criterio-seguridad-izaje-sin-personas-debajo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga suspendida
+- `criterio-seguridad-izaje-cuerda-guia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga
+- `criterio-seguridad-izaje-prueba-baja-altura` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Inicio de izaje
+- `criterio-seguridad-izaje-senalero-unico` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-izaje-perder-vision-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-maquinaria-alarma-retroceso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria móvil
+- `criterio-seguridad-maquinaria-freno-calzas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Equipo estacionado
+- `criterio-seguridad-maquinaria-no-pasajeros` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria
+- `criterio-seguridad-panel-encofrado-izaje` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Panel de encofrado
 
-### Soldadura, corte y trabajo en caliente — 11 registros, 7 criterios revisados
+### Soldadura, corte y trabajo en caliente — 24 registros, 20 criterios revisados
 
 - `e050-sostenimiento-control-calidad` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Verificación de ensayos
 - `em070-rieles-soldadura-prohibida` | validado_con_numeral | Transporte mecánico y equipos especiales | Rieles guía de ascensor | Uso de soldadura
@@ -322,6 +603,19 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-puerta-metal-proteccion` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Puerta metálica | Protección anticorrosiva
 - `criterio-marco-metal-control-soldadura` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Marco metálico | Deformación por soldadura
 - `criterio-gas-soldadura-procedimiento` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Unión soldada | Procedimiento
+- `criterio-seguridad-permiso-caliente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de trabajo en caliente
+- `criterio-seguridad-escalera-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Inspección
+- `criterio-seguridad-caliente-retirar-combustibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Área de trabajo
+- `criterio-seguridad-caliente-vigia-fuego` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Vigilancia de fuego
+- `criterio-seguridad-caliente-extintor-cercano` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Extinción
+- `criterio-seguridad-caliente-pantalla-chispas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Pantallas
+- `criterio-seguridad-caliente-ventilacion-humos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Humos
+- `criterio-seguridad-cilindro-vertical-asegurado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Cilindro comprimido
+- `criterio-seguridad-cilindro-no-rodar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Traslado de cilindro
+- `criterio-seguridad-oxigeno-sin-grasa` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Oxígeno
+- `criterio-seguridad-mangueras-gas-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Mangueras de gas
+- `criterio-seguridad-arrestallama` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Equipo de oxicorte
+- `criterio-seguridad-cerrar-cilindros-fin` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Fin de trabajo
 
 ### Electricidad provisional — 20 registros, 8 criterios revisados
 
@@ -346,7 +640,7 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-electrico-equipotencial-metal` | criterio_tecnico_revisado | Puesta a tierra | Masas metálicas | Unión equipotencial
 - `criterio-electrico-prueba-protecciones` | criterio_tecnico_revisado | Pruebas y recepción eléctrica | Protecciones | Funcionamiento
 
-### Orden, limpieza y almacenamiento — 86 registros, 20 criterios revisados
+### Orden, limpieza y almacenamiento — 87 registros, 21 criterios revisados
 
 - `e060-encofrado-cargas-diseno` | validado_con_numeral | Encofrados y apuntalamiento | Diseño de encofrado | Cargas y velocidad de colocación
 - `e060-estructura-sin-puntales-carga-maxima` | validado_con_numeral | Encofrados y apuntalamiento | Estructura sin apuntalamiento | Carga de construcción
@@ -434,6 +728,7 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-impermeabilizacion-drenes-proteger-residuos` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Sumideros y canaletas durante obra | Protección temporal
 - `criterio-impermeabilizacion-residuo-no-desague` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Residuos de aplicación | Disposición
 - `criterio-mantenimiento-drenes-limpieza` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva
+- `criterio-seguridad-epp-seco-almacenado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Almacenamiento del EPP
 
 ### Demoliciones — 51 registros, 0 criterios revisados
 
@@ -489,7 +784,7 @@ Parámetros relacionados encontrados: `839`.
 - `licencia-demolicion-memoria-seguridad-cerramiento` | validado_con_fuente_oficial | Licencias y alcance de intervenciones | Documentación de demolición | Seguridad, proceso y cerramiento
 - `g050-psst-procedimientos-alto-riesgo` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Procedimientos de trabajo
 
-### Tránsito, maquinaria y terceros — 83 registros, 2 criterios revisados
+### Tránsito, maquinaria y terceros — 104 registros, 23 criterios revisados
 
 - `g050-via-circulacion-ancho-minimo` | validado_con_numeral | Seguridad durante la construcción | Vía peatonal o de acarreo manual | Ancho mínimo
 - `ge040-escombros-no-via-azotea` | validado_con_numeral | Uso, mantenimiento y conservación | Residuos de refacción o remodelación | Lugar de disposición
@@ -574,8 +869,29 @@ Parámetros relacionados encontrados: `839`.
 - `g050-excavacion-vibracion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación expuesta a vibraciones | Distancia de barrera
 - `criterio-gas-proteger-enterrada` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería enterrada | Protección
 - `criterio-gas-proteccion-impacto` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería expuesta | Golpes
+- `criterio-seguridad-visitante-acompanado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Visitantes
+- `criterio-seguridad-alta-visibilidad-transito` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Alta visibilidad
+- `criterio-seguridad-altura-baranda-no-cinta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajos en altura | Borde abierto
+- `criterio-seguridad-izaje-plan` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maniobra de izaje
+- `criterio-seguridad-izaje-eslinga-inspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-capacidad-legible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Aparejo
+- `criterio-seguridad-izaje-angulo-reduce-capacidad` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslingado
+- `criterio-seguridad-izaje-aristas-protegidas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga sobre arista
+- `criterio-seguridad-izaje-no-nudos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga
+- `criterio-seguridad-izaje-gancho-seguro` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Gancho
+- `criterio-seguridad-izaje-sin-personas-debajo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga suspendida
+- `criterio-seguridad-izaje-cuerda-guia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga
+- `criterio-seguridad-izaje-prueba-baja-altura` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Inicio de izaje
+- `criterio-seguridad-izaje-senalero-unico` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-izaje-perder-vision-detener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación
+- `criterio-seguridad-maquinaria-alarma-retroceso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria móvil
+- `criterio-seguridad-maquinaria-freno-calzas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Equipo estacionado
+- `criterio-seguridad-maquinaria-no-pasajeros` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria
+- `criterio-seguridad-excavacion-equipo-borde` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Vehículo junto a borde
+- `criterio-seguridad-ruta-peaton-vehiculo-separada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Circulación
+- `criterio-seguridad-velocidad-obra` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Vehículos
 
-### Incendios y emergencias — 144 registros, 24 criterios revisados
+### Incendios y emergencias — 159 registros, 39 criterios revisados
 
 - `a020-escalera-vivienda-pasamanos-cantidad-minima` | validado_con_numeral | Escaleras | Escalera interior de vivienda | Cantidad mínima de lados con pasamanos
 - `a010-escalera-caracol-integrada-personas-maximas` | validado_con_numeral | Escaleras | Escalera caracol integrada | Personas a las que puede servir
@@ -721,8 +1037,23 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-impermeabilizacion-soplete-seguridad` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana aplicada con calor | Control de llama y fuego
 - `criterio-cubierta-proteccion-no-bloquear-drenaje` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Capa de protección de cubierta | Continuidad del drenaje
 - `criterio-cubierta-rebose-emergencia` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Azotea con parapetos | Ruta de rebose
+- `criterio-seguridad-induccion-ingreso` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Inducción de ingreso
+- `criterio-seguridad-contactos-emergencia-visibles` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Contactos de emergencia
+- `criterio-seguridad-caliente-extintor-cercano` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Trabajo en caliente | Extinción
+- `criterio-seguridad-derrame-limpiar-aislar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Derrame
+- `criterio-seguridad-cables-ruta-protegida` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Cables y mangueras
+- `criterio-seguridad-clavos-recipiente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Clavos y puntas
+- `criterio-seguridad-quimico-etiqueta` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico
+- `criterio-seguridad-hoja-seguridad-disponible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico
+- `criterio-seguridad-alimentos-separados-quimicos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Alimentos
+- `criterio-seguridad-extintor-no-bloqueado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Extintor
+- `criterio-seguridad-botiquin-accesible` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Botiquín
+- `criterio-seguridad-primer-auxilio-persona-capacitada` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Primeros auxilios
+- `criterio-seguridad-simulacro-actualizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Emergencia
+- `criterio-seguridad-ruta-cambio-actualizar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Ruta de evacuación
+- `criterio-seguridad-escena-incidente-preservar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Orden y emergencias | Accidente
 
-### Polvo, ruido, vibración y clima — 115 registros, 36 criterios revisados
+### Polvo, ruido, vibración y clima — 130 registros, 51 criterios revisados
 
 - `e060-recubrimiento-contra-suelo-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Concreto colocado contra el suelo | Recubrimiento mínimo
 - `e060-mezclado-registro-tandas` | validado_con_numeral | Control de calidad del concreto | Concreto preparado en obra | Registro de producción
@@ -839,8 +1170,23 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-humedad-condensacion-diferenciar` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Mancha o moho | Condensación o filtración
 - `criterio-mantenimiento-cubierta-inspeccion-periodica` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Techo o azotea | Inspección
 - `criterio-mantenimiento-drenes-limpieza` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva
+- `criterio-seguridad-coordinacion-frentes` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Frentes simultáneos
+- `criterio-seguridad-clima-revision-diaria` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Gestión preventiva | Revisión climática
+- `criterio-seguridad-casco-barboquejo` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Barboquejo
+- `criterio-seguridad-respirador-segun-contaminante` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de respirador
+- `criterio-seguridad-protector-auditivo-seleccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección auditiva
+- `criterio-seguridad-andamio-modificacion-reinspeccion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Andamios y plataformas | Reinspección
+- `criterio-seguridad-excavacion-inspeccion-lluvia` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Excavación
+- `criterio-seguridad-polvo-control-fuente` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo
+- `criterio-seguridad-silice-no-barrer-seco` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo de sílice
+- `criterio-seguridad-ruido-tiempo-exposicion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Ruido
+- `criterio-seguridad-vibracion-descansos` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Herramienta vibratoria
+- `criterio-seguridad-calor-hidratacion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Calor
+- `criterio-seguridad-calor-sintomas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Estrés térmico
+- `criterio-seguridad-viento-suspender` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Viento fuerte
+- `criterio-seguridad-lluvia-superficie-revisar` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Higiene ocupacional | Lluvia
 
-### Encofrado, desencofrado y acero — 51 registros, 3 criterios revisados
+### Encofrado, desencofrado y acero — 62 registros, 14 criterios revisados
 
 - `e060-concreto-estructural-resistencia-minima` | validado_con_numeral | Concreto y acero de refuerzo | Concreto estructural | Resistencia especificada a compresión
 - `e060-agregado-maximo-respecto-encofrado` | validado_con_numeral | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al encofrado
@@ -893,8 +1239,305 @@ Parámetros relacionados encontrados: `839`.
 - `criterio-apuntalamiento-temporal-disenado` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Intervenciones temporales | Diseño de apuntalamiento
 - `g050-madera-clavos-retirar` | validado_con_numeral | Orden, limpieza y residuos de obra | Madera de desencofrado o embalaje | Retiro de clavos
 - `g050-entibado-proteger-colindantes` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Entibado, apuntalamiento o tablestacado | Protección de obra y colindantes
+- `criterio-seguridad-escalera-no-horizontal` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Escaleras provisionales | Uso indebido
+- `criterio-seguridad-encofrado-inspeccion-prevaciado` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado
+- `criterio-seguridad-encofrado-no-modificar-carga` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado cargado
+- `criterio-seguridad-desencofrado-zona-exclusion` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Desencofrado
+- `criterio-seguridad-acero-puntas-protegidas` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Acero sobresaliente
+- `criterio-seguridad-acero-no-caminar-inestable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Armadura
+- `criterio-seguridad-bomba-concreto-manguera` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Manguera de bombeo
+- `criterio-seguridad-concreto-contacto-piel` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Concreto fresco
+- `criterio-seguridad-vibrador-cable` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Vibrador
+- `criterio-seguridad-panel-encofrado-izaje` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Panel de encofrado
+- `criterio-seguridad-apuntalamiento-mantener` | criterio_tecnico_revisado | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Apuntalamiento
 
 ## Registros por fuente
+
+### Formación técnica SENCICO
+
+- `criterio-sanitaria-pvc-corte-escuadra` | Ejecución y control de instalaciones sanitarias | Tubería PVC | Corte | sin numeral
+- `criterio-sanitaria-pvc-limpieza-union` | Ejecución y control de instalaciones sanitarias | Unión de PVC | Limpieza | sin numeral
+- `criterio-sanitaria-pvc-no-calentar-improvisado` | Ejecución y control de instalaciones sanitarias | Tubería PVC | Deformación por calor | sin numeral
+- `criterio-sanitaria-cambios-direccion-suaves` | Ejecución y control de instalaciones sanitarias | Red de desagüe | Cambios de dirección | sin numeral
+- `criterio-sanitaria-soporte-cerca-accesorios` | Ejecución y control de instalaciones sanitarias | Tubería suspendida | Apoyo de accesorios | sin numeral
+- `criterio-sanitaria-no-compactar-directo-tubo` | Ejecución y control de instalaciones sanitarias | Tubería enterrada | Compactación | sin numeral
+- `criterio-sanitaria-desinfectar-almacenamiento` | Ejecución y control de instalaciones sanitarias | Cisterna o tanque | Desinfección | sin numeral
+- `criterio-sanitaria-acceso-limpieza-deposito` | Ejecución y control de instalaciones sanitarias | Cisterna o tanque | Acceso de mantenimiento | sin numeral
+- `criterio-sanitaria-bomba-base-firme` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Base | sin numeral
+- `criterio-sanitaria-bomba-uniones-desmontables` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Mantenimiento | sin numeral
+- `criterio-sanitaria-bomba-no-trabajar-seco` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Protección | sin numeral
+- `criterio-sanitaria-limpieza-final-red` | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Limpieza | sin numeral
+- `criterio-electrico-canalizacion-continuidad` | Canalizaciones eléctricas | Conduit | Continuidad | Aplicación práctica supervisada
+- `criterio-electrico-limpiar-antes-cablear` | Canalizaciones eléctricas | Tubería | Limpieza | Aplicación práctica supervisada
+- `criterio-electrico-no-danar-aislamiento` | Conductores y empalmes | Cableado | Aislamiento | Aplicación práctica supervisada
+- `criterio-electrico-equipotencial-metal` | Puesta a tierra | Masas metálicas | Unión equipotencial | Aplicación práctica supervisada
+- `criterio-electrico-tomacorriente-polaridad` | Accesorios y luminarias | Tomacorriente | Polaridad | Aplicación práctica supervisada
+- `criterio-electrico-tomacorriente-firme` | Accesorios y luminarias | Tomacorriente | Fijación | Aplicación práctica supervisada
+- `criterio-electrico-placa-cubre-caja` | Accesorios y luminarias | Placa | Cobertura | Aplicación práctica supervisada
+- `criterio-electrico-luminaria-soporte` | Accesorios y luminarias | Luminaria | Soporte | Aplicación práctica supervisada
+- `criterio-electrico-luminaria-calor` | Accesorios y luminarias | Luminaria | Temperatura | Aplicación práctica supervisada
+- `criterio-electrico-bano-grado-proteccion` | Accesorios y luminarias | Baño y exterior | Protección | Aplicación práctica supervisada
+- `criterio-electrico-no-extension-permanente` | Accesorios y luminarias | Alimentación | Extensiones | Aplicación práctica supervisada
+- `criterio-electrico-prueba-aislamiento` | Pruebas y recepción eléctrica | Conductores | Aislamiento | Aplicación práctica supervisada
+- `criterio-electrico-prueba-tension` | Pruebas y recepción eléctrica | Circuitos | Tensión | Aplicación práctica supervisada
+- `criterio-vano-medir-acabado-final` | Carpinterías, sellos y herrajes | Vano terminado | Medición final | Aplicación práctica supervisada
+- `criterio-marco-proteger-obra` | Carpinterías, sellos y herrajes | Marco instalado | Protección temporal | Aplicación práctica supervisada
+- `criterio-puerta-bisagras-alineadas` | Puertas, ventanas y cerrajería | Bisagras | Alineación y capacidad | Aplicación práctica supervisada
+- `criterio-puerta-holgura-inferior-funcion` | Puertas, ventanas y cerrajería | Borde inferior de puerta | Holgura funcional | Aplicación práctica supervisada
+- `criterio-puerta-bano-material-humedad` | Puertas, ventanas y cerrajería | Puerta de baño | Resistencia a humedad | Aplicación práctica supervisada
+- `criterio-puerta-metal-proteccion` | Puertas, ventanas y cerrajería | Puerta metálica | Protección anticorrosiva | Aplicación práctica supervisada
+- `criterio-marco-metal-control-soldadura` | Puertas, ventanas y cerrajería | Marco metálico | Deformación por soldadura | Aplicación práctica supervisada
+- `criterio-ventana-alfeizar-pendiente` | Puertas, ventanas y cerrajería | Alféizar exterior | Evacuación de agua | Aplicación práctica supervisada
+- `criterio-ventana-vidrio-holgura` | Puertas, ventanas y cerrajería | Vidrio | Holgura de borde | Aplicación práctica supervisada
+- `criterio-ventana-operacion-limpieza` | Puertas, ventanas y cerrajería | Ventana operable | Uso y limpieza | Aplicación práctica supervisada
+- `criterio-ventana-restrictor-infantil` | Protección frente a caídas y seguridad | Ventana en altura | Limitador de apertura | Aplicación práctica supervisada
+- `criterio-mosquitero-fijacion` | Puertas, ventanas y cerrajería | Mosquitero | Fijación | Aplicación práctica supervisada
+- `criterio-ventana-corredera-antielevacion` | Protección frente a caídas y seguridad | Ventana corrediza | Antielevación | Aplicación práctica supervisada
+- `criterio-cerradura-altura-usuario` | Puertas, ventanas y cerrajería | Cerradura y manija | Altura de instalación | Aplicación práctica supervisada
+- `criterio-cerradura-no-doble-llave-evacuacion` | Evacuación y protección contra incendios | Puerta en ruta de salida | Liberación interior | Aplicación práctica supervisada
+- `criterio-cortafuego-no-perforar` | Evacuación y protección contra incendios | Puerta cortafuego | Intervenciones posteriores | Aplicación práctica supervisada
+- `criterio-barra-antipanico-operacion` | Evacuación y protección contra incendios | Barra antipánico | Funcionamiento | Aplicación práctica supervisada
+- `criterio-bisagra-exterior-seguridad` | Protección frente a caídas y seguridad | Puerta exterior con bisagras expuestas | Protección contra desmontaje | Aplicación práctica supervisada
+- `criterio-seguro-infantil-no-reemplaza-baranda` | Protección frente a caídas y seguridad | Seguro infantil | Alcance de protección | Aplicación práctica supervisada
+- `criterio-mirilla-altura-usuarios` | Puertas, ventanas y cerrajería | Mirilla de puerta | Altura y campo visual | Aplicación práctica supervisada
+- `criterio-cerradura-no-bloquear-salida` | Evacuación y protección contra incendios | Cerradura electrónica o control de acceso | Liberación de emergencia | Aplicación práctica supervisada
+- `criterio-porton-automatizado-deteccion` | Protección frente a caídas y seguridad | Portón automatizado | Protección de atrapamiento | Aplicación práctica supervisada
+- `criterio-carpinteria-limpieza-no-abrasiva-final` | Mantenimiento de la vivienda | Perfiles, vidrio y herrajes | Limpieza | Aplicación práctica supervisada
+- `criterio-metal-retocar-proteccion` | Carpinterías, sellos y herrajes | Carpintería metálica | Retoque | Aplicación práctica supervisada
+- `criterio-entrega-manual-mantenimiento` | Mantenimiento de la vivienda | Puertas y ventanas | Instrucciones | Aplicación práctica supervisada
+- `criterio-carpinteria-lista-observaciones` | Control de calidad de acabados | Recepción | Lista de pendientes | Aplicación práctica supervisada
+- `criterio-carpinteria-conforme-obra` | Control de calidad de acabados | Planos conforme a obra | Actualización | Aplicación práctica supervisada
+- `criterio-gas-proteger-enterrada` | Instalaciones de gas y combustión | Tubería enterrada | Protección | Aplicación práctica supervisada
+- `criterio-gas-soportes-compatibles` | Instalaciones de gas y combustión | Tubería | Soportes | Aplicación práctica supervisada
+- `criterio-gas-proteccion-impacto` | Instalaciones de gas y combustión | Tubería expuesta | Golpes | Aplicación práctica supervisada
+- `criterio-gas-identificacion` | Instalaciones de gas y combustión | Tubería | Identificación | Aplicación práctica supervisada
+- `criterio-gas-rosca-limpia` | Instalaciones de gas y combustión | Unión roscada | Preparación | Aplicación práctica supervisada
+- `criterio-gas-soldadura-procedimiento` | Instalaciones de gas y combustión | Unión soldada | Procedimiento | Aplicación práctica supervisada
+- `criterio-gas-limpiar-red` | Instalaciones de gas y combustión | Red terminada | Limpieza | Aplicación práctica supervisada
+- `criterio-gas-valvula-no-enterrada` | Instalaciones de gas y combustión | Válvula | Acceso | Aplicación práctica supervisada
+- `criterio-gas-medidor-accesible` | Instalaciones de gas y combustión | Medidor | Lectura y corte | Aplicación práctica supervisada
+- `criterio-gas-gabinete-ventilado` | Instalaciones de gas y combustión | Gabinete de gas | Ventilación | Aplicación práctica supervisada
+- `criterio-gas-gabinete-no-electricidad` | Instalaciones de gas y combustión | Gabinete de gas | Fuentes de ignición | Aplicación práctica supervisada
+- `criterio-gas-cilindro-vertical` | Instalaciones de gas y combustión | Cilindro de GLP | Posición | Aplicación práctica supervisada
+- `criterio-gas-cilindro-no-subterraneo` | Instalaciones de gas y combustión | Cilindro de GLP | Ubicación | Aplicación práctica supervisada
+- `criterio-gas-cilindro-lejos-calor` | Instalaciones de gas y combustión | Cilindro de GLP | Calor | Aplicación práctica supervisada
+- `criterio-gas-cilindro-proteger-golpes` | Instalaciones de gas y combustión | Cilindro de GLP | Protección | Aplicación práctica supervisada
+- `criterio-gas-rejillas-no-tapar` | Instalaciones de gas y combustión | Ventilación | Aberturas permanentes | Aplicación práctica supervisada
+- `criterio-gas-rejilla-limpieza` | Instalaciones de gas y combustión | Ventilación | Mantenimiento | Aplicación práctica supervisada
+- `criterio-gas-prueba-componentes` | Instalaciones de gas y combustión | Prueba de hermeticidad | Aislamiento de equipos | Aplicación práctica supervisada
+- `criterio-gas-fuga-cerrar-ventilar` | Instalaciones de gas y combustión | Emergencia | Respuesta | Aplicación práctica supervisada
+- `criterio-gas-no-interruptor-fuga` | Instalaciones de gas y combustión | Emergencia | Electricidad | Aplicación práctica supervisada
+- `criterio-gas-puesta-servicio-purga` | Instalaciones de gas y combustión | Puesta en servicio | Purga | Aplicación práctica supervisada
+- `criterio-gas-entrega-acta` | Instalaciones de gas y combustión | Entrega | Acta de pruebas | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-sistema-exposicion` | Impermeabilización, Humedad y Drenaje | Superficie a impermeabilizar | Selección por exposición | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-material-almacenamiento` | Impermeabilización, Humedad y Drenaje | Productos impermeabilizantes | Almacenamiento | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-sustrato-limpio` | Impermeabilización, Humedad y Drenaje | Sustrato | Limpieza | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-poros-oquedades` | Impermeabilización, Humedad y Drenaje | Concreto o tarrajeo | Reparación de defectos | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-media-cana` | Impermeabilización, Humedad y Drenaje | Encuentro piso-muro | Media caña | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-junta-bordes-firmes` | Impermeabilización, Humedad y Drenaje | Bordes de junta | Preparación | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-anclaje-posterior-prohibir` | Impermeabilización, Humedad y Drenaje | Membrana terminada | Perforaciones posteriores | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-muro-piso-subida` | Impermeabilización, Humedad y Drenaje | Encuentro de piso y muro | Retorno vertical | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-remate-regata` | Impermeabilización, Humedad y Drenaje | Remate superior de membrana | Terminación | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-sumidero-brida` | Impermeabilización, Humedad y Drenaje | Sumidero o dren | Integración con la membrana | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-mezcla-herramienta` | Impermeabilización, Humedad y Drenaje | Mezcla impermeabilizante | Homogeneización | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-soplete-seguridad` | Impermeabilización, Humedad y Drenaje | Membrana aplicada con calor | Control de llama y fuego | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-sin-burbujas` | Impermeabilización, Humedad y Drenaje | Membrana terminada | Defectos de aplicación | Aplicación práctica supervisada
+- `criterio-cubierta-coronacion-goteron` | Impermeabilización, Humedad y Drenaje | Coronación o borde | Goterón | Aplicación práctica supervisada
+- `criterio-cubierta-equipo-base-elevada` | Impermeabilización, Humedad y Drenaje | Equipo sobre azotea | Base y apoyo | Aplicación práctica supervisada
+- `criterio-cubierta-proteccion-mecanica` | Impermeabilización, Humedad y Drenaje | Membrana no transitable | Capa de protección | Aplicación práctica supervisada
+- `criterio-cubierta-rebose-emergencia` | Impermeabilización, Humedad y Drenaje | Azotea con parapetos | Ruta de rebose | Aplicación práctica supervisada
+- `criterio-cubierta-sumidero-mantenimiento` | Impermeabilización, Humedad y Drenaje | Sumidero de azotea | Acceso | Aplicación práctica supervisada
+- `criterio-cubierta-trafico-rutas` | Impermeabilización, Humedad y Drenaje | Azotea con equipos | Rutas de mantenimiento | Aplicación práctica supervisada
+- `criterio-zona-humeda-paso-griferia` | Impermeabilización, Humedad y Drenaje | Paso de grifería | Sellado | Aplicación práctica supervisada
+- `criterio-zona-humeda-nicho-ducha` | Impermeabilización, Humedad y Drenaje | Nicho de ducha | Pendiente y continuidad | Aplicación práctica supervisada
+- `criterio-zona-humeda-no-perforar-piso` | Impermeabilización, Humedad y Drenaje | Piso impermeabilizado | Fijaciones | Aplicación práctica supervisada
+- `criterio-jardinera-proteccion-membrana` | Impermeabilización, Humedad y Drenaje | Jardinera | Protección mecánica | Aplicación práctica supervisada
+- `criterio-enterrado-napa-evaluacion` | Impermeabilización, Humedad y Drenaje | Elemento bajo nivel del terreno | Presión hidrostática | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-prueba-evaporacion` | Impermeabilización, Humedad y Drenaje | Prueba prolongada | Control de evaporación | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-prueba-no-sobrecargar` | Impermeabilización, Humedad y Drenaje | Losa o cubierta | Carga de agua | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-proteger-transito` | Impermeabilización, Humedad y Drenaje | Membrana fresca | Restricción de tránsito | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-oficios-posteriores` | Impermeabilización, Humedad y Drenaje | Membrana protegida | Control de otros oficios | Aplicación práctica supervisada
+- `criterio-impermeabilizacion-limpieza-compatible` | Impermeabilización, Humedad y Drenaje | Membrana expuesta | Limpieza | Aplicación práctica supervisada
+- `criterio-humedad-moho-proteccion` | Impermeabilización, Humedad y Drenaje | Superficie con moho | Limpieza segura | Aplicación práctica supervisada
+- `criterio-humedad-parche-compatible` | Impermeabilización, Humedad y Drenaje | Reparación localizada | Compatibilidad del parche | Aplicación práctica supervisada
+- `criterio-mantenimiento-cubierta-inspeccion-periodica` | Impermeabilización, Humedad y Drenaje | Techo o azotea | Inspección | Aplicación práctica supervisada
+- `criterio-mantenimiento-drenes-limpieza` | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva | Aplicación práctica supervisada
+- `criterio-mantenimiento-no-perforar-techo` | Impermeabilización, Humedad y Drenaje | Azotea impermeabilizada | Nuevas instalaciones | Aplicación práctica supervisada
+- `criterio-mantenimiento-cisterna-inspeccion` | Impermeabilización, Humedad y Drenaje | Cisterna | Inspección interior | Aplicación práctica supervisada
+- `criterio-seguridad-responsable-designado` | Seguridad durante la construcción — control operativo | Gestión preventiva | Responsable de seguridad | Aplicación práctica supervisada
+- `criterio-seguridad-induccion-ingreso` | Seguridad durante la construcción — control operativo | Gestión preventiva | Inducción de ingreso | Aplicación práctica supervisada
+- `criterio-seguridad-charla-inicio-jornada` | Seguridad durante la construcción — control operativo | Gestión preventiva | Charla previa | Aplicación práctica supervisada
+- `criterio-seguridad-ats-tarea-no-rutinaria` | Seguridad durante la construcción — control operativo | Gestión preventiva | ATS | Aplicación práctica supervisada
+- `criterio-seguridad-cambio-condiciones-detener` | Seguridad durante la construcción — control operativo | Gestión preventiva | Cambio de condiciones | Aplicación práctica supervisada
+- `criterio-seguridad-permiso-altura` | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de altura | Aplicación práctica supervisada
+- `criterio-seguridad-permiso-caliente` | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de trabajo en caliente | Aplicación práctica supervisada
+- `criterio-seguridad-permiso-confinado` | Seguridad durante la construcción — control operativo | Gestión preventiva | Permiso de espacio confinado | Aplicación práctica supervisada
+- `criterio-seguridad-coordinacion-frentes` | Seguridad durante la construcción — control operativo | Gestión preventiva | Frentes simultáneos | Aplicación práctica supervisada
+- `criterio-seguridad-subcontratista-reglas` | Seguridad durante la construcción — control operativo | Gestión preventiva | Subcontratistas | Aplicación práctica supervisada
+- `criterio-seguridad-visitante-acompanado` | Seguridad durante la construcción — control operativo | Gestión preventiva | Visitantes | Aplicación práctica supervisada
+- `criterio-seguridad-reporte-casi-accidente` | Seguridad durante la construcción — control operativo | Gestión preventiva | Casi accidente | Aplicación práctica supervisada
+- `criterio-seguridad-inspeccion-tras-incidente` | Seguridad durante la construcción — control operativo | Gestión preventiva | Reinicio después de incidente | Aplicación práctica supervisada
+- `criterio-seguridad-registro-inspecciones` | Seguridad durante la construcción — control operativo | Gestión preventiva | Registro de inspecciones | Aplicación práctica supervisada
+- `criterio-seguridad-correctiva-responsable-plazo` | Seguridad durante la construcción — control operativo | Gestión preventiva | Acción correctiva | Aplicación práctica supervisada
+- `criterio-seguridad-clima-revision-diaria` | Seguridad durante la construcción — control operativo | Gestión preventiva | Revisión climática | Aplicación práctica supervisada
+- `criterio-seguridad-rescate-antes-trabajo` | Seguridad durante la construcción — control operativo | Gestión preventiva | Plan de rescate | Aplicación práctica supervisada
+- `criterio-seguridad-contactos-emergencia-visibles` | Seguridad durante la construcción — control operativo | Gestión preventiva | Contactos de emergencia | Aplicación práctica supervisada
+- `criterio-seguridad-epp-seleccion-riesgo` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de EPP | Aplicación práctica supervisada
+- `criterio-seguridad-epp-inspeccion-previa` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Inspección previa | Aplicación práctica supervisada
+- `criterio-seguridad-casco-impacto-reemplazo` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Casco después de impacto | Aplicación práctica supervisada
+- `criterio-seguridad-casco-no-modificar` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Modificación de casco | Aplicación práctica supervisada
+- `criterio-seguridad-casco-barboquejo` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Barboquejo | Aplicación práctica supervisada
+- `criterio-seguridad-pantalla-no-reemplaza-lentes` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección ocular | Aplicación práctica supervisada
+- `criterio-seguridad-lente-rayado-reemplazo` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Lentes dañados | Aplicación práctica supervisada
+- `criterio-seguridad-respirador-segun-contaminante` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Selección de respirador | Aplicación práctica supervisada
+- `criterio-seguridad-respirador-ajuste-facial` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Ajuste de respirador | Aplicación práctica supervisada
+- `criterio-seguridad-filtro-reemplazo` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Cambio de filtros | Aplicación práctica supervisada
+- `criterio-seguridad-protector-auditivo-seleccion` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Protección auditiva | Aplicación práctica supervisada
+- `criterio-seguridad-guante-rotacion-prohibido` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes y partes rotativas | Aplicación práctica supervisada
+- `criterio-seguridad-guante-quimico-compatible` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Guantes químicos | Aplicación práctica supervisada
+- `criterio-seguridad-calzado-suela-estado` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Calzado deteriorado | Aplicación práctica supervisada
+- `criterio-seguridad-alta-visibilidad-transito` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Alta visibilidad | Aplicación práctica supervisada
+- `criterio-seguridad-epp-personal-higiene` | Seguridad durante la construcción — control operativo | Equipo de protección personal | EPP compartido | Aplicación práctica supervisada
+- `criterio-seguridad-epp-seco-almacenado` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Almacenamiento del EPP | Aplicación práctica supervisada
+- `criterio-seguridad-epp-no-sustituye-control` | Seguridad durante la construcción — control operativo | Equipo de protección personal | Jerarquía de control | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-tipo-correcto` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Selección de escalera | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-inspeccion` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Inspección | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-base-firme` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Base | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-sujecion` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Sujeción | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-tres-puntos` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Tres puntos de contacto | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-manos-libres` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Transporte de materiales | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-no-peldano-superior` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Peldaños superiores | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-tijera-seguros` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Escalera de tijera | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-no-horizontal` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Uso indebido | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-no-unir` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Extensión improvisada | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-metal-electricidad` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Escalera metálica | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-un-usuario` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Ocupación | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-no-mover-ocupada` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Movimiento | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-desembarco-libre` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Desembarco | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-control-transito` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Zona inferior | Aplicación práctica supervisada
+- `criterio-seguridad-escalera-retirar-defectuosa` | Seguridad durante la construcción — control operativo | Escaleras provisionales | Equipo defectuoso | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-base-placa` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Base del andamio | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-no-ladrillos` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Nivelación | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-aplomo-nivel` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Geometría | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-componentes-compatibles` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Componentes | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-plataforma-completa` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Plataforma | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-tabla-fijada` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Tablones | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-acceso-interno` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Acceso | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-baranda-rodapie` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Protección lateral | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-carga-distribuida` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Carga | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-capacidad-visible` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Capacidad | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-ruedas-bloqueadas` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Andamio móvil | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-no-escalera-sobre-plataforma` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Aumento de altura | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-separacion-muro-control` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Separación al frente | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-anclajes-no-retirar` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Anclajes | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-modificacion-reinspeccion` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Reinspección | Aplicación práctica supervisada
+- `criterio-seguridad-andamio-etiqueta-estado` | Seguridad durante la construcción — control operativo | Andamios y plataformas | Estado de uso | Aplicación práctica supervisada
+- `criterio-seguridad-altura-cubrir-hueco-fijado` | Seguridad durante la construcción — control operativo | Trabajos en altura | Hueco en piso | Aplicación práctica supervisada
+- `criterio-seguridad-altura-baranda-no-cinta` | Seguridad durante la construcción — control operativo | Trabajos en altura | Borde abierto | Aplicación práctica supervisada
+- `criterio-seguridad-altura-anclaje-verificado` | Seguridad durante la construcción — control operativo | Trabajos en altura | Punto de anclaje | Aplicación práctica supervisada
+- `criterio-seguridad-altura-linea-independiente` | Seguridad durante la construcción — control operativo | Trabajos en altura | Línea de vida | Aplicación práctica supervisada
+- `criterio-seguridad-altura-calcular-espacio-caida` | Seguridad durante la construcción — control operativo | Trabajos en altura | Distancia libre | Aplicación práctica supervisada
+- `criterio-seguridad-altura-efecto-pendulo` | Seguridad durante la construcción — control operativo | Trabajos en altura | Anclaje lateral | Aplicación práctica supervisada
+- `criterio-seguridad-altura-conectores-compatibles` | Seguridad durante la construcción — control operativo | Trabajos en altura | Conectores | Aplicación práctica supervisada
+- `criterio-seguridad-altura-inspeccion-arnes` | Seguridad durante la construcción — control operativo | Trabajos en altura | Arnés | Aplicación práctica supervisada
+- `criterio-seguridad-altura-retirar-tras-caida` | Seguridad durante la construcción — control operativo | Trabajos en altura | Equipo que detuvo una caída | Aplicación práctica supervisada
+- `criterio-seguridad-altura-herramienta-amarrada` | Seguridad durante la construcción — control operativo | Trabajos en altura | Herramientas | Aplicación práctica supervisada
+- `criterio-seguridad-altura-zona-exclusion` | Seguridad durante la construcción — control operativo | Trabajos en altura | Zona inferior | Aplicación práctica supervisada
+- `criterio-seguridad-altura-material-borde` | Seguridad durante la construcción — control operativo | Trabajos en altura | Materiales en borde | Aplicación práctica supervisada
+- `criterio-seguridad-herramienta-inspeccion-previa` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta | Aplicación práctica supervisada
+- `criterio-seguridad-herramienta-defectuosa-retirar` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo defectuoso | Aplicación práctica supervisada
+- `criterio-seguridad-herramienta-correcta` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Selección | Aplicación práctica supervisada
+- `criterio-seguridad-esmeril-guarda` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Esmeril angular | Aplicación práctica supervisada
+- `criterio-seguridad-disco-rpm-compatible` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo | Aplicación práctica supervisada
+- `criterio-seguridad-disco-inspeccion` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Disco abrasivo | Aplicación práctica supervisada
+- `criterio-seguridad-cambiar-disco-desenergizado` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cambio de accesorio | Aplicación práctica supervisada
+- `criterio-seguridad-herramienta-dos-manos` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Herramienta de dos empuñaduras | Aplicación práctica supervisada
+- `criterio-seguridad-cable-no-reparacion-cinta` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Cable eléctrico | Aplicación práctica supervisada
+- `criterio-seguridad-extension-desenrollada` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Extensión enrollable | Aplicación práctica supervisada
+- `criterio-seguridad-enchufe-no-tirar-cable` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Desconexión | Aplicación práctica supervisada
+- `criterio-seguridad-manos-secas-electricidad` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Equipo eléctrico | Aplicación práctica supervisada
+- `criterio-seguridad-bloqueo-mantenimiento` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Mantenimiento | Aplicación práctica supervisada
+- `criterio-seguridad-taladro-pieza-sujeta` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Taladro | Aplicación práctica supervisada
+- `criterio-seguridad-sierra-empujador` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Sierra de banco | Aplicación práctica supervisada
+- `criterio-seguridad-clavadora-no-apuntar` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Clavadora | Aplicación práctica supervisada
+- `criterio-seguridad-manguera-aire-retencion` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Manguera neumática | Aplicación práctica supervisada
+- `criterio-seguridad-compresor-valvula` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Compresor | Aplicación práctica supervisada
+- `criterio-seguridad-bateria-carga-ventilada` | Seguridad durante la construcción — control operativo | Herramientas y equipos | Carga de baterías | Aplicación práctica supervisada
+- `criterio-seguridad-caliente-retirar-combustibles` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Área de trabajo | Aplicación práctica supervisada
+- `criterio-seguridad-caliente-vigia-fuego` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Vigilancia de fuego | Aplicación práctica supervisada
+- `criterio-seguridad-caliente-extintor-cercano` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Extinción | Aplicación práctica supervisada
+- `criterio-seguridad-caliente-pantalla-chispas` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Pantallas | Aplicación práctica supervisada
+- `criterio-seguridad-caliente-ventilacion-humos` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Humos | Aplicación práctica supervisada
+- `criterio-seguridad-cilindro-vertical-asegurado` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Cilindro comprimido | Aplicación práctica supervisada
+- `criterio-seguridad-cilindro-no-rodar` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Traslado de cilindro | Aplicación práctica supervisada
+- `criterio-seguridad-oxigeno-sin-grasa` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Oxígeno | Aplicación práctica supervisada
+- `criterio-seguridad-mangueras-gas-inspeccion` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Mangueras de gas | Aplicación práctica supervisada
+- `criterio-seguridad-arrestallama` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Equipo de oxicorte | Aplicación práctica supervisada
+- `criterio-seguridad-cerrar-cilindros-fin` | Seguridad durante la construcción — control operativo | Trabajo en caliente | Fin de trabajo | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-plan` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maniobra de izaje | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-eslinga-inspeccion` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-capacidad-legible` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Aparejo | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-angulo-reduce-capacidad` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslingado | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-aristas-protegidas` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga sobre arista | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-no-nudos` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Eslinga | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-gancho-seguro` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Gancho | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-sin-personas-debajo` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga suspendida | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-cuerda-guia` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Carga | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-prueba-baja-altura` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Inicio de izaje | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-senalero-unico` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación | Aplicación práctica supervisada
+- `criterio-seguridad-izaje-perder-vision-detener` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Comunicación | Aplicación práctica supervisada
+- `criterio-seguridad-maquinaria-alarma-retroceso` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria móvil | Aplicación práctica supervisada
+- `criterio-seguridad-maquinaria-freno-calzas` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Equipo estacionado | Aplicación práctica supervisada
+- `criterio-seguridad-maquinaria-no-pasajeros` | Seguridad durante la construcción — control operativo | Izaje y maquinaria | Maquinaria | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-servicios-localizar` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Servicios enterrados | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-inspeccion-lluvia` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Excavación | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-no-entrar-sin-soporte` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Zanja inestable | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-suelo-cambio-detener` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Condición del suelo | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-equipo-borde` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Vehículo junto a borde | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-no-bajo-cucharon` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Equipo de excavación | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-agua-control` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Agua en excavación | Aplicación práctica supervisada
+- `criterio-seguridad-excavacion-no-trabajo-solo` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Personal en zanja | Aplicación práctica supervisada
+- `criterio-seguridad-confinado-medicion-atmosfera` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado | Aplicación práctica supervisada
+- `criterio-seguridad-confinado-vigia-permanente` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Espacio confinado | Aplicación práctica supervisada
+- `criterio-seguridad-confinado-rescate-no-ingreso` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Rescate | Aplicación práctica supervisada
+- `criterio-seguridad-confinado-ventilacion-no-oxigeno` | Seguridad durante la construcción — control operativo | Excavaciones y espacios confinados | Ventilación | Aplicación práctica supervisada
+- `criterio-seguridad-encofrado-inspeccion-prevaciado` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado | Aplicación práctica supervisada
+- `criterio-seguridad-encofrado-no-modificar-carga` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Encofrado cargado | Aplicación práctica supervisada
+- `criterio-seguridad-desencofrado-zona-exclusion` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Desencofrado | Aplicación práctica supervisada
+- `criterio-seguridad-acero-puntas-protegidas` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Acero sobresaliente | Aplicación práctica supervisada
+- `criterio-seguridad-acero-no-caminar-inestable` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Armadura | Aplicación práctica supervisada
+- `criterio-seguridad-bomba-concreto-manguera` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Manguera de bombeo | Aplicación práctica supervisada
+- `criterio-seguridad-concreto-contacto-piel` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Concreto fresco | Aplicación práctica supervisada
+- `criterio-seguridad-vibrador-cable` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Vibrador | Aplicación práctica supervisada
+- `criterio-seguridad-panel-encofrado-izaje` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Panel de encofrado | Aplicación práctica supervisada
+- `criterio-seguridad-apuntalamiento-mantener` | Seguridad durante la construcción — control operativo | Encofrados, concreto y acero | Apuntalamiento | Aplicación práctica supervisada
+- `criterio-seguridad-ruta-peaton-vehiculo-separada` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Circulación | Aplicación práctica supervisada
+- `criterio-seguridad-vigia-retroceso` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Retroceso vehicular | Aplicación práctica supervisada
+- `criterio-seguridad-velocidad-obra` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Vehículos | Aplicación práctica supervisada
+- `criterio-seguridad-entrega-programada` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Entrega de materiales | Aplicación práctica supervisada
+- `criterio-seguridad-publico-caida-objetos` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Zona colindante | Aplicación práctica supervisada
+- `criterio-seguridad-noche-iluminacion` | Seguridad durante la construcción — control operativo | Tránsito y protección de terceros | Trabajo nocturno | Aplicación práctica supervisada
+- `criterio-seguridad-polvo-control-fuente` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo | Aplicación práctica supervisada
+- `criterio-seguridad-silice-no-barrer-seco` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Polvo de sílice | Aplicación práctica supervisada
+- `criterio-seguridad-ruido-tiempo-exposicion` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Ruido | Aplicación práctica supervisada
+- `criterio-seguridad-vibracion-descansos` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Herramienta vibratoria | Aplicación práctica supervisada
+- `criterio-seguridad-calor-hidratacion` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Calor | Aplicación práctica supervisada
+- `criterio-seguridad-calor-sintomas` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Estrés térmico | Aplicación práctica supervisada
+- `criterio-seguridad-viento-suspender` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Viento fuerte | Aplicación práctica supervisada
+- `criterio-seguridad-lluvia-superficie-revisar` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Lluvia | Aplicación práctica supervisada
+- `criterio-seguridad-tormenta-electrica` | Seguridad durante la construcción — control operativo | Higiene ocupacional | Tormenta eléctrica | Aplicación práctica supervisada
+- `criterio-seguridad-derrame-limpiar-aislar` | Seguridad durante la construcción — control operativo | Orden y emergencias | Derrame | Aplicación práctica supervisada
+- `criterio-seguridad-cables-ruta-protegida` | Seguridad durante la construcción — control operativo | Orden y emergencias | Cables y mangueras | Aplicación práctica supervisada
+- `criterio-seguridad-clavos-recipiente` | Seguridad durante la construcción — control operativo | Orden y emergencias | Clavos y puntas | Aplicación práctica supervisada
+- `criterio-seguridad-quimico-etiqueta` | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico | Aplicación práctica supervisada
+- `criterio-seguridad-hoja-seguridad-disponible` | Seguridad durante la construcción — control operativo | Orden y emergencias | Producto químico | Aplicación práctica supervisada
+- `criterio-seguridad-alimentos-separados-quimicos` | Seguridad durante la construcción — control operativo | Orden y emergencias | Alimentos | Aplicación práctica supervisada
+- `criterio-seguridad-extintor-no-bloqueado` | Seguridad durante la construcción — control operativo | Orden y emergencias | Extintor | Aplicación práctica supervisada
+- `criterio-seguridad-botiquin-accesible` | Seguridad durante la construcción — control operativo | Orden y emergencias | Botiquín | Aplicación práctica supervisada
+- `criterio-seguridad-primer-auxilio-persona-capacitada` | Seguridad durante la construcción — control operativo | Orden y emergencias | Primeros auxilios | Aplicación práctica supervisada
+- `criterio-seguridad-simulacro-actualizar` | Seguridad durante la construcción — control operativo | Orden y emergencias | Emergencia | Aplicación práctica supervisada
+- `criterio-seguridad-ruta-cambio-actualizar` | Seguridad durante la construcción — control operativo | Orden y emergencias | Ruta de evacuación | Aplicación práctica supervisada
+- `criterio-seguridad-escena-incidente-preservar` | Seguridad durante la construcción — control operativo | Orden y emergencias | Accidente | Aplicación práctica supervisada
 
 ### G.050
 
@@ -1104,118 +1747,6 @@ Parámetros relacionados encontrados: `839`.
 - `g050-napa-bombeo-diseno-previo` | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Diseño de bombeo | 23.2
 - `g050-napa-bombeo-estabilidad-vecinos` | Excavaciones, zanjas y protección de colindantes | Abatimiento de agua subterránea | Protección de colindantes | 23.2
 - `g050-napa-tablestacado-caisson` | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Sistema de contención | 23.2
-
-### Formación técnica SENCICO
-
-- `criterio-sanitaria-pvc-corte-escuadra` | Ejecución y control de instalaciones sanitarias | Tubería PVC | Corte | sin numeral
-- `criterio-sanitaria-pvc-limpieza-union` | Ejecución y control de instalaciones sanitarias | Unión de PVC | Limpieza | sin numeral
-- `criterio-sanitaria-pvc-no-calentar-improvisado` | Ejecución y control de instalaciones sanitarias | Tubería PVC | Deformación por calor | sin numeral
-- `criterio-sanitaria-cambios-direccion-suaves` | Ejecución y control de instalaciones sanitarias | Red de desagüe | Cambios de dirección | sin numeral
-- `criterio-sanitaria-soporte-cerca-accesorios` | Ejecución y control de instalaciones sanitarias | Tubería suspendida | Apoyo de accesorios | sin numeral
-- `criterio-sanitaria-no-compactar-directo-tubo` | Ejecución y control de instalaciones sanitarias | Tubería enterrada | Compactación | sin numeral
-- `criterio-sanitaria-desinfectar-almacenamiento` | Ejecución y control de instalaciones sanitarias | Cisterna o tanque | Desinfección | sin numeral
-- `criterio-sanitaria-acceso-limpieza-deposito` | Ejecución y control de instalaciones sanitarias | Cisterna o tanque | Acceso de mantenimiento | sin numeral
-- `criterio-sanitaria-bomba-base-firme` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Base | sin numeral
-- `criterio-sanitaria-bomba-uniones-desmontables` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Mantenimiento | sin numeral
-- `criterio-sanitaria-bomba-no-trabajar-seco` | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Protección | sin numeral
-- `criterio-sanitaria-limpieza-final-red` | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Limpieza | sin numeral
-- `criterio-electrico-canalizacion-continuidad` | Canalizaciones eléctricas | Conduit | Continuidad | Aplicación práctica supervisada
-- `criterio-electrico-limpiar-antes-cablear` | Canalizaciones eléctricas | Tubería | Limpieza | Aplicación práctica supervisada
-- `criterio-electrico-no-danar-aislamiento` | Conductores y empalmes | Cableado | Aislamiento | Aplicación práctica supervisada
-- `criterio-electrico-equipotencial-metal` | Puesta a tierra | Masas metálicas | Unión equipotencial | Aplicación práctica supervisada
-- `criterio-electrico-tomacorriente-polaridad` | Accesorios y luminarias | Tomacorriente | Polaridad | Aplicación práctica supervisada
-- `criterio-electrico-tomacorriente-firme` | Accesorios y luminarias | Tomacorriente | Fijación | Aplicación práctica supervisada
-- `criterio-electrico-placa-cubre-caja` | Accesorios y luminarias | Placa | Cobertura | Aplicación práctica supervisada
-- `criterio-electrico-luminaria-soporte` | Accesorios y luminarias | Luminaria | Soporte | Aplicación práctica supervisada
-- `criterio-electrico-luminaria-calor` | Accesorios y luminarias | Luminaria | Temperatura | Aplicación práctica supervisada
-- `criterio-electrico-bano-grado-proteccion` | Accesorios y luminarias | Baño y exterior | Protección | Aplicación práctica supervisada
-- `criterio-electrico-no-extension-permanente` | Accesorios y luminarias | Alimentación | Extensiones | Aplicación práctica supervisada
-- `criterio-electrico-prueba-aislamiento` | Pruebas y recepción eléctrica | Conductores | Aislamiento | Aplicación práctica supervisada
-- `criterio-electrico-prueba-tension` | Pruebas y recepción eléctrica | Circuitos | Tensión | Aplicación práctica supervisada
-- `criterio-vano-medir-acabado-final` | Carpinterías, sellos y herrajes | Vano terminado | Medición final | Aplicación práctica supervisada
-- `criterio-marco-proteger-obra` | Carpinterías, sellos y herrajes | Marco instalado | Protección temporal | Aplicación práctica supervisada
-- `criterio-puerta-bisagras-alineadas` | Puertas, ventanas y cerrajería | Bisagras | Alineación y capacidad | Aplicación práctica supervisada
-- `criterio-puerta-holgura-inferior-funcion` | Puertas, ventanas y cerrajería | Borde inferior de puerta | Holgura funcional | Aplicación práctica supervisada
-- `criterio-puerta-bano-material-humedad` | Puertas, ventanas y cerrajería | Puerta de baño | Resistencia a humedad | Aplicación práctica supervisada
-- `criterio-puerta-metal-proteccion` | Puertas, ventanas y cerrajería | Puerta metálica | Protección anticorrosiva | Aplicación práctica supervisada
-- `criterio-marco-metal-control-soldadura` | Puertas, ventanas y cerrajería | Marco metálico | Deformación por soldadura | Aplicación práctica supervisada
-- `criterio-ventana-alfeizar-pendiente` | Puertas, ventanas y cerrajería | Alféizar exterior | Evacuación de agua | Aplicación práctica supervisada
-- `criterio-ventana-vidrio-holgura` | Puertas, ventanas y cerrajería | Vidrio | Holgura de borde | Aplicación práctica supervisada
-- `criterio-ventana-operacion-limpieza` | Puertas, ventanas y cerrajería | Ventana operable | Uso y limpieza | Aplicación práctica supervisada
-- `criterio-ventana-restrictor-infantil` | Protección frente a caídas y seguridad | Ventana en altura | Limitador de apertura | Aplicación práctica supervisada
-- `criterio-mosquitero-fijacion` | Puertas, ventanas y cerrajería | Mosquitero | Fijación | Aplicación práctica supervisada
-- `criterio-ventana-corredera-antielevacion` | Protección frente a caídas y seguridad | Ventana corrediza | Antielevación | Aplicación práctica supervisada
-- `criterio-cerradura-altura-usuario` | Puertas, ventanas y cerrajería | Cerradura y manija | Altura de instalación | Aplicación práctica supervisada
-- `criterio-cerradura-no-doble-llave-evacuacion` | Evacuación y protección contra incendios | Puerta en ruta de salida | Liberación interior | Aplicación práctica supervisada
-- `criterio-cortafuego-no-perforar` | Evacuación y protección contra incendios | Puerta cortafuego | Intervenciones posteriores | Aplicación práctica supervisada
-- `criterio-barra-antipanico-operacion` | Evacuación y protección contra incendios | Barra antipánico | Funcionamiento | Aplicación práctica supervisada
-- `criterio-bisagra-exterior-seguridad` | Protección frente a caídas y seguridad | Puerta exterior con bisagras expuestas | Protección contra desmontaje | Aplicación práctica supervisada
-- `criterio-seguro-infantil-no-reemplaza-baranda` | Protección frente a caídas y seguridad | Seguro infantil | Alcance de protección | Aplicación práctica supervisada
-- `criterio-mirilla-altura-usuarios` | Puertas, ventanas y cerrajería | Mirilla de puerta | Altura y campo visual | Aplicación práctica supervisada
-- `criterio-cerradura-no-bloquear-salida` | Evacuación y protección contra incendios | Cerradura electrónica o control de acceso | Liberación de emergencia | Aplicación práctica supervisada
-- `criterio-porton-automatizado-deteccion` | Protección frente a caídas y seguridad | Portón automatizado | Protección de atrapamiento | Aplicación práctica supervisada
-- `criterio-carpinteria-limpieza-no-abrasiva-final` | Mantenimiento de la vivienda | Perfiles, vidrio y herrajes | Limpieza | Aplicación práctica supervisada
-- `criterio-metal-retocar-proteccion` | Carpinterías, sellos y herrajes | Carpintería metálica | Retoque | Aplicación práctica supervisada
-- `criterio-entrega-manual-mantenimiento` | Mantenimiento de la vivienda | Puertas y ventanas | Instrucciones | Aplicación práctica supervisada
-- `criterio-carpinteria-lista-observaciones` | Control de calidad de acabados | Recepción | Lista de pendientes | Aplicación práctica supervisada
-- `criterio-carpinteria-conforme-obra` | Control de calidad de acabados | Planos conforme a obra | Actualización | Aplicación práctica supervisada
-- `criterio-gas-proteger-enterrada` | Instalaciones de gas y combustión | Tubería enterrada | Protección | Aplicación práctica supervisada
-- `criterio-gas-soportes-compatibles` | Instalaciones de gas y combustión | Tubería | Soportes | Aplicación práctica supervisada
-- `criterio-gas-proteccion-impacto` | Instalaciones de gas y combustión | Tubería expuesta | Golpes | Aplicación práctica supervisada
-- `criterio-gas-identificacion` | Instalaciones de gas y combustión | Tubería | Identificación | Aplicación práctica supervisada
-- `criterio-gas-rosca-limpia` | Instalaciones de gas y combustión | Unión roscada | Preparación | Aplicación práctica supervisada
-- `criterio-gas-soldadura-procedimiento` | Instalaciones de gas y combustión | Unión soldada | Procedimiento | Aplicación práctica supervisada
-- `criterio-gas-limpiar-red` | Instalaciones de gas y combustión | Red terminada | Limpieza | Aplicación práctica supervisada
-- `criterio-gas-valvula-no-enterrada` | Instalaciones de gas y combustión | Válvula | Acceso | Aplicación práctica supervisada
-- `criterio-gas-medidor-accesible` | Instalaciones de gas y combustión | Medidor | Lectura y corte | Aplicación práctica supervisada
-- `criterio-gas-gabinete-ventilado` | Instalaciones de gas y combustión | Gabinete de gas | Ventilación | Aplicación práctica supervisada
-- `criterio-gas-gabinete-no-electricidad` | Instalaciones de gas y combustión | Gabinete de gas | Fuentes de ignición | Aplicación práctica supervisada
-- `criterio-gas-cilindro-vertical` | Instalaciones de gas y combustión | Cilindro de GLP | Posición | Aplicación práctica supervisada
-- `criterio-gas-cilindro-no-subterraneo` | Instalaciones de gas y combustión | Cilindro de GLP | Ubicación | Aplicación práctica supervisada
-- `criterio-gas-cilindro-lejos-calor` | Instalaciones de gas y combustión | Cilindro de GLP | Calor | Aplicación práctica supervisada
-- `criterio-gas-cilindro-proteger-golpes` | Instalaciones de gas y combustión | Cilindro de GLP | Protección | Aplicación práctica supervisada
-- `criterio-gas-rejillas-no-tapar` | Instalaciones de gas y combustión | Ventilación | Aberturas permanentes | Aplicación práctica supervisada
-- `criterio-gas-rejilla-limpieza` | Instalaciones de gas y combustión | Ventilación | Mantenimiento | Aplicación práctica supervisada
-- `criterio-gas-prueba-componentes` | Instalaciones de gas y combustión | Prueba de hermeticidad | Aislamiento de equipos | Aplicación práctica supervisada
-- `criterio-gas-fuga-cerrar-ventilar` | Instalaciones de gas y combustión | Emergencia | Respuesta | Aplicación práctica supervisada
-- `criterio-gas-no-interruptor-fuga` | Instalaciones de gas y combustión | Emergencia | Electricidad | Aplicación práctica supervisada
-- `criterio-gas-puesta-servicio-purga` | Instalaciones de gas y combustión | Puesta en servicio | Purga | Aplicación práctica supervisada
-- `criterio-gas-entrega-acta` | Instalaciones de gas y combustión | Entrega | Acta de pruebas | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-sistema-exposicion` | Impermeabilización, Humedad y Drenaje | Superficie a impermeabilizar | Selección por exposición | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-material-almacenamiento` | Impermeabilización, Humedad y Drenaje | Productos impermeabilizantes | Almacenamiento | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-sustrato-limpio` | Impermeabilización, Humedad y Drenaje | Sustrato | Limpieza | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-poros-oquedades` | Impermeabilización, Humedad y Drenaje | Concreto o tarrajeo | Reparación de defectos | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-media-cana` | Impermeabilización, Humedad y Drenaje | Encuentro piso-muro | Media caña | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-junta-bordes-firmes` | Impermeabilización, Humedad y Drenaje | Bordes de junta | Preparación | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-anclaje-posterior-prohibir` | Impermeabilización, Humedad y Drenaje | Membrana terminada | Perforaciones posteriores | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-muro-piso-subida` | Impermeabilización, Humedad y Drenaje | Encuentro de piso y muro | Retorno vertical | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-remate-regata` | Impermeabilización, Humedad y Drenaje | Remate superior de membrana | Terminación | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-sumidero-brida` | Impermeabilización, Humedad y Drenaje | Sumidero o dren | Integración con la membrana | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-mezcla-herramienta` | Impermeabilización, Humedad y Drenaje | Mezcla impermeabilizante | Homogeneización | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-soplete-seguridad` | Impermeabilización, Humedad y Drenaje | Membrana aplicada con calor | Control de llama y fuego | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-sin-burbujas` | Impermeabilización, Humedad y Drenaje | Membrana terminada | Defectos de aplicación | Aplicación práctica supervisada
-- `criterio-cubierta-coronacion-goteron` | Impermeabilización, Humedad y Drenaje | Coronación o borde | Goterón | Aplicación práctica supervisada
-- `criterio-cubierta-equipo-base-elevada` | Impermeabilización, Humedad y Drenaje | Equipo sobre azotea | Base y apoyo | Aplicación práctica supervisada
-- `criterio-cubierta-proteccion-mecanica` | Impermeabilización, Humedad y Drenaje | Membrana no transitable | Capa de protección | Aplicación práctica supervisada
-- `criterio-cubierta-rebose-emergencia` | Impermeabilización, Humedad y Drenaje | Azotea con parapetos | Ruta de rebose | Aplicación práctica supervisada
-- `criterio-cubierta-sumidero-mantenimiento` | Impermeabilización, Humedad y Drenaje | Sumidero de azotea | Acceso | Aplicación práctica supervisada
-- `criterio-cubierta-trafico-rutas` | Impermeabilización, Humedad y Drenaje | Azotea con equipos | Rutas de mantenimiento | Aplicación práctica supervisada
-- `criterio-zona-humeda-paso-griferia` | Impermeabilización, Humedad y Drenaje | Paso de grifería | Sellado | Aplicación práctica supervisada
-- `criterio-zona-humeda-nicho-ducha` | Impermeabilización, Humedad y Drenaje | Nicho de ducha | Pendiente y continuidad | Aplicación práctica supervisada
-- `criterio-zona-humeda-no-perforar-piso` | Impermeabilización, Humedad y Drenaje | Piso impermeabilizado | Fijaciones | Aplicación práctica supervisada
-- `criterio-jardinera-proteccion-membrana` | Impermeabilización, Humedad y Drenaje | Jardinera | Protección mecánica | Aplicación práctica supervisada
-- `criterio-enterrado-napa-evaluacion` | Impermeabilización, Humedad y Drenaje | Elemento bajo nivel del terreno | Presión hidrostática | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-prueba-evaporacion` | Impermeabilización, Humedad y Drenaje | Prueba prolongada | Control de evaporación | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-prueba-no-sobrecargar` | Impermeabilización, Humedad y Drenaje | Losa o cubierta | Carga de agua | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-proteger-transito` | Impermeabilización, Humedad y Drenaje | Membrana fresca | Restricción de tránsito | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-oficios-posteriores` | Impermeabilización, Humedad y Drenaje | Membrana protegida | Control de otros oficios | Aplicación práctica supervisada
-- `criterio-impermeabilizacion-limpieza-compatible` | Impermeabilización, Humedad y Drenaje | Membrana expuesta | Limpieza | Aplicación práctica supervisada
-- `criterio-humedad-moho-proteccion` | Impermeabilización, Humedad y Drenaje | Superficie con moho | Limpieza segura | Aplicación práctica supervisada
-- `criterio-humedad-parche-compatible` | Impermeabilización, Humedad y Drenaje | Reparación localizada | Compatibilidad del parche | Aplicación práctica supervisada
-- `criterio-mantenimiento-cubierta-inspeccion-periodica` | Impermeabilización, Humedad y Drenaje | Techo o azotea | Inspección | Aplicación práctica supervisada
-- `criterio-mantenimiento-drenes-limpieza` | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva | Aplicación práctica supervisada
-- `criterio-mantenimiento-no-perforar-techo` | Impermeabilización, Humedad y Drenaje | Azotea impermeabilizada | Nuevas instalaciones | Aplicación práctica supervisada
-- `criterio-mantenimiento-cisterna-inspeccion` | Impermeabilización, Humedad y Drenaje | Cisterna | Inspección interior | Aplicación práctica supervisada
 
 ### A.120
 

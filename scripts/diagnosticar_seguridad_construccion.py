@@ -23,24 +23,45 @@ TERMINOS = [
     "transito", "tránsito", "vehiculo", "vehículo", "peaton", "peatón", "acceso",
 ]
 
+TEMAS = {
+    "Planificación, IPERC, ATS y permisos": ["plan de seguridad", "analisis de riesgos", "iperc", "ats", "permiso de trabajo", "procedimiento de trabajo"],
+    "EPP y protección respiratoria/auditiva": ["equipo de proteccion personal", "epp", "casco", "respirador", "protector auditivo", "guante", "calzado", "lentes"],
+    "Trabajos en altura y protección de bordes": ["trabajo en altura", "caida", "arnes", "linea de vida", "baranda", "borde", "abertura", "hueco"],
+    "Andamios y plataformas": ["andamio", "plataforma suspendida", "plataforma de trabajo"],
+    "Escaleras portátiles y provisionales": ["escalera portatil", "escalera provisional", "escalera de acceso"],
+    "Excavaciones y zanjas": ["excavacion", "zanja", "entibado", "talud", "napa", "espacio confinado"],
+    "Herramientas manuales y eléctricas": ["herramienta", "esmeril", "taladro", "sierra", "disco", "guarda"],
+    "Izaje, grúas y aparejos": ["izaje", "grua", "eslinga", "gancho", "aparejo", "carga suspendida"],
+    "Soldadura, corte y trabajo en caliente": ["soldadura", "oxicorte", "trabajo en caliente", "acetileno", "cilindro de gas"],
+    "Electricidad provisional": ["electricidad provisional", "tablero provisional", "extension electrica", "puesta a tierra", "diferencial"],
+    "Orden, limpieza y almacenamiento": ["orden y limpieza", "apilamiento", "almacenamiento", "residuo", "ruta libre"],
+    "Demoliciones": ["demolicion", "demolición"],
+    "Tránsito, maquinaria y terceros": ["maquinaria", "vehiculo", "peaton", "via publica", "visitante", "señalizacion"],
+    "Incendios y emergencias": ["extintor", "incendio", "evacuacion", "primeros auxilios", "botiquin", "emergencia"],
+    "Polvo, ruido, vibración y clima": ["polvo", "ruido", "vibracion", "radiacion solar", "calor", "viento", "lluvia"],
+    "Encofrado, desencofrado y acero": ["encofrado", "desencofrado", "acero de refuerzo", "varilla", "puntal"],
+}
+
 
 def normalizar(texto: str) -> str:
     base = unicodedata.normalize("NFD", str(texto or "").lower())
     return "".join(c for c in base if unicodedata.category(c) != "Mn")
 
 
+def texto_item(item: dict) -> str:
+    return normalizar(" ".join([
+        item.get("id", ""), item.get("categoria", ""), item.get("elemento", ""),
+        item.get("parametro", ""), item.get("valor", {}).get("texto", ""),
+        " ".join(item.get("condiciones", []) or []), item.get("advertencia", ""),
+        item.get("fuente", {}).get("norma", ""), item.get("fuente", {}).get("denominacion", ""),
+        item.get("fuente", {}).get("numeral", "") or "",
+    ]))
+
+
 def main() -> None:
     datos = json.loads(BASE.read_text(encoding="utf-8"))
-    encontrados = []
-    for item in datos["parametros"]:
-        texto = normalizar(" ".join([
-            item.get("id", ""), item.get("categoria", ""), item.get("elemento", ""),
-            item.get("parametro", ""), item.get("valor", {}).get("texto", ""),
-            item.get("fuente", {}).get("norma", ""), item.get("fuente", {}).get("denominacion", ""),
-            item.get("fuente", {}).get("numeral", "") or "",
-        ]))
-        if any(normalizar(t) in texto for t in TERMINOS):
-            encontrados.append(item)
+    textos = {item["id"]: texto_item(item) for item in datos["parametros"]}
+    encontrados = [item for item in datos["parametros"] if any(normalizar(t) in textos[item["id"]] for t in TERMINOS)]
 
     grupos = Counter(item.get("fuente", {}).get("norma") or item.get("fuente", {}).get("denominacion") or "Sin norma" for item in encontrados)
     lineas = [
@@ -54,10 +75,23 @@ def main() -> None:
     ]
     for nombre, cantidad in grupos.most_common():
         lineas.append(f"- {nombre}: {cantidad}")
-    lineas.append("")
 
+    lineas.extend(["", "## Cobertura temática", ""])
+    for tema, claves in TEMAS.items():
+        coinciden = [item for item in datos["parametros"] if any(normalizar(k) in textos[item["id"]] for k in claves)]
+        criterios = [item for item in coinciden if item.get("estado_revision") == "criterio_tecnico_revisado"]
+        lineas.append(f"### {tema} — {len(coinciden)} registros, {len(criterios)} criterios revisados")
+        lineas.append("")
+        for item in coinciden:
+            lineas.append(
+                f"- `{item['id']}` | {item.get('estado_revision','')} | {item.get('categoria','')} | "
+                f"{item.get('elemento','')} | {item.get('parametro','')}"
+            )
+        lineas.append("")
+
+    lineas.extend(["## Registros por fuente", ""])
     for nombre, _ in grupos.most_common():
-        lineas.extend([f"## {nombre}", ""])
+        lineas.extend([f"### {nombre}", ""])
         for item in encontrados:
             fuente = item.get("fuente", {}).get("norma") or item.get("fuente", {}).get("denominacion") or "Sin norma"
             if fuente != nombre:

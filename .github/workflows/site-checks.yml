@@ -47,6 +47,9 @@ jobs:
       - name: Validate structured normative contract
         run: python scripts/check_normativa.py
 
+      - name: Validate normative frontend integration
+        run: python scripts/check_normative_frontend.py
+
       - name: Validate all public JavaScript syntax
         shell: bash
         run: |

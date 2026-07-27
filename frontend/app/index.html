@@ -13,6 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="app.css?v=2">
   <link rel="stylesheet" href="faq.css?v=1">
+  <link rel="stylesheet" href="normative.css?v=1">
 </head>
 <body>
   <header class="app-header">
@@ -76,6 +77,84 @@
       </div>
 
       <article class="faq-answer" id="faqAnswer" aria-live="polite" hidden></article>
+    </section>
+
+    <section class="normative-section" id="parametros-tecnicos" aria-labelledby="normative-title">
+      <div class="normative-heading">
+        <div>
+          <p class="eyebrow">Consulta normativa estructurada</p>
+          <h2 id="normative-title">Medidas y parámetros técnicos</h2>
+          <p>Consulta mínimos, máximos, fórmulas y reglas que dependen del cálculo. Cada resultado muestra sus condiciones y evita presentar una cifra como universal cuando no lo es.</p>
+        </div>
+        <span class="normative-status is-loading" id="normativeStatus" role="status">Conectando…</span>
+      </div>
+
+      <form class="normative-form" id="normativeForm" role="search">
+        <label class="normative-field" for="normativeSearch">
+          <span>¿Qué medida o elemento necesitas consultar?</span>
+          <input
+            id="normativeSearch"
+            name="consulta"
+            type="search"
+            placeholder="Ejemplo: escalera, garganta, cimiento o calicata"
+            autocomplete="off"
+          >
+        </label>
+
+        <div class="normative-filter-grid">
+          <label class="normative-field" for="normativeCategory">
+            <span>Categoría</span>
+            <select id="normativeCategory" name="categoria">
+              <option value="">Todas las categorías</option>
+            </select>
+          </label>
+
+          <label class="normative-field" for="normativeElement">
+            <span>Elemento</span>
+            <select id="normativeElement" name="elemento" disabled>
+              <option value="">Todos los elementos</option>
+            </select>
+          </label>
+
+          <label class="normative-field" for="normativeClassification">
+            <span>Tipo de regla</span>
+            <select id="normativeClassification" name="clasificacion">
+              <option value="">Todos los tipos</option>
+              <option value="minimo_normativo">Mínimo normativo</option>
+              <option value="maximo_normativo">Máximo normativo</option>
+              <option value="formula_normativa">Fórmula normativa</option>
+              <option value="condicion_normativa">Condición normativa</option>
+              <option value="depende_calculo">Depende del cálculo</option>
+              <option value="prohibicion">Prohibición</option>
+              <option value="recomendacion">Recomendación</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="normative-actions">
+          <button class="primary-button" type="submit">Consultar parámetros</button>
+          <button class="normative-secondary-button" id="clearNormative" type="button">Limpiar</button>
+        </div>
+      </form>
+
+      <div class="normative-popular" id="normativePopular" aria-label="Consultas técnicas frecuentes">
+        <button type="button" data-normative-query="escalera">Escalera</button>
+        <button type="button" data-normative-query="garganta">Garganta</button>
+        <button type="button" data-normative-query="cimiento corrido">Cimiento corrido</button>
+        <button type="button" data-normative-query="calicata">Calicata</button>
+        <button type="button" data-normative-query="baranda">Baranda</button>
+      </div>
+
+      <p class="normative-notice" id="normativeNotice" aria-live="polite" hidden></p>
+      <p class="normative-summary" id="normativeSummary" aria-live="polite" hidden></p>
+      <div class="normative-results" id="normativeResults" aria-live="polite" aria-busy="false"></div>
+      <div class="normative-empty" id="normativeEmpty" hidden>
+        <strong>No encontramos parámetros con esos filtros.</strong>
+        <span>Prueba con otra palabra o limpia los filtros para ver la base piloto completa.</span>
+      </div>
+      <button class="primary-button normative-retry" id="retryNormative" type="button" hidden>Volver a intentar</button>
+
+      <p class="normative-disclaimer"><strong>Importante:</strong> esta herramienta es educativa. Las condiciones reales del terreno, los planos, el cálculo estructural y la revisión profesional prevalecen para cada obra.</p>
     </section>
 
     <section class="stage-section" aria-labelledby="stage-title">
@@ -193,6 +272,7 @@
 
   <script src="faq-data.js?v=1"></script>
   <script src="faq-search.js?v=2"></script>
+  <script src="normative-module.js?v=1"></script>
   <script src="app.js?v=1"></script>
   <script src="modules-rne.js?v=1"></script>
   <script src="/site-global.js?v=20260714-app2"></script>

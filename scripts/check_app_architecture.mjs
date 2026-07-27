@@ -23,12 +23,14 @@ const requiredStyles = [
   "faq.css?v=1",
   "normative.css?v=1",
   "app-experience.css?v=1",
-  "faq-answer-v2.css?v=1"
+  "faq-answer-v2.css?v=1",
+  "problem-evaluator.css?v=1"
 ];
 
 const requiredScripts = [
   "faq-data-v2.js?v=1",
   "faq-search-v3.js?v=1",
+  "problem-evaluator.js?v=1",
   "home-navigation.js?v=1",
   "work-profile.js?v=1",
   "risk-evaluator.js?v=1",
@@ -106,6 +108,7 @@ for (const faq of faqs) {
 
 const faqSearch = read("frontend/app/faq-search-v3.js");
 const riskEvaluator = read("frontend/app/risk-evaluator.js");
+const problemEvaluator = read("frontend/app/problem-evaluator.js");
 const homeNavigation = read("frontend/app/home-navigation.js");
 const workProfile = read("frontend/app/work-profile.js");
 
@@ -121,36 +124,52 @@ if (/classifyRisk|redSignals|yellowSignals/.test(riskEvaluator)) {
 if (!homeNavigation.includes("mi-casa-segura:open-work-profile")) {
   fail("La navegación no coordina la apertura de Mi obra.");
 }
+if (!homeNavigation.includes("problemas-evaluador")) {
+  fail("La ruta Tengo un problema no dirige al evaluador guiado.");
+}
 if (!workProfile.includes("mi-casa-segura-work-profile-v1")) {
   fail("Mi obra no utiliza la clave local versionada.");
+}
+if (!problemEvaluator.includes("const problems = [")) {
+  fail("El evaluador no contiene una base estructurada de problemas.");
+}
+if (!problemEvaluator.includes("baseRisk") || !problemEvaluator.includes("yesRisk")) {
+  fail("El evaluador no define riesgo mediante reglas explícitas en los datos.");
+}
+if (/classifyRisk|redSignals|yellowSignals/.test(problemEvaluator)) {
+  fail("El evaluador guiado no debe decidir el riesgo mediante coincidencias de palabras.");
 }
 
 for (const resource of [
   "/app/faq-data-v2.js?v=1",
   "/app/faq-search-v3.js?v=1",
+  "/app/problem-evaluator.js?v=1",
   "/app/home-navigation.js?v=1",
   "/app/work-profile.js?v=1",
   "/app/risk-evaluator.js?v=1",
-  "/app/faq-answer-v2.css?v=1"
+  "/app/faq-answer-v2.css?v=1",
+  "/app/problem-evaluator.css?v=1"
 ]) {
   if (!serviceWorker.includes(resource)) {
     fail(`El service worker no guarda ${resource} para uso sin conexión.`);
   }
 }
 
-if (!serviceWorker.includes('mi-casa-segura-pwa-v20')) {
-  fail("La caché pública no corresponde a la versión v20 de estabilización.");
+if (!serviceWorker.includes('mi-casa-segura-pwa-v21')) {
+  fail("La caché pública no corresponde a la versión v21 con evaluador de problemas.");
 }
 
 for (const file of [
   "faq-data-v2.js",
   "faq-search-v3.js",
+  "problem-evaluator.js",
   "home-navigation.js",
   "work-profile.js",
   "risk-evaluator.js",
-  "faq-answer-v2.css"
+  "faq-answer-v2.css",
+  "problem-evaluator.css"
 ]) {
   if (!fs.existsSync(path.join(appDir, file))) fail(`No existe frontend/app/${file}.`);
 }
 
-console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas.`);
+console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas y evaluador guiado activo.`);

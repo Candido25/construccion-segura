@@ -19,9 +19,18 @@ TERMINOS = [
 ]
 
 
-def normalizar(texto: str) -> str:
+def normalizar(texto: object) -> str:
     base = unicodedata.normalize("NFD", str(texto or "").lower())
     return "".join(c for c in base if unicodedata.category(c) != "Mn")
+
+
+def texto_parametro(item: dict) -> str:
+    valores = [
+        item.get("id"), item.get("categoria"), item.get("elemento"), item.get("parametro"),
+        item.get("valor", {}).get("texto"), item.get("fuente", {}).get("norma"),
+        item.get("fuente", {}).get("numeral"), " ".join(str(c or "") for c in item.get("condiciones", [])),
+    ]
+    return normalizar(" ".join(str(valor or "") for valor in valores))
 
 
 def main() -> None:
@@ -33,13 +42,8 @@ def main() -> None:
     relacionados = []
     is010 = []
     for item in parametros:
-        texto = normalizar(" ".join([
-            item.get("id", ""), item.get("categoria", ""), item.get("elemento", ""),
-            item.get("parametro", ""), item.get("valor", {}).get("texto", ""),
-            item.get("fuente", {}).get("norma", ""), item.get("fuente", {}).get("numeral", ""),
-            " ".join(item.get("condiciones", [])),
-        ]))
-        if "is.010" in normalizar(item.get("fuente", {}).get("norma", "")) or item.get("id", "").startswith("is010-"):
+        texto = texto_parametro(item)
+        if "is.010" in normalizar(item.get("fuente", {}).get("norma")) or str(item.get("id", "")).startswith("is010-"):
             is010.append(item)
         if any(normalizar(t) in texto for t in TERMINOS):
             relacionados.append(item)
@@ -56,7 +60,7 @@ def main() -> None:
         "## Parámetros IS.010 existentes",
         "",
     ]
-    for item in sorted(is010, key=lambda x: x.get("id", "")):
+    for item in sorted(is010, key=lambda x: str(x.get("id", ""))):
         fuente = item.get("fuente", {})
         lineas.append(
             f"- `{item.get('id')}` | {item.get('categoria')} | {item.get('elemento')} | "
@@ -66,15 +70,11 @@ def main() -> None:
     lineas.extend(["", "## Cobertura por término", ""])
     for termino in TERMINOS:
         t = normalizar(termino)
-        coincidencias = []
-        for item in relacionados:
-            texto = normalizar(" ".join([
-                item.get("id", ""), item.get("categoria", ""), item.get("elemento", ""),
-                item.get("parametro", ""), item.get("valor", {}).get("texto", ""),
-            ]))
-            if t in texto:
-                coincidencias.append(item.get("id"))
-        lineas.append(f"- **{termino}**: {len(coincidencias)}" + (f" — {', '.join(sorted(coincidencias)[:30])}" if coincidencias else ""))
+        coincidencias = [str(item.get("id")) for item in relacionados if t in texto_parametro(item)]
+        lineas.append(
+            f"- **{termino}**: {len(coincidencias)}"
+            + (f" — {', '.join(sorted(coincidencias)[:30])}" if coincidencias else "")
+        )
 
     SALIDA.write_text("\n".join(lineas) + "\n", encoding="utf-8")
     print(f"Diagnóstico generado: {len(is010)} IS.010 y {len(relacionados)} relacionados.")

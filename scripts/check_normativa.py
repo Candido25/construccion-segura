@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 374:
-        raise SystemExit("La base normativa debe contener por lo menos 374 parámetros validados.")
+    if len(base.parametros) < 545:
+        raise SystemExit("La base normativa debe contener por lo menos 545 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -50,10 +50,10 @@ def main() -> None:
             raise SystemExit(
                 f"{parametro.id}: FAQ inexistentes: {', '.join(sorted(faltantes))}"
             )
-        if parametro.fuente.tipo == "RNE":
+        if parametro.fuente.tipo in {"RNE", "normativa_nacional", "manual_oficial"}:
             url = str(parametro.fuente.url_oficial or "")
             if "gob.pe" not in url:
-                raise SystemExit(f"{parametro.id}: la fuente RNE no es oficial.")
+                raise SystemExit(f"{parametro.id}: la fuente oficial no apunta a gob.pe.")
         if parametro.fuente.numeral_confirmado and not parametro.fuente.numeral:
             raise SystemExit(
                 f"{parametro.id}: un numeral marcado como confirmado no puede estar vacío."
@@ -68,12 +68,25 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 373:
+    if validados < 511:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 373 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 511 numerales RNE validados; hay {validados}."
         )
-    if base.version != "1.6.0":
-        raise SystemExit(f"La versión normativa esperada es 1.6.0 y se recibió {base.version}.")
+    if base.version != "1.7.0":
+        raise SystemExit(f"La versión normativa esperada es 1.7.0 y se recibió {base.version}.")
+
+    oficiales = sum(
+        parametro.estado_revision == "validado_con_fuente_oficial"
+        for parametro in base.parametros
+    )
+    criterios = sum(
+        parametro.estado_revision == "criterio_tecnico_revisado"
+        for parametro in base.parametros
+    )
+    if oficiales < 17:
+        raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
+    if criterios < 16:
+        raise SystemExit(f"El bloque requiere al menos 16 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -95,6 +108,30 @@ def main() -> None:
     listado = api.listar_parametros_normativos()
     if listado["total_encontrados"] != len(base.parametros):
         raise SystemExit("El endpoint no devuelve la totalidad del piloto visible.")
+
+    dano = api.detalle_parametro_normativo("edan-vivienda-inhabitable")
+    if dano["estado_revision"] != "validado_con_fuente_oficial":
+        raise SystemExit("La clasificación EDAN debe conservar su estado oficial.")
+
+    prueba = api.detalle_parametro_normativo("e060-prueba-carga-mantenimiento-total")
+    if prueba["valor"]["valor"] != 24:
+        raise SystemExit("La prueba de carga debe conservar 24 horas.")
+
+    calzadura = api.detalle_parametro_normativo("e050-calzadura-panel-ancho-maximo")
+    if calzadura["valor"]["valor"] != 1.2:
+        raise SystemExit("El panel de calzadura debe conservar 1.20 m.")
+
+    demolicion = api.detalle_parametro_normativo("g050-demolicion-vivalva-zona-seguridad")
+    if demolicion["valor"]["valor"] != 8:
+        raise SystemExit("La zona de seguridad de la cuchara vivalva debe ser 8 m.")
+
+    licencia = api.detalle_parametro_normativo("licencia-vigencia-prorroga")
+    if "36 meses" not in licencia["valor"]["texto"] or "12 meses" not in licencia["valor"]["texto"]:
+        raise SystemExit("La licencia no conserva su vigencia y prórroga.")
+
+    criterio = api.detalle_parametro_normativo("criterio-ampliacion-evaluar-edificio-completo")
+    if criterio["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("La ampliación debe mostrarse como criterio técnico revisado.")
 
     dotacion = api.detalle_parametro_normativo(
         "is010-dotacion-vivienda-calido"
@@ -189,8 +226,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 1837:
-        raise SystemExit("El bloque de instalaciones requiere por lo menos 1837 preguntas técnicas.")
+    if len(todas) < 2008:
+        raise SystemExit("El bloque de patologías requiere por lo menos 2008 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

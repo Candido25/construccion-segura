@@ -26,6 +26,8 @@ ClasificacionParametro = Literal[
 EstadoRevision = Literal[
     "piloto_verificado",
     "validado_con_numeral",
+    "validado_con_fuente_oficial",
+    "criterio_tecnico_revisado",
     "borrador",
     "retirado",
 ]
@@ -52,7 +54,7 @@ class ValorTecnico(BaseModel):
 
 
 class FuenteTecnica(BaseModel):
-    tipo: Literal["RNE", "criterio_tecnico", "fuente_interna"]
+    tipo: Literal["RNE", "normativa_nacional", "manual_oficial", "criterio_tecnico", "fuente_interna"]
     norma: str
     denominacion: str
     dispositivo: str | None = None
@@ -77,16 +79,30 @@ class ParametroNormativo(BaseModel):
 
     @model_validator(mode="after")
     def validar_trazabilidad(self) -> "ParametroNormativo":
-        if self.fuente.tipo == "RNE" and not self.fuente.url_oficial:
-            raise ValueError("Todo parámetro atribuido al RNE requiere una URL oficial.")
+        fuentes_oficiales = {"RNE", "normativa_nacional", "manual_oficial"}
+        if self.fuente.tipo in fuentes_oficiales and not self.fuente.url_oficial:
+            raise ValueError("Toda fuente oficial requiere una URL oficial.")
         if self.clasificacion in {
             "minimo_normativo",
             "maximo_normativo",
             "formula_normativa",
-            "condicion_normativa",
             "prohibicion",
-        } and self.fuente.tipo != "RNE":
-            raise ValueError("Los requisitos normativos deben apuntar a una fuente RNE.")
+        } and self.fuente.tipo not in {"RNE", "normativa_nacional"}:
+            raise ValueError("Los límites y prohibiciones normativos requieren una norma oficial.")
+        if self.clasificacion == "condicion_normativa" and self.fuente.tipo not in fuentes_oficiales:
+            raise ValueError("Una condición normativa debe apuntar a una fuente oficial.")
+        if self.estado_revision == "validado_con_numeral" and self.fuente.tipo != "RNE":
+            raise ValueError("El estado validado_con_numeral se reserva a cláusulas del RNE.")
+        if self.estado_revision == "validado_con_fuente_oficial":
+            if self.fuente.tipo not in {"normativa_nacional", "manual_oficial"}:
+                raise ValueError("El estado oficial requiere normativa nacional o manual oficial.")
+            if not self.fuente.numeral or not self.fuente.numeral_confirmado:
+                raise ValueError("Una fuente oficial validada requiere referencia confirmada.")
+        if self.estado_revision == "criterio_tecnico_revisado":
+            if self.fuente.tipo != "criterio_tecnico":
+                raise ValueError("Un criterio técnico revisado requiere fuente de criterio técnico.")
+            if self.clasificacion not in {"recomendacion", "depende_calculo"}:
+                raise ValueError("Un criterio técnico solo puede ser recomendación o depender del cálculo.")
         if not self.faq_relacionadas:
             raise ValueError("Cada parámetro debe conservar trazabilidad con al menos una FAQ.")
         return self

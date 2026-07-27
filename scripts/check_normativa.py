@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 100:
-        raise SystemExit("La base normativa debe contener por lo menos 100 parámetros validados.")
+    if len(base.parametros) < 192:
+        raise SystemExit("La base normativa debe contener por lo menos 192 parámetros validados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 99:
+    if validados < 191:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 99 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 191 numerales validados; hay {validados}."
         )
-    if base.version != "1.4.0":
-        raise SystemExit(f"La versión normativa esperada es 1.4.0 y se recibió {base.version}.")
+    if base.version != "1.5.0":
+        raise SystemExit(f"La versión normativa esperada es 1.5.0 y se recibió {base.version}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -114,6 +114,30 @@ def main() -> None:
     if deriva["valor"]["valor"] != 0.005:
         raise SystemExit("La distorsión máxima para albañilería debe ser 0.005.")
 
+    mezclado = api.detalle_parametro_normativo(
+        "e060-mezclado-tiempo-minimo"
+    )
+    if mezclado["valor"]["valor"] != 90:
+        raise SystemExit("El tiempo mínimo de mezclado debe conservar 90 segundos.")
+
+    tubo_columna = api.detalle_parametro_normativo(
+        "e060-columna-tuberias-area-maxima"
+    )
+    if tubo_columna["valor"]["valor"] != 4:
+        raise SystemExit("Las tuberías en columna deben conservar el límite de 4%.")
+
+    caida = api.detalle_parametro_normativo(
+        "g050-caida-anclaje-resistencia-minima"
+    )
+    if caida["valor"]["valor"] != 2265:
+        raise SystemExit("El anclaje anticaídas debe conservar 2265 kgf.")
+
+    unidades = api.detalle_parametro_normativo(
+        "e070-unidad-concreto-edad-minima"
+    )
+    if unidades["valor"]["valor"] != 28:
+        raise SystemExit("Las unidades de concreto deben conservar 28 días mínimos.")
+
     detalle = api.detalle_parametro_normativo(
         "a010-escalera-contrahuella-maxima"
     )
@@ -135,8 +159,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 1569:
-        raise SystemExit("El lote 4 requiere por lo menos 1569 preguntas técnicas.")
+    if len(todas) < 1661:
+        raise SystemExit("El bloque de procesos requiere por lo menos 1661 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

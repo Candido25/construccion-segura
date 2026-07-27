@@ -1,0 +1,72 @@
+name: Temporary diagnose pathologies repairs v3
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-diagnose-patologias-reparaciones-v3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Recreate proposal
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+          workflow = Path('.github/workflows/tmp-apply-patologias-reparaciones-v3.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          script = textwrap.dedent(workflow[start:end])
+          exec(compile(script, 'recreate-pathologies-v3.py', 'exec'), {})
+          PY
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+      - name: Capture every validation
+        shell: bash
+        run: |
+          mkdir -p diagnosis-v3
+          set +e
+          python scripts/check_normativa.py > diagnosis-v3/check_normativa.txt 2>&1
+          echo "status=$?" >> diagnosis-v3/check_normativa.txt
+          python -m py_compile backend/api.py backend/normativa.py scripts/check_normativa.py > diagnosis-v3/py_compile.txt 2>&1
+          echo "status=$?" >> diagnosis-v3/py_compile.txt
+          node --check frontend/app/normative-module.js > diagnosis-v3/node_check.txt 2>&1
+          echo "status=$?" >> diagnosis-v3/node_check.txt
+          rm -rf public
+          python scripts/prepare_frontend.py > diagnosis-v3/prepare_frontend.txt 2>&1
+          echo "status=$?" >> diagnosis-v3/prepare_frontend.txt
+          for path in public/index.html public/app/normative-module.js; do
+            if test -f "$path"; then echo "$path=present"; else echo "$path=missing"; fi
+          done > diagnosis-v3/files.txt
+          if test -e public/backend; then echo 'public/backend=leaked'; else echo 'public/backend=absent'; fi >> diagnosis-v3/files.txt
+          if test -e public/scripts; then echo 'public/scripts=leaked'; else echo 'public/scripts=absent'; fi >> diagnosis-v3/files.txt
+          python - <<'PY' > diagnosis-v3/counts.txt 2>&1
+          import json
+          from collections import Counter
+          from pathlib import Path
+          data=json.loads(Path('backend/normativa_tecnica.json').read_text(encoding='utf-8'))
+          faq=json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          print('version',data['version'])
+          print('parameters',len(data['parametros']))
+          print('states',Counter(p['estado_revision'] for p in data['parametros']))
+          print('source_types',Counter(p['fuente']['tipo'] for p in data['parametros']))
+          print('questions',sum(len(c.get('preguntas',[])) for c in faq['categorias']))
+          PY
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pathologies-validation-diagnosis-v3
+          path: diagnosis-v3
+          retention-days: 2

@@ -21,6 +21,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cat scripts/.tmp_pathologies_records_00.b64 scripts/.tmp_pathologies_records_01.b64 scripts/.tmp_pathologies_records_02.b64 scripts/.tmp_pathologies_records_03.b64 > scripts/.tmp_pathologies_records.b64
+          test "$(wc -c < scripts/.tmp_pathologies_records.b64)" -eq 45204
           python - <<'PY'
           from pathlib import Path
           import textwrap

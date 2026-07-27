@@ -60,16 +60,22 @@ jobs:
               label, data = body.split(":", 1)
               order = int(label.removeprefix("CONTROL_CALIDAD_PAYLOAD_"))
               chunks[order] = "".join(data.split())
+          if all(order in chunks for order in (51, 52, 53)):
+              chunks[5] = chunks[51] + chunks[52] + chunks[53]
           lines = []
+          valid = True
           for order in sorted(expected):
               data = chunks.get(order, "")
               digest = hashlib.sha256(data.encode()).hexdigest()
               wanted_length, wanted_digest = expected[order]
               ok = len(data) == wanted_length and digest == wanted_digest
+              valid = valid and ok
               lines.append(f"CHUNK_{order}: len={len(data)} sha256={digest} ok={ok}")
           payload = "".join(chunks.get(order, "") for order in sorted(expected))
-          lines.append(f"TOTAL: len={len(payload)} sha256={hashlib.sha256(payload.encode()).hexdigest()}")
+          lines.append(f"TOTAL: len={len(payload)} sha256={hashlib.sha256(payload.encode()).hexdigest()} valid={valid}")
           open("/tmp/payload_info.txt", "w", encoding="utf-8").write("\n".join(lines) + "\n")
+          if not valid:
+              raise SystemExit("El inventario no supera la verificación de integridad")
           open("/tmp/control_calidad_payload.b64", "w", encoding="utf-8").write(payload)
           PY
       - name: Diagnosticar aplicación y validación
@@ -89,5 +95,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/RESULTADO_CONTROL_CALIDAD.txt
-          git diff --cached --quiet || git commit -m "Verificar integridad del inventario de calidad"
+          git diff --cached --quiet || git commit -m "Validar inventario de control de calidad"
           git push origin HEAD:agent/ampliar-control-calidad-cierre-20260727

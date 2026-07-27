@@ -1,0 +1,641 @@
+name: Temporary apply normative batch 3
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-normativa-lote-3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-normative-batch:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Apply verified parameters and FAQ corrections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          from pathlib import Path
+
+          norm_path = Path('backend/normativa_tecnica.json')
+          faq_path = Path('backend/preguntas_tecnicas.json')
+          norm = json.loads(norm_path.read_text(encoding='utf-8'))
+          faq = json.loads(faq_path.read_text(encoding='utf-8'))
+
+          if len(norm.get('parametros', [])) != 41 or norm.get('version') != '1.2.0':
+              raise SystemExit('La base normativa cambió desde el lote 2; revisar antes de aplicar.')
+
+          existing_ids = {item['id'] for item in norm['parametros']}
+          source_url = 'https://www.gob.pe/institucion/vivienda/informes-publicaciones/2309793-reglamento-nacional-de-edificaciones-rne'
+          review_date = '2026-07-27'
+
+          def source(norm_name: str, title: str, device: str, numeral: str) -> dict:
+              return {
+                  'tipo': 'RNE',
+                  'norma': norm_name,
+                  'denominacion': title,
+                  'dispositivo': device,
+                  'numeral': numeral,
+                  'numeral_confirmado': True,
+                  'url_oficial': source_url,
+              }
+
+          e060 = lambda numeral: source('E.060', 'Concreto Armado', 'DS N.° 010-2009-VIVIENDA', numeral)
+          e070 = lambda numeral: source('E.070', 'Albañilería', 'DS N.° 011-2006-VIVIENDA', numeral)
+
+          new_parameters = [
+              {
+                  'id': 'e060-concreto-estructural-resistencia-minima',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Concreto estructural',
+                  'parametro': 'Resistencia especificada a compresión',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 17, 'unidad': 'MPa', 'texto': "La resistencia especificada f'c del concreto estructural no debe ser menor de 17 MPa."},
+                  'condiciones': ['Es un límite general de la E.060; los planos pueden exigir una resistencia mayor.', 'La resistencia se verifica mediante probetas y criterios de aceptación de la norma.'],
+                  'fuente': e060('5.1.1 y 9.4.1'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': "No debe reemplazarse la resistencia indicada en los planos por el mínimo de 17 MPa.",
+                  'faq_relacionadas': ['q1520'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-agregado-maximo-respecto-encofrado',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Agregado grueso',
+                  'parametro': 'Tamaño máximo respecto al encofrado',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'Dmax ≤ b/5', 'texto': 'El tamaño máximo nominal no debe superar 1/5 de la menor separación entre los lados del encofrado.'},
+                  'condiciones': ['b representa la menor separación libre entre caras del encofrado.', 'Puede exceptuarse únicamente si se demuestra colocación y compactación sin vacíos ni cangrejeras.'],
+                  'fuente': e060('3.3.2(a)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Una piedra demasiado grande puede bloquear el paso del concreto y dejar vacíos.',
+                  'faq_relacionadas': ['q1521', 'q243'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-agregado-maximo-respecto-losa',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Agregado grueso',
+                  'parametro': 'Tamaño máximo respecto al espesor de losa',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'Dmax ≤ h/3', 'texto': 'En losas, el tamaño máximo nominal no debe superar 1/3 de su altura.'},
+                  'condiciones': ['h representa el espesor de la losa.', 'También deben cumplirse simultáneamente los límites por encofrado y separación del acero.'],
+                  'fuente': e060('3.3.2(b)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Cumplir una sola relación no basta cuando otra condición resulta más restrictiva.',
+                  'faq_relacionadas': ['q1521', 'q243'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-agregado-maximo-respecto-acero',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Agregado grueso',
+                  'parametro': 'Tamaño máximo respecto al espacio libre del acero',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'Dmax ≤ 3/4 s_libre', 'texto': 'El tamaño máximo nominal no debe superar 3/4 del espaciamiento mínimo libre entre barras, paquetes, tendones o ductos.'},
+                  'condiciones': ['s_libre es la separación libre real, no la distancia entre ejes.', 'El concreto debe poder pasar y compactarse alrededor de toda la armadura.'],
+                  'fuente': e060('3.3.2(c)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe elegirse el agregado sin revisar el congestionamiento real del acero.',
+                  'faq_relacionadas': ['q1521', 'q243'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-curado-concreto-convencional-minimo',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Concreto convencional',
+                  'parametro': 'Duración del curado húmedo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 7, 'unidad': 'días', 'texto': 'Debe mantenerse por encima de 10 °C y permanentemente húmedo por lo menos durante los primeros 7 días.'},
+                  'condiciones': ['Aplica salvo concreto de alta resistencia inicial o un método alternativo demostrado conforme al numeral 5.11.7.'],
+                  'fuente': e060('5.11.5'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Mojar ocasionalmente no equivale a mantener curado continuo.',
+                  'faq_relacionadas': ['q1467'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-curado-alta-resistencia-inicial-minimo',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Concreto de alta resistencia inicial',
+                  'parametro': 'Duración del curado húmedo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 3, 'unidad': 'días', 'texto': 'Debe mantenerse por encima de 10 °C y permanentemente húmedo por lo menos durante los primeros 3 días.'},
+                  'condiciones': ['Aplica a concreto de alta resistencia inicial, salvo un método alternativo demostrado conforme al numeral 5.11.7.'],
+                  'fuente': e060('5.11.6'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe asumirse que cualquier cemento permite reducir el curado a tres días.',
+                  'faq_relacionadas': ['q1539'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-barras-paralelas-separacion-libre-minima',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Barras paralelas en una capa',
+                  'parametro': 'Separación libre',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 's_libre ≥ max(db, 25 mm)', 'texto': 'La separación libre debe ser por lo menos igual al diámetro de la barra y nunca menor de 25 mm.'},
+                  'condiciones': ['También debe permitir el paso del agregado conforme al numeral 3.3.2.'],
+                  'fuente': e060('7.6.1'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'La separación se mide libre entre superficies de barras, no entre ejes.',
+                  'faq_relacionadas': ['q1522'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-capas-refuerzo-separacion-libre-minima',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Refuerzo en dos o más capas',
+                  'parametro': 'Separación libre entre capas',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 25, 'unidad': 'mm', 'texto': 'La distancia libre entre capas no debe ser menor de 25 mm.'},
+                  'condiciones': ['Las barras superiores deben colocarse exactamente sobre las inferiores.', 'Debe comprobarse además la compatibilidad con el tamaño del agregado.'],
+                  'fuente': e060('7.6.2'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Capas desalineadas o pegadas impiden una adecuada colocación del concreto.',
+                  'faq_relacionadas': ['q1523'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-columnas-barras-longitudinales-separacion-minima',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Elemento a compresión con estribos o espiral',
+                  'parametro': 'Separación libre entre barras longitudinales',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 's_libre ≥ max(1.5 db, 40 mm)', 'texto': 'La separación libre no debe ser menor de 1.5 veces el diámetro de la barra ni de 40 mm.'},
+                  'condiciones': ['Aplica a elementos a compresión reforzados transversalmente con espirales o estribos.'],
+                  'fuente': e060('7.6.3'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Una jaula congestionada puede impedir el llenado y producir cangrejeras.',
+                  'faq_relacionadas': ['q1524'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-recubrimiento-contra-suelo-minimo',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Concreto colocado contra el suelo',
+                  'parametro': 'Recubrimiento mínimo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 70, 'unidad': 'mm', 'texto': 'Recubrimiento mínimo: 70 mm cuando el concreto se coloca contra el suelo y queda permanentemente expuesto a él.'},
+                  'condiciones': ['Corresponde a concreto construido en sitio no preesforzado.', 'Ambientes corrosivos pueden exigir mayor protección.'],
+                  'fuente': e060('7.7.1(a)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'El acero no debe apoyarse directamente sobre la tierra.',
+                  'faq_relacionadas': ['q1525', 'q307'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-recubrimiento-losas-muros-interiores-minimo',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Losa, muro o vigueta interior',
+                  'parametro': 'Recubrimiento mínimo para barras de 1 3/8 pulg. y menores',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 20, 'unidad': 'mm', 'texto': 'Recubrimiento mínimo: 20 mm para barras de 1 3/8 pulg. y menores.'},
+                  'condiciones': ['Concreto no expuesto a la intemperie ni en contacto con el suelo.', 'No aplica automáticamente a ambientes corrosivos o requisitos especiales de fuego.'],
+                  'fuente': e060('7.7.1(c)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'La medida corresponde al concreto terminado y debe respetarse con separadores adecuados.',
+                  'faq_relacionadas': ['q1526'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-recubrimiento-vigas-columnas-interiores-minimo',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Viga o columna interior',
+                  'parametro': 'Recubrimiento mínimo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 40, 'unidad': 'mm', 'texto': 'Recubrimiento mínimo: 40 mm para armadura principal, estribos y espirales.'},
+                  'condiciones': ['Concreto no expuesto a la intemperie ni en contacto con el suelo.', 'No sustituye condiciones específicas de albañilería confinada establecidas por la E.070.'],
+                  'fuente': e060('7.7.1(c)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Debe identificarse qué norma y condición corresponde al elemento real antes de aplicar la cifra.',
+                  'faq_relacionadas': ['q1527'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e060-junta-construccion-preparacion',
+                  'categoria': 'Concreto y acero de refuerzo',
+                  'elemento': 'Junta de construcción',
+                  'parametro': 'Preparación antes de continuar el vaciado',
+                  'clasificacion': 'condicion_normativa',
+                  'valor': {'tipo': 'texto', 'texto': 'La superficie debe limpiarse, quedar libre de lechada, humedecerse y no conservar agua empozada antes del nuevo vaciado.'},
+                  'condiciones': ['La ubicación y ejecución no deben perjudicar la resistencia ni la transferencia de fuerzas.'],
+                  'fuente': e060('6.4.2 y 6.4.3'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Una junta fría improvisada no se corrige únicamente aplicando una lechada superficial.',
+                  'faq_relacionadas': ['q1528', 'q1463'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-grout-resistencia-minima',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Concreto líquido o grout',
+                  'parametro': 'Resistencia a compresión',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 13.72, 'unidad': 'MPa', 'texto': 'El grout debe alcanzar una resistencia mínima a compresión de 13.72 MPa.'},
+                  'condiciones': ['La resistencia se determina conforme a la NTP 399.623.', 'El grout debe ser fluido, uniforme y sin segregación.'],
+                  'fuente': e070('7.5'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe confundirse grout estructural con una mezcla aguada preparada sin control.',
+                  'faq_relacionadas': ['q1529'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-confinamiento-concreto-resistencia-minima',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna y viga de confinamiento',
+                  'parametro': 'Resistencia del concreto',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 17.15, 'unidad': 'MPa', 'texto': 'El concreto de los elementos de confinamiento debe tener f’c no menor de 17.15 MPa.'},
+                  'condiciones': ['Debe cumplir también los requisitos de la E.060.', 'Los planos estructurales pueden exigir una resistencia mayor.'],
+                  'fuente': e070('9.1, 11.6 y 20.1(f)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'El mínimo normativo no autoriza a reducir la resistencia indicada en el proyecto.',
+                  'faq_relacionadas': ['q1530'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-junta-mortero-espesor',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Junta de mortero',
+                  'parametro': 'Espesor',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'e_min = 10 mm; e_max = max(15 mm, 2T_h + 4 mm)', 'texto': 'El espesor mínimo es 10 mm y el máximo es 15 mm o dos veces la tolerancia dimensional en altura de la unidad más 4 mm, lo que sea mayor.'},
+                  'condiciones': ['Todas las juntas horizontales y verticales deben quedar completamente llenas.', 'Si la junta contiene refuerzo horizontal, su mínimo es 6 mm más el diámetro de la barra.'],
+                  'fuente': e070('10.2'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Una junta gruesa no corrige unidades mal alineadas ni reemplaza el control de plomo y nivel.',
+                  'faq_relacionadas': ['q379'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-muro-altura-diaria-maxima',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Muro asentado con mortero',
+                  'parametro': 'Altura construida por jornada',
+                  'clasificacion': 'maximo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 1.3, 'unidad': 'm', 'texto': 'No se debe asentar más de 1.30 m de altura de muro en una jornada de trabajo.'},
+                  'condiciones': ['La E.070 establece reglas particulares para unidades totalmente sólidas y unidades apilables.'],
+                  'fuente': e070('10.6'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Levantar demasiada altura puede deformar o desestabilizar el muro recién asentado.',
+                  'faq_relacionadas': ['q1531'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-conexion-dentada-saliente-maxima',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Conexión dentada columna-albañilería',
+                  'parametro': 'Longitud de la unidad saliente',
+                  'clasificacion': 'maximo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 5, 'unidad': 'cm', 'texto': 'La unidad saliente del dentado no debe exceder de 5 cm.'},
+                  'condiciones': ['La interfaz debe limpiarse de mortero y partículas sueltas antes de vaciar la columna.'],
+                  'fuente': e070('11.2(a)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Dientes excesivos o sucios dificultan el llenado del concreto y debilitan la unión.',
+                  'faq_relacionadas': ['q481'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-conexion-ras-chicote-anclaje',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Conexión a ras columna-albañilería',
+                  'parametro': 'Chicotes o mechas de anclaje',
+                  'clasificacion': 'condicion_normativa',
+                  'valor': {'tipo': 'texto', 'texto': 'Varillas de 6 mm: al menos 40 cm dentro de la albañilería, 12.5 cm dentro de la columna y doblez vertical de 90° de 10 cm; cuantía 0.001.'},
+                  'condiciones': ['Se requiere cuando la conexión es a ras, salvo que exista refuerzo horizontal continuo.'],
+                  'fuente': e070('11.2(b)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe improvisarse la conexión colocando alambres cortos o sin anclaje suficiente.',
+                  'faq_relacionadas': ['q1532', 'q481'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-columna-confinamiento-estribo-cierre',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna de confinamiento',
+                  'parametro': 'Cierre de estribos',
+                  'clasificacion': 'condicion_normativa',
+                  'valor': {'tipo': 'texto', 'texto': 'Los estribos deben ser cerrados a 135°; también se admiten las alternativas expresamente descritas por la E.070.'},
+                  'condiciones': ['Los extremos deben quedar correctamente vinculados al refuerzo vertical.'],
+                  'fuente': e070('11.4'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Un gancho abierto o mal orientado reduce el confinamiento efectivo.',
+                  'faq_relacionadas': ['q1533'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-refuerzo-traslape-longitud',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Refuerzo de albañilería confinada',
+                  'parametro': 'Longitud de traslape',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'l_traslape = 45 db_mayor', 'texto': 'La longitud de traslape debe ser 45 veces el mayor diámetro de la barra traslapada.'},
+                  'condiciones': ['Aplica al refuerzo horizontal o vertical indicado por el numeral 11.5.'],
+                  'fuente': e070('11.5'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'La longitud debe medirse sobre las barras realmente superpuestas y no sobre el elemento completo.',
+                  'faq_relacionadas': ['q1534'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-refuerzo-traslape-zonas-prohibidas',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Refuerzo vertical de confinamiento',
+                  'parametro': 'Zonas donde no se permite traslapar',
+                  'clasificacion': 'prohibicion',
+                  'valor': {'tipo': 'texto', 'texto': 'No se permite traslapar el refuerzo vertical en el primer entrepiso ni en las zonas confinadas de los extremos de soleras y columnas.'},
+                  'condiciones': ['Los empalmes deben ubicarse y detallarse conforme a los planos estructurales.'],
+                  'fuente': e070('11.5'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Mover un empalme a una zona crítica puede comprometer el comportamiento sísmico.',
+                  'faq_relacionadas': ['q1534'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-columna-confinamiento-vaciado-posterior',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna de confinamiento',
+                  'parametro': 'Secuencia de vaciado',
+                  'clasificacion': 'condicion_normativa',
+                  'valor': {'tipo': 'texto', 'texto': 'La columna se vacía después de construir el muro y el concreto debe empezar desde el borde superior del cimiento, no desde el sobrecimiento.'},
+                  'condiciones': ['La conexión debe ser dentada o a ras con anclajes conforme al numeral 11.2.'],
+                  'fuente': e070('11.7'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'Vaciar una columna aislada antes del paño no produce el mismo sistema de albañilería confinada.',
+                  'faq_relacionadas': ['q523'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-confinamiento-recubrimiento-tarrajeado-minimo',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna o solera tarrajeada',
+                  'parametro': 'Recubrimiento medido al estribo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 2, 'unidad': 'cm', 'texto': 'Recubrimiento mínimo: 2 cm cuando el muro será tarrajeado.'},
+                  'condiciones': ['La medida se toma hasta el estribo.', 'La exposición o el proyecto pueden exigir un recubrimiento mayor.'],
+                  'fuente': e070('11.10'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe confundirse esta condición específica con los recubrimientos generales de otros elementos de concreto.',
+                  'faq_relacionadas': ['q295'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-confinamiento-recubrimiento-caravista-minimo',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna o solera caravista',
+                  'parametro': 'Recubrimiento medido al estribo',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 3, 'unidad': 'cm', 'texto': 'Recubrimiento mínimo: 3 cm cuando el muro queda caravista.'},
+                  'condiciones': ['La medida se toma hasta el estribo.', 'Ambientes severos pueden exigir protección adicional.'],
+                  'fuente': e070('11.10'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'El acabado caravista no permite descontar el recubrimiento como si luego hubiera tarrajeo.',
+                  'faq_relacionadas': ['q301'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-columnas-confinamiento-separacion-maxima',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columnas de confinamiento',
+                  'parametro': 'Separación centro a centro',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 's ≤ min(2H, 5 m)', 'texto': 'La separación máxima es dos veces la distancia entre elementos horizontales de confinamiento y, en todo caso, no mayor de 5 m.'},
+                  'condiciones': ['H representa la distancia entre elementos horizontales de confinamiento.', 'El muro debe quedar enmarcado en sus cuatro lados.'],
+                  'fuente': e070('20.1(a) y 20.1(b)'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'El límite de 5 m no autoriza a omitir columnas donde los planos o la geometría las requieren.',
+                  'faq_relacionadas': ['q1535'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-elementos-confinamiento-espesor-minimo',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna y viga solera de confinamiento',
+                  'parametro': 'Espesor mínimo',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'b ≥ t_muro', 'texto': 'El espesor mínimo de columnas y soleras debe ser igual al espesor efectivo del muro.'},
+                  'condiciones': ['t_muro es el espesor efectivo sin tarrajeo ni revestimiento.'],
+                  'fuente': e070('20.3'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'No debe reducirse la sección del confinamiento para alinearla únicamente con el acabado.',
+                  'faq_relacionadas': ['q1536', 'q489'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-viga-solera-peralte-minimo',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Viga solera',
+                  'parametro': 'Peralte mínimo',
+                  'clasificacion': 'formula_normativa',
+                  'valor': {'tipo': 'formula', 'formula': 'h_solera ≥ h_losa', 'texto': 'El peralte mínimo de la viga solera debe ser igual al espesor de la losa de techo.'},
+                  'condiciones': ['Los planos estructurales pueden exigir un peralte mayor por diseño y anclajes.'],
+                  'fuente': e070('20.4'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'La igualdad normativa es un mínimo y no sustituye el diseño de la solera.',
+                  'faq_relacionadas': ['q1537'],
+                  'fecha_revision': review_date,
+              },
+              {
+                  'id': 'e070-columna-confinamiento-peralte-minimo',
+                  'categoria': 'Albañilería confinada y armada',
+                  'elemento': 'Columna de confinamiento',
+                  'parametro': 'Peralte mínimo perpendicular al muro',
+                  'clasificacion': 'minimo_normativo',
+                  'valor': {'tipo': 'numero', 'valor': 15, 'unidad': 'cm', 'texto': 'El peralte mínimo de la columna de confinamiento es 15 cm.'},
+                  'condiciones': ['Cuando se interrumpe una solera por ductos o límite de propiedad, el peralte debe permitir el anclaje recto del refuerzo más su recubrimiento.'],
+                  'fuente': e070('20.5'),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': 'La dimensión de 15 cm es un mínimo; la otra dimensión no debe ser menor que el espesor efectivo del muro.',
+                  'faq_relacionadas': ['q1538', 'q489'],
+                  'fecha_revision': review_date,
+              },
+          ]
+
+          new_ids = {item['id'] for item in new_parameters}
+          if len(new_ids) != 29 or existing_ids & new_ids:
+              raise SystemExit('Identificadores nuevos inválidos o duplicados.')
+
+          categories = {category['nombre']: category for category in faq.get('categorias', [])}
+          required_categories = {
+              'Concreto en Viviendas de Albañilería',
+              'Acero de Refuerzo y Recubrimientos',
+              'Morteros y Juntas de Albañilería',
+              'Muros Portantes de Albañilería Confinada',
+              'Columnas de Confinamiento',
+              'Vigas Soleras, Dinteles y Vanos',
+          }
+          missing_categories = required_categories - set(categories)
+          if missing_categories:
+              raise SystemExit(f'Faltan categorías de preguntas: {sorted(missing_categories)}')
+
+          all_questions = [item for category in faq['categorias'] for item in category.get('preguntas', [])]
+          ids = {item.get('id') for item in all_questions}
+          if any(f'q{number}' in ids for number in range(1520, 1540)):
+              raise SystemExit('Los identificadores q1520-q1539 ya están ocupados.')
+
+          additions = {
+              'Concreto en Viviendas de Albañilería': [
+                  ('q1520', '¿Cuál es la resistencia mínima del concreto estructural según la E.060?', "La E.060 fija un mínimo general de f'c = 17 MPa. Sin embargo, debe emplearse la resistencia indicada en los planos cuando sea mayor; el mínimo no reemplaza el diseño ni el control mediante probetas."),
+                  ('q1521', '¿Cómo se limita el tamaño máximo de la piedra del concreto?', 'La E.060 exige que el tamaño máximo nominal no supere 1/5 de la menor dimensión del encofrado, 1/3 del espesor de la losa ni 3/4 del espacio libre entre barras. Debe cumplirse la condición más restrictiva.'),
+                  ('q1528', '¿Cómo debe prepararse una junta de construcción antes de continuar el vaciado?', 'La superficie debe limpiarse, quedar libre de lechada, humedecerse y no tener agua empozada. La junta debe estar prevista y permitir la transferencia de fuerzas; no debe improvisarse.'),
+                  ('q1539', '¿Cuánto tiempo se cura un concreto de alta resistencia inicial?', 'La E.060 exige mantenerlo por encima de 10 °C y permanentemente húmedo por lo menos durante los primeros 3 días, salvo un método alternativo que demuestre resistencia y durabilidad equivalentes.'),
+              ],
+              'Acero de Refuerzo y Recubrimientos': [
+                  ('q1522', '¿Cuál es la separación libre mínima entre barras paralelas?', 'La E.060 exige una separación libre no menor que el diámetro de la barra y nunca menor de 25 mm. También debe permitir el paso del agregado grueso.'),
+                  ('q1523', '¿Cuál es la separación mínima entre dos capas de acero?', 'Las barras superiores deben quedar sobre las inferiores y la distancia libre entre capas no debe ser menor de 25 mm, verificando además el tamaño del agregado.'),
+                  ('q1524', '¿Cuál es la separación libre mínima entre barras longitudinales de una columna?', 'En elementos a compresión con estribos o espiral, la E.060 exige por lo menos 1.5 veces el diámetro de la barra y nunca menos de 40 mm.'),
+                  ('q1525', '¿Cuánto recubrimiento necesita el acero cuando el concreto se vacía contra tierra?', 'La E.060 establece 70 mm para concreto colocado contra el suelo y permanentemente expuesto a él. El acero debe mantenerse separado de la tierra mediante elementos adecuados.'),
+                  ('q1526', '¿Cuál es el recubrimiento mínimo interior en losas, muros y viguetas?', 'Para concreto no expuesto a la intemperie ni al suelo y barras de 1 3/8 pulg. o menores, la E.060 establece 20 mm. Condiciones severas pueden exigir más.'),
+                  ('q1527', '¿Cuál es el recubrimiento mínimo interior en vigas y columnas?', 'Para concreto no expuesto a la intemperie ni en contacto con el suelo, la E.060 establece 40 mm para la armadura principal, estribos y espirales.'),
+                  ('q1533', '¿Cómo deben cerrarse los estribos de una columna de confinamiento?', 'La E.070 exige estribos cerrados a 135° o las alternativas expresamente admitidas por la norma. Un gancho abierto o mal orientado no proporciona el mismo confinamiento.'),
+                  ('q1534', '¿Cuánto debe medir el traslape del acero en albañilería confinada y dónde no se permite?', 'La E.070 establece 45 veces el mayor diámetro de las barras traslapadas. No permite traslapar el refuerzo vertical en el primer entrepiso ni en las zonas confinadas de los extremos de soleras y columnas.'),
+              ],
+              'Morteros y Juntas de Albañilería': [
+                  ('q1529', '¿Qué resistencia mínima debe tener el grout de albañilería?', 'La E.070 exige una resistencia mínima a compresión de 13.72 MPa. Debe ser una mezcla fluida y controlada, no simplemente concreto con exceso de agua.'),
+              ],
+              'Muros Portantes de Albañilería Confinada': [
+                  ('q1531', '¿Qué altura máxima de muro se puede asentar en un día?', 'La E.070 limita el asentado a 1.30 m de altura por jornada, con reglas particulares para unidades totalmente sólidas y unidades apilables.'),
+                  ('q1535', '¿Cuál es la separación máxima entre columnas de confinamiento?', 'La distancia centro a centro no debe superar dos veces la distancia entre los confinamientos horizontales ni 5 m. Los planos pueden requerir columnas más próximas.'),
+                  ('q1536', '¿Qué espesor mínimo deben tener las columnas y soleras respecto al muro?', 'La E.070 exige que su espesor sea por lo menos igual al espesor efectivo del muro, medido sin tarrajeo ni revestimientos.'),
+              ],
+              'Columnas de Confinamiento': [
+                  ('q1530', '¿Qué resistencia mínima debe tener el concreto de columnas y soleras de confinamiento?', "La E.070 exige f'c no menor de 17.15 MPa y además el cumplimiento de la E.060. Los planos pueden especificar una resistencia mayor."),
+                  ('q1532', '¿Cómo se conecta un muro a ras con una columna de confinamiento?', 'Cuando no hay dentado ni refuerzo horizontal continuo, la E.070 exige chicotes de 6 mm que penetren al menos 40 cm en el muro y 12.5 cm en la columna, con doblez vertical de 90° y 10 cm.'),
+                  ('q1538', '¿Cuál es el peralte mínimo de una columna de confinamiento?', 'La E.070 establece 15 cm como mínimo perpendicular al muro. La otra dimensión debe respetar como mínimo el espesor efectivo del muro y el proyecto puede exigir más.'),
+              ],
+              'Vigas Soleras, Dinteles y Vanos': [
+                  ('q1537', '¿Cuál es el peralte mínimo de una viga solera?', 'La E.070 establece como mínimo el espesor de la losa de techo. Ese valor no reemplaza el diseño ni los requisitos de anclaje del acero.'),
+              ],
+          }
+
+          added_count = 0
+          for category_name, records in additions.items():
+              target = categories[category_name]['preguntas']
+              for item_id, question, answer in records:
+                  target.append({'id': item_id, 'pregunta': question, 'respuesta': answer})
+                  added_count += 1
+          if added_count != 20:
+              raise SystemExit(f'Se esperaban 20 preguntas nuevas y se agregaron {added_count}.')
+
+          for category in faq['categorias']:
+              for item in category.get('preguntas', []):
+                  item_id = item.get('id')
+                  if item_id in {'q307', 'q308', 'q309', 'q310', 'q311', 'q312'}:
+                      item['respuesta'] = item.get('respuesta', '').replace('75 mm', '70 mm')
+                  if item_id == 'q379':
+                      item['respuesta'] = ('La E.070 establece un mínimo de 10 mm. El máximo es 15 mm o dos veces la tolerancia dimensional en la altura de la unidad más 4 mm, lo que sea mayor.')
+                  if item_id == 'q1467':
+                      item['respuesta'] = ('La E.060 exige mantener el concreto convencional por encima de 10 °C y permanentemente húmedo por lo menos durante los primeros 7 días, salvo concreto de alta resistencia inicial o un método alternativo demostrado.')
+
+          norm['version'] = '1.3.0'
+          norm['fecha_revision'] = review_date
+          norm['parametros'].extend(new_parameters)
+
+          if len(norm['parametros']) != 70:
+              raise SystemExit(f'La base debía terminar con 70 parámetros y tiene {len(norm["parametros"])}.')
+          if len({item['id'] for item in norm['parametros']}) != 70:
+              raise SystemExit('Hay identificadores normativos duplicados después de ampliar la base.')
+
+          all_questions = [item for category in faq['categorias'] for item in category.get('preguntas', [])]
+          if len(all_questions) != 1539:
+              raise SystemExit(f'La base de preguntas debía terminar con 1539 registros y tiene {len(all_questions)}.')
+          if len({item['id'] for item in all_questions}) != 1539:
+              raise SystemExit('Hay identificadores de preguntas duplicados.')
+
+          norm_path.write_text(json.dumps(norm, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          faq_path.write_text(json.dumps(faq, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+          PY
+
+      - name: Update validation thresholds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/check_normativa.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('if len(base.parametros) < 41:', 'if len(base.parametros) < 70:')
+          text = text.replace('por lo menos 41 parámetros validados', 'por lo menos 70 parámetros validados')
+          text = text.replace('if validados < 40:', 'if validados < 69:')
+          text = text.replace('al menos 40 numerales validados', 'al menos 69 numerales validados')
+          text = text.replace("if base.version == \"1.0.0-piloto\":\n        raise SystemExit(\"La versión piloto inicial ya no debe permanecer activa.\")", "if base.version != \"1.3.0\":\n        raise SystemExit(f\"La versión normativa esperada es 1.3.0 y se recibió {base.version}.\")")
+          old = '''    detalle = api.detalle_parametro_normativo(\n        "a010-escalera-contrahuella-maxima"\n    )\n    if detalle["valor"]["valor"] != 0.18:\n        raise SystemExit("El detalle normativo de prueba no conserva el valor esperado.")\n'''
+          new = old + '''\n    recubrimiento = api.detalle_parametro_normativo(\n        "e060-recubrimiento-contra-suelo-minimo"\n    )\n    if recubrimiento["valor"]["valor"] != 70:\n        raise SystemExit("El recubrimiento contra suelo debe conservar 70 mm.")\n\n    preguntas = json.loads(\n        (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")\n    )\n    todas = [\n        item\n        for categoria in preguntas.get("categorias", [])\n        for item in categoria.get("preguntas", [])\n        if isinstance(item, dict)\n    ]\n    if len(todas) < 1539:\n        raise SystemExit("El lote 3 requiere por lo menos 1539 preguntas técnicas.")\n    respuesta_q307 = next(\n        item.get("respuesta", "") for item in todas if item.get("id") == "q307"\n    )\n    if "70 mm" not in respuesta_q307 or "75 mm" in respuesta_q307:\n        raise SystemExit("La FAQ q307 debe indicar el recubrimiento correcto de 70 mm.")\n'''
+          if old not in text:
+              raise SystemExit('No se encontró el bloque de prueba esperado en check_normativa.py.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Document batch 3
+        run: |
+          cat > docs/VALIDACION_NORMATIVA_LOTE_3_2026-07-27.md <<'EOF'
+          # Validación normativa - lote 3 - 27 de julio de 2026
+
+          ## Alcance
+
+          Se incorporaron 29 parámetros verificados de las normas E.060 Concreto Armado y E.070 Albañilería, priorizando consultas de utilidad directa para autoconstrucción responsable.
+
+          ## Resultado
+
+          - Base normativa: 70 parámetros.
+          - Registros con numeral confirmado: 69.
+          - Registros piloto: 1, correspondiente a la garganta de escalera.
+          - Base de preguntas: 1539 preguntas.
+          - Preguntas nuevas: 20.
+
+          ## Grupos incorporados
+
+          - resistencia mínima del concreto estructural;
+          - límites del tamaño máximo nominal del agregado grueso;
+          - curado del concreto convencional y de alta resistencia inicial;
+          - separaciones libres mínimas del acero;
+          - recubrimientos en elementos interiores y contra el suelo;
+          - preparación de juntas de construcción;
+          - resistencia del grout y del concreto de confinamiento;
+          - espesor de juntas de mortero y altura diaria del muro;
+          - conexiones dentadas y a ras;
+          - cierres de estribos y traslapes;
+          - secuencia de vaciado, recubrimientos y dimensiones mínimas de elementos de confinamiento.
+
+          ## Corrección editorial
+
+          Se corrigió la familia de preguntas sobre concreto vaciado contra tierra: la E.060 vigente establece 70 mm en el numeral 7.7.1(a), no 75 mm.
+
+          ## Fuentes
+
+          - E.060 Concreto Armado, DS N.° 010-2009-VIVIENDA.
+          - E.070 Albañilería, aprobada dentro del RNE por DS N.° 011-2006-VIVIENDA.
+          - Publicaciones oficiales del Ministerio de Vivienda, Construcción y Saneamiento.
+
+          Las automatizaciones temporales utilizadas para descargar y examinar las normas deben retirarse antes de la integración.
+          EOF
+
+      - name: Install backend dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Validate expanded base
+        run: |
+          python scripts/check_normativa.py
+          python scripts/prepare_frontend.py
+          python scripts/check_normative_frontend.py public
+
+      - name: Commit expanded base
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_NORMATIVA_LOTE_3_2026-07-27.md
+          git commit -m "Ampliar normativa de albañilería, concreto y acero"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

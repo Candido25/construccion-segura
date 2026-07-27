@@ -56,32 +56,40 @@ jobs:
               if not body.startswith("MANTENIMIENTO_PAYLOAD_") or ":" not in body:
                   continue
               label, data = body.split(":", 1)
-              order = int(label.removeprefix("MANTENIMIENTO_PAYLOAD_"))
-              chunks[order] = "".join(data.split())
+              chunks[int(label.removeprefix("MANTENIMIENTO_PAYLOAD_"))] = "".join(data.split())
+          lines = []
           valid = True
           for order, (wanted_length, wanted_digest) in expected.items():
               data = chunks.get(order, "")
               digest = hashlib.sha256(data.encode()).hexdigest()
               ok = len(data) == wanted_length and digest == wanted_digest
-              print(f"CHUNK_{order}: len={len(data)} sha256={digest} ok={ok}")
+              lines.append(f"CHUNK_{order}: len={len(data)} sha256={digest} ok={ok}")
               valid = valid and ok
           payload = "".join(chunks.get(order, "") for order in sorted(expected))
           total_digest = hashlib.sha256(payload.encode()).hexdigest()
-          print(f"TOTAL: len={len(payload)} sha256={total_digest}")
-          valid = valid and len(payload) == 17356 and total_digest == "3de58339eb2b8e1f976de466f2bb03a0c55b86cdf6120b82741f296f6c946ce0"
-          if not valid:
+          lines.append(f"TOTAL: len={len(payload)} sha256={total_digest} valid={valid}")
+          open("/tmp/payload_info.txt", "w", encoding="utf-8").write("\n".join(lines) + "\n")
+          if not valid or len(payload) != 17356 or total_digest != "3de58339eb2b8e1f976de466f2bb03a0c55b86cdf6120b82741f296f6c946ce0":
               raise SystemExit("El inventario no supera la verificación de integridad")
           open("/tmp/mantenimiento_payload.b64", "w", encoding="utf-8").write(payload)
           PY
-      - name: Aplicar inventario y validar
+      - name: Diagnosticar aplicación y validación
         run: |
-          python scripts/ampliar_mantenimiento_vida_util.py /tmp/mantenimiento_payload.b64
-          python scripts/check_normativa.py
-      - name: Publicar archivos definitivos
+          set +e
+          cp /tmp/payload_info.txt docs/RESULTADO_MANTENIMIENTO.txt
+          python scripts/ampliar_mantenimiento_vida_util.py /tmp/mantenimiento_payload.b64 >> docs/RESULTADO_MANTENIMIENTO.txt 2>&1
+          APLICACION=$?
+          echo "APLICACION=$APLICACION" >> docs/RESULTADO_MANTENIMIENTO.txt
+          if [ "$APLICACION" -eq 0 ]; then
+            python scripts/check_normativa.py >> docs/RESULTADO_MANTENIMIENTO.txt 2>&1
+            echo "VALIDACION=$?" >> docs/RESULTADO_MANTENIMIENTO.txt
+          fi
+          exit 0
+      - name: Publicar diagnóstico
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_MANTENIMIENTO_VIDA_UTIL_2026-07-27.md
-          git diff --cached --quiet || git commit -m "Ampliar mantenimiento preventivo y vida útil"
+          git add docs/RESULTADO_MANTENIMIENTO.txt
+          git diff --cached --quiet || git commit -m "Registrar diagnóstico de mantenimiento"
           git pull --rebase origin agent/ampliar-mantenimiento-vida-util-20260727
           git push origin HEAD:agent/ampliar-mantenimiento-vida-util-20260727

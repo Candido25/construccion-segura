@@ -1,0 +1,108 @@
+name: Temporary apply pathologies repairs v4
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-patologias-reparaciones-v4.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-validate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Execute reviewed script with exact validator indentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat scripts/.tmp_pathologies_records_00.b64 scripts/.tmp_pathologies_records_01.b64 scripts/.tmp_pathologies_records_02.b64 scripts/.tmp_pathologies_records_03.b64 > scripts/.tmp_pathologies_records.b64
+          test "$(wc -c < scripts/.tmp_pathologies_records.b64)" -eq 45204
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+
+          workflow = Path('.github/workflows/tmp-apply-patologias-reparaciones.yml').read_text(encoding='utf-8')
+          marker = "          python - <<'PY'\n"
+          start = workflow.index(marker) + len(marker)
+          end = workflow.index("\n          PY", start)
+          script = textwrap.dedent(workflow[start:end])
+          old_call = "model = replace_once(model, old_validator, new_validator, 'validador de trazabilidad')"
+          validator_lines = [
+              '    @model_validator(mode="after")',
+              '    def validar_trazabilidad(self) -> "ParametroNormativo":',
+              '        fuentes_oficiales = {"RNE", "normativa_nacional", "manual_oficial"}',
+              '        if self.fuente.tipo in fuentes_oficiales and not self.fuente.url_oficial:',
+              '            raise ValueError("Toda fuente oficial requiere una URL oficial.")',
+              '        if self.clasificacion in {',
+              '            "minimo_normativo",',
+              '            "maximo_normativo",',
+              '            "formula_normativa",',
+              '            "prohibicion",',
+              '        } and self.fuente.tipo not in {"RNE", "normativa_nacional"}:',
+              '            raise ValueError("Los límites y prohibiciones normativos requieren una norma oficial.")',
+              '        if self.clasificacion == "condicion_normativa" and self.fuente.tipo not in fuentes_oficiales:',
+              '            raise ValueError("Una condición normativa debe apuntar a una fuente oficial.")',
+              '        if self.estado_revision == "validado_con_numeral" and self.fuente.tipo != "RNE":',
+              '            raise ValueError("El estado validado_con_numeral se reserva a cláusulas del RNE.")',
+              '        if self.estado_revision == "validado_con_fuente_oficial":',
+              '            if self.fuente.tipo not in {"normativa_nacional", "manual_oficial"}:',
+              '                raise ValueError("El estado oficial requiere normativa nacional o manual oficial.")',
+              '            if not self.fuente.numeral or not self.fuente.numeral_confirmado:',
+              '                raise ValueError("Una fuente oficial validada requiere referencia confirmada.")',
+              '        if self.estado_revision == "criterio_tecnico_revisado":',
+              '            if self.fuente.tipo != "criterio_tecnico":',
+              '                raise ValueError("Un criterio técnico revisado requiere fuente de criterio técnico.")',
+              '            if self.clasificacion not in {"recomendacion", "depende_calculo"}:',
+              '                raise ValueError("Un criterio técnico solo puede ser recomendación o depender del cálculo.")',
+              '        if not self.faq_relacionadas:',
+              '            raise ValueError("Cada parámetro debe conservar trazabilidad con al menos una FAQ.")',
+              '        return self',
+          ]
+          replacement = """validator_start = model.index('    @model_validator(mode=\"after\")\\n    def validar_trazabilidad')
+          validator_end = model.index('\\n\\n\\nclass BaseNormativa', validator_start)
+          validator_block = __VALIDATOR_BLOCK__
+          model = model[:validator_start] + validator_block + model[validator_end:]""".replace('\n          ', '\n')
+          replacement = replacement.replace('__VALIDATOR_BLOCK__', repr('\n'.join(validator_lines)))
+          if old_call not in script:
+              raise SystemExit('No se encontró la llamada antigua del validador.')
+          script = script.replace(old_call, replacement, 1)
+          exec(compile(script, 'apply-pathologies-v4.py', 'exec'), {})
+          PY
+
+      - name: Install backend dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+
+      - name: Validate contract API and frontend
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py scripts/check_normativa.py
+          node --check frontend/app/normative-module.js
+          rm -rf public
+          python scripts/prepare_frontend.py
+          test -f public/index.html
+          test -f public/app/normative-module.js
+          test ! -e public/backend
+          test ! -e public/scripts
+
+      - name: Commit permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json backend/normativa.py frontend/app/normative-module.js docs/CONTRATO_NORMATIVA.md docs/VALIDACION_NORMATIVA_PATOLOGIAS_REPARACIONES_2026-07-27.md scripts/check_normativa.py
+          git diff --cached --quiet && exit 0
+          git commit -m 'Ampliar normativa de patologías y reparaciones'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 545:
-        raise SystemExit("La base normativa debe contener por lo menos 545 parámetros revisados.")
+    if len(base.parametros) < 697:
+        raise SystemExit("La base normativa debe contener por lo menos 697 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 511:
+    if validados < 663:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 511 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 663 numerales RNE validados; hay {validados}."
         )
-    if base.version != "1.7.0":
-        raise SystemExit(f"La versión normativa esperada es 1.7.0 y se recibió {base.version}.")
+    if base.version != "1.8.0":
+        raise SystemExit(f"La versión normativa esperada es 1.8.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -205,6 +205,19 @@ def main() -> None:
     if unidades["valor"]["valor"] != 28:
         raise SystemExit("Las unidades de concreto deben conservar 28 días mínimos.")
 
+
+    rampa = api.detalle_parametro_normativo("a120-rampa-accesible-ancho-minimo")
+    if rampa["valor"]["valor"] != 1.0:
+        raise SystemExit("La rampa accesible debe conservar 1.00 m de ancho mínimo.")
+
+    emergencia = api.detalle_parametro_normativo("a130-iluminacion-emergencia-autonomia")
+    if emergencia["valor"]["valor"] != 1.5:
+        raise SystemExit("La iluminación de emergencia debe conservar 1.5 horas.")
+
+    incendio = api.detalle_parametro_normativo("a130-vivienda-11-20-reserva-minima")
+    if incendio["valor"]["valor"] != 28:
+        raise SystemExit("La reserva contra incendios debe conservar 28 m³.")
+
     detalle = api.detalle_parametro_normativo(
         "a010-escalera-contrahuella-maxima"
     )
@@ -226,8 +239,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2008:
-        raise SystemExit("El bloque de patologías requiere por lo menos 2008 preguntas técnicas.")
+    if len(todas) < 2160:
+        raise SystemExit("El bloque de accesibilidad y seguridad requiere por lo menos 2160 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

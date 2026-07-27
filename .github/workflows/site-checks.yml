@@ -50,6 +50,9 @@ jobs:
       - name: Validate normative frontend integration
         run: python scripts/check_normative_frontend.py
 
+      - name: Validate Mi Casa Segura architecture
+        run: node scripts/check_app_architecture.mjs
+
       - name: Validate all public JavaScript syntax
         shell: bash
         run: |

@@ -12,7 +12,7 @@ BACKEND = ROOT / "backend"
 NORMATIVA = BACKEND / "normativa_tecnica.json"
 PREGUNTAS = BACKEND / "preguntas_tecnicas.json"
 CHECK = ROOT / "scripts" / "check_normativa.py"
-PAYLOAD = ROOT / "scripts" / "data_acabados" / "payload.txt"
+DATA_DIR = ROOT / "scripts" / "data_acabados"
 DOC = ROOT / "docs" / "VALIDACION_ACABADOS_CONSTRUCCION_2026-07-27.md"
 
 PAYLOAD_SHA256 = "4fe4a9cf94961b087d4337853817f31e1ff38a063a00453d139777495967b85e"
@@ -25,10 +25,16 @@ def reemplazar_unico(texto: str, anterior: str, nuevo: str) -> str:
 
 
 def cargar_registros() -> list[dict]:
-    texto = PAYLOAD.read_text(encoding="utf-8").strip()
+    rutas = [DATA_DIR / f"part{indice:02d}.txt" for indice in range(1, 5)]
+    rutas.extend(sorted(DATA_DIR.glob("seg*.txt")))
+    if len(rutas) != 24 or any(not ruta.is_file() for ruta in rutas):
+        raise SystemExit("El inventario fragmentado debe contener exactamente 24 archivos verificados.")
+
+    texto = "".join(ruta.read_text(encoding="utf-8").strip() for ruta in rutas)
     huella = hashlib.sha256(texto.encode("utf-8")).hexdigest()
     if huella != PAYLOAD_SHA256:
         raise SystemExit(f"La huella del inventario no coincide: {huella}")
+
     comprimido = base64.b64decode(texto, validate=True)
     registros = json.loads(gzip.decompress(comprimido).decode("utf-8"))
     if len(registros) != 250:

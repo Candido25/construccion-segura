@@ -1,0 +1,143 @@
+name: Temporary live normative 1.4 audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normativa-1-4.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-normative-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify Render normative deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-audit-1-4
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          BASE = 'https://construccion-segura.onrender.com'
+
+          def get_json(path: str, attempts: int = 18) -> dict:
+              last_error = None
+              for attempt in range(1, attempts + 1):
+                  try:
+                      request = urllib.request.Request(
+                          BASE + path,
+                          headers={
+                              'User-Agent': 'ConstruccionSegura-live-audit/1.4',
+                              'Accept': 'application/json',
+                          },
+                      )
+                      with urllib.request.urlopen(request, timeout=45) as response:
+                          status = response.status
+                          payload = json.loads(response.read().decode('utf-8'))
+                      if status == 200:
+                          return payload
+                      last_error = RuntimeError(f'{path}: HTTP {status}')
+                  except Exception as error:  # noqa: BLE001
+                      last_error = error
+                  if attempt < attempts:
+                      time.sleep(min(10, 2 + attempt))
+              raise RuntimeError(f'No se pudo consultar {path}: {last_error}')
+
+          root = get_json('/')
+          listing = get_json('/api/v1/normativa/parametros')
+          development = get_json('/api/v1/normativa/parametros/e060-desarrollo-traccion-longitud-minima')
+          separation = get_json('/api/v1/normativa/parametros/e030-separacion-edificios-formula-minima')
+          drift = get_json('/api/v1/normativa/parametros/e030-albanileria-distorsion-entrepiso-maxima')
+          diaphragm = get_json('/api/v1/normativa/parametros/e030-diafragma-aberturas-irregularidad')
+
+          parameters = listing.get('parametros', [])
+          version = listing.get('version_normativa') or listing.get('version')
+          total = listing.get('total_encontrados', len(parameters))
+          validated = sum(p.get('estado_revision') == 'validado_con_numeral' for p in parameters)
+          pilot = sum(p.get('estado_revision') == 'piloto_verificado' for p in parameters)
+
+          errors = []
+          if version != '1.4.0':
+              errors.append(f'versión normativa esperada 1.4.0; recibida {version!r}')
+          if total != 100 or len(parameters) != 100:
+              errors.append(f'se esperaban 100 parámetros; total={total}, lista={len(parameters)}')
+          if validated != 99:
+              errors.append(f'se esperaban 99 validados; recibidos {validated}')
+          if pilot != 1:
+              errors.append(f'se esperaba 1 piloto; recibidos {pilot}')
+
+          root_questions = root.get('total_preguntas')
+          root_parameters = root.get('total_parametros_normativos')
+          if root_questions != 1569:
+              errors.append(f'raíz: se esperaban 1569 preguntas; recibidas {root_questions}')
+          if root_parameters != 100:
+              errors.append(f'raíz: se esperaban 100 parámetros; recibidos {root_parameters}')
+
+          if development.get('valor', {}).get('valor') != 300:
+              errors.append('la longitud mínima de desarrollo a tracción no es 300 mm')
+          if development.get('fuente', {}).get('numeral') != '12.2.1-12.2.4':
+              errors.append('el numeral de desarrollo a tracción no coincide')
+
+          separation_formula = separation.get('valor', {}).get('formula', '')
+          if '0.02' not in separation_formula or '0.03' not in separation_formula:
+              errors.append('la fórmula de separación sísmica no conserva 0.02·Z·S·h y 0.03 m')
+          if separation.get('fuente', {}).get('norma') != 'E.030':
+              errors.append('la separación sísmica no apunta a E.030')
+
+          if drift.get('valor', {}).get('valor') != 0.005:
+              errors.append('la distorsión máxima de albañilería no es 0.005')
+          if diaphragm.get('valor', {}).get('valor') != 50:
+              errors.append('el umbral de abertura del diafragma no es 50%')
+
+          report = {
+              'root': root,
+              'version_normativa': version,
+              'total_parametros': total,
+              'validados_con_numeral': validated,
+              'piloto_verificado': pilot,
+              'total_preguntas': root_questions,
+              'desarrollo_traccion': development,
+              'separacion_sismica': separation,
+              'deriva_albanileria': drift,
+              'abertura_diafragma': diaphragm,
+              'errores': errors,
+          }
+          Path('live-audit-1-4/report.json').write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          Path('live-audit-1-4/report.txt').write_text(
+              '\n'.join([
+                  f"version_normativa={version}",
+                  f"total_parametros={total}",
+                  f"validados_con_numeral={validated}",
+                  f"piloto_verificado={pilot}",
+                  f"total_preguntas={root_questions}",
+                  f"desarrollo_traccion_mm={development.get('valor', {}).get('valor')}",
+                  f"separacion_formula={separation_formula}",
+                  f"deriva_albanileria={drift.get('valor', {}).get('valor')}",
+                  f"abertura_diafragma_porcentaje={diaphragm.get('valor', {}).get('valor')}",
+                  f"errores={len(errors)}",
+              ]) + '\n',
+              encoding='utf-8',
+          )
+          if errors:
+              raise SystemExit('\n'.join(errors))
+          PY
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-normativa-1-4-audit
+          path: live-audit-1-4
+          retention-days: 1

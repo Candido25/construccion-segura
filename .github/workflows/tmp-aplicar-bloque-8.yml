@@ -28,10 +28,7 @@ jobs:
           mkdir -p /mnt/data/bloques89/current /mnt/data/bloques89/block8
           cp backend/normativa_tecnica.json /mnt/data/bloques89/current/
           cp backend/preguntas_tecnicas.json /mnt/data/bloques89/current/
-          cp backend/normativa.py /mnt/data/bloques89/current/
           cp scripts/check_normativa.py /mnt/data/bloques89/current/
-          cp frontend/app/normative-module.js /mnt/data/bloques89/current/
-          cp docs/CONTRATO_NORMATIVA.md /mnt/data/bloques89/current/
           cat .tmp/bloque8.part00 .tmp/bloque8.part01 .tmp/bloque8.part02 .tmp/bloque8.part03 .tmp/bloque8.part04 .tmp/bloque8.part05 \
             | base64 -d | gzip -d > /tmp/build_block8.py
           python /tmp/build_block8.py

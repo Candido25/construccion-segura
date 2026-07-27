@@ -24,6 +24,14 @@ def normalizar(texto: str) -> str:
     return "".join(c for c in base if unicodedata.category(c) != "Mn")
 
 
+def descripcion(item: dict) -> str:
+    fuente = item["fuente"]
+    return (
+        f"- `{item['id']}` | {item['categoria']} | {item['elemento']} | "
+        f"{item['parametro']} | {fuente['norma']} {fuente.get('numeral') or ''}"
+    )
+
+
 def main() -> None:
     datos = json.loads(BASE.read_text(encoding="utf-8"))
     parametros = datos["parametros"]
@@ -42,14 +50,17 @@ def main() -> None:
                 coincidencias.append(item)
                 ids.add(item["id"])
         lineas.extend([f"## {termino} — {len(coincidencias)}", ""])
-        for item in coincidencias:
-            lineas.append(
-                f"- `{item['id']}` | {item['categoria']} | {item['elemento']} | {item['parametro']} | {item['fuente']['norma']} {item['fuente'].get('numeral') or ''}"
-            )
+        lineas.extend(descripcion(item) for item in coincidencias)
         lineas.append("")
-    lineas.extend(["## Total de parámetros únicos relacionados", "", f"`{len(ids)}`", ""])
+
+    g050 = [item for item in parametros if item["fuente"]["norma"] == "G.050"]
+    g050.sort(key=lambda item: (item["fuente"].get("numeral") or "", item["id"]))
+    lineas.extend(["## Inventario completo de parámetros G.050", "", f"Total: `{len(g050)}`", ""])
+    lineas.extend(descripcion(item) for item in g050)
+    lineas.extend(["", "## Total de parámetros únicos relacionados", "", f"`{len(ids)}`", ""])
+
     SALIDA.write_text("\n".join(lineas), encoding="utf-8")
-    print(f"Diagnóstico generado con {len(ids)} parámetros únicos relacionados.")
+    print(f"Diagnóstico generado con {len(ids)} parámetros relacionados y {len(g050)} registros G.050.")
 
 
 if __name__ == "__main__":

@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 982:
-        raise SystemExit("La base normativa debe contener por lo menos 982 parámetros revisados.")
+    if len(base.parametros) < 1126:
+        raise SystemExit("La base normativa debe contener por lo menos 1126 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 948:
+    if validados < 1092:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 948 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 1092 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.1.0":
-        raise SystemExit(f"La versión normativa esperada es 2.1.0 y se recibió {base.version}.")
+    if base.version != "2.2.0":
+        raise SystemExit(f"La versión normativa esperada es 2.2.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -267,8 +267,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2445:
-        raise SystemExit("La base ampliada de azoteas, drenaje pluvial y estacionamientos requiere por lo menos 2445 preguntas técnicas.")
+    if len(todas) < 2589:
+        raise SystemExit("La base ampliada de obras preliminares y seguridad requiere por lo menos 2589 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

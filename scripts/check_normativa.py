@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 70:
-        raise SystemExit("La base normativa debe contener por lo menos 70 parámetros validados.")
+    if len(base.parametros) < 100:
+        raise SystemExit("La base normativa debe contener por lo menos 100 parámetros validados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 69:
+    if validados < 99:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 69 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 99 numerales validados; hay {validados}."
         )
-    if base.version != "1.3.0":
-        raise SystemExit(f"La versión normativa esperada es 1.3.0 y se recibió {base.version}.")
+    if base.version != "1.4.0":
+        raise SystemExit(f"La versión normativa esperada es 1.4.0 y se recibió {base.version}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -96,6 +96,24 @@ def main() -> None:
     if listado["total_encontrados"] != len(base.parametros):
         raise SystemExit("El endpoint no devuelve la totalidad del piloto visible.")
 
+    desarrollo = api.detalle_parametro_normativo(
+        "e060-desarrollo-traccion-longitud-minima"
+    )
+    if desarrollo["valor"]["valor"] != 300:
+        raise SystemExit("La longitud mínima de desarrollo a tracción debe ser 300 mm.")
+
+    separacion = api.detalle_parametro_normativo(
+        "e030-separacion-edificios-formula-minima"
+    )
+    if "0.02" not in separacion["valor"]["formula"] or "0.03" not in separacion["valor"]["formula"]:
+        raise SystemExit("La fórmula de separación sísmica no conserva la E.030 2026.")
+
+    deriva = api.detalle_parametro_normativo(
+        "e030-albanileria-distorsion-entrepiso-maxima"
+    )
+    if deriva["valor"]["valor"] != 0.005:
+        raise SystemExit("La distorsión máxima para albañilería debe ser 0.005.")
+
     detalle = api.detalle_parametro_normativo(
         "a010-escalera-contrahuella-maxima"
     )
@@ -117,8 +135,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 1539:
-        raise SystemExit("El lote 3 requiere por lo menos 1539 preguntas técnicas.")
+    if len(todas) < 1569:
+        raise SystemExit("El lote 4 requiere por lo menos 1569 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

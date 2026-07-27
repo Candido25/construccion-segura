@@ -1,2 +1,0 @@
-Ampliación aplicada: 250 parámetros, 250 preguntas, versión 2.3.0.
-ESTADO=0

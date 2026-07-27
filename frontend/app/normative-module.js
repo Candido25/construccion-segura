@@ -238,7 +238,7 @@
     results.innerHTML = items.map(renderCard).join("");
     results.hidden = items.length === 0;
     emptyState.hidden = items.length !== 0;
-    retryButton?.toggleAttribute("hidden", items.length !== 0);
+    retryButton?.setAttribute("hidden", "");
 
     if (summary) {
       summary.hidden = false;

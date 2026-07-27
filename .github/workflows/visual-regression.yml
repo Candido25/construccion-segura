@@ -74,6 +74,34 @@ jobs:
       - name: Install screenshot comparator
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0
 
+      - name: Validate normative module interactions
+        working-directory: current
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8002 --bind 127.0.0.1 \
+            --directory public \
+            > normative-ui-server.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error http://127.0.0.1:8002/app/ > /dev/null; then
+              ready=1
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "No se pudo iniciar la aplicación para la prueba normativa." >&2
+            exit 1
+          fi
+
+          APP_BASE_URL=http://127.0.0.1:8002 \
+          NORMATIVE_UI_SCREENSHOT=normative-functional.png \
+            node scripts/normative_ui_check.mjs
+
       - name: Render and compare current site with stable baseline
         working-directory: current
         shell: bash
@@ -109,10 +137,6 @@ jobs:
             fi
           done
 
-          APP_BASE_URL=http://127.0.0.1:8000 \
-            node scripts/normative_ui_check.mjs
-          normative_status=$?
-
           CURRENT_BASE_URL=http://127.0.0.1:8000 \
           BASELINE_BASE_URL=http://127.0.0.1:8001 \
           VISUAL_OUTPUT_DIR=visual-artifacts \
@@ -122,9 +146,7 @@ jobs:
           python scripts/compare_screenshots.py
           comparison_status=$?
 
-          if [ "$normative_status" -ne 0 ] \
-            || [ "$browser_status" -ne 0 ] \
-            || [ "$comparison_status" -ne 0 ]; then
+          if [ "$browser_status" -ne 0 ] || [ "$comparison_status" -ne 0 ]; then
             exit 1
           fi
 
@@ -135,6 +157,8 @@ jobs:
           name: visual-regression-evidence
           path: |
             current/visual-artifacts/
+            current/normative-functional.png
+            current/normative-ui-server.log
             current/visual-current-server.log
             current/visual-baseline-server.log
           if-no-files-found: warn

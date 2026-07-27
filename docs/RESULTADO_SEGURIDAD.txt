@@ -1,4 +1,4 @@
 Aplicados 174 parámetros y preguntas; versión 2.9.0
 APLICACION=0
-El esmeril debe conservar la exigencia de guarda.
+El izaje debe prohibir personas bajo la carga.
 VALIDACION=1

@@ -57,19 +57,27 @@ jobs:
         shell: bash
         run: |
           rm -rf baseline-public
-          mkdir -p baseline-public
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='backend/' \
-            --exclude='docs/' \
-            --exclude='scripts/' \
-            --exclude='review_photos/' \
-            --exclude='_incoming/' \
-            --exclude='debug.log' \
-            --exclude='requirements.txt' \
-            --exclude='render.yaml' \
-            baseline/ baseline-public/
+          if [ -f baseline/scripts/prepare_frontend.py ]; then
+            (
+              cd baseline
+              python scripts/prepare_frontend.py
+            )
+            mv baseline/public baseline-public
+          else
+            mkdir -p baseline-public
+            rsync -a --delete \
+              --exclude='.git/' \
+              --exclude='.github/' \
+              --exclude='backend/' \
+              --exclude='docs/' \
+              --exclude='scripts/' \
+              --exclude='review_photos/' \
+              --exclude='_incoming/' \
+              --exclude='debug.log' \
+              --exclude='requirements.txt' \
+              --exclude='render.yaml' \
+              baseline/ baseline-public/
+          fi
 
       - name: Install screenshot comparator
         run: python -m pip install --disable-pip-version-check Pillow==11.3.0

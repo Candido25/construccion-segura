@@ -1,11 +1,10 @@
-name: Diagnosticar aplicación de obras preliminares
+name: Verificar fragmentos de obras preliminares
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - scripts/aplicar_ampliacion_obras_preliminares.py
       - scripts/data_obras_preliminares/**
       - .github/workflows/diagnosticar-obras-preliminares.yml
 
@@ -13,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  diagnosticar:
+  verificar:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar rama
@@ -21,22 +20,15 @@ jobs:
         with:
           ref: agent/ampliar-obras-preliminares-seguridad-20260727
 
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Ejecutar y capturar resultado
+      - name: Calcular huellas
         run: |
-          set +e
-          python scripts/aplicar_ampliacion_obras_preliminares.py > docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt 2>&1
-          echo "ESTADO=$?" >> docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt
-          exit 0
+          wc -c scripts/data_obras_preliminares/part*.txt > docs/HUELLAS_OBRAS_PRELIMINARES.txt
+          sha256sum scripts/data_obras_preliminares/part*.txt >> docs/HUELLAS_OBRAS_PRELIMINARES.txt
 
-      - name: Confirmar diagnóstico
+      - name: Confirmar huellas
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/RESULTADO_APLICACION_OBRAS_PRELIMINARES.txt
-          git commit -m "Registrar resultado de obras preliminares"
+          git add docs/HUELLAS_OBRAS_PRELIMINARES.txt
+          git commit -m "Registrar huellas de obras preliminares"
           git push origin HEAD:agent/ampliar-obras-preliminares-seguridad-20260727

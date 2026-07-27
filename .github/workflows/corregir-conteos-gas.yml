@@ -1,0 +1,29 @@
+name: Corregir conteos de gas
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/corregir_conteos_gas.py
+      - .github/workflows/corregir-conteos-gas.yml
+
+permissions:
+  contents: write
+
+jobs:
+  corregir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ampliar-instalaciones-gas-20260727
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/corregir_conteos_gas.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/aplicar_ampliacion_gas.py
+          git diff --cached --quiet || git commit -m "Corregir conteos dinámicos de gas"
+          git push origin HEAD:agent/ampliar-instalaciones-gas-20260727

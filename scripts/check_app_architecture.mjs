@@ -36,7 +36,8 @@ const requiredScripts = [
   "risk-evaluator.js?v=1",
   "normative-module.js?v=1",
   "app.js?v=1",
-  "modules-rne.js?v=1"
+  "modules-rne.js?v=1",
+  "stage-expander.js?v=1"
 ];
 
 for (const resource of [...requiredStyles, ...requiredScripts]) {
@@ -111,6 +112,7 @@ const riskEvaluator = read("frontend/app/risk-evaluator.js");
 const problemEvaluator = read("frontend/app/problem-evaluator.js");
 const homeNavigation = read("frontend/app/home-navigation.js");
 const workProfile = read("frontend/app/work-profile.js");
+const stageExpander = read("frontend/app/stage-expander.js");
 
 if (!faqSearch.includes("mi-casa-segura:faq-shown")) {
   fail("El buscador no emite el evento de respuesta seleccionada.");
@@ -140,6 +142,34 @@ if (/classifyRisk|redSignals|yellowSignals/.test(problemEvaluator)) {
   fail("El evaluador guiado no debe decidir el riesgo mediante coincidencias de palabras.");
 }
 
+const requiredStages = [
+  "antes-construir",
+  "terreno-movimiento",
+  "cimentaciones",
+  "columnas-muros",
+  "vigas-techos",
+  "sanitarias",
+  "electricas",
+  "impermeabilizacion",
+  "acabados",
+  "ampliaciones",
+  "seguridad",
+  "mantenimiento"
+];
+
+for (const stage of requiredStages) {
+  if (!stageExpander.includes(`[\"${stage}\"`) && !stageExpander.includes(`\"${stage}\":`)) {
+    fail(`La guía no incluye la etapa ${stage}.`);
+  }
+}
+
+if (!stageExpander.includes("Vigas, escaleras y techos")) {
+  fail("La guía no ha incorporado las escaleras a la etapa estructural correspondiente.");
+}
+if (!stageExpander.includes("stageGrid.innerHTML")) {
+  fail("El expansor no reconstruye la navegación de las doce etapas.");
+}
+
 for (const resource of [
   "/app/faq-data-v2.js?v=1",
   "/app/faq-search-v3.js?v=1",
@@ -147,6 +177,7 @@ for (const resource of [
   "/app/home-navigation.js?v=1",
   "/app/work-profile.js?v=1",
   "/app/risk-evaluator.js?v=1",
+  "/app/stage-expander.js?v=1",
   "/app/faq-answer-v2.css?v=1",
   "/app/problem-evaluator.css?v=1"
 ]) {
@@ -155,8 +186,8 @@ for (const resource of [
   }
 }
 
-if (!serviceWorker.includes('mi-casa-segura-pwa-v21')) {
-  fail("La caché pública no corresponde a la versión v21 con evaluador de problemas.");
+if (!serviceWorker.includes('mi-casa-segura-pwa-v22')) {
+  fail("La caché pública no corresponde a la versión v22 con doce etapas.");
 }
 
 for (const file of [
@@ -166,10 +197,11 @@ for (const file of [
   "home-navigation.js",
   "work-profile.js",
   "risk-evaluator.js",
+  "stage-expander.js",
   "faq-answer-v2.css",
   "problem-evaluator.css"
 ]) {
   if (!fs.existsSync(path.join(appDir, file))) fail(`No existe frontend/app/${file}.`);
 }
 
-console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas y evaluador guiado activo.`);
+console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas, evaluador guiado y ${requiredStages.length} etapas.`);

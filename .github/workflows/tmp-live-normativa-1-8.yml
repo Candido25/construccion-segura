@@ -1,0 +1,74 @@
+name: Temporary live normative 1.8 audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normativa-1-8.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Wait for and verify Render 1.8.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p live-audit
+          python - <<'PY'
+          import json, time, urllib.request
+          from pathlib import Path
+          BASE='https://construccion-segura.onrender.com'
+          def get(path):
+              req=urllib.request.Request(BASE+path,headers={'User-Agent':'ConstruccionSegura-audit/1.8','Accept':'application/json','Cache-Control':'no-cache'})
+              with urllib.request.urlopen(req,timeout=45) as r:
+                  return json.loads(r.read().decode('utf-8'))
+          last=None
+          for attempt in range(1,25):
+              try:
+                  root=get('/')
+                  listing=get('/api/v1/normativa/parametros?limite=1')
+                  last={'attempt':attempt,'version':listing.get('version'),'parameters':listing.get('total_encontrados'),'questions':root.get('total_preguntas')}
+                  if last['version']=='1.8.0' and last['parameters']==697 and last['questions']==2160:
+                      break
+              except Exception as exc:
+                  last={'attempt':attempt,'error':str(exc)}
+              time.sleep(min(15,3+attempt))
+          else:
+              Path('live-audit/report.json').write_text(json.dumps({'last':last},ensure_ascii=False,indent=2),encoding='utf-8')
+              raise SystemExit(f'Render no publicó 1.8.0: {last}')
+          ramp=get('/api/v1/normativa/parametros/a120-rampa-accesible-ancho-minimo')
+          emergency=get('/api/v1/normativa/parametros/a130-iluminacion-emergencia-autonomia')
+          reserve=get('/api/v1/normativa/parametros/a130-vivienda-11-20-reserva-minima')
+          glass=get('/api/v1/normativa/parametros/a120-puerta-translucida-indicadores-separacion-maxima')
+          checks={
+            'version':last['version']=='1.8.0',
+            'parameters':last['parameters']==697,
+            'questions':last['questions']==2160,
+            'ramp_width':ramp.get('valor',{}).get('valor')==1.0,
+            'ramp_source':ramp.get('fuente',{}).get('norma')=='A.120',
+            'emergency_hours':emergency.get('valor',{}).get('valor')==1.5,
+            'reserve_m3':reserve.get('valor',{}).get('valor')==28,
+            'glass_spacing':glass.get('valor',{}).get('valor')==0.20,
+          }
+          report={'deployment':last,'ramp':ramp,'emergency':emergency,'reserve':reserve,'glass':glass,'checks':checks}
+          Path('live-audit/report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          Path('live-audit/report.txt').write_text('\n'.join([
+            f"version_normativa={last['version']}",f"total_parametros={last['parameters']}",f"total_preguntas={last['questions']}",
+            f"rampa_ancho_m={ramp.get('valor',{}).get('valor')}",f"emergencia_horas={emergency.get('valor',{}).get('valor')}",
+            f"reserva_incendio_m3={reserve.get('valor',{}).get('valor')}",f"separacion_marcas_vidrio_m={glass.get('valor',{}).get('valor')}",
+            f"comprobaciones_correctas={sum(checks.values())}/{len(checks)}",
+          ])+'\n',encoding='utf-8')
+          failed=[k for k,v in checks.items() if not v]
+          if failed: raise SystemExit('Fallaron: '+', '.join(failed))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-normativa-1-8-audit
+          path: live-audit
+          retention-days: 1

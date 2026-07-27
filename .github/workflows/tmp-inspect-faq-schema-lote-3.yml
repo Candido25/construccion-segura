@@ -1,0 +1,55 @@
+name: Temporary FAQ schema inspection for batch 3
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-inspect-faq-schema-lote-3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-faq-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Inspect categories, identifiers and sample records
+        run: |
+          mkdir -p audit-faq
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          data = json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          samples = {'q295', 'q307', 'q379', 'q481', 'q523', 'q1457', 'q1467'}
+          found = {}
+          categories = []
+          max_id = 0
+          for category in data.get('categorias', []):
+              name = category.get('nombre') or category.get('categoria') or ''
+              categories.append({'nombre': name, 'claves': sorted(category.keys()), 'cantidad': len(category.get('preguntas', []))})
+              for item in category.get('preguntas', []):
+                  item_id = str(item.get('id', ''))
+                  match = re.fullmatch(r'q(\d+)', item_id)
+                  if match:
+                      max_id = max(max_id, int(match.group(1)))
+                  if item_id in samples:
+                      found[item_id] = {'categoria': name, 'registro': item}
+
+          output = {'claves_raiz': sorted(data.keys()), 'max_id': max_id, 'categorias': categories, 'muestras': found}
+          Path('audit-faq/schema.json').write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding='utf-8')
+          print(json.dumps(output, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload schema evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: faq-schema-batch-3
+          path: audit-faq/
+          retention-days: 2

@@ -29,6 +29,23 @@ jobs:
             | base64 --decode | gzip --decompress > /tmp/apply_installations_habitability.py
           python -m py_compile /tmp/apply_installations_habitability.py
           python /tmp/apply_installations_habitability.py | tee /tmp/installations-result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('backend/normativa_tecnica.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          target = next(
+              item for item in data['parametros']
+              if item['id'] == 'em020-pau-altura-instalacion'
+          )
+          if target['clasificacion'] != 'rango_normativo':
+              raise SystemExit('No se encontró la clasificación temporal esperada del PAU.')
+          target['clasificacion'] = 'condicion_normativa'
+          path.write_text(
+              json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n',
+              encoding='utf-8',
+          )
+          PY
 
       - name: Install backend dependencies
         run: python -m pip install --disable-pip-version-check -q -r requirements.txt

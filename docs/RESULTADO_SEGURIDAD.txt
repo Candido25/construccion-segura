@@ -1,0 +1,4 @@
+Aplicados 174 parámetros y preguntas; versión 2.9.0
+APLICACION=0
+El esmeril debe conservar la exigencia de guarda.
+VALIDACION=1

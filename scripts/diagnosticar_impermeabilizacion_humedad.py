@@ -11,10 +11,11 @@ OUT = ROOT / "docs" / "DIAGNOSTICO_IMPERMEABILIZACION_HUMEDAD_2026-07-27.md"
 TERMINOS = [
     "impermeabil", "humedad", "filtracion", "filtración", "salitre", "eflorescencia",
     "moho", "condensacion", "condensación", "azotea", "techo", "cubierta", "lluvia",
-    "pluvial", "sumidero", "canaleta", "montante", "cisterna", "tanque", "jardinera",
-    "ducha", "baño", "bano", "terraza", "pendiente", "drenaje", "junta", "sello",
-    "capilaridad", "subterranea", "subterránea", "napa", "sotano", "sótano", "zócalo",
-    "zocalo", "fisura", "grieta", "agua estancada", "estanqueidad"
+    "pluvial", "sumidero", "canaleta", "montante", "cisterna", "tanque", "deposito",
+    "depósito", "almacenamiento de agua", "reservorio", "jardinera", "ducha", "baño",
+    "bano", "terraza", "pendiente", "drenaje", "junta", "sello", "capilaridad",
+    "subterranea", "subterránea", "napa", "sotano", "sótano", "zócalo", "zocalo",
+    "fisura", "grieta", "agua estancada", "estanqueidad", "lavable", "hermeticidad"
 ]
 
 

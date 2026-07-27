@@ -18,6 +18,9 @@
 
   if (!input || !suggestions || !emptyState || !answer) return;
 
+  const riskService = window.MI_CASA_SEGURA_RISK;
+  const professionalHelp = window.MI_CASA_SEGURA_PROFESSIONAL_HELP;
+
   const normalize = (value = "") => String(value)
     .toLowerCase()
     .normalize("NFD")
@@ -32,6 +35,12 @@
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+
+  const asArray = (value) => {
+    if (Array.isArray(value)) return value.filter(Boolean);
+    if (typeof value === "string" && value.trim()) return [value.trim()];
+    return [];
+  };
 
   const searchableText = new Map(
     localFaqs.map((faq) => [
@@ -68,15 +77,25 @@
     return score;
   };
 
+  const enrichLocalFaq = (faq) => {
+    const registry = window.MI_CASA_SEGURA_FAQ_RISKS || {};
+    const risk = registry[faq.id] || {};
+    return {
+      ...faq,
+      risk: faq.risk || risk.risk || null,
+      riskReviewed: faq.riskReviewed ?? risk.reviewed ?? false,
+      riskReviewedAt: faq.riskReviewedAt || risk.reviewedAt || "",
+      riskRationale: faq.riskRationale || risk.rationale || "",
+      source: "local"
+    };
+  };
+
   const getLocalResults = (rawQuery) => {
     const query = normalize(rawQuery);
     if (query.length < 2) return [];
 
     return localFaqs
-      .map((faq) => ({
-        faq: { ...faq, source: "local" },
-        score: scoreLocalFaq(faq, query)
-      }))
+      .map((faq) => ({ faq: enrichLocalFaq(faq), score: scoreLocalFaq(faq, query) }))
       .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score
         || a.faq.question.localeCompare(b.faq.question, "es"))
@@ -91,9 +110,19 @@
       .filter((item) => item && item.pregunta && item.respuesta)
       .map((item, index) => ({
         id: `api:${item.id || index}`,
+        originalId: item.id || "",
         category: item.categoria || "Base técnica",
         question: item.pregunta,
         quick: item.respuesta,
+        review: item.que_revisar || item.revisar || [],
+        avoid: item.no_permitir || item.evitar || "",
+        standard: item.fuente?.referencia || item.fuente || item.norma || "",
+        professional: item.cuando_consultar || "",
+        conditions: item.condiciones || [],
+        risk: item.riesgo || item.nivel_riesgo || null,
+        riskReviewed: Boolean(item.riesgo_revisado || item.nivel_riesgo_revisado),
+        riskReviewedAt: item.fecha_revision_riesgo || "",
+        updatedAt: item.fecha_revision || item.actualizado || "",
         source: "api"
       }));
   };
@@ -163,19 +192,32 @@
     }
 
     emptyState.hidden = true;
-    suggestions.innerHTML = results.map((faq, index) => `
-      <button id="faq-option-${index}" type="button" role="option" aria-selected="false" data-result-index="${index}">
-        <span>${escapeHtml(faq.question)}</span>
-        <small>${escapeHtml(faq.category)}${faq.source === "api" ? " · Base técnica ampliada" : " · Pregunta destacada"}</small>
-      </button>
-    `).join("");
+    suggestions.innerHTML = results.map((faq, index) => {
+      const riskMeta = riskService?.metadataFor(faq);
+      const riskLabel = riskMeta?.key === "pending" ? "Riesgo en revisión" : riskMeta?.label;
+      return `
+        <button id="faq-option-${index}" type="button" role="option" aria-selected="false" data-result-index="${index}">
+          <span>${escapeHtml(faq.question)}</span>
+          <small>${escapeHtml(faq.category)} · ${escapeHtml(riskLabel || "Respuesta revisada")}</small>
+        </button>
+      `;
+    }).join("");
     suggestions.hidden = false;
     input.setAttribute("aria-expanded", "true");
   };
 
-  const listItems = (items = []) => items
+  const listItems = (items = []) => asArray(items)
     .map((item) => `<li>${escapeHtml(item)}</li>`)
     .join("");
+
+  const renderSection = ({ title, content, className = "" }) => {
+    const values = asArray(content);
+    if (!values.length) return "";
+    const body = values.length > 1
+      ? `<ul>${listItems(values)}</ul>`
+      : `<p>${escapeHtml(values[0])}</p>`;
+    return `<section class="${escapeHtml(className)}"><h4>${escapeHtml(title)}</h4>${body}</section>`;
+  };
 
   const showAnswer = (faq) => {
     if (!faq) return;
@@ -184,48 +226,56 @@
     hideSuggestions();
     emptyState.hidden = true;
 
-    if (faq.source === "api") {
-      answer.innerHTML = `
-        <p class="faq-answer-category">${escapeHtml(faq.category)}</p>
-        <h3>${escapeHtml(faq.question)}</h3>
-        <div class="faq-answer-quick">
-          <strong>Respuesta técnica</strong>
-          <p>${escapeHtml(faq.quick)}</p>
-        </div>
-        <p class="faq-disclaimer"><strong>Importante:</strong> esta orientación es educativa y general. No reemplaza el estudio, los planos, el cálculo ni la revisión profesional de una obra concreta.</p>
-      `;
-    } else {
-      answer.innerHTML = `
-        <p class="faq-answer-category">${escapeHtml(faq.category)}</p>
-        <h3>${escapeHtml(faq.question)}</h3>
-        <div class="faq-answer-quick">
-          <strong>Respuesta rápida</strong>
-          <p>${escapeHtml(faq.quick)}</p>
-        </div>
-        <div class="faq-answer-grid">
-          <section>
-            <h4>Qué debes revisar</h4>
-            <ul>${listItems(faq.review)}</ul>
-          </section>
-          <section class="faq-answer-warning">
-            <h4>No permitas esto</h4>
-            <p>${escapeHtml(faq.avoid)}</p>
-          </section>
-          <section>
-            <h4>Referencia normativa</h4>
-            <p>${escapeHtml(faq.standard)}</p>
-          </section>
-          <section class="faq-answer-professional">
-            <h4>Cuándo consultar</h4>
-            <p>${escapeHtml(faq.professional)}</p>
-          </section>
-        </div>
-        <p class="faq-disclaimer"><strong>Importante:</strong> esta orientación es educativa y no reemplaza el estudio, los planos, el cálculo ni la revisión profesional de tu caso.</p>
-      `;
-    }
+    const riskMeta = riskService?.metadataFor(faq) || {
+      key: "pending",
+      label: "Clasificación en revisión",
+      reviewed: false
+    };
+    const riskPanel = riskService?.renderPanel(faq, escapeHtml) || "";
+    const review = asArray(faq.review);
+    const conditions = asArray(faq.conditions);
+    const sourceLabel = faq.source === "api"
+      ? "Base técnica ampliada"
+      : "Pregunta destacada revisada";
+    const reviewDate = faq.riskReviewedAt || faq.updatedAt || "";
+    const cta = professionalHelp?.ctaFor(faq, riskMeta);
+
+    const fallbackReview = faq.source === "api" && !review.length
+      ? ["Comprueba que la respuesta corresponda al elemento, etapa y condiciones reales de tu obra."]
+      : [];
+    const fallbackProfessional = faq.source === "api" && !faq.professional
+      ? "Consulta antes de aplicar la respuesta cuando existan daños, diferencias con los planos o condiciones que no aparecen descritas."
+      : "";
+
+    answer.dataset.risk = riskMeta.key;
+    answer.innerHTML = `
+      <p class="faq-answer-category">${escapeHtml(faq.category)}</p>
+      <h3>${escapeHtml(faq.question)}</h3>
+      ${riskPanel}
+      <div class="faq-answer-quick">
+        <strong>Respuesta rápida</strong>
+        <p>${escapeHtml(faq.quick)}</p>
+      </div>
+      <div class="faq-answer-grid">
+        ${renderSection({ title: "Qué debes revisar", content: review.length ? review : fallbackReview })}
+        ${renderSection({ title: "No permitas esto", content: faq.avoid, className: "faq-answer-warning" })}
+        ${renderSection({ title: "Referencia o criterio", content: faq.standard })}
+        ${renderSection({ title: "Condiciones y excepciones", content: conditions })}
+        ${renderSection({ title: "Cuándo consultar", content: faq.professional || fallbackProfessional, className: "faq-answer-professional" })}
+      </div>
+      <div class="faq-answer-metadata">
+        <span><strong>Origen:</strong> ${escapeHtml(sourceLabel)}</span>
+        ${reviewDate ? `<span><strong>Revisión:</strong> ${escapeHtml(reviewDate)}</span>` : ""}
+      </div>
+      ${cta ? `<a class="faq-professional-cta" href="${escapeHtml(cta.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(cta.label)}</a>` : ""}
+      <p class="faq-disclaimer"><strong>Importante:</strong> esta orientación es educativa y general. No reemplaza el estudio, los planos, el cálculo ni la evaluación profesional de una obra concreta.</p>
+    `;
 
     answer.hidden = false;
     answer.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.dispatchEvent(new CustomEvent("mi-casa-segura:answer-shown", {
+      detail: { id: faq.id, risk: riskMeta.key, source: faq.source }
+    }));
   };
 
   const fetchRemoteResults = async (rawQuery, signal) => {
@@ -353,7 +403,8 @@
   popular?.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-faq-id]");
     if (!button) return;
-    showAnswer(localFaqs.find((faq) => faq.id === button.dataset.faqId));
+    const faq = localFaqs.find((item) => item.id === button.dataset.faqId);
+    showAnswer(faq ? enrichLocalFaq(faq) : null);
   });
 
   document.addEventListener("click", (event) => {

@@ -18,6 +18,7 @@ Se incorporaron **72 parámetros** y **72 preguntas** tras depurar la versión 2
 ## Fuentes
 
 - EM.010 Instalaciones Eléctricas Interiores — RM N.° 083-2019-VIVIENDA.
+- Código Nacional de Electricidad — Utilización, como referencia obligatoria de la EM.010.
 - Formación oficial SENCICO sobre instalaciones eléctricas en edificaciones.
 
 ## Resultado
@@ -28,4 +29,10 @@ Se incorporaron **72 parámetros** y **72 preguntas** tras depurar la versión 2
 - Criterios técnicos revisados: `291`.
 - Preguntas técnicas: `2982`.
 
-Las buenas prácticas de montaje y ensayo se mantienen diferenciadas de las exigencias normativas.
+## Criterios editoriales
+
+- Se conservaron los parámetros eléctricos existentes sobre vivienda, accesibilidad, instalaciones provisionales, telecomunicaciones, ascensores, gas y energía solar.
+- Las exigencias generales de EM.010 se separaron de las prácticas de montaje y ensayo.
+- No se asignaron calibres, secciones, ocupaciones de tubería, resistencias de puesta a tierra ni sensibilidades universales cuando dependen del Código Nacional de Electricidad, del cálculo o del proyecto.
+- Las buenas prácticas se identifican como `criterio_tecnico_revisado` y no sustituyen planos, fichas técnicas, mediciones ni intervención profesional.
+- Los archivos temporales de generación y diagnóstico fueron retirados antes de presentar la propuesta definitiva.

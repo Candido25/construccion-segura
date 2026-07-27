@@ -1,0 +1,29 @@
+name: Temporary export base for pathologies block
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-export-base-patologias.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  export-current-base:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pathologies-current-base
+          path: |
+            backend/normativa_tecnica.json
+            backend/preguntas_tecnicas.json
+            backend/normativa.py
+            backend/api.py
+            scripts/check_normativa.py
+            scripts/prepare_frontend.py
+          retention-days: 2

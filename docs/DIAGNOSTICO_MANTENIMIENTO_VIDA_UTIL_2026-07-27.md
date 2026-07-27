@@ -1,21 +1,22 @@
 # Diagnóstico de cobertura — mantenimiento preventivo y vida útil
 
-- Versión revisada: `3.0.0`.
-- Parámetros totales: `2149`.
-- Preguntas totales: `3612`.
-- Parámetros relacionados encontrados: `1313`.
+- Versión revisada: `3.1.0`.
+- Parámetros totales: `2323`.
+- Preguntas totales: `3786`.
+- Parámetros relacionados encontrados: `1487`.
 - Parámetros GE.040 encontrados: `20`.
 
 ## Estados de revisión
 
+- criterio_tecnico_revisado: 758
 - validado_con_numeral: 711
-- criterio_tecnico_revisado: 584
 - validado_con_fuente_oficial: 17
 - piloto_verificado: 1
 
 ## Principales fuentes ya presentes
 
 - Formación técnica SENCICO: 304
+- Buenas prácticas de mantenimiento preventivo y vida útil: 174
 - Buenas prácticas de control de calidad y cierre de obra: 164
 - Buenas prácticas de acabados — revisión técnica: 100
 - G.050: 89
@@ -39,10 +40,10 @@
 - G.040: 9
 - CE.040: 9
 - Licencia de edificación — modalidad B: 8
-- EM.010: 6
 
 ## Principales categorías relacionadas
 
+- Mantenimiento preventivo y vida útil de la vivienda: 174
 - Control de calidad, recepción y cierre de obra: 166
 - Impermeabilización, Humedad y Drenaje: 130
 - Vidrios, ventanas y cerramientos: 79
@@ -67,7 +68,6 @@
 - Control de calidad de acabados: 18
 - Diagnóstico, mantenimiento y reparación: 16
 - Accesibilidad universal en vivienda: 15
-- Albañilería confinada y armada: 13
 
 ## Cobertura GE.040
 

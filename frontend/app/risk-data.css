@@ -1,0 +1,30 @@
+.faq-risk-panel[data-risk="pending"] {
+  border: 1px solid rgba(84, 104, 124, 0.26);
+  background: #f1f5f8;
+}
+
+.faq-risk-panel[data-risk="pending"] .faq-risk-light {
+  background: #7b8fa3;
+}
+
+.faq-risk-copy small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.35;
+}
+
+.faq-answer-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.9rem;
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.faq-answer-metadata strong {
+  color: var(--text);
+}

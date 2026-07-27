@@ -1,3 +1,11 @@
+CHUNK_1: len=3000 sha256=d20e2d7628259034ecf322ed3fcd881769022623137a61a6f570e505bb8eeacf ok=True
+CHUNK_2: len=3000 sha256=a5b504efd8cde08b41dd5227b1cc3ab4d721ec947f3cc139208180132781cf03 ok=True
+CHUNK_3: len=3000 sha256=2e1ac6a97ee19a936ec7258b1ec10546fdb5a555439db7808048ab454194c554 ok=True
+CHUNK_4: len=3000 sha256=a199d48ff0508008c9301d4030e423fab1fed6c41b739e8429cf1e8c5b7dc02a ok=True
+CHUNK_5: len=3000 sha256=6937d456c6a552e39bef174f3f5ae23f2b5b68e3f61394ae8555369d107df1bc ok=False
+CHUNK_6: len=3000 sha256=7786c7075687576e6a819ff9b3618537659caefd9f340dcc205052aed86d4e7d ok=True
+CHUNK_7: len=48 sha256=be7ee51f784e6ff9fa33d163f27d61782c8852a87530f01e93f52a5a02373ea9 ok=True
+TOTAL: len=18048 sha256=c122e811d0ec77b0da8095289a7397a9e384630f46ac7df81d1e77efb88edd53
 Traceback (most recent call last):
   File "/home/runner/work/construccion-segura/construccion-segura/scripts/ampliar_control_calidad_cierre.py", line 282, in <module>
     main()

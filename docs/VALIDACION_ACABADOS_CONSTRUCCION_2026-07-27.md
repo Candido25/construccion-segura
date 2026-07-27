@@ -36,3 +36,4 @@ Se incorporaron **250 parámetros** y **250 preguntas** después de comparar el 
 - Las buenas prácticas se identifican como `criterio_tecnico_revisado`; no se presentan como mínimos del RNE.
 - Los límites cuantitativos de vidrio se reservaron a cláusulas confirmadas de la E.040 vigente.
 - La información no reemplaza planos, especificaciones, fichas técnicas, ensayos ni supervisión profesional.
+- La base, la API, los mensajes del validador y la limpieza de archivos temporales fueron comprobados antes de cerrar la propuesta definitiva.

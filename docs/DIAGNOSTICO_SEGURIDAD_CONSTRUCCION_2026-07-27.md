@@ -1,40 +1,902 @@
 # Diagnóstico de cobertura — seguridad durante la construcción
 
 Versión revisada: `2.8.0`. Parámetros totales: `1802`.
-Parámetros relacionados encontrados: `761`.
+Parámetros relacionados encontrados: `839`.
 
 ## Resumen por fuente
 
 - G.050: 206
 - Formación técnica SENCICO: 109
-- A.120: 60
-- A.010: 54
+- A.120: 64
+- A.010: 59
+- A.020: 58
 - EM.070: 48
 - A.130: 41
-- EM.040: 36
+- EM.040: 40
 - Buenas prácticas de acabados — revisión técnica: 34
 - E.050: 32
-- A.020: 31
 - E.040: 26
-- IS.010: 17
-- E.060: 11
+- E.060: 25
+- IS.010: 20
+- GE.040: 15
+- Evaluación profesional de edificaciones existentes: 10
 - EM.080: 10
-- GE.040: 7
-- Evaluación profesional de edificaciones existentes: 7
+- E.030: 6
 - EM.010: 6
 - EM.020: 6
+- EM.060: 5
+- G.040: 4
 - E.070: 3
-- E.030: 3
-- G.040: 3
+- EM.050: 3
 - EM.030: 2
 - Manual EDAN del MVCS: 2
-- EM.060: 2
-- EM.050: 2
+- Licencia de edificación — modalidad A: 2
+- CE.040: 2
 - Licencia de edificación — modalidad B: 1
-- Licencia de edificación — modalidad A: 1
-- CE.040: 1
 
-## G.050
+## Cobertura temática
+
+### Planificación, IPERC, ATS y permisos — 5 registros, 0 criterios revisados
+
+- `g050-plan-seguridad-obligatorio` | validado_con_numeral | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud
+- `g050-plan-seguridad-partida-presupuesto` | validado_con_numeral | Seguridad durante la construcción | Presupuesto de obra | Partida de seguridad
+- `g050-senalizacion-segun-riesgo` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización de obra | Determinación por análisis de riesgos
+- `g050-psst-implementacion-antes-inicio` | validado_con_numeral | Planificación y protecciones de seguridad | Plan de Seguridad y Salud en el Trabajo | Inicio y permanencia
+- `g050-psst-visible-copia-trabajadores` | validado_con_numeral | Planificación y protecciones de seguridad | Plan de Seguridad y Salud | Disponibilidad
+
+### EPP y protección respiratoria/auditiva — 7 registros, 1 criterios revisados
+
+- `g050-plan-seguridad-obligatorio` | validado_con_numeral | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud
+- `g050-demolicion-protecciones-provisionales` | validado_con_numeral | Demoliciones y seguridad de intervención | Protecciones colectivas | Protecciones del área
+- `g050-visitante-guia-epp-minimo` | validado_con_numeral | Circulación, señalización y protección de terceros | Ingreso de visitantes | Guía y equipo mínimo
+- `g050-proteccion-colectiva-obligatoria` | validado_con_numeral | Planificación y protecciones de seguridad | Protecciones colectivas | Diseño, instalación y mantenimiento
+- `g050-excavacion-epp-segun-riesgo` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Personal dentro de excavación | Equipo de protección
+- `e040-manipulacion-epp` | validado_con_numeral | Vidrios, ventanas y cerramientos | Manipulación e instalación de vidrio | Equipo de protección personal
+- `criterio-pintura-ventilacion-epp` | criterio_tecnico_revisado | Pinturas y protección de superficies | Trabajo de pintura | Ventilación y protección
+
+### Trabajos en altura y protección de bordes — 131 registros, 30 criterios revisados
+
+- `a010-escalera-baranda-inclinada-altura-minima` | validado_con_numeral | Escaleras | Baranda en tramo inclinado | Altura
+- `a010-escalera-baranda-descanso-altura-minima` | validado_con_numeral | Escaleras | Baranda en descanso con abertura en altura | Altura
+- `a010-baranda-altura-especial-minima` | validado_con_numeral | Escaleras | Baranda en gran desnivel o azotea | Altura
+- `a020-escalera-caracol-abanico-huella-minima` | validado_con_numeral | Escaleras | Escalera interior de vivienda con pasos en caracol o abanico | Huella medida en la línea reglamentaria
+- `a020-escalera-vivienda-pasamanos-altura` | validado_con_numeral | Escaleras | Pasamanos de escalera interior de vivienda | Altura
+- `a020-escalera-vivienda-cierre-aberturas-maximo` | validado_con_numeral | Escaleras | Cierre entre pasamanos y pasos de escalera de vivienda | Abertura máxima de seguridad
+- `e070-columna-confinamiento-vaciado-posterior` | validado_con_numeral | Albañilería confinada y armada | Columna de confinamiento | Secuencia de vaciado
+- `e030-diafragma-aberturas-irregularidad` | validado_con_numeral | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad
+- `e030-diafragma-rigidez-resistencia-conexion` | validado_con_numeral | Diseño sismorresistente | Diafragma de piso o techo | Verificación para considerarlo rígido
+- `g050-caida-altura-arnes-umbral` | validado_con_numeral | Seguridad durante la construcción | Trabajo con caída libre | Altura para sistema de detención
+- `g050-caida-cercania-borde` | validado_con_numeral | Seguridad durante la construcción | Trabajo cerca de borde sin baranda | Distancia de protección
+- `g050-caida-anclaje-resistencia-minima` | validado_con_numeral | Seguridad durante la construcción | Punto de anclaje de sistema anticaídas | Resistencia mínima
+- `g050-caida-libre-distancia-maxima` | validado_con_numeral | Seguridad durante la construcción | Sistema de detención de caídas | Caída libre máxima de diseño
+- `g050-andamio-movimiento-sin-personas` | validado_con_numeral | Seguridad durante la construcción | Andamio móvil | Movimiento
+- `g050-demolicion-plataforma-proteccion` | validado_con_numeral | Seguridad durante la construcción | Plataforma exterior contra caída de materiales | Carga y ancho
+- `a010-ventilacion-natural-vano-minimo` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ambiente con ventilación natural | Área de abertura al exterior
+- `a010-ducto-techo-accesible-proteccion-caidas` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ducto en techo accesible | Protección contra caídas
+- `a020-vano-ventilacion-natural-minimo` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de abertura para ventilación
+- `a020-ventana-proteccion-abertura-maxima` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Protección de ventana con alfeizar bajo | Abertura máxima
+- `a020-azotea-baranda-altura-minima` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Azotea accesible | Altura de protección
+- `is010-ventilacion-cerca-ventana-altura` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Terminal de ventilación cercana a una abertura | Altura sobre la abertura
+- `e050-excavacion-material-distancia-borde` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación | Distancia del material excavado al borde
+- `e050-calzadura-concreto-ciclopeo` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Paño de calzadura | Concreto ciclópeo y resistencia
+- `g050-demolicion-protecciones-provisionales` | validado_con_numeral | Demoliciones y seguridad de intervención | Protecciones colectivas | Protecciones del área
+- `g050-demolicion-zonas-publico-descarga` | validado_con_numeral | Demoliciones y seguridad de intervención | Control del área | Tránsito público y descarga
+- `g050-demolicion-acceso-escaleras-seguras` | validado_con_numeral | Demoliciones y seguridad de intervención | Acceso de demolición | Escaleras provisionales
+- `g050-demolicion-capacitacion-especifica` | validado_con_numeral | Demoliciones y seguridad de intervención | Personal de demolición | Capacitación específica
+- `g050-demolicion-pisos-plataformas` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de pisos | Plataformas y pasarelas
+- `g050-demolicion-pisos-aberturas-proteger` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de pisos | Protección de aberturas
+- `g050-demolicion-metal-piso-por-piso` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición estructural | Desmontaje metálico
+- `g050-demolicion-no-dejar-caer-metal` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición estructural | Descenso de elementos metálicos
+- `g050-demolicion-canaletas-cerradas` | validado_con_numeral | Demoliciones y seguridad de intervención | Retiro de escombros | Descarga desde niveles altos
+- `criterio-concreto-desprendido-seguridad` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Concreto deteriorado | Desprendimiento y acero expuesto
+- `criterio-despues-sismo-restringir-uso` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Evaluación postevento | Restricción preventiva de uso
+- `a120-rejilla-ingreso-abertura-maxima` | validado_con_numeral | Accesibilidad universal en vivienda | Rejilla de drenaje en ingreso | Espaciamiento máximo
+- `a120-rejilla-circulacion-esfera-maxima` | validado_con_numeral | Rampas y rutas accesibles | Rejilla al nivel de tránsito | Abertura máxima
+- `a120-rampa-accesible-ancho-minimo` | validado_con_numeral | Rampas y rutas accesibles | Rampa accesible | Ancho mínimo
+- `a120-rampa-longitud-barandas-umbral` | validado_con_numeral | Rampas y rutas accesibles | Rampa accesible | Longitud que exige protección lateral
+- `a120-baranda-desnivel-umbral` | validado_con_numeral | Rampas y rutas accesibles | Borde abierto de piso transitable | Desnivel que exige baranda
+- `a120-baranda-altura-minima` | validado_con_numeral | Rampas y rutas accesibles | Baranda accesible | Altura mínima
+- `a120-baranda-sardinel-proteccion` | validado_con_numeral | Rampas y rutas accesibles | Baranda accesible | Protección inferior
+- `a120-lavatorio-alturas` | validado_con_numeral | Servicios higiénicos accesibles | Lavatorio accesible | Altura superior y libre inferior
+- `a120-griferia-distancia-maxima` | validado_con_numeral | Servicios higiénicos accesibles | Grifería accesible | Distancia máxima desde borde
+- `a120-urinario-borde-altura-maxima` | validado_con_numeral | Servicios higiénicos accesibles | Urinario accesible | Altura máxima del borde
+- `a120-ducha-sin-sardinel` | validado_con_numeral | Servicios higiénicos accesibles | Ducha accesible | Sardinel
+- `a120-pulsador-panico-alturas` | validado_con_numeral | Evacuación y protección contra incendios | Pulsador de emergencia en baño accesible | Alturas de accionamiento
+- `a130-conexion-bomberos-altura-minima` | validado_con_numeral | Evacuación y protección contra incendios | Conexión para bomberos | Altura mínima
+- `a130-conexion-bomberos-altura-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Conexión para bomberos | Altura máxima
+- `em040-ambiente-abierto-vano-distancia-techo` | validado_con_numeral | Instalaciones de gas | Ambiente abierto hacia el exterior | Distancia del borde superior del vano al techo
+- `em040-ambiente-abierto-techo-porcentaje` | validado_con_numeral | Instalaciones de gas | Ambiente abierto hacia el exterior | Área de abertura permanente en techo
+- `em040-ambiente-abierto-techo-area-minima` | validado_con_numeral | Instalaciones de gas | Ambiente abierto hacia el exterior | Área mínima absoluta de abertura en techo
+- `em040-glp-linea-carga-ventilacion` | validado_con_numeral | Instalaciones de gas | Cubierta de línea de carga de GLP | Aberturas de ventilación
+- `em060-combustible-abertura-distancia` | validado_con_numeral | Chimeneas, hogares y climatización | Abertura de hogar | Separación de materiales combustibles expuestos
+- `em060-salida-humos-area-minima-absoluta` | validado_con_numeral | Chimeneas, hogares y climatización | Salida de humos de hogar | Área mínima absoluta
+- `em040-edificacion-nueva-dos-aberturas` | validado_con_numeral | Instalaciones de Gas en Viviendas | Cocina o lavandería nueva con gas | Cantidad de aberturas permanentes
+- `em040-abertura-inferior-altura-maxima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Abertura inferior de ventilación para gas | Altura máxima sobre el piso
+- `em040-abertura-superior-distancia-techo-maxima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Abertura superior de ventilación para gas | Distancia máxima bajo el techo
+- `em040-edificacion-nueva-aberturas-area-total` | validado_con_numeral | Instalaciones de Gas en Viviendas | Dos aberturas permanentes en edificación nueva | Área libre total mínima
+- `em040-abertura-ventilacion-lado-minimo` | validado_con_numeral | Instalaciones de Gas en Viviendas | Abertura permanente para gas | Lado mínimo
+- `em040-aberturas-no-atraviesan-estructura` | validado_con_numeral | Instalaciones de Gas en Viviendas | Aberturas permanentes para gas | Interferencia estructural
+- `em040-edificacion-existente-dos-aberturas` | validado_con_numeral | Instalaciones de Gas en Viviendas | Espacio confinado existente con gas | Cantidad de aberturas permanentes
+- `em040-comunicacion-mismo-piso-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación con ambiente contiguo en el mismo piso | Área libre de cada abertura
+- `em040-comunicacion-mismo-piso-area-minima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación con ambiente contiguo en el mismo piso | Área mínima de cada abertura
+- `em040-comunicacion-mismo-piso-dimension-minima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación con ambiente contiguo en el mismo piso | Dimensión mínima
+- `em040-comunicacion-diferente-piso-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación con ambiente en otro piso | Área libre mínima
+- `em040-exterior-dos-aberturas-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación directa al exterior con dos aberturas | Área libre de cada abertura
+- `em040-exterior-dos-aberturas-area-minima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación directa al exterior con dos aberturas | Área mínima de cada abertura
+- `em040-conducto-vertical-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Conducto vertical de ventilación para gas | Área libre
+- `em040-conducto-horizontal-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Conducto horizontal de ventilación para gas | Área libre
+- `em040-exterior-una-abertura-solo-con-ducto-evacuacion` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación al exterior con una sola abertura | Condición de uso
+- `em040-exterior-una-abertura-area-por-kw` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación al exterior con una sola abertura inferior | Área libre
+- `em040-exterior-una-abertura-area-minima` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación al exterior con una sola abertura inferior | Área mínima
+- `em040-aberturas-proteccion-agentes-externos` | validado_con_numeral | Instalaciones de Gas en Viviendas | Aberturas permanentes para gas | Protección
+- `em040-conductos-ventilacion-libres` | validado_con_numeral | Instalaciones de Gas en Viviendas | Conductos y aberturas para gas | Obstrucciones
+- `em040-rejilla-metalica-area-libre-asumida` | validado_con_numeral | Instalaciones de Gas en Viviendas | Rejilla metálica sin dato de fabricante | Área libre asumida
+- `em080-fv-blindaje-cable-conector` | validado_con_numeral | Energía Solar en Viviendas | Blindaje mecánico de cables | Terminación de bordes
+- `a020-azotea-pluvial-no-danar` | validado_con_numeral | Azoteas, techos y cubiertas | Azotea de vivienda | Protección frente a lluvia
+- `a020-azotea-parapeto-general-minimo` | validado_con_numeral | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Altura general
+- `a020-azotea-baranda-resistencia-puntual` | validado_con_numeral | Azoteas, techos y cubiertas | Baranda de azotea | Resistencia horizontal
+- `a020-azotea-medicion-parapeto` | validado_con_numeral | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Punto de medición
+- `a010-rampa-radio-giro-minimo` | validado_con_numeral | Estacionamientos | Rampa vehicular | Radio de giro
+- `g050-obra-areas-delimitacion-minima` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Organización del terreno de obra | Delimitación y asignación de áreas
+- `g050-extension-no-cruzar-transito` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Extensión eléctrica temporal | Cruce de tránsito y exposición mecánica
+- `g050-oficina-acceso-cruce-protegido` | validado_con_numeral | Circulación, señalización y protección de terceros | Acceso a oficina dentro de obra | Señalización y cubierta
+- `g050-visitante-guia-epp-minimo` | validado_con_numeral | Circulación, señalización y protección de terceros | Ingreso de visitantes | Guía y equipo mínimo
+- `g050-psst-planos-proteccion-colectiva` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Planos de protecciones colectivas
+- `g050-proteccion-colectiva-tipos` | validado_con_numeral | Planificación y protecciones de seguridad | Protecciones colectivas | Elementos comprendidos
+- `g050-trabajos-distinto-nivel-malla` | validado_con_numeral | Planificación y protecciones de seguridad | Trabajos simultáneos en distintos niveles | Malla contra caída de objetos
+- `g050-sobrantes-retorno-fin-jornada` | validado_con_numeral | Orden, limpieza y residuos de obra | Materiales sobrantes | Retorno al almacén
+- `g050-pilas-no-apoyo-mutuo` | validado_con_numeral | Almacenamiento y acopio en obra | Pilas adyacentes | Independencia
+- `g050-excavacion-caida-material-agua` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación | Ingreso de materiales y agua
+- `g050-excavacion-confinada-arnes-linea` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación considerada espacio confinado | Arnés y línea de vida
+- `g050-zanja-material-distancia-borde` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Material excavado junto a zanja estable | Distancia al borde
+- `g050-excavacion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Barrera de excavación | Distancia al borde
+- `g050-excavacion-vibracion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación expuesta a vibraciones | Distancia de barrera
+- `e040-baranda-vidrio-calculo-sobrecarga` | validado_con_numeral | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Cálculo por sobrecarga horizontal
+- `e040-baranda-vidrio-calculo-sismo-viento` | validado_con_numeral | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Acciones sísmicas y de viento
+- `e040-baranda-zona-impacto-altura` | validado_con_numeral | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Altura de zona de impacto
+- `e040-puerta-mampara-zona-impacto-lateral` | validado_con_numeral | Vidrios, ventanas y cerramientos | Paño fijo junto a puerta o mampara | Extensión lateral de zona de impacto
+- `e040-manipulacion-epp` | validado_con_numeral | Vidrios, ventanas y cerramientos | Manipulación e instalación de vidrio | Equipo de protección personal
+- `criterio-tarrajeo-sonido-hueco` | criterio_tecnico_revisado | Tarrajeos, revoques y enlucidos | Tarrajeo terminado | Adherencia aparente
+- `criterio-enchape-sonido-hueco-evaluar` | criterio_tecnico_revisado | Contrapisos, pisos y enchapes | Enchape terminado | Vacíos o falta de adherencia
+- `criterio-escalera-acabado-nariz-segura` | criterio_tecnico_revisado | Contrapisos, pisos y enchapes | Peldaño acabado | Borde y contraste
+- `criterio-pintura-corte-continuidad` | criterio_tecnico_revisado | Pinturas y protección de superficies | Paño de pintura | Continuidad de aplicación
+- `criterio-drywall-luminarias-soporte` | criterio_tecnico_revisado | Cielorrasos y sistemas livianos | Cielorraso | Luminarias y accesorios
+- `criterio-carpinteria-vidrio-holgura-borde` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Vidrio en marco | Holgura de borde
+- `is010-ventilacion-abertura-distancia-horizontal` | validado_con_numeral | Instalaciones sanitarias en ejecución | Terminal de ventilación | Distancia a abertura
+- `criterio-sanitaria-pvc-corte-escuadra` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Tubería PVC | Corte
+- `criterio-electrico-canalizacion-continuidad` | criterio_tecnico_revisado | Canalizaciones eléctricas | Conduit | Continuidad
+- `criterio-electrico-prueba-caida-tension` | criterio_tecnico_revisado | Pruebas y recepción eléctrica | Carga | Caída de tensión
+- `a130-puerta-cortahumo-sellos-contorno` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortahumo | Sellos de humo
+- `criterio-puerta-holgura-inferior-funcion` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Borde inferior de puerta | Holgura funcional
+- `criterio-ventana-alfeizar-pendiente` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Alféizar exterior | Evacuación de agua
+- `criterio-ventana-vidrio-holgura` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Vidrio | Holgura de borde
+- `criterio-ventana-restrictor-infantil` | criterio_tecnico_revisado | Protección frente a caídas y seguridad | Ventana en altura | Limitador de apertura
+- `criterio-mosquitero-fijacion` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Mosquitero | Fijación
+- `criterio-ventana-corredera-antielevacion` | criterio_tecnico_revisado | Protección frente a caídas y seguridad | Ventana corrediza | Antielevación
+- `criterio-bisagra-exterior-seguridad` | criterio_tecnico_revisado | Protección frente a caídas y seguridad | Puerta exterior con bisagras expuestas | Protección contra desmontaje
+- `criterio-seguro-infantil-no-reemplaza-baranda` | criterio_tecnico_revisado | Protección frente a caídas y seguridad | Seguro infantil | Alcance de protección
+- `criterio-porton-automatizado-deteccion` | criterio_tecnico_revisado | Protección frente a caídas y seguridad | Portón automatizado | Protección de atrapamiento
+- `em040-ventilacion-permanente` | validado_con_numeral | Instalaciones de gas y combustión | Ambiente con artefacto | Ventilación
+- `criterio-gas-gabinete-ventilado` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Gabinete de gas | Ventilación
+- `criterio-gas-rejillas-no-tapar` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Ventilación | Aberturas permanentes
+- `criterio-impermeabilizacion-poros-oquedades` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Concreto o tarrajeo | Reparación de defectos
+- `criterio-impermeabilizacion-junta-bordes-firmes` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Bordes de junta | Preparación
+- `criterio-impermeabilizacion-anclaje-posterior-prohibir` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana terminada | Perforaciones posteriores
+- `criterio-impermeabilizacion-remate-regata` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Remate superior de membrana | Terminación
+- `criterio-impermeabilizacion-sin-burbujas` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana terminada | Defectos de aplicación
+- `criterio-cubierta-coronacion-goteron` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Coronación o borde | Goterón
+- `criterio-zona-humeda-nicho-ducha` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Nicho de ducha | Pendiente y continuidad
+- `criterio-humedad-parche-compatible` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Reparación localizada | Compatibilidad del parche
+
+### Andamios y plataformas — 3 registros, 0 criterios revisados
+
+- `g050-andamio-distancia-electricidad` | validado_con_numeral | Seguridad durante la construcción | Andamio próximo a sistema eléctrico | Distancia mínima
+- `g050-andamio-movimiento-sin-personas` | validado_con_numeral | Seguridad durante la construcción | Andamio móvil | Movimiento
+- `g050-andamio-inspeccion-diaria` | validado_con_numeral | Seguridad durante la construcción | Andamio o plataforma | Inspección
+
+### Escaleras portátiles y provisionales — 3 registros, 0 criterios revisados
+
+- `a020-escalera-gato-inicio-proteccion` | validado_con_numeral | Escaleras | Escalera tipo gato para ambiente técnico | Altura de inicio de la protección
+- `a020-azotea-uso-comun-escalera-comun` | validado_con_numeral | Azoteas, techos y cubiertas | Azotea de uso común | Acceso
+- `g050-excavacion-escalera-sobresale` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Escalera de acceso a excavación | Prolongación y sujeción
+
+### Excavaciones y zanjas — 71 registros, 2 criterios revisados
+
+- `g050-caida-cercania-borde` | validado_con_numeral | Seguridad durante la construcción | Trabajo cerca de borde sin baranda | Distancia de protección
+- `e050-sostenimiento-evaluacion-ems` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación y sostenimiento | Evaluación de necesidad en el EMS
+- `e050-excavacion-profunda-sostenimiento` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación vertical | Profundidad que exige sostenimiento
+- `e050-excavacion-material-distancia-borde` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación | Distancia del material excavado al borde
+- `e050-sostenimiento-responsabilidad-prs` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Responsable del diseño
+- `e050-sostenimiento-bajo-colindante` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sostenimiento junto a vecinos | Intervención en límite o bajo edificación vecina
+- `e050-bombeo-napa-proteger-vecinos` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación con agua subterránea | Efectos del bombeo o abatimiento
+- `e050-excavacion-sin-soporte-vecinos-prohibida` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación sin soporte | Protección de cimentaciones vecinas
+- `e050-excavacion-altura-critica-profesional` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación sin soporte | Profundidad máxima permitida
+- `e050-sostenimiento-revision-despues-sismo` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Revisión después de sismo
+- `e050-excavacion-monitoreo-permanente` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación | Monitoreo durante los trabajos
+- `e050-sostenimiento-limites-deformacion` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento y colindantes | Deformaciones dentro del proyecto
+- `e050-sostenimiento-control-calidad` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Verificación de ensayos
+- `e050-sostenimiento-factibilidad-entorno` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Factores para evaluar factibilidad
+- `e050-sostenimiento-dano-potencial` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Daño potencial a terceros
+- `e050-sostenimiento-fs-estatico` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Estabilidad global del sostenimiento | Factor de seguridad estático
+- `e050-sostenimiento-fs-pseudodinamico` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Estabilidad global del sostenimiento | Factor de seguridad pseudodinámico
+- `e050-calzadura-naturaleza-provisional` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Naturaleza y objeto
+- `e050-calzadura-prevenir-inestabilidad` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Función de protección
+- `e050-calzadura-paneles-alternados` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Secuencia de paños
+- `e050-calzadura-espesor-inicial` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Espesor del primer paño
+- `e050-calzadura-incremento-espesor` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Incremento de espesor con profundidad
+- `e050-calzadura-cargas-diseno` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Cargas verticales y horizontales
+- `e050-calzadura-altura-grava-maxima` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura en grava arenosa densa | Altura total máxima
+- `e050-calzadura-altura-arena-maxima` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura en arena medianamente densa | Altura total máxima
+- `e050-calzadura-altura-arcilla-maxima` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura en arcilla dura | Altura total máxima
+- `e050-calzadura-panel-ancho-maximo` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Paño de calzadura | Dimensión horizontal máxima
+- `e050-calzadura-panel-altura-maxima` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Paño de calzadura | Altura máxima
+- `e050-calzadura-concreto-ciclopeo` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Paño de calzadura | Concreto ciclópeo y resistencia
+- `e050-calzadura-piedra-maxima` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Paño de calzadura | Piedra grande admisible
+- `e050-calzadura-juntas-desfasadas` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Desfase de juntas entre anillos
+- `e050-calzadura-diseno-factores-minimos` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Factores mínimos de diseño
+- `e050-calzadura-no-dejar-sin-soporte` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Soporte horizontal temporal
+- `criterio-asentamiento-investigar-suelo` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Asentamientos y deformaciones | Investigación de la causa
+- `em040-espacio-confinado-umbral` | validado_con_numeral | Instalaciones de gas | Ambiente con artefactos a gas | Umbral de espacio confinado
+- `em040-edificacion-existente-dos-aberturas` | validado_con_numeral | Instalaciones de Gas en Viviendas | Espacio confinado existente con gas | Cantidad de aberturas permanentes
+- `em040-ventilacion-mecanica-flujo-minimo` | validado_con_numeral | Instalaciones de Gas en Viviendas | Ventilación mecánica para espacio confinado | Caudal mínimo de aire exterior
+- `g050-obra-evacuacion-rapida-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Evacuación provisional de obra | Capacidad de salida
+- `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
+- `g050-senalizacion-nocturna-baliza-roja` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización nocturna | Balizas rojas
+- `g050-psst-procedimientos-alto-riesgo` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Procedimientos de trabajo
+- `g050-excavacion-supervision-frecuente` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Trabajo de excavación | Supervisión profesional
+- `g050-excavacion-limpiar-perimetro` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Perímetro de excavación | Retiro de elementos inestables
+- `g050-excavacion-servicio-encontrado-suspender` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Servicio enterrado no identificado | Suspensión del trabajo
+- `g050-excavacion-mecanica-servicios-activos` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación mecánica cerca de servicios | Desenergización y cierre
+- `g050-excavacion-caida-material-agua` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación | Ingreso de materiales y agua
+- `g050-excavacion-sin-personal-maquinaria` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con equipo mecánico | Presencia de personas
+- `g050-compactacion-equipos-separacion` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Nivelación y compactación | Separación entre equipos
+- `g050-excavacion-acceso-desde-120` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con personal | Acceso seguro
+- `g050-excavacion-escalera-cada-760` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Zanja o excavación | Frecuencia de accesos
+- `g050-excavacion-escalera-sobresale` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Escalera de acceso a excavación | Prolongación y sujeción
+- `g050-excavacion-confinada-asistente` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación considerada espacio confinado | Asistente exterior
+- `g050-excavacion-confinada-arnes-linea` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación considerada espacio confinado | Arnés y línea de vida
+- `g050-excavacion-confinada-atmosfera` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación considerada espacio confinado | Renovación de atmósfera
+- `g050-excavacion-epp-segun-riesgo` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Personal dentro de excavación | Equipo de protección
+- `g050-excavadora-inspeccion-interrupcion` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Equipo de excavación | Inspección después de interrupciones
+- `g050-excavacion-cruce-via-cubierta` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación que cruza camino o acceso | Planchas o barreras
+- `g050-via-publica-libre-material-excavado` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Vía pública junto a excavación | Obstrucciones
+- `g050-zanja-material-distancia-borde` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Material excavado junto a zanja estable | Distancia al borde
+- `g050-soporte-tierra-factores-diseno` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Sistema de soporte de tierra | Factores de diseño
+- `g050-entibado-proteger-colindantes` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Entibado, apuntalamiento o tablestacado | Protección de obra y colindantes
+- `g050-excavacion-senales-barricadas` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación o zanja | Identificación y control
+- `g050-excavacion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Barrera de excavación | Distancia al borde
+- `g050-excavacion-via-publica-luz-roja` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación en vía pública | Visibilidad diurna y nocturna
+- `g050-excavacion-vibracion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación expuesta a vibraciones | Distancia de barrera
+- `g050-excavacion-profunda-barrera-formula` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación de más de 3 m | Aumento de distancia de barrera
+- `g050-excavacion-adyacente-cimiento-garantizado` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación junto a edificación existente | Protección de cimentación vecina
+- `g050-napa-bombeo-diseno-previo` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Diseño de bombeo
+- `g050-napa-bombeo-estabilidad-vecinos` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Abatimiento de agua subterránea | Protección de colindantes
+- `g050-napa-tablestacado-caisson` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Sistema de contención
+- `criterio-enterrado-napa-evaluacion` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Elemento bajo nivel del terreno | Presión hidrostática
+
+### Herramientas manuales y eléctricas — 18 registros, 7 criterios revisados
+
+- `e030-diafragma-aberturas-irregularidad` | validado_con_numeral | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad
+- `e060-vibrador-no-desplaza-concreto` | validado_con_numeral | Procesos de concreto | Vibrador de concreto | Uso permitido
+- `g050-demolicion-personal-competente` | validado_con_numeral | Demoliciones y seguridad de intervención | Personal de demolición | Competencia del personal
+- `g050-demolicion-metodo-coordinacion-ingenieria` | validado_con_numeral | Demoliciones y seguridad de intervención | Plan de demolición | Coordinación con ingeniería
+- `a120-puerta-translucida-indicadores-separacion-maxima` | validado_con_numeral | Accesibilidad universal en vivienda | Indicador discontinuo en puerta translúcida | Separación máxima
+- `a020-azotea-retranque-minimo` | validado_con_numeral | Azoteas, techos y cubiertas | Azotea de vivienda | Retranque del área techada
+- `g050-peatones-obra-proteccion-inmediaciones` | validado_con_numeral | Circulación, señalización y protección de terceros | Tránsito peatonal y zonas colindantes | Protección frente a peligros de obra
+- `g050-psst-visible-copia-trabajadores` | validado_con_numeral | Planificación y protecciones de seguridad | Plan de Seguridad y Salud | Disponibilidad
+- `g050-trabajos-distinto-nivel-malla` | validado_con_numeral | Planificación y protecciones de seguridad | Trabajos simultáneos en distintos niveles | Malla contra caída de objetos
+- `g050-almacenaje-no-bloquear-rutas` | validado_con_numeral | Orden, limpieza y residuos de obra | Materiales, herramientas y equipos | Obstrucción de rutas
+- `criterio-carpinteria-limpieza-no-abrasiva` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Vidrio y perfiles terminados | Limpieza final
+- `is010-deposito-obligatorio-abastecimiento-discontinuo` | validado_con_numeral | Instalaciones sanitarias en ejecución | Almacenamiento de agua | Obligación por discontinuidad o baja presión
+- `criterio-sanitaria-pvc-corte-escuadra` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Tubería PVC | Corte
+- `criterio-carpinteria-limpieza-no-abrasiva-final` | criterio_tecnico_revisado | Mantenimiento de la vivienda | Perfiles, vidrio y herrajes | Limpieza
+- `criterio-impermeabilizacion-mezcla-herramienta` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Mezcla impermeabilizante | Homogeneización
+- `criterio-jardinera-proteccion-membrana` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Jardinera | Protección mecánica
+- `criterio-impermeabilizacion-proteger-transito` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana fresca | Restricción de tránsito
+- `criterio-impermeabilizacion-limpieza-compatible` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana expuesta | Limpieza
+
+### Izaje, grúas y aparejos — 11 registros, 0 criterios revisados
+
+- `e070-columna-confinamiento-estribo-cierre` | validado_con_numeral | Albañilería confinada y armada | Columna de confinamiento | Cierre de estribos
+- `e060-gancho-no-desarrolla-barra-compresion` | validado_con_numeral | Concreto y acero de refuerzo | Gancho estándar de barra | Uso en barras a compresión
+- `e060-vigueta-barra-inferior-continuidad` | validado_con_numeral | Vigas y losas de concreto armado | Vigueta construida en obra | Continuidad de barra inferior
+- `e060-viga-perimetral-refuerzo-inferior-integridad` | validado_con_numeral | Vigas y losas de concreto armado | Viga perimetral construida en obra | Refuerzo corrido inferior
+- `e060-viga-interior-refuerzo-inferior-integridad` | validado_con_numeral | Vigas y losas de concreto armado | Viga no perimetral construida en obra | Refuerzo inferior continuo
+- `e070-mano-obra-calificada-supervision` | validado_con_numeral | Ejecución de albañilería | Construcción de muros de albañilería | Mano de obra y supervisión
+- `e070-aparejo-traslape-unidades` | validado_con_numeral | Ejecución de albañilería | Aparejo del muro | Traslape entre hiladas
+- `g050-demolicion-vivalva-zona-seguridad` | validado_con_numeral | Demoliciones y seguridad de intervención | Maquinaria de demolición | Zona de cuchara vivalva
+- `em070-accesos-tecnicos-cartel-peligro` | validado_con_numeral | Transporte mecánico y equipos especiales | Puertas de inspección y sala de máquinas | Señal de acceso restringido
+- `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
+- `g050-psst-procedimientos-alto-riesgo` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Procedimientos de trabajo
+
+### Soldadura, corte y trabajo en caliente — 11 registros, 7 criterios revisados
+
+- `e050-sostenimiento-control-calidad` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Verificación de ensayos
+- `em070-rieles-soldadura-prohibida` | validado_con_numeral | Transporte mecánico y equipos especiales | Rieles guía de ascensor | Uso de soldadura
+- `g050-cilindro-gas-vertical-capucha-cadena` | validado_con_numeral | Almacenamiento y acopio en obra | Cilindro de gas comprimido | Posición y aseguramiento
+- `g050-oxigeno-combustible-separacion` | validado_con_numeral | Almacenamiento y acopio en obra | Cilindros de oxígeno y combustible | Separación
+- `criterio-carpinteria-proteger-marco-obra` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Marco instalado | Protección durante acabados
+- `criterio-carpinteria-metal-corrosion-cortes` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Carpintería metálica | Protección de soldaduras y cortes
+- `criterio-acabado-proteccion-trabajos-terminados` | criterio_tecnico_revisado | Control de calidad de acabados | Acabado terminado | Protección
+- `criterio-marco-proteger-obra` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Marco instalado | Protección temporal
+- `criterio-puerta-metal-proteccion` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Puerta metálica | Protección anticorrosiva
+- `criterio-marco-metal-control-soldadura` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Marco metálico | Deformación por soldadura
+- `criterio-gas-soldadura-procedimiento` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Unión soldada | Procedimiento
+
+### Electricidad provisional — 20 registros, 8 criterios revisados
+
+- `g050-tablero-diferenciales-sensibilidad` | validado_con_numeral | Seguridad durante la construcción | Tablero eléctrico provisional | Interruptores diferenciales
+- `g050-electricidad-provisional-puesta-tierra` | validado_con_numeral | Seguridad durante la construcción | Circuitos eléctricos provisionales | Puesta a tierra
+- `g050-extension-electrica-calibre-minimo` | validado_con_numeral | Seguridad durante la construcción | Extensión eléctrica temporal | Conductor mínimo
+- `g050-extension-electrica-empalme-maximo` | validado_con_numeral | Seguridad durante la construcción | Extensión eléctrica temporal | Frecuencia de empalmes
+- `em020-proteccion-diferencial` | validado_con_numeral | Instalaciones Eléctricas en Viviendas | Tablero del cuarto de telecomunicaciones | Protección diferencial
+- `ge040-cerco-electrico-mantenimiento` | validado_con_numeral | Uso, mantenimiento y conservación | Cerco eléctrico | Mantenimiento regular
+- `em080-terma-partes-metalicas-puesta-tierra` | validado_con_numeral | Energía Solar en Viviendas | Partes metálicas electrificadas de terma solar | Puesta a tierra
+- `em080-fv-marcos-puesta-tierra` | validado_con_numeral | Energía Solar en Viviendas | Marcos metálicos de paneles | Puesta a tierra
+- `em080-fv-tierra-no-pararrayo` | validado_con_numeral | Energía Solar en Viviendas | Puesta a tierra de paneles | Función
+- `g050-tablero-provisional-gabinete-seguro` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Tablero eléctrico provisional | Gabinete, cierre y puesta a tierra
+- `g050-extension-no-cruzar-transito` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Extensión eléctrica temporal | Cruce de tránsito y exposición mecánica
+- `em010-puesta-tierra-obligatoria` | validado_con_numeral | Instalaciones eléctricas en ejecución | Protección eléctrica | Puesta a tierra
+- `criterio-electrico-diferencial-probar` | criterio_tecnico_revisado | Tableros y protecciones | Interruptor diferencial | Prueba
+- `criterio-electrico-tierra-continuidad` | criterio_tecnico_revisado | Puesta a tierra | Conductor de protección | Continuidad
+- `criterio-electrico-tierra-no-interrumpida` | criterio_tecnico_revisado | Puesta a tierra | Conductor de protección | Integridad
+- `criterio-electrico-electrodo-accesible` | criterio_tecnico_revisado | Puesta a tierra | Pozo o electrodo | Inspección
+- `criterio-electrico-tierra-uniones-corrosion` | criterio_tecnico_revisado | Puesta a tierra | Conexiones | Corrosión
+- `criterio-electrico-tierra-medir` | criterio_tecnico_revisado | Puesta a tierra | Sistema | Medición
+- `criterio-electrico-equipotencial-metal` | criterio_tecnico_revisado | Puesta a tierra | Masas metálicas | Unión equipotencial
+- `criterio-electrico-prueba-protecciones` | criterio_tecnico_revisado | Pruebas y recepción eléctrica | Protecciones | Funcionamiento
+
+### Orden, limpieza y almacenamiento — 86 registros, 20 criterios revisados
+
+- `e060-encofrado-cargas-diseno` | validado_con_numeral | Encofrados y apuntalamiento | Diseño de encofrado | Cargas y velocidad de colocación
+- `e060-estructura-sin-puntales-carga-maxima` | validado_con_numeral | Encofrados y apuntalamiento | Estructura sin apuntalamiento | Carga de construcción
+- `g050-orden-limpieza-rutas-libres` | validado_con_numeral | Seguridad durante la construcción | Áreas y rutas de obra | Orden y limpieza
+- `g050-residuos-segregacion` | validado_con_numeral | Seguridad durante la construcción | Residuos de obra | Segregación
+- `a010-residuos-vivienda-volumen-diario` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Almacenamiento de residuos domiciliarios | Volumen diario de diseño
+- `a010-cuarto-residuos-superficies-ventilacion` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Cuarto de residuos | Condiciones constructivas
+- `is010-dotacion-vivienda-calido` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Vivienda en clima cálido | Dotación diaria de agua
+- `is010-dotacion-vivienda-templado` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Vivienda en clima templado | Dotación diaria de agua
+- `is010-dotacion-vivienda-frio` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Vivienda en clima frío | Dotación diaria de agua
+- `is010-tanque-elevado-unico-capacidad` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tanque elevado como único almacenamiento | Capacidad mínima
+- `is010-cisterna-unica-capacidad` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Cisterna como único almacenamiento | Capacidad mínima
+- `is010-hidroneumatico-almacenamiento` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Sistema hidroneumático | Almacenamiento mínimo
+- `ge040-uso-no-exceder-cargas` | validado_con_numeral | Uso, mantenimiento y conservación | Cambio de uso y cargas | Prohibición de exceder cargas de diseño
+- `ge040-obra-respeto-medio-ambiente-horarios` | validado_con_numeral | Uso, mantenimiento y conservación | Obra en edificación existente | Protección ambiental y horarios
+- `ge040-escombros-no-via-azotea` | validado_con_numeral | Uso, mantenimiento y conservación | Residuos de refacción o remodelación | Lugar de disposición
+- `g050-demolicion-material-contaminado` | validado_con_numeral | Demoliciones y seguridad de intervención | Residuos de demolición | Materiales contaminados
+- `g050-demolicion-inflamables-prevencion` | validado_con_numeral | Demoliciones y seguridad de intervención | Riesgos especiales | Materiales inflamables
+- `em070-cuarto-maquinas-altura-minima` | validado_con_numeral | Transporte mecánico y equipos especiales | Cuarto de máquinas de ascensor | Altura mínima
+- `em080-tanque-almacenamiento-carga` | validado_con_numeral | Energía Solar en Viviendas | Tanque de terma solar | Carga sobre soporte
+- `em080-fv-alejado-almacenamiento-agua` | validado_con_numeral | Energía Solar en Viviendas | Panel fotovoltaico | Proximidad a almacenamiento de agua
+- `g050-obra-areas-delimitacion-minima` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Organización del terreno de obra | Delimitación y asignación de áreas
+- `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
+- `g050-comedor-higiene-alimentacion` | validado_con_numeral | Servicios provisionales y bienestar en obra | Alimentación en obra | Higiene y salubridad
+- `g050-vestuario-ambiente-cerrado` | validado_con_numeral | Servicios provisionales y bienestar en obra | Vestuario provisional | Cerramiento
+- `g050-madera-clavos-retirar` | validado_con_numeral | Orden, limpieza y residuos de obra | Madera de desencofrado o embalaje | Retiro de clavos
+- `g050-madera-sin-clavos-zona-restringida` | validado_con_numeral | Orden, limpieza y residuos de obra | Madera recuperada | Ubicación
+- `g050-piso-obra-sin-grasa-aceite` | validado_con_numeral | Orden, limpieza y residuos de obra | Pisos y rutas de obra | Sustancias deslizantes
+- `g050-cables-mangueras-no-cruzar-rutas` | validado_con_numeral | Orden, limpieza y residuos de obra | Cables y mangueras | Tendido fuera de tránsito
+- `g050-almacenaje-no-bloquear-rutas` | validado_con_numeral | Orden, limpieza y residuos de obra | Materiales, herramientas y equipos | Obstrucción de rutas
+- `g050-sobrantes-retorno-fin-jornada` | validado_con_numeral | Orden, limpieza y residuos de obra | Materiales sobrantes | Retorno al almacén
+- `g050-comedor-limpio-residuos-tapa` | validado_con_numeral | Orden, limpieza y residuos de obra | Comedor de obra | Limpieza y residuos orgánicos
+- `g050-sshh-limpieza-mantenimiento` | validado_con_numeral | Orden, limpieza y residuos de obra | Servicios higiénicos | Limpieza continua
+- `g050-residuos-area-temporal-rotulada` | validado_con_numeral | Orden, limpieza y residuos de obra | Residuos de construcción | Acopio temporal
+- `g050-residuo-peligroso-area-aislada` | validado_con_numeral | Orden, limpieza y residuos de obra | Residuo peligroso | Almacenamiento temporal
+- `g050-carga-descarga-demarcacion` | validado_con_numeral | Almacenamiento y acopio en obra | Zona de carga y descarga | Demarcación
+- `g050-anaquel-altura-arriostre` | validado_con_numeral | Almacenamiento y acopio en obra | Anaquel de almacén | Arriostramiento por esbeltez
+- `g050-anaquel-carga-maxima-indicada` | validado_con_numeral | Almacenamiento y acopio en obra | Anaquel o estante | Capacidad señalizada
+- `g050-anaquel-prohibido-escalar` | validado_con_numeral | Almacenamiento y acopio en obra | Anaquel o estante | Acceso
+- `g050-cuarto-electrico-no-almacen` | validado_con_numeral | Almacenamiento y acopio en obra | Cuarto con controles eléctricos | Uso como depósito
+- `g050-almacen-limpio-accesible` | validado_con_numeral | Almacenamiento y acopio en obra | Área de almacenamiento | Orden y acceso
+- `g050-anaquel-escalera-desde-180` | validado_con_numeral | Almacenamiento y acopio en obra | Anaquel alto | Medio de acceso
+- `g050-apilamiento-superficie-estable` | validado_con_numeral | Almacenamiento y acopio en obra | Ruma de materiales | Base
+- `g050-ruma-altura-maxima` | validado_con_numeral | Almacenamiento y acopio en obra | Ruma de materiales | Altura total
+- `g050-pilas-no-apoyo-mutuo` | validado_con_numeral | Almacenamiento y acopio en obra | Pilas adyacentes | Independencia
+- `g050-filas-apilamiento-paso-libre` | validado_con_numeral | Almacenamiento y acopio en obra | Filas de materiales | Separación
+- `g050-pila-cerca-vehiculo-proteger` | validado_con_numeral | Almacenamiento y acopio en obra | Pila cercana a tránsito vehicular | Protección contra impacto
+- `g050-ladrillo-apilado-cruzado-altura` | validado_con_numeral | Almacenamiento y acopio en obra | Pila de ladrillos | Forma y altura
+- `g050-cilindro-gas-vertical-capucha-cadena` | validado_con_numeral | Almacenamiento y acopio en obra | Cilindro de gas comprimido | Posición y aseguramiento
+- `g050-oxigeno-combustible-separacion` | validado_con_numeral | Almacenamiento y acopio en obra | Cilindros de oxígeno y combustible | Separación
+- `g050-almacenes-separados-naturaleza` | validado_con_numeral | Almacenamiento y acopio en obra | Almacenes de materiales | Separación por naturaleza
+- `g050-anaquel-peso-abajo` | validado_con_numeral | Almacenamiento y acopio en obra | Anaquel | Distribución de carga
+- `g050-quimicos-incompatibles-separar` | validado_con_numeral | Almacenamiento y acopio en obra | Productos químicos | Compatibilidad
+- `g050-quimico-msds-obligatoria` | validado_con_numeral | Almacenamiento y acopio en obra | Producto químico o hidrocarburo | Ficha de seguridad
+- `g050-quimico-bandeja-contencion` | validado_con_numeral | Almacenamiento y acopio en obra | Producto químico o hidrocarburo | Contención secundaria
+- `g050-apilamiento-no-bloquear-emergencia` | validado_con_numeral | Almacenamiento y acopio en obra | Material almacenado | Accesos y equipos críticos
+- `g050-tubo-almacenamiento-cunas` | validado_con_numeral | Almacenamiento y acopio en obra | Tubos y materiales circulares | Control de rodadura y flexión
+- `g050-material-apilado-identificado` | validado_con_numeral | Almacenamiento y acopio en obra | Material almacenado | Identificación y advertencias
+- `g050-apilamiento-lugares-prohibidos` | validado_con_numeral | Almacenamiento y acopio en obra | Apilamiento de materiales | Ubicaciones prohibidas
+- `g050-inflamable-distancias-almacenamiento` | validado_con_numeral | Almacenamiento y acopio en obra | Material inflamable o combustible | Distancias de almacenamiento
+- `e040-almacenamiento-lugar-protegido` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Protección ambiental
+- `e040-almacenamiento-fuera-circulacion` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Ubicación
+- `e040-almacenamiento-elevado-piso` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Apoyo respecto del piso
+- `e040-almacenamiento-vidrio-mojado-prohibido` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Condición de humedad
+- `e040-almacenamiento-esfuerzo-termico` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Prevención de tensiones térmicas
+- `e040-ruta-segura-traslado` | validado_con_numeral | Vidrios, ventanas y cerramientos | Traslado interno del vidrio | Ruta segura
+- `criterio-drywall-placa-humeda-no-instalar` | criterio_tecnico_revisado | Cielorrasos y sistemas livianos | Placa de yeso o fibrocemento | Estado de almacenamiento
+- `criterio-drywall-almacenamiento-plano-seco` | criterio_tecnico_revisado | Cielorrasos y sistemas livianos | Placas de sistema seco | Almacenamiento
+- `criterio-acabado-materiales-antes-instalar` | criterio_tecnico_revisado | Control de calidad de acabados | Material de acabado | Inspección de recepción
+- `is010-deposito-obligatorio-abastecimiento-discontinuo` | validado_con_numeral | Instalaciones sanitarias en ejecución | Almacenamiento de agua | Obligación por discontinuidad o baja presión
+- `criterio-sanitaria-extremos-taponados` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Tubería en obra | Protección de extremos
+- `criterio-sanitaria-no-echar-cemento-desague` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Red de desagüe | Protección contra residuos
+- `criterio-sanitaria-pvc-desbarbado` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Tubería PVC | Desbarbado
+- `criterio-sanitaria-purgar-red-agua` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Red de agua | Purga
+- `criterio-sanitaria-desinfectar-almacenamiento` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Cisterna o tanque | Desinfección
+- `criterio-sanitaria-limpieza-final-red` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Limpieza
+- `criterio-electrico-cajas-tapadas` | criterio_tecnico_revisado | Canalizaciones eléctricas | Cajas durante obra | Protección
+- `criterio-gas-proteccion-impacto` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería expuesta | Golpes
+- `criterio-gas-tapar-extremos` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería durante obra | Protección
+- `criterio-gas-cilindro-vertical` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Cilindro de GLP | Posición
+- `criterio-impermeabilizacion-material-almacenamiento` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Productos impermeabilizantes | Almacenamiento
+- `criterio-impermeabilizacion-sustrato-limpio` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Sustrato | Limpieza
+- `criterio-cubierta-sumidero-mantenimiento` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Sumidero de azotea | Acceso
+- `criterio-impermeabilizacion-proteger-transito` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana fresca | Restricción de tránsito
+- `criterio-impermeabilizacion-drenes-proteger-residuos` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Sumideros y canaletas durante obra | Protección temporal
+- `criterio-impermeabilizacion-residuo-no-desague` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Residuos de aplicación | Disposición
+- `criterio-mantenimiento-drenes-limpieza` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva
+
+### Demoliciones — 51 registros, 0 criterios revisados
+
+- `g050-demolicion-cerco-altura-minima` | validado_con_numeral | Seguridad durante la construcción | Área de demolición | Altura del cerco de protección
+- `g050-demolicion-plataforma-proteccion` | validado_con_numeral | Seguridad durante la construcción | Plataforma exterior contra caída de materiales | Carga y ancho
+- `g040-demolicion-definicion` | validado_con_numeral | Licencias, intervenciones y mantenimiento | Demolición | Demolición parcial o total
+- `g040-obra-menor-definicion` | validado_con_numeral | Licencias, intervenciones y mantenimiento | Obra menor | Límite estructural de una obra menor
+- `ge040-edificacion-ruinosa-intervencion` | validado_con_numeral | Uso, mantenimiento y conservación | Edificación en estado ruinoso | Consolidación, remodelación o demolición
+- `ge040-dano-cumplir-recomendaciones` | validado_con_numeral | Uso, mantenimiento y conservación | Edificación afectada por un evento | Cumplimiento de recomendaciones
+- `e030-pos-sismo-evaluacion-ingeniero` | validado_con_numeral | Evaluación y reforzamiento sísmico | Evaluación después de un sismo | Profesional responsable
+- `e030-pos-sismo-decision-intervencion` | validado_con_numeral | Evaluación y reforzamiento sísmico | Evaluación después de un sismo | Determinación del estado
+- `g050-demolicion-supervision-profesional` | validado_con_numeral | Demoliciones y seguridad de intervención | Supervisión de demolición | Supervisión frecuente
+- `g050-demolicion-personal-competente` | validado_con_numeral | Demoliciones y seguridad de intervención | Personal de demolición | Competencia del personal
+- `g050-demolicion-informacion-planos` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Información de estructuras y planos
+- `g050-demolicion-uso-previo-contaminacion` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Contaminación por uso anterior
+- `g050-demolicion-estudio-estructural-previo` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Estudio estructural inicial
+- `g050-demolicion-entorno-sensible` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Entorno sensible a polvo y vibraciones
+- `g050-demolicion-metodo-documentado` | validado_con_numeral | Demoliciones y seguridad de intervención | Plan de demolición | Método documentado
+- `g050-demolicion-edificio-vacio` | validado_con_numeral | Demoliciones y seguridad de intervención | Preparación de demolición | Desocupación previa
+- `g050-demolicion-desconexion-servicios` | validado_con_numeral | Demoliciones y seguridad de intervención | Preparación de demolición | Interrupción de servicios
+- `g050-demolicion-riesgo-peso-area` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Peso y área comprometida
+- `g050-demolicion-metodo-coordinacion-ingenieria` | validado_con_numeral | Demoliciones y seguridad de intervención | Plan de demolición | Coordinación con ingeniería
+- `g050-demolicion-protecciones-provisionales` | validado_con_numeral | Demoliciones y seguridad de intervención | Protecciones colectivas | Protecciones del área
+- `g050-demolicion-plano-progreso-diario` | validado_con_numeral | Demoliciones y seguridad de intervención | Plan de demolición | Plano de avance y riesgos
+- `g050-demolicion-zonas-publico-descarga` | validado_con_numeral | Demoliciones y seguridad de intervención | Control del área | Tránsito público y descarga
+- `g050-demolicion-acceso-escaleras-seguras` | validado_con_numeral | Demoliciones y seguridad de intervención | Acceso de demolición | Escaleras provisionales
+- `g050-demolicion-capacitacion-especifica` | validado_con_numeral | Demoliciones y seguridad de intervención | Personal de demolición | Capacitación específica
+- `g050-demolicion-servicios-activos-protegidos` | validado_con_numeral | Demoliciones y seguridad de intervención | Servicios durante demolición | Protección de conductos activos
+- `g050-demolicion-senalizacion-peligro` | validado_con_numeral | Demoliciones y seguridad de intervención | Control del área | Señalización de zona peligrosa
+- `g050-demolicion-material-contaminado` | validado_con_numeral | Demoliciones y seguridad de intervención | Residuos de demolición | Materiales contaminados
+- `g050-demolicion-inflamables-prevencion` | validado_con_numeral | Demoliciones y seguridad de intervención | Riesgos especiales | Materiales inflamables
+- `g050-demolicion-no-retirar-estabilidad` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Elementos estabilizadores
+- `g050-demolicion-viento-fuerte-suspension` | validado_con_numeral | Demoliciones y seguridad de intervención | Condiciones ambientales | Suspensión por viento
+- `g050-demolicion-partes-expuestas-arriostrar` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Arriostramiento previo
+- `g050-demolicion-no-dejar-inestable` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Estado seguro al detener trabajos
+- `g050-demolicion-control-polvo-riego` | validado_con_numeral | Demoliciones y seguridad de intervención | Control ambiental | Control de polvo
+- `g050-demolicion-cimiento-colindante-apuntalar` | validado_con_numeral | Demoliciones y seguridad de intervención | Protección de colindantes | Cimientos y terraplenes vecinos
+- `g050-demolicion-maquinaria-compatible` | validado_con_numeral | Demoliciones y seguridad de intervención | Maquinaria de demolición | Compatibilidad del equipo
+- `g050-demolicion-vivalva-zona-seguridad` | validado_con_numeral | Demoliciones y seguridad de intervención | Maquinaria de demolición | Zona de cuchara vivalva
+- `g050-demolicion-muros-arriba-abajo` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de muros | Secuencia vertical
+- `g050-demolicion-muros-no-sustentados` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de muros | Apuntalamiento de muros libres
+- `g050-demolicion-pisos-plataformas` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de pisos | Plataformas y pasarelas
+- `g050-demolicion-pisos-aberturas-proteger` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de pisos | Protección de aberturas
+- `g050-demolicion-pisos-no-debilitar-apoyos` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de pisos | Apoyos de vigas
+- `g050-demolicion-armaduras-rebote-torsion` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición estructural | Corte de acero y concreto armado
+- `g050-demolicion-metal-piso-por-piso` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición estructural | Desmontaje metálico
+- `g050-demolicion-no-dejar-caer-metal` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición estructural | Descenso de elementos metálicos
+- `g050-demolicion-asbesto-control-especial` | validado_con_numeral | Demoliciones y seguridad de intervención | Materiales peligrosos | Materiales con asbesto
+- `g050-demolicion-canaletas-cerradas` | validado_con_numeral | Demoliciones y seguridad de intervención | Retiro de escombros | Descarga desde niveles altos
+- `g050-demolicion-cierre-limpieza-verificacion` | validado_con_numeral | Demoliciones y seguridad de intervención | Cierre de demolición | Limpieza y verificación final
+- `g050-demolicion-emergencia-botiquin-camilla` | validado_con_numeral | Demoliciones y seguridad de intervención | Emergencias en demolición | Botiquín y camilla
+- `licencia-modalidad-b-demolicion-total` | validado_con_fuente_oficial | Licencias y alcance de intervenciones | Modalidad B | Demolición total
+- `licencia-demolicion-memoria-seguridad-cerramiento` | validado_con_fuente_oficial | Licencias y alcance de intervenciones | Documentación de demolición | Seguridad, proceso y cerramiento
+- `g050-psst-procedimientos-alto-riesgo` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Procedimientos de trabajo
+
+### Tránsito, maquinaria y terceros — 83 registros, 2 criterios revisados
+
+- `g050-via-circulacion-ancho-minimo` | validado_con_numeral | Seguridad durante la construcción | Vía peatonal o de acarreo manual | Ancho mínimo
+- `ge040-escombros-no-via-azotea` | validado_con_numeral | Uso, mantenimiento y conservación | Residuos de refacción o remodelación | Lugar de disposición
+- `ge040-equipo-vibracion-aislamiento` | validado_con_numeral | Uso, mantenimiento y conservación | Equipos y maquinaria | Aislamiento de vibraciones
+- `ge040-cerco-electrico-mantenimiento` | validado_con_numeral | Uso, mantenimiento y conservación | Cerco eléctrico | Mantenimiento regular
+- `e060-carga-servicio-menor-autoridad` | validado_con_numeral | Evaluación de estructuras de concreto | Estructura existente | Uso con menor carga
+- `g050-demolicion-zonas-publico-descarga` | validado_con_numeral | Demoliciones y seguridad de intervención | Control del área | Tránsito público y descarga
+- `g050-demolicion-capacitacion-especifica` | validado_con_numeral | Demoliciones y seguridad de intervención | Personal de demolición | Capacitación específica
+- `g050-demolicion-senalizacion-peligro` | validado_con_numeral | Demoliciones y seguridad de intervención | Control del área | Señalización de zona peligrosa
+- `g050-demolicion-maquinaria-compatible` | validado_con_numeral | Demoliciones y seguridad de intervención | Maquinaria de demolición | Compatibilidad del equipo
+- `g050-demolicion-vivalva-zona-seguridad` | validado_con_numeral | Demoliciones y seguridad de intervención | Maquinaria de demolición | Zona de cuchara vivalva
+- `g050-demolicion-cierre-limpieza-verificacion` | validado_con_numeral | Demoliciones y seguridad de intervención | Cierre de demolición | Limpieza y verificación final
+- `a120-rampa-escalera-podotactil-alerta` | validado_con_numeral | Señalización accesible | Inicio y final de rampa o escalera | Señal podotáctil de alerta
+- `a120-bolardos-separacion-altura` | validado_con_numeral | Estacionamientos accesibles | Bolardos entre peatones y vehículos | Separación y altura
+- `a120-franja-peatonal-estacionamiento-ancho-minimo` | validado_con_numeral | Estacionamientos accesibles | Ruta peatonal en estacionamiento | Ancho mínimo de franja
+- `a120-braille-altura-ubicacion` | validado_con_numeral | Señalización accesible | Placa braille junto a puerta | Ubicación
+- `a120-senal-bano-accesible-dimensiones-altura` | validado_con_numeral | Señalización accesible | Señal de baño o vestidor accesible | Dimensiones y altura
+- `a120-senal-estacionamiento-poste-dimension-altura` | validado_con_numeral | Señalización accesible | Señal vertical de estacionamiento accesible | Dimensiones y altura
+- `a120-senal-estacionamiento-horizontal-dimension` | validado_con_numeral | Señalización accesible | Símbolo horizontal de estacionamiento accesible | Dimensiones
+- `a120-plano-haptico-horizontal-espacio` | validado_con_numeral | Señalización accesible | Plano háptico horizontal | Altura, profundidad e inclinación
+- `a120-plano-haptico-vertical-altura` | validado_con_numeral | Señalización accesible | Plano háptico vertical | Rango de altura
+- `a120-podotactil-resalte-maximo` | validado_con_numeral | Señalización accesible | Señalización podotáctil | Altura máxima sobre piso
+- `a120-podotactil-tipos-funcion` | validado_con_numeral | Señalización accesible | Señalización podotáctil | Tipos
+- `a010-escalera-protegida-salida-via-publica` | validado_con_numeral | Evacuación y protección contra incendios | Escalera protegida | Descarga segura
+- `a130-senal-evacuacion-iluminancia-minima` | validado_con_numeral | Evacuación y protección contra incendios | Señalización de evacuación | Iluminancia mínima
+- `em070-plataforma-inclinada-paso-libre` | validado_con_numeral | Ascensores y Transporte Mecánico | Plataforma inclinada desplegada | Espacio libre para peatones
+- `em070-montavehiculo-puerta-ancho` | validado_con_numeral | Ascensores y Transporte Mecánico | Montavehículos | Ancho mínimo de puerta
+- `em070-montavehiculo-puerta-altura` | validado_con_numeral | Ascensores y Transporte Mecánico | Montavehículos | Altura mínima de puerta
+- `em070-montavehiculo-extraccion-co` | validado_con_numeral | Ascensores y Transporte Mecánico | Montavehículos | Extracción de monóxido de carbono
+- `em070-montavehiculo-drenaje-fosa` | validado_con_numeral | Ascensores y Transporte Mecánico | Montavehículos expuesto a intemperie | Drenaje del foso
+- `a010-cerco-dispositivo-peligroso-altura` | validado_con_numeral | Instalaciones exteriores y retiros | Cerco | Dispositivos de seguridad riesgosos
+- `a010-retiro-lateral-bicicletas-cubierta-espesor` | validado_con_numeral | Instalaciones exteriores y retiros | Retiro lateral o posterior | Cubierta ligera para bicicletas
+- `a010-retiro-frontal-medidor-electrico-permitido` | validado_con_numeral | Instalaciones exteriores y retiros | Retiro frontal | Murete para medidor eléctrico
+- `ce040-descarga-chorro-libre-prohibida` | validado_con_numeral | Drenaje pluvial | Descarga a vía pública | Chorro libre
+- `a010-estacionamiento-acceso-hasta40` | validado_con_numeral | Estacionamientos | Acceso vehicular de vivienda | Ancho hasta 40 vehículos
+- `a010-estacionamiento-acceso-41-60` | validado_con_numeral | Estacionamientos | Acceso vehicular de vivienda | Ancho para 41 a 60 vehículos
+- `a010-estacionamiento-acceso-61-500` | validado_con_numeral | Estacionamientos | Acceso vehicular de vivienda | Ancho para 61 a 500 vehículos
+- `a010-estacionamiento-acceso-mas500` | validado_con_numeral | Estacionamientos | Acceso vehicular de vivienda | Ancho para más de 500 vehículos
+- `a010-estacionamiento-puerta-no-invadir-vereda` | validado_con_numeral | Estacionamientos | Puerta de estacionamiento | Apertura
+- `a010-rampa-estacionamiento-pendiente-maxima` | validado_con_numeral | Estacionamientos | Rampa vehicular | Pendiente general
+- `a010-estacionamiento-ruta-evacuacion-prohibido` | validado_con_numeral | Estacionamientos | Cajón privado | Ruta de evacuación
+- `a010-estacionamiento-doble-largo` | validado_con_numeral | Estacionamientos | Estacionamiento doble o en tándem | Largo
+- `a010-estacionamiento-doble-una-unidad` | validado_con_numeral | Estacionamientos | Estacionamiento doble o en tándem | Unidad inmobiliaria
+- `a010-estacionamiento-senalizacion-interna` | validado_con_numeral | Estacionamientos | Zona de estacionamiento | Señalización interna
+- `a010-estacionamiento-senalizacion-via-publica` | validado_con_numeral | Estacionamientos | Acceso vehicular | Advertencia a peatones y vehículos
+- `g050-obra-areas-medios-seguridad` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Áreas provisionales de obra | Medios de seguridad y señalización
+- `g050-extension-no-cruzar-transito` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Extensión eléctrica temporal | Cruce de tránsito y exposición mecánica
+- `g050-obra-cerco-perimetral-accesos` | validado_con_numeral | Circulación, señalización y protección de terceros | Cerco perimetral de obra | Aislamiento y accesos diferenciados
+- `g050-obra-control-acceso-vigilancia` | validado_con_numeral | Circulación, señalización y protección de terceros | Acceso a la obra | Vigilancia y control
+- `g050-oficina-acceso-directo-perimetral` | validado_con_numeral | Circulación, señalización y protección de terceros | Oficina o administración provisional | Ubicación del acceso
+- `g050-oficina-acceso-cruce-protegido` | validado_con_numeral | Circulación, señalización y protección de terceros | Acceso a oficina dentro de obra | Señalización y cubierta
+- `g050-vias-obra-diseno-seguro` | validado_con_numeral | Circulación, señalización y protección de terceros | Vías provisionales de circulación | Diseño, delimitación e instalación
+- `g050-ruta-maquinaria-separacion-personal` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de maquinaria y carga | Separación o protección del personal
+- `g050-zona-peligro-acceso-restringido` | validado_con_numeral | Circulación, señalización y protección de terceros | Zona de acceso limitado | Control, protección y señalización
+- `g050-peatones-obra-proteccion-inmediaciones` | validado_con_numeral | Circulación, señalización y protección de terceros | Tránsito peatonal y zonas colindantes | Protección frente a peligros de obra
+- `g050-visitante-guia-epp-minimo` | validado_con_numeral | Circulación, señalización y protección de terceros | Ingreso de visitantes | Guía y equipo mínimo
+- `g050-contratista-seguridad-terceros` | validado_con_numeral | Circulación, señalización y protección de terceros | Visita de terceros | Responsabilidad preventiva
+- `g050-obra-evacuacion-rapida-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Evacuación provisional de obra | Capacidad de salida
+- `g050-evacuacion-dimension-segun-ocupacion` | validado_con_numeral | Circulación, señalización y protección de terceros | Vías y salidas de emergencia | Dimensionamiento
+- `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
+- `g050-obra-zonas-seguras-cantidad` | validado_con_numeral | Circulación, señalización y protección de terceros | Zona segura provisional | Cantidad según trabajadores
+- `g050-evacuacion-senalizacion-obligatoria` | validado_con_numeral | Circulación, señalización y protección de terceros | Evacuación de obra | Señalización
+- `g050-evacuacion-iluminacion-emergencia` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación provisional | Iluminación ante falla
+- `g050-senalizacion-segun-riesgo` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización de obra | Determinación por análisis de riesgos
+- `g050-senalizacion-no-sustituye-proteccion` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización de seguridad | Carácter complementario
+- `g050-senalizacion-actualizacion-obra` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización temporal | Actualización durante el avance
+- `g050-senales-ntp-399010` | validado_con_numeral | Circulación, señalización y protección de terceros | Señales de seguridad | Norma de diseño
+- `g050-obra-via-publica-senalizacion-mtc` | validado_con_numeral | Circulación, señalización y protección de terceros | Obra que afecta vía pública | Regulación de señalización
+- `g050-senalizacion-nocturna-baliza-roja` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización nocturna | Balizas rojas
+- `g050-iluminacion-no-alterar-senales` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Iluminación de obra | Percepción de señalización
+- `g050-sshh-provisionales-obligatorios` | validado_con_numeral | Servicios provisionales y bienestar en obra | Servicios higiénicos provisionales | Instalación en toda obra
+- `g050-extintor-revision-senal-bomberos` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Equipo de extinción | Revisión, señalización y teléfono
+- `g050-vehiculo-maquinaria-extintor` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Vehículo o maquinaria de movimiento de tierras | Extintor
+- `g050-proteccion-colectiva-tipos` | validado_con_numeral | Planificación y protecciones de seguridad | Protecciones colectivas | Elementos comprendidos
+- `g050-cables-mangueras-no-cruzar-rutas` | validado_con_numeral | Orden, limpieza y residuos de obra | Cables y mangueras | Tendido fuera de tránsito
+- `g050-pila-cerca-vehiculo-proteger` | validado_con_numeral | Almacenamiento y acopio en obra | Pila cercana a tránsito vehicular | Protección contra impacto
+- `g050-apilamiento-lugares-prohibidos` | validado_con_numeral | Almacenamiento y acopio en obra | Apilamiento de materiales | Ubicaciones prohibidas
+- `g050-excavacion-sin-personal-maquinaria` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con equipo mecánico | Presencia de personas
+- `g050-excavacion-escalera-cada-760` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Zanja o excavación | Frecuencia de accesos
+- `g050-via-publica-libre-material-excavado` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Vía pública junto a excavación | Obstrucciones
+- `g050-excavacion-via-publica-luz-roja` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación en vía pública | Visibilidad diurna y nocturna
+- `g050-excavacion-vibracion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación expuesta a vibraciones | Distancia de barrera
+- `criterio-gas-proteger-enterrada` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería enterrada | Protección
+- `criterio-gas-proteccion-impacto` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería expuesta | Golpes
+
+### Incendios y emergencias — 144 registros, 24 criterios revisados
+
+- `a020-escalera-vivienda-pasamanos-cantidad-minima` | validado_con_numeral | Escaleras | Escalera interior de vivienda | Cantidad mínima de lados con pasamanos
+- `a010-escalera-caracol-integrada-personas-maximas` | validado_con_numeral | Escaleras | Escalera caracol integrada | Personas a las que puede servir
+- `g050-electricidad-provisional-persona-competente` | validado_con_numeral | Seguridad durante la construcción | Instalación eléctrica provisional | Responsable de ejecución y mantenimiento
+- `g050-plan-seguridad-obligatorio` | validado_con_numeral | Seguridad durante la construcción | Toda obra de construcción | Plan de Seguridad y Salud
+- `g050-orden-limpieza-rutas-libres` | validado_con_numeral | Seguridad durante la construcción | Áreas y rutas de obra | Orden y limpieza
+- `a010-aire-acondicionado-ventilacion-emergencia` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ambiente hermético con aire acondicionado | Rejillas de emergencia
+- `em010-emergencia-rutas-multifamiliar` | validado_con_numeral | Instalaciones Eléctricas en Viviendas | Ruta de evacuación en vivienda multifamiliar | Alumbrado de emergencia
+- `em020-cuarto-iluminancia-minima` | validado_con_numeral | Instalaciones Eléctricas en Viviendas | Cuarto de telecomunicaciones | Iluminancia
+- `ge040-uso-cumplimiento-normas` | validado_con_numeral | Uso, mantenimiento y conservación | Uso de la edificación | Cumplimiento normativo del uso
+- `ge040-cambio-uso-licencia` | validado_con_numeral | Uso, mantenimiento y conservación | Cambio de uso | Adecuación y licencia
+- `e060-prueba-carga-seguridad` | validado_con_numeral | Evaluación de estructuras de concreto | Prueba de carga | Seguridad de personas y estructura
+- `g050-demolicion-desconexion-servicios` | validado_con_numeral | Demoliciones y seguridad de intervención | Preparación de demolición | Interrupción de servicios
+- `g050-demolicion-emergencia-botiquin-camilla` | validado_con_numeral | Demoliciones y seguridad de intervención | Emergencias en demolición | Botiquín y camilla
+- `criterio-humedad-corregir-origen` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Patologías por humedad | Corrección de la fuente
+- `criterio-despues-sismo-restringir-uso` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Evaluación postevento | Restricción preventiva de uso
+- `criterio-reparar-no-ocultar-evidencia` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Diagnóstico y reparación | Documentación previa
+- `a120-puerta-automatica-emergencia` | validado_con_numeral | Accesibilidad universal en vivienda | Puerta automática o cierre controlado | Funcionamiento en emergencia
+- `a120-ascensor-emergencia-interior` | validado_con_numeral | Ascensores y plataformas accesibles | Cabina de ascensor | Dispositivo de emergencia
+- `a120-refugio-espacios-minimos` | validado_con_numeral | Evacuación y protección contra incendios | Área de refugio accesible | Espacios mínimos
+- `a120-refugio-intercomunicador` | validado_con_numeral | Evacuación y protección contra incendios | Área de refugio accesible | Comunicación de emergencia
+- `a120-pulsador-panico-alturas` | validado_con_numeral | Evacuación y protección contra incendios | Pulsador de emergencia en baño accesible | Alturas de accionamiento
+- `a120-alerta-emergencia-sonora-luminosa` | validado_con_numeral | Evacuación y protección contra incendios | Sistema de alerta accesible | Modalidades
+- `a010-evacuacion-distancia-maxima-sin-rociadores` | validado_con_numeral | Evacuación y protección contra incendios | Ruta de evacuación sin rociadores | Distancia máxima
+- `a010-evacuacion-distancia-maxima-con-rociadores` | validado_con_numeral | Evacuación y protección contra incendios | Ruta de evacuación con rociadores | Distancia máxima
+- `a010-escalera-protegida-obligatoria-distancia` | validado_con_numeral | Evacuación y protección contra incendios | Escalera protegida | Condición de obligatoriedad
+- `a010-escalera-protegida-continuidad` | validado_con_numeral | Evacuación y protección contra incendios | Escalera protegida | Continuidad vertical
+- `a010-escalera-protegida-salida-via-publica` | validado_con_numeral | Evacuación y protección contra incendios | Escalera protegida | Descarga segura
+- `a010-escalera-protegida-puerta-vano-minimo` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de escalera protegida | Ancho mínimo de vano
+- `a010-escalera-protegida-ancho-minimo` | validado_con_numeral | Evacuación y protección contra incendios | Escalera protegida | Ancho libre mínimo
+- `a010-escalera-protegida-cerramiento-resistencia` | validado_con_numeral | Evacuación y protección contra incendios | Caja de escalera protegida | Resistencia al fuego
+- `a010-escalera-protegida-puerta-resistencia` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de escalera protegida | Resistencia al fuego
+- `a010-escalera-protegida-pase-manguera` | validado_con_numeral | Evacuación y protección contra incendios | Pase de manguera en escalera protegida | Dimensiones
+- `a010-ascensor-llave-bombero-pisos` | validado_con_numeral | Evacuación y protección contra incendios | Ascensor que comunica varios pisos | Umbral para llave de bombero
+- `a130-puerta-evacuacion-giro-flujo` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación de ambiente con más de 50 personas | Sentido de apertura
+- `a130-puerta-pestillo-fuerza-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Pestillo o barra antipánico | Fuerza máxima para destrabar
+- `a130-puerta-empuje-fuerza-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación | Fuerza máxima de empuje
+- `a130-barra-antipanico-obligatoria-aforo` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación | Umbrales para barra antipánico
+- `a130-barra-antipanico-altura` | validado_con_numeral | Evacuación y protección contra incendios | Barra antipánico | Rango de altura
+- `a130-ruta-evacuacion-sin-obstaculos` | validado_con_numeral | Evacuación y protección contra incendios | Pasajes, escaleras y salidas de evacuación | Obstrucciones
+- `a130-rampa-evacuacion-pendiente-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Rampa usada como medio de evacuación | Pendiente máxima
+- `a130-escalera-evacuacion-ancho-minimo` | validado_con_numeral | Evacuación y protección contra incendios | Escalera de evacuación | Ancho mínimo
+- `a130-tiempo-evacuacion-no-base-calculo` | validado_con_numeral | Evacuación y protección contra incendios | Tiempo de evacuación | Uso del indicador
+- `a130-senal-evacuacion-iluminancia-minima` | validado_con_numeral | Evacuación y protección contra incendios | Señalización de evacuación | Iluminancia mínima
+- `a130-senal-ascensor-no-usar-emergencia` | validado_con_numeral | Evacuación y protección contra incendios | Ascensor | Señal de prohibición
+- `a130-iluminacion-emergencia-autonomia` | validado_con_numeral | Evacuación y protección contra incendios | Iluminación de emergencia | Autonomía mínima
+- `a130-iluminacion-emergencia-nivel-minimo` | validado_con_numeral | Evacuación y protección contra incendios | Iluminación de emergencia | Iluminancia mínima en piso
+- `a130-iluminacion-emergencia-transferencia-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Fuente automática de emergencia | Tiempo máximo de transferencia
+- `a130-alarma-acustica-altura-estacion-manual-minima` | validado_con_numeral | Evacuación y protección contra incendios | Estación manual de alarma | Altura mínima
+- `a130-alarma-acustica-altura-estacion-manual-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Estación manual de alarma | Altura máxima
+- `a130-estacion-manual-recorrido-maximo` | validado_con_numeral | Evacuación y protección contra incendios | Estación manual de alarma | Distancia máxima de recorrido
+- `a130-detector-pilas-solo-residencial-interior` | validado_con_numeral | Evacuación y protección contra incendios | Detector de humo de estación simple | Uso permitido
+- `a130-vivienda-multifamiliar-mas-5-niveles-proteccion` | validado_con_numeral | Evacuación y protección contra incendios | Vivienda multifamiliar de más de 5 niveles | Sistemas mínimos
+- `a130-montante-seca-diametro-minimo` | validado_con_numeral | Evacuación y protección contra incendios | Montante seca en vivienda de 6 a 10 niveles | Diámetro mínimo
+- `a130-hidrante-distancia-maxima-conexion-bomberos` | validado_con_numeral | Evacuación y protección contra incendios | Hidrante público para vivienda de 6 a 10 niveles | Distancia máxima
+- `a130-estacionamiento-subterraneo-rociadores-area` | validado_con_numeral | Evacuación y protección contra incendios | Estacionamiento subterráneo residencial | Área que exige rociadores
+- `a130-vivienda-11-20-bomba-minimos` | validado_con_numeral | Evacuación y protección contra incendios | Vivienda multifamiliar de 11 a 20 niveles | Bomba contra incendios
+- `a130-vivienda-11-20-reserva-minima` | validado_con_numeral | Evacuación y protección contra incendios | Vivienda multifamiliar de 11 a 20 niveles | Reserva exclusiva mínima
+- `a130-conexion-bomberos-altura-minima` | validado_con_numeral | Evacuación y protección contra incendios | Conexión para bomberos | Altura mínima
+- `a130-conexion-bomberos-altura-maxima` | validado_con_numeral | Evacuación y protección contra incendios | Conexión para bomberos | Altura máxima
+- `a130-gabinete-manguera-dimensiones` | validado_con_numeral | Evacuación y protección contra incendios | Gabinete contra incendios | Manguera
+- `a130-gabinete-valvula-altura` | validado_con_numeral | Evacuación y protección contra incendios | Válvula de gabinete contra incendios | Rango de altura
+- `a130-extintor-vivienda-unifamiliar-excepcion` | validado_con_numeral | Evacuación y protección contra incendios | Vivienda unifamiliar | Extintor portátil
+- `a130-cocina-fritura-extintor-k` | validado_con_numeral | Evacuación y protección contra incendios | Cocina con freidoras o planchas | Clase de extintor
+- `em040-ventilacion-evacuacion-obligatoria` | validado_con_numeral | Instalaciones de gas | Ambiente con artefactos a gas | Ventilación y evacuación de combustión
+- `em040-espacio-no-confinado-umbral` | validado_con_numeral | Instalaciones de gas | Ambiente con artefactos a gas | Umbral de espacio no confinado
+- `em040-glp-tanque-perimetro-libre` | validado_con_numeral | Instalaciones de gas | Tanque estacionario de GLP | Perímetro lateral libre
+- `em070-cabina-boton-alarma` | validado_con_numeral | Transporte mecánico y equipos especiales | Cabina de ascensor | Botón de alarma
+- `em040-tipo-b-cortatiro-regulador` | validado_con_numeral | Instalaciones de Gas en Viviendas | Artefacto a gas Tipo B | Protección del tiro
+- `em040-exterior-una-abertura-solo-con-ducto-evacuacion` | validado_con_numeral | Instalaciones de Gas en Viviendas | Comunicación al exterior con una sola abertura | Condición de uso
+- `em070-intercomunicacion-tres-vias` | validado_con_numeral | Ascensores y Transporte Mecánico | Ascensor | Intercomunicación de emergencia
+- `em070-incendio-fase-i-todos` | validado_con_numeral | Ascensores y Transporte Mecánico | Todos los ascensores | Operación de emergencia Fase I
+- `em070-incendio-fase-ii-mas-7-niveles` | validado_con_numeral | Ascensores y Transporte Mecánico | Edificación de más de siete niveles | Operación de emergencia Fase II
+- `em070-despues-incendio-inspeccion` | validado_con_numeral | Ascensores y Transporte Mecánico | Ascensor después de incendio | Reinicio
+- `em070-plataforma-inclinada-no-evacuacion` | validado_con_numeral | Ascensores y Transporte Mecánico | Plataforma elevadora inclinada | Uso en evacuación
+- `a010-estacionamiento-ruta-evacuacion-prohibido` | validado_con_numeral | Estacionamientos | Cajón privado | Ruta de evacuación
+- `g050-obra-areas-delimitacion-minima` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Organización del terreno de obra | Delimitación y asignación de áreas
+- `g050-obra-areas-medios-seguridad` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Áreas provisionales de obra | Medios de seguridad y señalización
+- `g050-energia-provisional-prevencion-riesgos` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Suministro provisional de energía | Prevención de incendio, explosión y electrocución
+- `g050-obra-evacuacion-rapida-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Evacuación provisional de obra | Capacidad de salida
+- `g050-evacuacion-dimension-segun-ocupacion` | validado_con_numeral | Circulación, señalización y protección de terceros | Vías y salidas de emergencia | Dimensionamiento
+- `g050-evacuacion-rutas-libres-zona-segura` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación | Continuidad y destino
+- `g050-evacuacion-senalizacion-obligatoria` | validado_con_numeral | Circulación, señalización y protección de terceros | Evacuación de obra | Señalización
+- `g050-evacuacion-iluminacion-emergencia` | validado_con_numeral | Circulación, señalización y protección de terceros | Ruta de evacuación provisional | Iluminación ante falla
+- `g050-senalizacion-segun-riesgo` | validado_con_numeral | Circulación, señalización y protección de terceros | Señalización de obra | Determinación por análisis de riesgos
+- `g050-luminaria-portatil-antichoque` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Punto de iluminación portátil | Protección y ubicación
+- `g050-iluminacion-emergencia-zona-riesgo` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Área de riesgo con iluminación artificial | Luz de emergencia
+- `g050-incendio-dispositivos-segun-riesgo` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Protección contra incendios provisional | Tipo y cantidad
+- `g050-extintor-revision-senal-bomberos` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Equipo de extinción | Revisión, señalización y teléfono
+- `g050-vehiculo-maquinaria-extintor` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Vehículo o maquinaria de movimiento de tierras | Extintor
+- `g050-extintor-acceso-libre` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Equipo de extinción | Acceso
+- `g050-no-fumar-fuego-senal` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Zona con riesgo de incendio | Aviso visible
+- `g050-incendio-capacitacion-personal` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Personal de obra | Instrucción contra incendios
+- `g050-botiquin-primeros-auxilios` | validado_con_numeral | Servicios provisionales y bienestar en obra | Botiquín de obra | Implementación mínima
+- `g050-obra-fuera-radio-urbano-ambulancia` | validado_con_numeral | Servicios provisionales y bienestar en obra | Obra fuera del radio urbano | Coordinación de ambulancia
+- `g050-psst-respuesta-emergencias` | validado_con_numeral | Planificación y protecciones de seguridad | Contenido del PSST | Plan de respuesta ante emergencias
+- `g050-madera-sin-clavos-zona-restringida` | validado_con_numeral | Orden, limpieza y residuos de obra | Madera recuperada | Ubicación
+- `g050-almacenaje-no-bloquear-rutas` | validado_con_numeral | Orden, limpieza y residuos de obra | Materiales, herramientas y equipos | Obstrucción de rutas
+- `g050-almacenes-separados-naturaleza` | validado_con_numeral | Almacenamiento y acopio en obra | Almacenes de materiales | Separación por naturaleza
+- `g050-apilamiento-no-bloquear-emergencia` | validado_con_numeral | Almacenamiento y acopio en obra | Material almacenado | Accesos y equipos críticos
+- `g050-apilamiento-lugares-prohibidos` | validado_con_numeral | Almacenamiento y acopio en obra | Apilamiento de materiales | Ubicaciones prohibidas
+- `g050-napa-bombeo-diseno-previo` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Diseño de bombeo
+- `criterio-carpinteria-alfeizar-pendiente-exterior` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Ventana exterior | Evacuación de agua
+- `criterio-carpinteria-drenajes-no-obstruir` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Ventana con cámara de drenaje | Orificios de evacuación
+- `criterio-sanitaria-prueba-descarga-simultanea` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Prueba funcional
+- `em010-emergencia-segun-uso` | validado_con_numeral | Instalaciones eléctricas en ejecución | Iluminación de emergencia | Aplicación
+- `a020-vano-puerta-principal-vivienda-ancho-minimo` | validado_con_numeral | Puertas, ventanas y cerrajería | Puerta principal de vivienda | Ancho mínimo del vano
+- `a020-vano-puerta-ambientes-principales-ancho-minimo` | validado_con_numeral | Puertas, ventanas y cerrajería | Puerta de dormitorio, sala, comedor o cocina | Ancho mínimo del vano
+- `a020-vano-puerta-bano-ancho-minimo` | validado_con_numeral | Puertas, ventanas y cerrajería | Puerta de baño o ambiente de servicio | Ancho mínimo del vano
+- `a020-vano-puerta-principal-multifamiliar-ancho-minimo` | validado_con_numeral | Puertas, ventanas y cerrajería | Ingreso principal de vivienda multifamiliar | Ancho mínimo del vano
+- `a020-puerta-varias-hojas-hoja-minima` | validado_con_numeral | Puertas, ventanas y cerrajería | Puerta residencial de varias hojas | Ancho mínimo de una hoja
+- `a020-vano-cierre-clima-material-compatible` | validado_con_numeral | Puertas, ventanas y cerrajería | Vano de puerta o ventana | Compatibilidad del cierre
+- `a130-salida-emergencia-apertura-simple-empuje` | validado_con_numeral | Evacuación y protección contra incendios | Salida de emergencia | Apertura desde el interior
+- `a130-puerta-evacuacion-cerradura-llave-senal` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación con cerradura | Señal de permanencia sin llave
+- `a130-puerta-cortafuego-cierrapuertas-aprobado` | validado_con_numeral | Evacuación y protección contra incendios | Puerta en cerramiento cortafuego | Dispositivo de cierre
+- `a130-puerta-doble-hoja-coordinador-cierre` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación de doble hoja | Orden de cierre
+- `a130-puerta-evacuacion-manija-certificada` | validado_con_numeral | Evacuación y protección contra incendios | Puerta de evacuación sin barra antipánico | Manija de operación
+- `a130-puerta-cortafuego-conjunto-certificado` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortafuego | Certificación del conjunto
+- `a130-puerta-cortafuego-accesorios-certificados` | validado_con_numeral | Evacuación y protección contra incendios | Accesorios de puerta cortafuego | Certificación para uso cortafuego
+- `a130-puerta-cortafuego-autocierre` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortafuego | Cierre automático
+- `a130-puerta-cortahumo-sellos-contorno` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortahumo | Sellos de humo
+- `a130-puerta-cortafuego-resistencia-relativa` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortafuego | Resistencia respecto del cerramiento
+- `a130-puerta-cortafuego-alteracion-certificacion` | validado_con_numeral | Evacuación y protección contra incendios | Puerta cortafuego certificada | Conservación de la certificación
+- `a120-bano-accesible-espacio-giro-puerta` | validado_con_numeral | Servicios higiénicos accesibles | Puerta de baño accesible | Espacio de maniobra
+- `a120-bano-accesible-apertura-compatible` | validado_con_numeral | Servicios higiénicos accesibles | Puerta de baño accesible | Tipo y sentido de apertura
+- `a120-marco-bano-no-invadir-ruta` | validado_con_numeral | Servicios higiénicos accesibles | Marco de puerta accesible | Invasión de la ruta
+- `criterio-ventana-alfeizar-pendiente` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Alféizar exterior | Evacuación de agua
+- `criterio-ventana-drenajes-libres` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Ventana con drenaje | Orificios de evacuación
+- `criterio-cerradura-no-doble-llave-evacuacion` | criterio_tecnico_revisado | Evacuación y protección contra incendios | Puerta en ruta de salida | Liberación interior
+- `criterio-cortafuego-no-perforar` | criterio_tecnico_revisado | Evacuación y protección contra incendios | Puerta cortafuego | Intervenciones posteriores
+- `criterio-barra-antipanico-operacion` | criterio_tecnico_revisado | Evacuación y protección contra incendios | Barra antipánico | Funcionamiento
+- `criterio-cerradura-no-bloquear-salida` | criterio_tecnico_revisado | Evacuación y protección contra incendios | Cerradura electrónica o control de acceso | Liberación de emergencia
+- `em040-evacuacion-productos-combustion` | validado_con_numeral | Instalaciones de gas y combustión | Artefacto de combustión | Evacuación
+- `criterio-gas-identificacion` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería | Identificación
+- `criterio-gas-calefon-ubicacion` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Calentador | Ubicación
+- `criterio-gas-ducto-diametro` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Conducto de evacuación | Dimensionamiento
+- `criterio-gas-ducto-pendiente` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Conducto de evacuación | Trazado
+- `criterio-gas-ducto-uniones` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Conducto de evacuación | Uniones
+- `criterio-gas-terminal-libre` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Terminal de evacuación | Descarga
+- `criterio-gas-fuga-cerrar-ventilar` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Emergencia | Respuesta
+- `criterio-gas-no-interruptor-fuga` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Emergencia | Electricidad
+- `criterio-gas-entrega-acta` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Entrega | Acta de pruebas
+- `criterio-impermeabilizacion-soplete-seguridad` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana aplicada con calor | Control de llama y fuego
+- `criterio-cubierta-proteccion-no-bloquear-drenaje` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Capa de protección de cubierta | Continuidad del drenaje
+- `criterio-cubierta-rebose-emergencia` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Azotea con parapetos | Ruta de rebose
+
+### Polvo, ruido, vibración y clima — 115 registros, 36 criterios revisados
+
+- `e060-recubrimiento-contra-suelo-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Concreto colocado contra el suelo | Recubrimiento mínimo
+- `e060-mezclado-registro-tandas` | validado_con_numeral | Control de calidad del concreto | Concreto preparado en obra | Registro de producción
+- `e060-lluvia-vaciado-sin-proteccion-prohibido` | validado_con_numeral | Procesos de concreto | Vaciado durante lluvia | Condición de colocación
+- `e060-clima-frio-curado-temperatura-minima` | validado_con_numeral | Procesos de concreto | Concreto colocado en clima frío | Temperatura durante el curado
+- `e070-unidad-limpia-sin-agua-libre` | validado_con_numeral | Ejecución de albañilería | Unidad antes del asentado | Estado superficial y colocación
+- `e070-primera-hilada-base-preparacion` | validado_con_numeral | Ejecución de albañilería | Base de la primera hilada | Preparación
+- `a010-ducto-edificio-alto-extraccion` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ducto sanitario en edificio de más de 15 m | Extracción de aire
+- `a010-lluvia-prohibicion-descarga-vecino` | validado_con_numeral | Impermeabilización, Humedad y Drenaje | Techo y azotea | Descarga de lluvia
+- `a020-cerramiento-proteccion-lluvia` | validado_con_numeral | Impermeabilización, Humedad y Drenaje | Cerramiento exterior de vivienda | Protección contra lluvia
+- `is010-lluvia-prohibicion-red-residual` | validado_con_numeral | Impermeabilización, Humedad y Drenaje | Agua de lluvia | Conexión a red residual
+- `is010-lluvia-rejilla-area-libre` | validado_con_numeral | Impermeabilización, Humedad y Drenaje | Receptor de agua de lluvia | Área libre de rejilla
+- `is010-lluvia-proteccion-cimentacion` | validado_con_numeral | Impermeabilización, Humedad y Drenaje | Drenaje pluvial | Protección de cimentaciones
+- `is010-velocidad-agua-maxima-15` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tubería de agua de 15 mm | Velocidad máxima
+- `is010-velocidad-agua-maxima-20` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tubería de agua de 20 mm | Velocidad máxima
+- `is010-velocidad-agua-maxima-25` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tubería de agua de 25 mm | Velocidad máxima
+- `is010-velocidad-agua-maxima-32` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tubería de agua de 32 mm | Velocidad máxima
+- `is010-velocidad-agua-maxima-40` | validado_con_numeral | Instalaciones Sanitarias en Viviendas | Tubería de agua de 40 mm o más | Velocidad máxima
+- `em030-aire-exterior-frio-temperatura-ingreso` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Aire exterior de renovación cuando la temperatura exterior es menor de 15 °C | Temperatura de ingreso
+- `em030-ductos-extraccion-independientes` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Extracción de baño, cocina y secadora | Independencia y descarga
+- `em030-ductos-registros-limpieza-separacion` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ducto de ventilación | Separación de registros de inspección
+- `em030-ducto-cruce-combustible-separacion` | validado_con_numeral | Arquitectura y Habitabilidad de la Vivienda | Ducto al atravesar elemento combustible | Separación de seguridad
+- `g040-reforzamiento-estructural-definicion` | validado_con_numeral | Licencias, intervenciones y mantenimiento | Reforzamiento estructural | Finalidad del reforzamiento
+- `ge040-obra-respeto-medio-ambiente-horarios` | validado_con_numeral | Uso, mantenimiento y conservación | Obra en edificación existente | Protección ambiental y horarios
+- `ge040-equipo-vibracion-aislamiento` | validado_con_numeral | Uso, mantenimiento y conservación | Equipos y maquinaria | Aislamiento de vibraciones
+- `ge040-uso-evitar-agentes-daninos` | validado_con_numeral | Uso, mantenimiento y conservación | Uso y conservación | Agentes que pueden dañar la edificación
+- `ge040-techos-drenaje-no-afectar-vecino` | validado_con_numeral | Uso, mantenimiento y conservación | Techos y cubiertas | Drenaje sin afectar colindantes
+- `e050-excavacion-altura-critica-profesional` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Excavación sin soporte | Profundidad máxima permitida
+- `e050-sostenimiento-dano-potencial` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Sistema de sostenimiento | Daño potencial a terceros
+- `e050-calzadura-cargas-diseno` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Cargas verticales y horizontales
+- `e050-calzadura-diseno-factores-minimos` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Factores mínimos de diseño
+- `g050-demolicion-entorno-sensible` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Entorno sensible a polvo y vibraciones
+- `g050-demolicion-viento-fuerte-suspension` | validado_con_numeral | Demoliciones y seguridad de intervención | Condiciones ambientales | Suspensión por viento
+- `g050-demolicion-no-dejar-inestable` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Estado seguro al detener trabajos
+- `g050-demolicion-control-polvo-riego` | validado_con_numeral | Demoliciones y seguridad de intervención | Control ambiental | Control de polvo
+- `g050-demolicion-muros-no-sustentados` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de muros | Apuntalamiento de muros libres
+- `g050-demolicion-canaletas-cerradas` | validado_con_numeral | Demoliciones y seguridad de intervención | Retiro de escombros | Descarga desde niveles altos
+- `criterio-ampliacion-planos-no-garantizan-realidad` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Edificaciones existentes | Verificación de lo construido
+- `criterio-cambio-uso-revisar-cargas` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Cambio de uso | Nuevas cargas y exigencias
+- `em060-aparato-bajo-calor-limite` | validado_con_numeral | Chimeneas, hogares y climatización | Aparato productor de calor | Clasificación de bajo calor
+- `em060-aparato-medio-calor-rango` | validado_con_numeral | Chimeneas, hogares y climatización | Aparato productor de calor | Clasificación de medio calor
+- `em060-aparato-alto-calor-umbral` | validado_con_numeral | Chimeneas, hogares y climatización | Aparato productor de calor | Clasificación de alto calor
+- `em080-fv-alejado-contaminantes` | validado_con_numeral | Energía Solar en Viviendas | Panel fotovoltaico | Fuentes contaminantes
+- `em080-fv-soporte-cargas-viento` | validado_con_numeral | Energía Solar en Viviendas | Estructura de panel fotovoltaico | Cargas adicionales
+- `a010-lluvia-vertido-terceros-prohibido` | validado_con_numeral | Azoteas, techos y cubiertas | Descarga pluvial | Vertido sobre terceros
+- `a020-azotea-pluvial-no-danar` | validado_con_numeral | Azoteas, techos y cubiertas | Azotea de vivienda | Protección frente a lluvia
+- `a020-cubierta-ligera-fijacion-estructura` | validado_con_numeral | Azoteas, techos y cubiertas | Cubierta ligera | Fijación
+- `a020-cubierta-ligera-hermeticidad-lluvia` | validado_con_numeral | Azoteas, techos y cubiertas | Cubierta ligera | Hermeticidad
+- `a020-ultimo-techo-comportamiento-termico` | validado_con_numeral | Azoteas, techos y cubiertas | Último techo de vivienda | Comportamiento térmico
+- `a020-cerramiento-exterior-evitar-infiltracion` | validado_con_numeral | Impermeabilización y acabados exteriores | Cerramiento exterior | Protección frente a lluvia
+- `ce040-caudal-curvas-idf-senamhi` | validado_con_numeral | Drenaje pluvial | Caudal de diseño | Información de lluvia
+- `ce040-techo-pendiente-zona-muy-lluviosa` | validado_con_numeral | Drenaje pluvial | Techo en zona muy lluviosa | Pendiente
+- `ce040-canaleta-montante-fijacion` | validado_con_numeral | Drenaje pluvial | Canaletas y montantes | Fijación a la estructura
+- `ce040-canaleta-dimensionamiento` | validado_con_numeral | Drenaje pluvial | Canaleta | Cálculo hidráulico
+- `ce040-montante-dimensionamiento` | validado_con_numeral | Drenaje pluvial | Montante pluvial | Cálculo hidráulico
+- `g050-extension-no-cruzar-transito` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Extensión eléctrica temporal | Cruce de tránsito y exposición mecánica
+- `g050-electricidad-provisional-intemperie-lluvia` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Instalación eléctrica provisional | Protección en zonas lluviosas
+- `g050-electricidad-ambiente-inflamable-explosion` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Instalación eléctrica en ambiente inflamable | Protección contra explosión
+- `g050-enchufe-industrial-blindado` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Enchufe y tomacorriente provisional | Tipo industrial sellado
+- `g050-peatones-obra-proteccion-inmediaciones` | validado_con_numeral | Circulación, señalización y protección de terceros | Tránsito peatonal y zonas colindantes | Protección frente a peligros de obra
+- `g050-polvo-prevencion-proteccion` | validado_con_numeral | Obras preliminares e instalaciones provisionales | Trabajo con generación de polvo | Jerarquía de control
+- `g050-comedor-piso-solado` | validado_con_numeral | Servicios provisionales y bienestar en obra | Comedor provisional | Piso
+- `g050-apilamiento-superficie-estable` | validado_con_numeral | Almacenamiento y acopio en obra | Ruma de materiales | Base
+- `g050-ruma-altura-maxima` | validado_con_numeral | Almacenamiento y acopio en obra | Ruma de materiales | Altura total
+- `g050-excavacion-supervision-frecuente` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Trabajo de excavación | Supervisión profesional
+- `g050-excavacion-caida-material-agua` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación | Ingreso de materiales y agua
+- `g050-excavacion-sin-personal-maquinaria` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación con equipo mecánico | Presencia de personas
+- `g050-soporte-tierra-factores-diseno` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Sistema de soporte de tierra | Factores de diseño
+- `g050-excavacion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Barrera de excavación | Distancia al borde
+- `g050-excavacion-vibracion-barrera-distancia` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Excavación expuesta a vibraciones | Distancia de barrera
+- `e040-proyecto-calculo-estructural` | validado_con_numeral | Vidrios, ventanas y cerramientos | Proyecto de vidrios | Cálculo estructural
+- `e040-baranda-vidrio-calculo-sismo-viento` | validado_con_numeral | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Acciones sísmicas y de viento
+- `e040-techo-vidrio-cargas` | validado_con_numeral | Vidrios, ventanas y cerramientos | Techo de vidrio | Cargas de diseño
+- `e040-velocidad-altura-formula` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio expuesto al viento | Velocidad de diseño a la altura
+- `e040-velocidad-altura-minima` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio expuesto al viento | Velocidad mínima de diseño
+- `e040-presion-viento-formula` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio expuesto al viento | Presión de diseño
+- `e040-pvc-proteccion-radiacion-solar` | validado_con_numeral | Vidrios, ventanas y cerramientos | Perfil de PVC | Protección frente a radiación solar
+- `e040-silicona-estructural-proyecto` | validado_con_numeral | Vidrios, ventanas y cerramientos | Silicona estructural | Selección del producto
+- `e040-almacenamiento-lugar-protegido` | validado_con_numeral | Vidrios, ventanas y cerramientos | Vidrio almacenado | Protección ambiental
+- `e040-carga-descarga-lluvia-prohibida` | validado_con_numeral | Vidrios, ventanas y cerramientos | Carga y descarga de vidrio | Condición climática
+- `criterio-tarrajeo-limpieza-polvo-grasa` | criterio_tecnico_revisado | Tarrajeos, revoques y enlucidos | Superficie antes del tarrajeo | Limpieza
+- `criterio-tarrajeo-proteger-sol-viento` | criterio_tecnico_revisado | Tarrajeos, revoques y enlucidos | Tarrajeo fresco | Protección ambiental
+- `criterio-enchape-juntas-limpias` | criterio_tecnico_revisado | Contrapisos, pisos y enchapes | Juntas antes de fraguar | Limpieza
+- `criterio-pintura-limpieza` | criterio_tecnico_revisado | Pinturas y protección de superficies | Superficie a pintar | Limpieza
+- `criterio-pintura-lijado-polvo` | criterio_tecnico_revisado | Pinturas y protección de superficies | Superficie empastada | Lijado y desempolvado
+- `criterio-pintura-lluvia-proteger` | criterio_tecnico_revisado | Pinturas y protección de superficies | Fachada | Lluvia
+- `criterio-pintura-sol-viento-intenso` | criterio_tecnico_revisado | Pinturas y protección de superficies | Fachada | Condiciones de aplicación
+- `criterio-carpinteria-anclaje-sistema` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Marco | Anclajes
+- `criterio-acabado-proteccion-trabajos-terminados` | criterio_tecnico_revisado | Control de calidad de acabados | Acabado terminado | Protección
+- `criterio-sanitaria-pvc-no-calentar-improvisado` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Tubería PVC | Deformación por calor
+- `criterio-sanitaria-bomba-base-firme` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Equipo de bombeo | Base
+- `criterio-sanitaria-prueba-descarga-simultanea` | criterio_tecnico_revisado | Ejecución y control de instalaciones sanitarias | Recepción sanitaria | Prueba funcional
+- `criterio-electrico-luminaria-calor` | criterio_tecnico_revisado | Accesorios y luminarias | Luminaria | Temperatura
+- `criterio-electrico-bano-grado-proteccion` | criterio_tecnico_revisado | Accesorios y luminarias | Baño y exterior | Protección
+- `criterio-puerta-exterior-intemperie` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Puerta exterior | Exposición climática
+- `criterio-porton-topes-seguros` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Portón | Topes y retención
+- `criterio-mosquitero-fijacion` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Mosquitero | Fijación
+- `criterio-seguro-ventana-operable` | criterio_tecnico_revisado | Puertas, ventanas y cerrajería | Cierre de ventana | Accionamiento
+- `criterio-herraje-lubricante-compatible` | criterio_tecnico_revisado | Mantenimiento de la vivienda | Herrajes | Lubricación
+- `criterio-perfil-retirar-pelicula` | criterio_tecnico_revisado | Carpinterías, sellos y herrajes | Perfil protegido | Retiro de película
+- `em040-recipiente-glp-ubicacion-segura` | validado_con_numeral | Instalaciones de gas y combustión | Recipiente de GLP | Ubicación
+- `em040-distancia-material-combustible` | validado_con_numeral | Instalaciones de gas y combustión | Artefacto y conducto | Separación de combustibles
+- `criterio-gas-separacion-otras-redes` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Red interna | Separación
+- `criterio-gas-soportes-firmes` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería | Fijación
+- `criterio-gas-tapar-extremos` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Tubería durante obra | Protección
+- `criterio-gas-cilindro-lejos-calor` | criterio_tecnico_revisado | Instalaciones de gas y combustión | Cilindro de GLP | Calor
+- `criterio-impermeabilizacion-diagnostico-origen` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Área con humedad | Diagnóstico de la fuente
+- `criterio-impermeabilizacion-sistema-exposicion` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Superficie a impermeabilizar | Selección por exposición
+- `criterio-impermeabilizacion-clima-aplicacion` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Aplicación exterior | Condiciones ambientales
+- `criterio-impermeabilizacion-material-almacenamiento` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Productos impermeabilizantes | Almacenamiento
+- `criterio-impermeabilizacion-sustrato-limpio` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Sustrato | Limpieza
+- `criterio-impermeabilizacion-soplete-seguridad` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Membrana aplicada con calor | Control de llama y fuego
+- `criterio-jardinera-rebose` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Jardinera | Rebose
+- `criterio-humedad-condensacion-diferenciar` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Mancha o moho | Condensación o filtración
+- `criterio-mantenimiento-cubierta-inspeccion-periodica` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Techo o azotea | Inspección
+- `criterio-mantenimiento-drenes-limpieza` | criterio_tecnico_revisado | Impermeabilización, Humedad y Drenaje | Canaletas y sumideros | Limpieza preventiva
+
+### Encofrado, desencofrado y acero — 51 registros, 3 criterios revisados
+
+- `e060-concreto-estructural-resistencia-minima` | validado_con_numeral | Concreto y acero de refuerzo | Concreto estructural | Resistencia especificada a compresión
+- `e060-agregado-maximo-respecto-encofrado` | validado_con_numeral | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al encofrado
+- `e060-agregado-maximo-respecto-losa` | validado_con_numeral | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al espesor de losa
+- `e060-agregado-maximo-respecto-acero` | validado_con_numeral | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al espacio libre del acero
+- `e060-curado-concreto-convencional-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Concreto convencional | Duración del curado húmedo
+- `e060-curado-alta-resistencia-inicial-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Concreto de alta resistencia inicial | Duración del curado húmedo
+- `e060-barras-paralelas-separacion-libre-minima` | validado_con_numeral | Concreto y acero de refuerzo | Barras paralelas en una capa | Separación libre
+- `e060-capas-refuerzo-separacion-libre-minima` | validado_con_numeral | Concreto y acero de refuerzo | Refuerzo en dos o más capas | Separación libre entre capas
+- `e060-columnas-barras-longitudinales-separacion-minima` | validado_con_numeral | Concreto y acero de refuerzo | Elemento a compresión con estribos o espiral | Separación libre entre barras longitudinales
+- `e060-recubrimiento-contra-suelo-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Concreto colocado contra el suelo | Recubrimiento mínimo
+- `e060-recubrimiento-losas-muros-interiores-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Losa, muro o vigueta interior | Recubrimiento mínimo para barras de 1 3/8 pulg. y menores
+- `e060-recubrimiento-vigas-columnas-interiores-minimo` | validado_con_numeral | Concreto y acero de refuerzo | Viga o columna interior | Recubrimiento mínimo
+- `e060-junta-construccion-preparacion` | validado_con_numeral | Concreto y acero de refuerzo | Junta de construcción | Preparación antes de continuar el vaciado
+- `e070-conexion-ras-chicote-anclaje` | validado_con_numeral | Albañilería confinada y armada | Conexión a ras columna-albañilería | Chicotes o mechas de anclaje
+- `e060-desarrollo-traccion-longitud-minima` | validado_con_numeral | Concreto y acero de refuerzo | Barra corrugada sometida a tracción | Longitud de desarrollo mínima
+- `e060-desarrollo-compresion-longitud-minima` | validado_con_numeral | Concreto y acero de refuerzo | Barra corrugada sometida a compresión | Longitud de desarrollo mínima
+- `e060-gancho-no-desarrolla-barra-compresion` | validado_con_numeral | Concreto y acero de refuerzo | Gancho estándar de barra | Uso en barras a compresión
+- `e060-empalme-traccion-clase-a-longitud` | validado_con_numeral | Concreto y acero de refuerzo | Empalme por traslape en tracción Clase A | Longitud mínima
+- `e060-empalme-traccion-clase-b-longitud` | validado_con_numeral | Concreto y acero de refuerzo | Empalme por traslape en tracción Clase B | Longitud mínima
+- `e060-paquete-barras-cantidad-maxima` | validado_con_numeral | Concreto y acero de refuerzo | Paquete de barras paralelas | Cantidad de barras
+- `e060-paquete-tres-cuatro-barras-ubicacion` | validado_con_numeral | Concreto y acero de refuerzo | Paquete de tres o cuatro barras | Ubicación dentro del estribo
+- `e060-losa-retraccion-corrugado-420-cuantia-minima` | validado_con_numeral | Vigas y losas de concreto armado | Losa con acero corrugado o malla fy igual o mayor de 420 MPa | Cuantía mínima por retracción y temperatura
+- `e060-colocacion-cerca-ubicacion-final` | validado_con_numeral | Procesos de concreto | Colocación del concreto | Punto de descarga
+- `e060-compactacion-alrededor-refuerzo` | validado_con_numeral | Procesos de concreto | Consolidación del concreto | Llenado de espacios
+- `e060-vibrador-no-desplaza-concreto` | validado_con_numeral | Procesos de concreto | Vibrador de concreto | Uso permitido
+- `e060-encofrado-acero-temperatura-maxima` | validado_con_numeral | Procesos de concreto | Encofrado metálico y acero | Temperatura máxima antes del vaciado
+- `e060-encofrado-hermeticidad` | validado_con_numeral | Encofrados y apuntalamiento | Encofrado | Hermeticidad
+- `e060-encofrado-arriostramiento` | validado_con_numeral | Encofrados y apuntalamiento | Encofrado | Arriostramiento y amarre
+- `e060-encofrado-cargas-diseno` | validado_con_numeral | Encofrados y apuntalamiento | Diseño de encofrado | Cargas y velocidad de colocación
+- `e060-desencofrado-sin-plazo-universal` | validado_con_numeral | Encofrados y apuntalamiento | Desencofrado | Momento de retiro
+- `e060-apuntalamiento-programacion-previa` | validado_con_numeral | Encofrados y apuntalamiento | Puntales y reapuntalamiento | Procedimiento y programación
+- `e060-estructura-sin-puntales-carga-maxima` | validado_con_numeral | Encofrados y apuntalamiento | Estructura sin apuntalamiento | Carga de construcción
+- `e070-grout-ocupacion-total-sin-vibrar-barras` | validado_con_numeral | Ejecución de albañilería | Grout en celdas | Colocación y consolidación
+- `e070-viga-peraltada-vaciado-con-losa` | validado_con_numeral | Ejecución de albañilería | Viga peraltada y losa de techo | Secuencia de vaciado
+- `g050-electricidad-provisional-puesta-tierra` | validado_con_numeral | Seguridad durante la construcción | Circuitos eléctricos provisionales | Puesta a tierra
+- `ge040-edificacion-ruinosa-no-habitar` | validado_con_numeral | Uso, mantenimiento y conservación | Edificación en estado ruinoso | Prohibición de ocupación
+- `e030-proyecto-reparacion-detalles-procedimientos` | validado_con_numeral | Evaluación y reforzamiento sísmico | Proyecto de reparación o reforzamiento | Contenido técnico
+- `e060-prueba-carga-seguridad` | validado_con_numeral | Evaluación de estructuras de concreto | Prueba de carga | Seguridad de personas y estructura
+- `e050-calzadura-no-dejar-sin-soporte` | validado_con_numeral | Excavaciones, sostenimiento y calzaduras | Calzadura | Soporte horizontal temporal
+- `g050-demolicion-riesgo-peso-area` | validado_con_numeral | Demoliciones y seguridad de intervención | Evaluación previa | Peso y área comprometida
+- `g050-demolicion-acceso-escaleras-seguras` | validado_con_numeral | Demoliciones y seguridad de intervención | Acceso de demolición | Escaleras provisionales
+- `g050-demolicion-no-retirar-estabilidad` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Elementos estabilizadores
+- `g050-demolicion-partes-expuestas-arriostrar` | validado_con_numeral | Demoliciones y seguridad de intervención | Estabilidad durante demolición | Arriostramiento previo
+- `g050-demolicion-cimiento-colindante-apuntalar` | validado_con_numeral | Demoliciones y seguridad de intervención | Protección de colindantes | Cimientos y terraplenes vecinos
+- `g050-demolicion-muros-arriba-abajo` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de muros | Secuencia vertical
+- `g050-demolicion-muros-no-sustentados` | validado_con_numeral | Demoliciones y seguridad de intervención | Demolición de muros | Apuntalamiento de muros libres
+- `criterio-corrosion-evaluar-seccion` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Corrosión del refuerzo | Pérdida de sección y adherencia
+- `criterio-concreto-desprendido-seguridad` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Concreto deteriorado | Desprendimiento y acero expuesto
+- `criterio-apuntalamiento-temporal-disenado` | criterio_tecnico_revisado | Diagnóstico, mantenimiento y reparación | Intervenciones temporales | Diseño de apuntalamiento
+- `g050-madera-clavos-retirar` | validado_con_numeral | Orden, limpieza y residuos de obra | Madera de desencofrado o embalaje | Retiro de clavos
+- `g050-entibado-proteger-colindantes` | validado_con_numeral | Excavaciones, zanjas y protección de colindantes | Entibado, apuntalamiento o tablestacado | Protección de obra y colindantes
+
+## Registros por fuente
+
+### G.050
 
 - `g050-via-circulacion-ancho-minimo` | Seguridad durante la construcción | Vía peatonal o de acarreo manual | Ancho mínimo | 7.4
 - `g050-electricidad-provisional-persona-competente` | Seguridad durante la construcción | Instalación eléctrica provisional | Responsable de ejecución y mantenimiento | 7.3
@@ -243,7 +1105,7 @@ Parámetros relacionados encontrados: `761`.
 - `g050-napa-bombeo-estabilidad-vecinos` | Excavaciones, zanjas y protección de colindantes | Abatimiento de agua subterránea | Protección de colindantes | 23.2
 - `g050-napa-tablestacado-caisson` | Excavaciones, zanjas y protección de colindantes | Excavación con nivel freático | Sistema de contención | 23.2
 
-## Formación técnica SENCICO
+### Formación técnica SENCICO
 
 - `criterio-sanitaria-pvc-corte-escuadra` | Ejecución y control de instalaciones sanitarias | Tubería PVC | Corte | sin numeral
 - `criterio-sanitaria-pvc-limpieza-union` | Ejecución y control de instalaciones sanitarias | Unión de PVC | Limpieza | sin numeral
@@ -355,7 +1217,7 @@ Parámetros relacionados encontrados: `761`.
 - `criterio-mantenimiento-no-perforar-techo` | Impermeabilización, Humedad y Drenaje | Azotea impermeabilizada | Nuevas instalaciones | Aplicación práctica supervisada
 - `criterio-mantenimiento-cisterna-inspeccion` | Impermeabilización, Humedad y Drenaje | Cisterna | Inspección interior | Aplicación práctica supervisada
 
-## A.120
+### A.120
 
 - `a120-ingreso-desnivel-solucion-accesible` | Accesibilidad universal en vivienda | Ingreso con diferencia de nivel | Rampa o medio mecánico | Artículo 4.a
 - `a120-rejilla-ingreso-abertura-maxima` | Accesibilidad universal en vivienda | Rejilla de drenaje en ingreso | Espaciamiento máximo | Artículo 4.a
@@ -401,6 +1263,7 @@ Parámetros relacionados encontrados: `761`.
 - `a120-ducha-asiento-dimensiones-altura` | Servicios higiénicos accesibles | Asiento de ducha accesible | Dimensiones y altura | Artículo 17.b
 - `a120-ducha-griferia-altura` | Servicios higiénicos accesibles | Grifería de ducha accesible | Altura | Artículo 17.c
 - `a120-ducha-barras-altura` | Servicios higiénicos accesibles | Barras de apoyo de ducha | Altura | Artículo 17.c
+- `a120-ducha-sin-sardinel` | Servicios higiénicos accesibles | Ducha accesible | Sardinel | Artículo 17.e
 - `a120-accesorios-bano-altura` | Servicios higiénicos accesibles | Accesorios de baño accesible | Rango de altura | Artículo 18.a y 18.g
 - `a120-estacionamiento-individual-dimensiones` | Estacionamientos accesibles | Estacionamiento accesible individual | Dimensiones mínimas | Artículo 23.a
 - `a120-bolardos-separacion-altura` | Estacionamientos accesibles | Bolardos entre peatones y vehículos | Separación y altura | Artículo 23.b
@@ -417,8 +1280,11 @@ Parámetros relacionados encontrados: `761`.
 - `a120-refugio-intercomunicador` | Evacuación y protección contra incendios | Área de refugio accesible | Comunicación de emergencia | Artículo 30.d
 - `a120-pulsador-panico-alturas` | Evacuación y protección contra incendios | Pulsador de emergencia en baño accesible | Alturas de accionamiento | Artículo 30.f
 - `a120-alerta-emergencia-sonora-luminosa` | Evacuación y protección contra incendios | Sistema de alerta accesible | Modalidades | Artículo 30.h
+- `a120-bano-accesible-espacio-giro-puerta` | Servicios higiénicos accesibles | Puerta de baño accesible | Espacio de maniobra | Artículo 13.1.b
+- `a120-bano-accesible-apertura-compatible` | Servicios higiénicos accesibles | Puerta de baño accesible | Tipo y sentido de apertura | Artículo 13.1.b
+- `a120-marco-bano-no-invadir-ruta` | Servicios higiénicos accesibles | Marco de puerta accesible | Invasión de la ruta | Artículo 13.1.b
 
-## A.010
+### A.010
 
 - `a010-escalera-vivienda-huella-minima` | Escaleras | Escalera de vivienda | Huella o paso | 23.2.b.i
 - `a010-escalera-contrahuella-maxima` | Escaleras | Escalera | Contrahuella o contrapaso | 23.2.c
@@ -468,14 +1334,80 @@ Parámetros relacionados encontrados: `761`.
 - `a010-estacionamiento-acceso-mas500` | Estacionamientos | Acceso vehicular de vivienda | Ancho para más de 500 vehículos | 53.1.a.4
 - `a010-estacionamiento-puerta-no-invadir-vereda` | Estacionamientos | Puerta de estacionamiento | Apertura | 53.1.b
 - `a010-rampa-estacionamiento-pendiente-maxima` | Estacionamientos | Rampa vehicular | Pendiente general | 53.1.c
+- `a010-rampa-radio-giro-minimo` | Estacionamientos | Rampa vehicular | Radio de giro | 53.1.e
 - `a010-cajon-privado-altura-libre` | Estacionamientos | Cajón privado | Altura libre | 54.1.a, Cuadro 03
+- `a010-cajon-pendiente-maxima` | Estacionamientos | Cajón de estacionamiento | Pendiente | 54.1.a, nota (*)
+- `a010-cajones-opuestos-distancia-minima` | Estacionamientos | Maniobra entre cajones privados | Distancia libre | 54.1.c
+- `a010-estacionamiento-ruta-evacuacion-prohibido` | Estacionamientos | Cajón privado | Ruta de evacuación | 54.1.d
 - `a010-estacionamiento-doble-largo` | Estacionamientos | Estacionamiento doble o en tándem | Largo | 54.1.e
 - `a010-estacionamiento-doble-una-unidad` | Estacionamientos | Estacionamiento doble o en tándem | Unidad inmobiliaria | 54.1.e
+- `a010-estacionamiento-distancia-hidrante` | Estacionamientos | Cajón de estacionamiento | Separación de hidrante | 54.1.f
 - `a010-bicicleta-distancia-acceso-maxima` | Estacionamientos | Estacionamiento de bicicletas | Distancia al acceso | 57.1
 - `a010-estacionamiento-senalizacion-interna` | Estacionamientos | Zona de estacionamiento | Señalización interna | 58.1
 - `a010-estacionamiento-senalizacion-via-publica` | Estacionamientos | Acceso vehicular | Advertencia a peatones y vehículos | 58.2
 
-## EM.070
+### A.020
+
+- `a020-escalera-vivienda-entre-muros-ancho-minimo` | Escaleras | Escalera interior de vivienda entre muros | Ancho libre | 15.1.a
+- `a020-escalera-vivienda-lado-abierto-ancho-minimo` | Escaleras | Escalera interior de vivienda con un lado abierto | Ancho libre | 15.1.a
+- `a020-escalera-vivienda-dos-tramos-sin-muro-ancho-minimo` | Escaleras | Escalera de vivienda de dos tramos sin muro intermedio | Ancho libre | 15.1.a
+- `a020-escalera-multifamiliar-comun-ancho-minimo` | Escaleras | Escalera integrada de uso común en vivienda multifamiliar | Ancho libre | 15.2.b
+- `a020-escalera-caracol-abanico-huella-minima` | Escaleras | Escalera interior de vivienda con pasos en caracol o abanico | Huella medida en la línea reglamentaria | 15.1.b
+- `a020-escalera-vivienda-pasamanos-cantidad-minima` | Escaleras | Escalera interior de vivienda | Cantidad mínima de lados con pasamanos | 15.1.c
+- `a020-escalera-vivienda-pasamanos-altura` | Escaleras | Pasamanos de escalera interior de vivienda | Altura | 15.1.c
+- `a020-escalera-vivienda-cierre-aberturas-maximo` | Escaleras | Cierre entre pasamanos y pasos de escalera de vivienda | Abertura máxima de seguridad | 15.1.c
+- `a020-escalera-exterior-bifamiliar-ancho-minimo` | Escaleras | Escalera exterior para vivienda bifamiliar o dos unidades | Ancho entre muros | 15.2.g
+- `a020-escalera-gato-inicio-proteccion` | Escaleras | Escalera tipo gato para ambiente técnico | Altura de inicio de la protección | 15.1.d
+- `a020-ocupacion-un-dormitorio` | Arquitectura y Habitabilidad de la Vivienda | Vivienda de un dormitorio | Ocupación de diseño | Artículo 7
+- `a020-ocupacion-dos-dormitorios` | Arquitectura y Habitabilidad de la Vivienda | Vivienda de dos dormitorios | Ocupación de diseño | Artículo 7
+- `a020-ocupacion-tres-dormitorios` | Arquitectura y Habitabilidad de la Vivienda | Vivienda de tres dormitorios | Ocupación de diseño | Artículo 7
+- `a020-ocupacion-dormitorio-adicional` | Arquitectura y Habitabilidad de la Vivienda | Vivienda con más de tres dormitorios | Ocupación adicional | Artículo 7
+- `a020-vivienda-colectiva-area-minima` | Arquitectura y Habitabilidad de la Vivienda | Unidad de vivienda colectiva sin expansión | Área techada mínima | Artículo 8
+- `a020-vivienda-familiar-area-minima` | Arquitectura y Habitabilidad de la Vivienda | Vivienda familiar sin expansión | Área techada mínima | Artículo 8
+- `a020-vivienda-expandible-modulo-inicial-minimo` | Arquitectura y Habitabilidad de la Vivienda | Vivienda unifamiliar expandible | Área del módulo inicial | Artículo 8
+- `a020-bano-altura-libre-minima` | Arquitectura y Habitabilidad de la Vivienda | Baño de vivienda | Altura libre | Artículo 9
+- `a020-vano-iluminacion-natural-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de vano para iluminación | ¿Qué área mínima de ventana se considera para iluminación natural?
+- `a020-vano-ventilacion-natural-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de abertura para ventilación | ¿Qué parte de la ventana debe poder abrirse para ventilar?
+- `a020-ventana-alfeizar-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Ventana de vivienda | Altura del alfeizar | Artículo 12
+- `a020-ventana-proteccion-abertura-maxima` | Arquitectura y Habitabilidad de la Vivienda | Protección de ventana con alfeizar bajo | Abertura máxima | Artículo 12
+- `a020-pozo-luz-unifamiliar-dormitorios-minimo` | Arquitectura y Habitabilidad de la Vivienda | Pozo de luz para dormitorios, sala o comedor en vivienda unifamiliar o bifamiliar | Dimensión mínima | Artículo 11
+- `a020-pozo-luz-cocina-servicio-minimo` | Arquitectura y Habitabilidad de la Vivienda | Pozo de luz para cocina, baño o patio de servicio | Dimensión mínima | Artículo 11
+- `a020-pozo-luz-multifamiliar-minimo-absoluto` | Arquitectura y Habitabilidad de la Vivienda | Pozo de luz en vivienda multifamiliar | Dimensión mínima absoluta | Artículo 11
+- `a020-cerramiento-proteccion-lluvia` | Impermeabilización, Humedad y Drenaje | Cerramiento exterior de vivienda | Protección contra lluvia | Artículo 14
+- `a020-piso-exterior-antideslizante` | Arquitectura y Habitabilidad de la Vivienda | Piso exterior | Resistencia al deslizamiento | Artículo 14
+- `a020-piso-cocina-resistencia-grasas` | Arquitectura y Habitabilidad de la Vivienda | Piso de cocina | Resistencia a grasas y aceites | Artículo 14
+- `a020-zona-humeda-acabados` | Impermeabilización, Humedad y Drenaje | Zona húmeda de vivienda | Pisos y paredes | Artículo 14
+- `a020-servicios-basicos-todos-ambientes` | Arquitectura y Habitabilidad de la Vivienda | Vivienda | Servicios básicos | Artículo 22
+- `a020-tension-electrica-vivienda` | Arquitectura y Habitabilidad de la Vivienda | Instalación eléctrica de vivienda | Tensión nominal | Artículo 22
+- `a020-vivienda-hasta-25-aparatos-sanitarios` | Arquitectura y Habitabilidad de la Vivienda | Vivienda de hasta 25 m² | Aparatos sanitarios mínimos | 23.1
+- `a020-vivienda-mas-25-aparatos-sanitarios` | Arquitectura y Habitabilidad de la Vivienda | Vivienda de más de 25 m² | Aparatos sanitarios mínimos | 23.1
+- `a020-servicio-sanitario-valvula-sumidero` | Arquitectura y Habitabilidad de la Vivienda | Ambiente con aparatos sanitarios | Válvula y sumidero | 23.2
+- `a020-ducto-red-humeda-electricidad-prohibicion` | Impermeabilización, Humedad y Drenaje | Ducto de instalaciones | Separación de redes | Artículo 24
+- `a020-medidores-independientes-vivienda` | Arquitectura y Habitabilidad de la Vivienda | Vivienda independiente | Medidores | Artículo 25
+- `a020-inodoro-doble-descarga-maximos` | Arquitectura y Habitabilidad de la Vivienda | Inodoro de doble descarga | Volumen máximo por descarga | Artículo 29
+- `a020-tabique-tuberia-recubrimiento-minimo` | Arquitectura y Habitabilidad de la Vivienda | Tabique con tubería de agua o desagüe | Recubrimiento hasta la cara terminada | Artículo 19
+- `a020-azotea-baranda-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Azotea accesible | Altura de protección | Artículo 18
+- `a020-azotea-muro-colindante-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Azotea junto a predio vecino | Altura del muro colindante | Artículo 18
+- `a020-azotea-escalera-gato-solo-mantenimiento` | Azoteas, techos y cubiertas | Acceso a equipos de azotea | Escalera tipo gato | 15.2.e
+- `a020-azotea-uso-comun-escalera-comun` | Azoteas, techos y cubiertas | Azotea de uso común | Acceso | 15.2.f
+- `a020-azotea-no-computa-altura` | Azoteas, techos y cubiertas | Azotea de vivienda | Cómputo de altura | 18.1
+- `a020-azotea-acceso-escalera-ascensor` | Azoteas, techos y cubiertas | Azotea de vivienda | Medios de acceso | 18.1
+- `a020-azotea-pluvial-no-danar` | Azoteas, techos y cubiertas | Azotea de vivienda | Protección frente a lluvia | 18.2
+- `a020-azotea-retranque-minimo` | Azoteas, techos y cubiertas | Azotea de vivienda | Retranque del área techada | 18.3
+- `a020-azotea-parapeto-general-minimo` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Altura general | 18.4
+- `a020-azotea-parapeto-colindante-minimo` | Azoteas, techos y cubiertas | Parapeto de azotea | Altura hacia vecino o unidad contigua | 18.4
+- `a020-azotea-baranda-resistencia-puntual` | Azoteas, techos y cubiertas | Baranda de azotea | Resistencia horizontal | 18.4
+- `a020-azotea-medicion-parapeto` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Punto de medición | 18.5
+- `a020-azotea-vivienda-unica-usos` | Azoteas, techos y cubiertas | Azotea de una sola vivienda | Usos permitidos | 18.6
+- `a020-cubierta-inclinada-mantenimiento` | Azoteas, techos y cubiertas | Cubierta inclinada | Acceso para reparación | 20.3
+- `a020-vano-puerta-principal-vivienda-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta principal de vivienda | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-ambientes-principales-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de dormitorio, sala, comedor o cocina | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-bano-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de baño o ambiente de servicio | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-vano-puerta-principal-multifamiliar-ancho-minimo` | Puertas, ventanas y cerrajería | Ingreso principal de vivienda multifamiliar | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
+- `a020-puerta-varias-hojas-hoja-minima` | Puertas, ventanas y cerrajería | Puerta residencial de varias hojas | Ancho mínimo de una hoja | 12.3
+- `a020-vano-cierre-clima-material-compatible` | Puertas, ventanas y cerrajería | Vano de puerta o ventana | Compatibilidad del cierre | 12.1
+
+### EM.070
 
 - `em070-puerta-pozo-bloqueo-movimiento` | Transporte mecánico y equipos especiales | Puerta de acceso al pozo de ascensor | Bloqueo durante funcionamiento | 5.4.a
 - `em070-cabina-no-mover-puerta-abierta` | Transporte mecánico y equipos especiales | Cabina de ascensor | Movimiento con puerta abierta | 5.4.b
@@ -526,7 +1458,7 @@ Parámetros relacionados encontrados: `761`.
 - `em070-escalera-mecanica-barreras` | Ascensores y Transporte Mecánico | Escalera mecánica o rampa móvil | Barreras de protección | 12.3
 - `em070-escalera-mecanica-sentido-flujo` | Ascensores y Transporte Mecánico | Escalera mecánica | Sentido de circulación | 12.4 y 12.6
 
-## A.130
+### A.130
 
 - `a130-puerta-evacuacion-giro-flujo` | Evacuación y protección contra incendios | Puerta de evacuación de ambiente con más de 50 personas | Sentido de apertura | Artículo 6
 - `a130-puerta-pestillo-fuerza-maxima` | Evacuación y protección contra incendios | Pestillo o barra antipánico | Fuerza máxima para destrabar | Artículo 7
@@ -570,13 +1502,17 @@ Parámetros relacionados encontrados: `761`.
 - `a130-puerta-cortafuego-resistencia-relativa` | Evacuación y protección contra incendios | Puerta cortafuego | Resistencia respecto del cerramiento | Artículo 10
 - `a130-puerta-cortafuego-alteracion-certificacion` | Evacuación y protección contra incendios | Puerta cortafuego certificada | Conservación de la certificación | Artículo 10
 
-## EM.040
+### EM.040
 
 - `em040-ambiente-abierto-vano-distancia-techo` | Instalaciones de gas | Ambiente abierto hacia el exterior | Distancia del borde superior del vano al techo | 3.7.a
 - `em040-ambiente-abierto-techo-porcentaje` | Instalaciones de gas | Ambiente abierto hacia el exterior | Área de abertura permanente en techo | 3.7.b
 - `em040-ambiente-abierto-techo-area-minima` | Instalaciones de gas | Ambiente abierto hacia el exterior | Área mínima absoluta de abertura en techo | 3.7.b
 - `em040-espacio-confinado-umbral` | Instalaciones de gas | Ambiente con artefactos a gas | Umbral de espacio confinado | 3.22
+- `em040-glp-presion-maxima-despues-regulador` | Instalaciones de gas | Tubería de GLP después del regulador de primera etapa | Presión máxima de operación | 5.1
+- `em040-glp-linea-carga-exterior` | Instalaciones de gas | Línea de carga a tanque estacionario | Recorrido exterior | 5.3.b
 - `em040-glp-linea-carga-ventilacion` | Instalaciones de gas | Cubierta de línea de carga de GLP | Aberturas de ventilación | 5.3.b.i
+- `em040-glp-tanque-exterior-sin-techo` | Instalaciones de gas | Tanque estacionario de GLP | Ubicación general | 5.3.d
+- `em040-glp-tanque-perimetro-libre` | Instalaciones de gas | Tanque estacionario de GLP | Perímetro lateral libre | 5.3.d
 - `em040-glp-tanque-altura-transferencia-obligatoria` | Instalaciones de gas | Tanque estacionario de GLP elevado | Punto de transferencia y línea de llenado | 5.3.e
 - `em040-glp-tanque-altura-hasta-16m` | Instalaciones de Gas en Viviendas | Tanque estacionario de GLP hasta 16 m | Opciones de llenado | 5.3(e)(i)
 - `em040-edificacion-nueva-dos-aberturas` | Instalaciones de Gas en Viviendas | Cocina o lavandería nueva con gas | Cantidad de aberturas permanentes | 8.2(c)(i)
@@ -609,7 +1545,7 @@ Parámetros relacionados encontrados: `761`.
 - `em040-ventilacion-permanente` | Instalaciones de gas y combustión | Ambiente con artefacto | Ventilación | Artículo 11
 - `em040-puesta-servicio-verificada` | Instalaciones de gas y combustión | Instalación terminada | Puesta en servicio | Artículo 15
 
-## Buenas prácticas de acabados — revisión técnica
+### Buenas prácticas de acabados — revisión técnica
 
 - `criterio-tarrajeo-limpieza-polvo-grasa` | Tarrajeos, revoques y enlucidos | Superficie antes del tarrajeo | Limpieza | sin numeral
 - `criterio-tarrajeo-sonido-hueco` | Tarrajeos, revoques y enlucidos | Tarrajeo terminado | Adherencia aparente | sin numeral
@@ -646,7 +1582,7 @@ Parámetros relacionados encontrados: `761`.
 - `criterio-acabado-proteccion-trabajos-terminados` | Control de calidad de acabados | Acabado terminado | Protección | sin numeral
 - `criterio-acabado-limpieza-final-compatible` | Control de calidad de acabados | Entrega de acabados | Limpieza final | sin numeral
 
-## E.050
+### E.050
 
 - `e050-sostenimiento-evaluacion-ems` | Excavaciones, sostenimiento y calzaduras | Excavación y sostenimiento | Evaluación de necesidad en el EMS | 39.1
 - `e050-excavacion-profunda-sostenimiento` | Excavaciones, sostenimiento y calzaduras | Excavación vertical | Profundidad que exige sostenimiento | 39.2
@@ -681,41 +1617,7 @@ Parámetros relacionados encontrados: `761`.
 - `e050-calzadura-diseno-factores-minimos` | Excavaciones, sostenimiento y calzaduras | Calzadura | Factores mínimos de diseño | 39.12.8.a
 - `e050-calzadura-no-dejar-sin-soporte` | Excavaciones, sostenimiento y calzaduras | Calzadura | Soporte horizontal temporal | 39.12.8.b
 
-## A.020
-
-- `a020-escalera-vivienda-entre-muros-ancho-minimo` | Escaleras | Escalera interior de vivienda entre muros | Ancho libre | 15.1.a
-- `a020-escalera-vivienda-lado-abierto-ancho-minimo` | Escaleras | Escalera interior de vivienda con un lado abierto | Ancho libre | 15.1.a
-- `a020-escalera-vivienda-dos-tramos-sin-muro-ancho-minimo` | Escaleras | Escalera de vivienda de dos tramos sin muro intermedio | Ancho libre | 15.1.a
-- `a020-escalera-multifamiliar-comun-ancho-minimo` | Escaleras | Escalera integrada de uso común en vivienda multifamiliar | Ancho libre | 15.2.b
-- `a020-escalera-caracol-abanico-huella-minima` | Escaleras | Escalera interior de vivienda con pasos en caracol o abanico | Huella medida en la línea reglamentaria | 15.1.b
-- `a020-escalera-vivienda-pasamanos-cantidad-minima` | Escaleras | Escalera interior de vivienda | Cantidad mínima de lados con pasamanos | 15.1.c
-- `a020-escalera-vivienda-pasamanos-altura` | Escaleras | Pasamanos de escalera interior de vivienda | Altura | 15.1.c
-- `a020-escalera-vivienda-cierre-aberturas-maximo` | Escaleras | Cierre entre pasamanos y pasos de escalera de vivienda | Abertura máxima de seguridad | 15.1.c
-- `a020-escalera-exterior-bifamiliar-ancho-minimo` | Escaleras | Escalera exterior para vivienda bifamiliar o dos unidades | Ancho entre muros | 15.2.g
-- `a020-escalera-gato-inicio-proteccion` | Escaleras | Escalera tipo gato para ambiente técnico | Altura de inicio de la protección | 15.1.d
-- `a020-bano-altura-libre-minima` | Arquitectura y Habitabilidad de la Vivienda | Baño de vivienda | Altura libre | Artículo 9
-- `a020-vano-ventilacion-natural-minimo` | Arquitectura y Habitabilidad de la Vivienda | Ambiente de vivienda | Área de abertura para ventilación | ¿Qué parte de la ventana debe poder abrirse para ventilar?
-- `a020-ventana-alfeizar-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Ventana de vivienda | Altura del alfeizar | Artículo 12
-- `a020-ventana-proteccion-abertura-maxima` | Arquitectura y Habitabilidad de la Vivienda | Protección de ventana con alfeizar bajo | Abertura máxima | Artículo 12
-- `a020-piso-cocina-resistencia-grasas` | Arquitectura y Habitabilidad de la Vivienda | Piso de cocina | Resistencia a grasas y aceites | Artículo 14
-- `a020-azotea-baranda-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Azotea accesible | Altura de protección | Artículo 18
-- `a020-azotea-muro-colindante-altura-minima` | Arquitectura y Habitabilidad de la Vivienda | Azotea junto a predio vecino | Altura del muro colindante | Artículo 18
-- `a020-azotea-escalera-gato-solo-mantenimiento` | Azoteas, techos y cubiertas | Acceso a equipos de azotea | Escalera tipo gato | 15.2.e
-- `a020-azotea-uso-comun-escalera-comun` | Azoteas, techos y cubiertas | Azotea de uso común | Acceso | 15.2.f
-- `a020-azotea-no-computa-altura` | Azoteas, techos y cubiertas | Azotea de vivienda | Cómputo de altura | 18.1
-- `a020-azotea-acceso-escalera-ascensor` | Azoteas, techos y cubiertas | Azotea de vivienda | Medios de acceso | 18.1
-- `a020-azotea-parapeto-general-minimo` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Altura general | 18.4
-- `a020-azotea-parapeto-colindante-minimo` | Azoteas, techos y cubiertas | Parapeto de azotea | Altura hacia vecino o unidad contigua | 18.4
-- `a020-azotea-baranda-resistencia-puntual` | Azoteas, techos y cubiertas | Baranda de azotea | Resistencia horizontal | 18.4
-- `a020-azotea-medicion-parapeto` | Azoteas, techos y cubiertas | Parapeto o baranda de azotea | Punto de medición | 18.5
-- `a020-cubierta-inclinada-mantenimiento` | Azoteas, techos y cubiertas | Cubierta inclinada | Acceso para reparación | 20.3
-- `a020-vano-puerta-principal-vivienda-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta principal de vivienda | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
-- `a020-vano-puerta-ambientes-principales-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de dormitorio, sala, comedor o cocina | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
-- `a020-vano-puerta-bano-ancho-minimo` | Puertas, ventanas y cerrajería | Puerta de baño o ambiente de servicio | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
-- `a020-vano-puerta-principal-multifamiliar-ancho-minimo` | Puertas, ventanas y cerrajería | Ingreso principal de vivienda multifamiliar | Ancho mínimo del vano | 12.2.b, Cuadro N.° 06
-- `a020-puerta-varias-hojas-hoja-minima` | Puertas, ventanas y cerrajería | Puerta residencial de varias hojas | Ancho mínimo de una hoja | 12.3
-
-## E.040
+### E.040
 
 - `e040-baranda-vidrio-calculo-sobrecarga` | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Cálculo por sobrecarga horizontal | 5.12
 - `e040-baranda-vidrio-calculo-sismo-viento` | Vidrios, ventanas y cerramientos | Baranda o parapeto de vidrio | Acciones sísmicas y de viento | 5.12
@@ -744,8 +1646,39 @@ Parámetros relacionados encontrados: `761`.
 - `e040-manipulacion-epp` | Vidrios, ventanas y cerramientos | Manipulación e instalación de vidrio | Equipo de protección personal | 19.3
 - `e040-ruta-segura-traslado` | Vidrios, ventanas y cerramientos | Traslado interno del vidrio | Ruta segura | 19.5
 
-## IS.010
+### E.060
 
+- `e060-escalera-garganta-sin-minimo-universal` | Escaleras | Losa de escalera de concreto armado | Espesor de garganta | 9.6.1, 9.6.2.1 y Tabla 9.1
+- `e060-losa-escalera-simple-referencia-espesor` | Escaleras | Losa unidireccional de escalera simplemente apoyada | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
+- `e060-losa-escalera-un-extremo-continuo-referencia-espesor` | Escaleras | Losa unidireccional de escalera continua en un extremo | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
+- `e060-losa-escalera-ambos-extremos-continuos-referencia-espesor` | Escaleras | Losa unidireccional de escalera continua en ambos extremos | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
+- `e060-losa-escalera-voladizo-referencia-espesor` | Escaleras | Losa unidireccional de escalera en voladizo | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
+- `e060-agregado-maximo-respecto-losa` | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al espesor de losa | 3.3.2(b)
+- `e060-desarrollo-traccion-longitud-minima` | Concreto y acero de refuerzo | Barra corrugada sometida a tracción | Longitud de desarrollo mínima | 12.2.1-12.2.4
+- `e060-viga-perimetral-refuerzo-inferior-integridad` | Vigas y losas de concreto armado | Viga perimetral construida en obra | Refuerzo corrido inferior | 7.13.2.2(b)
+- `e060-losa-nervada-nervio-altura-relacion-maxima` | Vigas y losas de concreto armado | Nervio o vigueta de losa nervada | Relación máxima altura-ancho | 8.11.2 y 8.11.4
+- `e060-transporte-sin-interrupciones` | Procesos de concreto | Abastecimiento de concreto | Continuidad del suministro | 5.9.2
+- `e060-vibrador-no-desplaza-concreto` | Procesos de concreto | Vibrador de concreto | Uso permitido | 5.10.7
+- `e060-clima-frio-umbral` | Procesos de concreto | Vaciado en clima frío | Umbral de aplicación | 5.12.1
+- `e060-encofrado-cargas-diseno` | Encofrados y apuntalamiento | Diseño de encofrado | Cargas y velocidad de colocación | 6.1.5
+- `e060-estructura-sin-puntales-carga-maxima` | Encofrados y apuntalamiento | Estructura sin apuntalamiento | Carga de construcción | 6.2.2.2
+- `e060-aceptacion-resultado-individual` | Control de calidad del concreto | Resultado individual de resistencia | Reducción máxima respecto a f'c | 5.6.3.3(b)
+- `e060-evaluacion-estructura-metodos` | Evaluación de estructuras de concreto | Estructura existente de concreto | Métodos de evaluación de resistencia | 20.1.1
+- `e060-evaluacion-analitica-condiciones` | Evaluación de estructuras de concreto | Evaluación analítica | Condiciones para que sea suficiente | 20.1.2
+- `e060-prueba-carga-cuando-requerida` | Evaluación de estructuras de concreto | Prueba de carga | Condición que obliga a usarla | 20.1.3
+- `e060-evaluacion-acero-resistencia` | Evaluación de estructuras de concreto | Material existente | Determinación de resistencia del acero | 20.2.4
+- `e060-prueba-carga-patron-critico` | Evaluación de estructuras de concreto | Prueba de carga | Selección de tramos y paños | 20.3.1
+- `e060-prueba-carga-incrementos-minimos` | Evaluación de estructuras de concreto | Prueba de carga | Número de incrementos | 20.4.2
+- `e060-prueba-carga-retiro` | Evaluación de estructuras de concreto | Prueba de carga | Retiro de la carga | 20.4.5
+- `e060-prueba-carga-fisura-inclinada-evaluar` | Evaluación de estructuras de concreto | Aceptación de prueba de carga | Fisura inclinada sin refuerzo transversal | 20.5.4
+- `e060-carga-servicio-menor-autoridad` | Evaluación de estructuras de concreto | Estructura existente | Uso con menor carga | 20.6
+- `e060-prueba-carga-seguridad` | Evaluación de estructuras de concreto | Prueba de carga | Seguridad de personas y estructura | 20.7
+
+### IS.010
+
+- `is010-dotacion-vivienda-calido` | Instalaciones Sanitarias en Viviendas | Vivienda en clima cálido | Dotación diaria de agua | Modificación del literal a) del párrafo 2.2
+- `is010-dotacion-vivienda-templado` | Instalaciones Sanitarias en Viviendas | Vivienda en clima templado | Dotación diaria de agua | Modificación del literal a) del párrafo 2.2
+- `is010-dotacion-vivienda-frio` | Instalaciones Sanitarias en Viviendas | Vivienda en clima frío | Dotación diaria de agua | Modificación del literal a) del párrafo 2.2
 - `is010-presion-estatica-maxima` | Instalaciones Sanitarias en Viviendas | Red interior de agua | Presión estática máxima | 2.3
 - `is010-tanque-elevado-unico-capacidad` | Instalaciones Sanitarias en Viviendas | Tanque elevado como único almacenamiento | Capacidad mínima | 2.4
 - `is010-cisterna-unica-capacidad` | Instalaciones Sanitarias en Viviendas | Cisterna como único almacenamiento | Capacidad mínima | 2.4
@@ -764,21 +1697,38 @@ Parámetros relacionados encontrados: `761`.
 - `is010-sello-agua-rango` | Instalaciones sanitarias en ejecución | Trampa o sifón | Altura del sello de agua | 6.2.i
 - `is010-ventilacion-abertura-distancia-horizontal` | Instalaciones sanitarias en ejecución | Terminal de ventilación | Distancia a abertura | 6.5.f
 
-## E.060
+### GE.040
 
-- `e060-escalera-garganta-sin-minimo-universal` | Escaleras | Losa de escalera de concreto armado | Espesor de garganta | 9.6.1, 9.6.2.1 y Tabla 9.1
-- `e060-losa-escalera-simple-referencia-espesor` | Escaleras | Losa unidireccional de escalera simplemente apoyada | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
-- `e060-losa-escalera-un-extremo-continuo-referencia-espesor` | Escaleras | Losa unidireccional de escalera continua en un extremo | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
-- `e060-losa-escalera-ambos-extremos-continuos-referencia-espesor` | Escaleras | Losa unidireccional de escalera continua en ambos extremos | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
-- `e060-losa-escalera-voladizo-referencia-espesor` | Escaleras | Losa unidireccional de escalera en voladizo | Referencia de espesor para control de deflexiones | 9.6.2.1, Tabla 9.1
-- `e060-agregado-maximo-respecto-losa` | Concreto y acero de refuerzo | Agregado grueso | Tamaño máximo respecto al espesor de losa | 3.3.2(b)
-- `e060-losa-nervada-nervio-altura-relacion-maxima` | Vigas y losas de concreto armado | Nervio o vigueta de losa nervada | Relación máxima altura-ancho | 8.11.2 y 8.11.4
-- `e060-transporte-sin-interrupciones` | Procesos de concreto | Abastecimiento de concreto | Continuidad del suministro | 5.9.2
-- `e060-evaluacion-estructura-metodos` | Evaluación de estructuras de concreto | Estructura existente de concreto | Métodos de evaluación de resistencia | 20.1.1
-- `e060-prueba-carga-fisura-inclinada-evaluar` | Evaluación de estructuras de concreto | Aceptación de prueba de carga | Fisura inclinada sin refuerzo transversal | 20.5.4
-- `e060-prueba-carga-seguridad` | Evaluación de estructuras de concreto | Prueba de carga | Seguridad de personas y estructura | 20.7
+- `ge040-uso-no-exceder-cargas` | Uso, mantenimiento y conservación | Cambio de uso y cargas | Prohibición de exceder cargas de diseño | Artículo 2
+- `ge040-obra-existente-licencia-profesional` | Uso, mantenimiento y conservación | Intervención en inmueble existente | Licencia y responsabilidad profesional | Artículo 3
+- `ge040-edificacion-ruinosa-no-habitar` | Uso, mantenimiento y conservación | Edificación en estado ruinoso | Prohibición de ocupación | Artículo 5
+- `ge040-edificacion-ruinosa-intervencion` | Uso, mantenimiento y conservación | Edificación en estado ruinoso | Consolidación, remodelación o demolición | Artículo 5
+- `ge040-escombros-no-via-azotea` | Uso, mantenimiento y conservación | Residuos de refacción o remodelación | Lugar de disposición | Artículo 6
+- `ge040-equipo-vibracion-aislamiento` | Uso, mantenimiento y conservación | Equipos y maquinaria | Aislamiento de vibraciones | Artículo 8
+- `ge040-cambio-uso-licencia` | Uso, mantenimiento y conservación | Cambio de uso | Adecuación y licencia | Artículo 10
+- `ge040-deber-mantenimiento-integral` | Uso, mantenimiento y conservación | Mantenimiento de la edificación | Deber de conservación | Artículo 11
+- `ge040-desperfectos-servicios-reparacion-pronta` | Uso, mantenimiento y conservación | Instalaciones de servicios | Reparación oportuna de desperfectos | Artículo 12
+- `ge040-areas-comunes-mantenimiento` | Uso, mantenimiento y conservación | Áreas comunes | Obligación de mantenimiento | Artículo 13
+- `ge040-equipos-comunes-servicio-tecnico` | Uso, mantenimiento y conservación | Equipos comunes | Mantenimiento preventivo y correctivo | Artículo 14
+- `ge040-cerco-electrico-mantenimiento` | Uso, mantenimiento y conservación | Cerco eléctrico | Mantenimiento regular | Artículo 15
+- `ge040-dano-evento-evaluacion-especialista` | Uso, mantenimiento y conservación | Edificación afectada por un evento | Evaluación especializada | Artículo 17
+- `ge040-dano-cumplir-recomendaciones` | Uso, mantenimiento y conservación | Edificación afectada por un evento | Cumplimiento de recomendaciones | Artículo 17
+- `ge040-dano-facilitar-acceso` | Uso, mantenimiento y conservación | Evaluación de daños | Acceso para análisis estructural | Artículo 17
 
-## EM.080
+### Evaluación profesional de edificaciones existentes
+
+- `criterio-grieta-no-clasificar-solo-ancho` | Diagnóstico, mantenimiento y reparación | Diagnóstico de grietas | Ancho no determina por sí solo el riesgo | Aplicación profesional caso por caso
+- `criterio-grieta-activa-monitoreo` | Diagnóstico, mantenimiento y reparación | Diagnóstico de grietas | Actividad y evolución | Aplicación profesional caso por caso
+- `criterio-eflorescencia-sales-humedad` | Diagnóstico, mantenimiento y reparación | Patologías por humedad | Eflorescencias y sales | Aplicación profesional caso por caso
+- `criterio-corrosion-evaluar-seccion` | Diagnóstico, mantenimiento y reparación | Corrosión del refuerzo | Pérdida de sección y adherencia | Aplicación profesional caso por caso
+- `criterio-concreto-desprendido-seguridad` | Diagnóstico, mantenimiento y reparación | Concreto deteriorado | Desprendimiento y acero expuesto | Aplicación profesional caso por caso
+- `criterio-asentamiento-investigar-suelo` | Diagnóstico, mantenimiento y reparación | Asentamientos y deformaciones | Investigación de la causa | Aplicación profesional caso por caso
+- `criterio-cambio-uso-revisar-cargas` | Diagnóstico, mantenimiento y reparación | Cambio de uso | Nuevas cargas y exigencias | Aplicación profesional caso por caso
+- `criterio-apuntalamiento-temporal-disenado` | Diagnóstico, mantenimiento y reparación | Intervenciones temporales | Diseño de apuntalamiento | Aplicación profesional caso por caso
+- `criterio-despues-sismo-restringir-uso` | Diagnóstico, mantenimiento y reparación | Evaluación postevento | Restricción preventiva de uso | Aplicación profesional caso por caso
+- `criterio-reparar-no-ocultar-evidencia` | Diagnóstico, mantenimiento y reparación | Diagnóstico y reparación | Documentación previa | Aplicación profesional caso por caso
+
+### EM.080
 
 - `em080-terma-solar-verificacion-carga` | Energía Solar en Viviendas | Terma solar sobre techo o terraza | Verificación estructural | 6.1.1 y 6.1.4
 - `em080-terma-solar-acceso-mantenimiento` | Energía Solar en Viviendas | Terma solar | Circulación de mantenimiento | 6.1.1
@@ -791,27 +1741,16 @@ Parámetros relacionados encontrados: `761`.
 - `em080-fv-soporte-facilita-limpieza` | Energía Solar en Viviendas | Estructura de paneles | Acceso a módulos y cajas | 6.2.4
 - `em080-fv-blindaje-cable-conector` | Energía Solar en Viviendas | Blindaje mecánico de cables | Terminación de bordes | 6.2.6
 
-## GE.040
+### E.030
 
-- `ge040-edificacion-ruinosa-intervencion` | Uso, mantenimiento y conservación | Edificación en estado ruinoso | Consolidación, remodelación o demolición | Artículo 5
-- `ge040-equipo-vibracion-aislamiento` | Uso, mantenimiento y conservación | Equipos y maquinaria | Aislamiento de vibraciones | Artículo 8
-- `ge040-deber-mantenimiento-integral` | Uso, mantenimiento y conservación | Mantenimiento de la edificación | Deber de conservación | Artículo 11
-- `ge040-equipos-comunes-servicio-tecnico` | Uso, mantenimiento y conservación | Equipos comunes | Mantenimiento preventivo y correctivo | Artículo 14
-- `ge040-cerco-electrico-mantenimiento` | Uso, mantenimiento y conservación | Cerco eléctrico | Mantenimiento regular | Artículo 15
-- `ge040-dano-cumplir-recomendaciones` | Uso, mantenimiento y conservación | Edificación afectada por un evento | Cumplimiento de recomendaciones | Artículo 17
-- `ge040-dano-facilitar-acceso` | Uso, mantenimiento y conservación | Evaluación de daños | Acceso para análisis estructural | Artículo 17
+- `e030-albanileria-distorsion-entrepiso-maxima` | Diseño sismorresistente | Edificación de albañilería | Distorsión máxima de entrepiso | Artículo 51 y Tabla N.° 14
+- `e030-diafragma-aberturas-irregularidad` | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad | Artículos 23-24 y Tabla N.° 12
+- `e030-diafragma-rigidez-resistencia-conexion` | Diseño sismorresistente | Diafragma de piso o techo | Verificación para considerarlo rígido | Artículo 30.3-30.6
+- `e030-pos-sismo-evaluacion-ingeniero` | Evaluación y reforzamiento sísmico | Evaluación después de un sismo | Profesional responsable | Artículo 67
+- `e030-pos-sismo-decision-intervencion` | Evaluación y reforzamiento sísmico | Evaluación después de un sismo | Determinación del estado | Artículo 67
+- `e030-reforzamiento-progresivo` | Evaluación y reforzamiento sísmico | Reforzamiento sísmico progresivo | Criterio de intervención por etapas | 68.4
 
-## Evaluación profesional de edificaciones existentes
-
-- `criterio-grieta-no-clasificar-solo-ancho` | Diagnóstico, mantenimiento y reparación | Diagnóstico de grietas | Ancho no determina por sí solo el riesgo | Aplicación profesional caso por caso
-- `criterio-grieta-activa-monitoreo` | Diagnóstico, mantenimiento y reparación | Diagnóstico de grietas | Actividad y evolución | Aplicación profesional caso por caso
-- `criterio-eflorescencia-sales-humedad` | Diagnóstico, mantenimiento y reparación | Patologías por humedad | Eflorescencias y sales | Aplicación profesional caso por caso
-- `criterio-concreto-desprendido-seguridad` | Diagnóstico, mantenimiento y reparación | Concreto deteriorado | Desprendimiento y acero expuesto | Aplicación profesional caso por caso
-- `criterio-asentamiento-investigar-suelo` | Diagnóstico, mantenimiento y reparación | Asentamientos y deformaciones | Investigación de la causa | Aplicación profesional caso por caso
-- `criterio-cambio-uso-revisar-cargas` | Diagnóstico, mantenimiento y reparación | Cambio de uso | Nuevas cargas y exigencias | Aplicación profesional caso por caso
-- `criterio-despues-sismo-restringir-uso` | Diagnóstico, mantenimiento y reparación | Evaluación postevento | Restricción preventiva de uso | Aplicación profesional caso por caso
-
-## EM.010
+### EM.010
 
 - `em010-emergencia-rutas-multifamiliar` | Instalaciones Eléctricas en Viviendas | Ruta de evacuación en vivienda multifamiliar | Alumbrado de emergencia | Artículo 11
 - `em010-iluminancia-escalera-comun-minima` | Instalaciones Eléctricas en Viviendas | Escalera común | Iluminancia mantenida mínima | Artículo 11, tabla de niveles de iluminación
@@ -820,7 +1759,7 @@ Parámetros relacionados encontrados: `761`.
 - `em010-canalizacion-material-aprobado` | Instalaciones eléctricas en ejecución | Canalizaciones | Materiales | Artículo 10
 - `em010-ambiente-humedo-proteccion` | Instalaciones eléctricas en ejecución | Instalación en zona húmeda | Grado de protección | Artículo 11
 
-## EM.020
+### EM.020
 
 - `em020-camara-entrada-prohibicion-empalmes` | Instalaciones Eléctricas en Viviendas | Cámara de entrada | Empalmes y equipos | Artículo 11
 - `em020-cuarto-telecom-separacion-equipos` | Instalaciones Eléctricas en Viviendas | Cuarto de telecomunicaciones | Separación de salas con interferencia o riesgo | Artículo 13
@@ -829,52 +1768,53 @@ Parámetros relacionados encontrados: `761`.
 - `em020-pau-altura-instalacion` | Instalaciones Eléctricas en Viviendas | Punto de Acceso al Usuario | Altura de instalación | Artículo 18
 - `em020-pau-tomas-minimas` | Instalaciones Eléctricas en Viviendas | Punto de Acceso al Usuario | Cantidad de tomas | Artículo 18
 
-## E.070
+### EM.060
+
+- `em060-aparato-bajo-calor-limite` | Chimeneas, hogares y climatización | Aparato productor de calor | Clasificación de bajo calor | Artículo 2
+- `em060-aparato-medio-calor-rango` | Chimeneas, hogares y climatización | Aparato productor de calor | Clasificación de medio calor | Artículo 2
+- `em060-combustible-abertura-distancia` | Chimeneas, hogares y climatización | Abertura de hogar | Separación de materiales combustibles expuestos | Artículo 4.5
+- `em060-salida-humos-area-minima-absoluta` | Chimeneas, hogares y climatización | Salida de humos de hogar | Área mínima absoluta | Artículo 5.1
+- `em060-ducto-altura-construcciones-cercanas` | Chimeneas, hogares y climatización | Ducto de humos | Altura sobre construcciones cercanas | Artículo 5.2
+
+### G.040
+
+- `g040-acondicionamiento-definicion` | Licencias, intervenciones y mantenimiento | Acondicionamiento | Alcance del acondicionamiento | Artículo Único — Acondicionamiento
+- `g040-demolicion-definicion` | Licencias, intervenciones y mantenimiento | Demolición | Demolición parcial o total | Artículo Único — Demolición
+- `g040-obra-menor-definicion` | Licencias, intervenciones y mantenimiento | Obra menor | Límite estructural de una obra menor | Artículo Único — Obra menor
+- `g040-refaccion-definicion` | Licencias, intervenciones y mantenimiento | Refacción | Límites de una refacción | Artículo Único — Refacción
+
+### E.070
 
 - `e070-junta-mortero-espesor` | Albañilería confinada y armada | Junta de mortero | Espesor | 10.2
 - `e070-muro-altura-diaria-maxima` | Albañilería confinada y armada | Muro asentado con mortero | Altura construida por jornada | 10.6
 - `e070-columna-confinamiento-vaciado-posterior` | Albañilería confinada y armada | Columna de confinamiento | Secuencia de vaciado | 11.7
 
-## E.030
+### EM.050
 
-- `e030-diafragma-aberturas-irregularidad` | Diseño sismorresistente | Diafragma de piso o techo | Aberturas que producen irregularidad | Artículos 23-24 y Tabla N.° 12
-- `e030-pos-sismo-decision-intervencion` | Evaluación y reforzamiento sísmico | Evaluación después de un sismo | Determinación del estado | Artículo 67
-- `e030-reforzamiento-progresivo` | Evaluación y reforzamiento sísmico | Reforzamiento sísmico progresivo | Criterio de intervención por etapas | 68.4
+- `em050-equipos-certificados` | Chimeneas, hogares y climatización | Equipos y materiales de climatización | Calificación y certificación | Artículo 6
+- `em050-proyecto-equipos-materiales` | Chimeneas, hogares y climatización | Proyecto de climatización | Descripción de equipos y materiales | Artículo 7.1
+- `em050-planos-obra-terminada` | Chimeneas, hogares y climatización | Instalación de climatización terminada | Planos conforme a obra | Artículo 7.5
 
-## G.040
-
-- `g040-acondicionamiento-definicion` | Licencias, intervenciones y mantenimiento | Acondicionamiento | Alcance del acondicionamiento | Artículo Único — Acondicionamiento
-- `g040-demolicion-definicion` | Licencias, intervenciones y mantenimiento | Demolición | Demolición parcial o total | Artículo Único — Demolición
-- `g040-obra-menor-definicion` | Licencias, intervenciones y mantenimiento | Obra menor | Límite estructural de una obra menor | Artículo Único — Obra menor
-
-## EM.030
+### EM.030
 
 - `em030-ductos-registros-limpieza-separacion` | Arquitectura y Habitabilidad de la Vivienda | Ducto de ventilación | Separación de registros de inspección | Artículo 9
 - `em030-ducto-cruce-combustible-separacion` | Arquitectura y Habitabilidad de la Vivienda | Ducto al atravesar elemento combustible | Separación de seguridad | Artículo 9
 
-## Manual EDAN del MVCS
+### Manual EDAN del MVCS
 
 - `edan-vivienda-inhabitable` | Evaluación de daños y habitabilidad | Vivienda inhabitable | Clasificación del daño | Glosario — clasificación de daños en vivienda
 - `edan-vivienda-dano-recuperable` | Evaluación de daños y habitabilidad | Vivienda con daño recuperable | Clasificación del daño | Glosario — clasificación de daños en vivienda
 
-## EM.060
+### Licencia de edificación — modalidad A
 
-- `em060-combustible-abertura-distancia` | Chimeneas, hogares y climatización | Abertura de hogar | Separación de materiales combustibles expuestos | Artículo 4.5
-- `em060-ducto-altura-construcciones-cercanas` | Chimeneas, hogares y climatización | Ducto de humos | Altura sobre construcciones cercanas | Artículo 5.2
-
-## EM.050
-
-- `em050-equipos-certificados` | Chimeneas, hogares y climatización | Equipos y materiales de climatización | Calificación y certificación | Artículo 6
-- `em050-proyecto-equipos-materiales` | Chimeneas, hogares y climatización | Proyecto de climatización | Descripción de equipos y materiales | Artículo 7.1
-
-## Licencia de edificación — modalidad B
-
-- `licencia-modalidad-b-demolicion-total` | Licencias y alcance de intervenciones | Modalidad B | Demolición total | Supuestos, vigencia y requisitos publicados en gob.pe
-
-## Licencia de edificación — modalidad A
-
+- `licencia-modalidad-a-remodelacion-sin-estructura` | Licencias y alcance de intervenciones | Modalidad A | Remodelación sin modificación estructural | Supuestos y requisitos publicados en gob.pe; verificar TUPA municipal
 - `licencia-demolicion-memoria-seguridad-cerramiento` | Licencias y alcance de intervenciones | Documentación de demolición | Seguridad, proceso y cerramiento | Supuestos y requisitos publicados en gob.pe; verificar TUPA municipal
 
-## CE.040
+### CE.040
 
+- `ce040-periodo-retorno-seleccion` | Drenaje pluvial | Caudal de diseño | Periodo de retorno | 11.1
 - `ce040-otra-solucion-sustento-profesional` | Drenaje pluvial | Solución alternativa | Sustento | 12.7
+
+### Licencia de edificación — modalidad B
+
+- `licencia-modalidad-b-demolicion-total` | Licencias y alcance de intervenciones | Modalidad B | Demolición total | Supuestos, vigencia y requisitos publicados en gob.pe

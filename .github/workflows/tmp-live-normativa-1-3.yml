@@ -1,0 +1,123 @@
+name: Temporary live normative 1.3 audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normativa-1-3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-normative-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Verify Render normative deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          BASE = 'https://construccion-segura.onrender.com'
+
+          def fetch_json(path: str, timeout: int = 180):
+              request = urllib.request.Request(
+                  BASE + path,
+                  headers={
+                      'Accept': 'application/json',
+                      'Cache-Control': 'no-cache',
+                      'User-Agent': 'Construccion-Segura-production-audit/1.3',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=timeout) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{path}: HTTP {response.status}')
+                  return json.loads(response.read().decode('utf-8'))
+
+          payload = None
+          last_error = None
+          for attempt in range(1, 25):
+              try:
+                  candidate = fetch_json('/api/v1/normativa/parametros?limite=100')
+                  version = candidate.get('version')
+                  total = candidate.get('total_encontrados')
+                  print(f'intento={attempt} version={version} total={total}')
+                  if version == '1.3.0' and total == 70:
+                      payload = candidate
+                      break
+                  last_error = f'versión={version}, total={total}'
+              except Exception as error:
+                  last_error = repr(error)
+                  print(f'intento={attempt} error={last_error}')
+              time.sleep(15)
+
+          if payload is None:
+              raise SystemExit(f'Render no publicó la normativa 1.3.0 a tiempo: {last_error}')
+
+          results = payload.get('resultados') or []
+          if payload.get('mostrados') != 70 or len(results) != 70:
+              raise SystemExit(f'La API no devolvió los 70 registros: mostrados={payload.get("mostrados")}, lista={len(results)}')
+
+          exact = sum(item.get('estado_revision') == 'validado_con_numeral' for item in results)
+          pilot = sum(item.get('estado_revision') == 'piloto_verificado' for item in results)
+          if (exact, pilot) != (69, 1):
+              raise SystemExit(f'Estados editoriales inesperados: validados={exact}, pilotos={pilot}')
+
+          by_id = {item.get('id'): item for item in results}
+          soil_cover = by_id['e060-recubrimiento-contra-suelo-minimo']
+          if soil_cover.get('valor', {}).get('valor') != 70:
+              raise SystemExit('El recubrimiento contra suelo no es 70 mm.')
+          if soil_cover.get('fuente', {}).get('numeral') != '7.7.1(a)':
+              raise SystemExit('El recubrimiento contra suelo no conserva el numeral 7.7.1(a).')
+
+          spacing = by_id['e070-columnas-confinamiento-separacion-maxima']
+          if spacing.get('valor', {}).get('formula') != 's ≤ min(2H, 5 m)':
+              raise SystemExit('La fórmula de separación de columnas de confinamiento cambió.')
+
+          root = fetch_json('/')
+          if root.get('total_preguntas') != 1539:
+              raise SystemExit(f'La API principal no reporta 1539 preguntas: {root.get("total_preguntas")}')
+
+          detail = fetch_json('/api/v1/normativa/parametros/e060-recubrimiento-contra-suelo-minimo')
+          if detail.get('valor', {}).get('valor') != 70:
+              raise SystemExit('El endpoint de detalle no conserva 70 mm.')
+
+          Path('audit/normativa.json').write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8'
+          )
+          Path('audit/root.json').write_text(
+              json.dumps(root, ensure_ascii=False, indent=2), encoding='utf-8'
+          )
+          report = (
+              'render_http=200\n'
+              'normativa_version=1.3.0\n'
+              'normativa_total=70\n'
+              'validados_con_numeral=69\n'
+              'piloto_verificado=1\n'
+              'total_preguntas=1539\n'
+              'recubrimiento_contra_suelo=70 mm\n'
+              'recubrimiento_numeral=7.7.1(a)\n'
+              'separacion_columnas=s ≤ min(2H, 5 m)\n'
+          )
+          Path('audit/report.txt').write_text(report, encoding='utf-8')
+          print(report)
+          PY
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-normativa-1-3-audit
+          path: audit/
+          if-no-files-found: warn
+          retention-days: 1

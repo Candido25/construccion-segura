@@ -54,11 +54,26 @@ def main() -> None:
             url = str(parametro.fuente.url_oficial or "")
             if "gob.pe" not in url:
                 raise SystemExit(f"{parametro.id}: la fuente RNE no es oficial.")
+        if parametro.fuente.numeral_confirmado and not parametro.fuente.numeral:
+            raise SystemExit(
+                f"{parametro.id}: un numeral marcado como confirmado no puede estar vacío."
+            )
         if parametro.estado_revision == "validado_con_numeral":
             if not parametro.fuente.numeral or not parametro.fuente.numeral_confirmado:
                 raise SystemExit(
                     f"{parametro.id}: un registro validado requiere numeral confirmado."
                 )
+
+    validados = sum(
+        parametro.estado_revision == "validado_con_numeral"
+        for parametro in base.parametros
+    )
+    if validados < 19:
+        raise SystemExit(
+            f"La revisión editorial debe conservar al menos 19 numerales validados; hay {validados}."
+        )
+    if base.version == "1.0.0-piloto":
+        raise SystemExit("La versión piloto inicial ya no debe permanecer activa.")
 
     BaseNormativa.model_validate(datos_crudos)
 

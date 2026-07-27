@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 192:
-        raise SystemExit("La base normativa debe contener por lo menos 192 parámetros validados.")
+    if len(base.parametros) < 374:
+        raise SystemExit("La base normativa debe contener por lo menos 374 parámetros validados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 191:
+    if validados < 373:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 191 numerales validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 373 numerales validados; hay {validados}."
         )
-    if base.version != "1.5.0":
-        raise SystemExit(f"La versión normativa esperada es 1.5.0 y se recibió {base.version}.")
+    if base.version != "1.6.0":
+        raise SystemExit(f"La versión normativa esperada es 1.6.0 y se recibió {base.version}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -95,6 +95,36 @@ def main() -> None:
     listado = api.listar_parametros_normativos()
     if listado["total_encontrados"] != len(base.parametros):
         raise SystemExit("El endpoint no devuelve la totalidad del piloto visible.")
+
+    dotacion = api.detalle_parametro_normativo(
+        "is010-dotacion-vivienda-calido"
+    )
+    if dotacion["valor"]["valor"] != 169:
+        raise SystemExit("La dotación de clima cálido debe ser 169 L/persona/día.")
+
+    ventilacion = api.detalle_parametro_normativo(
+        "a010-ventilacion-natural-vano-minimo"
+    )
+    if "0.05" not in ventilacion["valor"]["formula"]:
+        raise SystemExit("La ventilación natural debe conservar la regla de 5%.")
+
+    desague = api.detalle_parametro_normativo(
+        "is010-desague-pendiente-hasta-75"
+    )
+    if desague["valor"]["valor"] != 1.5:
+        raise SystemExit("La pendiente hasta 75 mm debe conservar 1.5%.")
+
+    telecom = api.detalle_parametro_normativo(
+        "em020-pau-caja-dimensiones-minimas"
+    )
+    if "300 mm" not in telecom["valor"]["texto"]:
+        raise SystemExit("La caja PAU no conserva sus dimensiones mínimas.")
+
+    termica = api.detalle_parametro_normativo(
+        "em110-u-techo-altoandino-maxima"
+    )
+    if termica["valor"]["valor"] != 0.83:
+        raise SystemExit("La transmitancia máxima del techo altoandino debe ser 0.83.")
 
     desarrollo = api.detalle_parametro_normativo(
         "e060-desarrollo-traccion-longitud-minima"
@@ -159,8 +189,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 1661:
-        raise SystemExit("El bloque de procesos requiere por lo menos 1661 preguntas técnicas.")
+    if len(todas) < 1837:
+        raise SystemExit("El bloque de instalaciones requiere por lo menos 1837 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

@@ -73,7 +73,7 @@ def main() -> None:
             f"La revisión editorial debe conservar al menos 1171 numerales RNE validados; hay {validados}."
         )
     if base.version != "2.3.0":
-        raise SystemExit(f"La versión normativa esperada es 2.2.0 y se recibió {base.version}.")
+        raise SystemExit(f"La versión normativa esperada es 2.3.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"

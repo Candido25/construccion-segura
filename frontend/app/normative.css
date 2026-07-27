@@ -1,3 +1,7 @@
+.normative-section [hidden] {
+  display: none !important;
+}
+
 .normative-section {
   overflow: hidden;
   padding: 1.25rem;

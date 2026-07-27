@@ -151,7 +151,11 @@ jobs:
             node scripts/visual_check.mjs
           browser_status=$?
 
-          python scripts/compare_screenshots.py
+          # La web institucional permanece bloqueada contra backup/estable.
+          # La aplicación está en rediseño controlado: sus capturas se conservan
+          # como evidencia y sus errores, desbordes e imágenes rotas siguen siendo
+          # bloqueantes mediante visual_check.mjs y las pruebas funcionales.
+          VISUAL_REQUIRED_PREFIXES=home- python scripts/compare_screenshots.py
           comparison_status=$?
 
           if [ "$browser_status" -ne 0 ] || [ "$comparison_status" -ne 0 ]; then

@@ -37,14 +37,18 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-          import textwrap
 
           workflow = Path('.github/workflows/tmp-apply-solar-transport-completion.yml').read_text(encoding='utf-8')
           blocks = re.findall(r"          python - <<'PY'\n(.*?)\n          PY", workflow, flags=re.S)
           if len(blocks) != 2:
               raise SystemExit(f'Se esperaban dos bloques Python revisados y se encontraron {len(blocks)}.')
-          Path('/tmp/legacy-source/adapt.py').write_text(textwrap.dedent(blocks[0]), encoding='utf-8')
-          Path('/tmp/legacy-source/refine.py').write_text(textwrap.dedent(blocks[1]), encoding='utf-8')
+
+          def clean(block: str) -> str:
+              lines = block.splitlines()
+              return '\n'.join(line[10:] if line.startswith('          ') else line for line in lines).lstrip() + '\n'
+
+          Path('/tmp/legacy-source/adapt.py').write_text(clean(blocks[0]), encoding='utf-8')
+          Path('/tmp/legacy-source/refine.py').write_text(clean(blocks[1]), encoding='utf-8')
           PY
 
       - name: Generate filtered version 2.0.0

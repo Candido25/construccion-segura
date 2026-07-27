@@ -1,0 +1,86 @@
+name: Temporary run solar transport completion
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-run-solar-completion.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  run-reviewed-expansion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/ampliar-normativa-cubiertas-energia-20260727
+          fetch-depth: 0
+
+      - name: Extract reviewed Python blocks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/legacy-current /tmp/legacy-output /tmp/legacy-source
+          git fetch origin agent/gas-energia-equipos-20260727
+          for part in 00 01 02 03; do
+            git show origin/agent/gas-energia-equipos-20260727:.tmp/bloque9.part${part} >> /tmp/legacy-source/payload.b64
+          done
+          base64 -d /tmp/legacy-source/payload.b64 | gzip -dc > /tmp/legacy-source/original.py
+          cp backend/normativa_tecnica.json /tmp/legacy-current/normativa_tecnica.json
+          cp backend/preguntas_tecnicas.json /tmp/legacy-current/preguntas_tecnicas.json
+          cp scripts/check_normativa.py /tmp/legacy-current/check_normativa.py
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import textwrap
+
+          workflow = Path('.github/workflows/tmp-apply-solar-transport-completion.yml').read_text(encoding='utf-8')
+          blocks = re.findall(r"          python - <<'PY'\n(.*?)\n          PY", workflow, flags=re.S)
+          if len(blocks) != 2:
+              raise SystemExit(f'Se esperaban dos bloques Python revisados y se encontraron {len(blocks)}.')
+          Path('/tmp/legacy-source/adapt.py').write_text(textwrap.dedent(blocks[0]), encoding='utf-8')
+          Path('/tmp/legacy-source/refine.py').write_text(textwrap.dedent(blocks[1]), encoding='utf-8')
+          PY
+
+      - name: Generate filtered version 2.0.0
+        run: |
+          python /tmp/legacy-source/adapt.py
+          python /tmp/legacy-source/adapted.py
+          python /tmp/legacy-source/refine.py
+
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -q -r requirements.txt
+
+      - name: Stage and validate permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp /tmp/legacy-output/normativa_tecnica.json backend/normativa_tecnica.json
+          cp /tmp/legacy-output/preguntas_tecnicas.json backend/preguntas_tecnicas.json
+          cp /tmp/legacy-output/check_normativa.py scripts/check_normativa.py
+          cp /tmp/legacy-output/VALIDACION_NORMATIVA_SOLAR_COMPLEMENTOS_2026-07-27.md docs/VALIDACION_NORMATIVA_SOLAR_COMPLEMENTOS_2026-07-27.md
+          rm -f docs/VALIDACION_NORMATIVA_GAS_SOLAR_TRANSPORTE_2026-07-27.md
+
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py
+          python scripts/prepare_frontend.py
+          test -f public/app/normative-module.js
+          test -f public/app/normative.css
+          test -f public/backend/normativa_tecnica.json
+          test -z "$(git status --short public)"
+
+      - name: Commit permanent files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_NORMATIVA_SOLAR_COMPLEMENTOS_2026-07-27.md
+          git diff --cached --quiet && exit 0
+          git commit -m 'Completar normativa de energía solar, gas y transporte'
+          git push origin HEAD:agent/ampliar-normativa-cubiertas-energia-20260727

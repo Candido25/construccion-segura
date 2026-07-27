@@ -1,0 +1,35 @@
+name: Temporary diagnose construction processes expansion
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-diagnose-procesos-control.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Capture generator output
+        shell: bash
+        run: |
+          mkdir -p diagnose-procesos
+          set +e
+          python scripts/tmp_apply_procesos_control.py > diagnose-procesos/output.txt 2>&1
+          echo "exit_status=$?" >> diagnose-procesos/output.txt
+          exit 0
+
+      - name: Upload diagnosis
+        uses: actions/upload-artifact@v4
+        with:
+          name: construction-processes-diagnosis
+          path: diagnose-procesos
+          retention-days: 2

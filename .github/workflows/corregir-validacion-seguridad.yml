@@ -1,0 +1,29 @@
+name: Corregir validación de seguridad
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/corregir_validacion_seguridad.py
+      - .github/workflows/corregir-validacion-seguridad.yml
+
+permissions:
+  contents: write
+
+jobs:
+  corregir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ampliar-seguridad-construccion-20260727
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/corregir_validacion_seguridad.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/aplicar_ampliacion_seguridad.py
+          git diff --cached --quiet || git commit -m "Corregir validación del esmeril"
+          git push origin HEAD:agent/ampliar-seguridad-construccion-20260727

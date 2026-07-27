@@ -15,7 +15,7 @@ const fail = (message) => {
 const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "utf8");
 
 const index = read("frontend/app/index.html");
-const serviceWorker = read("frontend/service-worker.js");
+const serviceWorker = read("service-worker.js");
 const privacy = read("politica-privacidad.html");
 
 const requiredStyles = [

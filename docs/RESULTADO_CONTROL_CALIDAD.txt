@@ -8,5 +8,5 @@ CHUNK_7: len=48 sha256=be7ee51f784e6ff9fa33d163f27d61782c8852a87530f01e93f52a5a0
 TOTAL: len=18048 sha256=5f58994bc14253f378a43072ee0bc83c2d481a301e9c4f8211cdf8d65206d921 valid=True
 Aplicados 173 parámetros y preguntas; versión 3.0.0; totales 2149 parámetros y 3612 preguntas; omitidos similares 0.
 APLICACION=0
-Los planos conforme a obra deben conservar su clasificación de cierre.
-VALIDACION=1
+Normativa técnica válida: 2149 parámetros, 1384 elementos, 79 categorías.
+VALIDACION=0

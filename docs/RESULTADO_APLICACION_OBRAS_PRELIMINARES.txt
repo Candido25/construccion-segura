@@ -10,3 +10,4 @@ Traceback (most recent call last):
   File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/gzip.py", line 655, in decompress
     raise BadGzipFile("CRC check failed")
 gzip.BadGzipFile: CRC check failed
+ESTADO=1

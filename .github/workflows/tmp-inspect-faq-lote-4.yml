@@ -1,0 +1,59 @@
+name: Temporary FAQ inspection for normative batch 4
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-inspect-faq-lote-4.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-faq:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Inspect categories and recent questions
+        shell: bash
+        run: |
+          mkdir -p faq-lote-4
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          lines = ['# Esquema FAQ lote 4', '']
+          all_items = []
+          for category in data.get('categorias', []):
+              name = category.get('nombre') or category.get('categoria') or ''
+              items = [item for item in category.get('preguntas', []) if isinstance(item, dict)]
+              lines.append(f'- `{name}`: {len(items)} preguntas')
+              for item in items:
+                  all_items.append((name, item))
+          lines += ['', '## Últimas preguntas por ID', '']
+          def number(item):
+              value = str(item[1].get('id', ''))
+              try:
+                  return int(value.lstrip('q'))
+              except ValueError:
+                  return -1
+          for category, item in sorted(all_items, key=number)[-35:]:
+              lines.append(f"- `{item.get('id')}` [{category}] {item.get('pregunta')} — {item.get('respuesta')}")
+          lines += ['', '## Esquema de un registro', '```json']
+          if all_items:
+              lines.append(json.dumps(all_items[-1][1], ensure_ascii=False, indent=2))
+          lines += ['```', '']
+          Path('faq-lote-4/report.md').write_text('\n'.join(lines), encoding='utf-8')
+          PY
+
+      - name: Upload FAQ inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: faq-inspection-lote-4
+          path: faq-lote-4
+          retention-days: 2

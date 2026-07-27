@@ -1,0 +1,78 @@
+name: Temporary live normative UI audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-live-normative-ui.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-live-normative-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify published application and assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://www.construccionsegura.org.pe'
+          mkdir -p audit
+
+          request() {
+            local name="$1"
+            local path="$2"
+            local code
+            code=$(curl --retry 8 --retry-all-errors --retry-delay 10 \
+              --connect-timeout 20 --max-time 180 \
+              -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' \
+              -D "audit/${name}.headers" -o "audit/${name}.body" -sS \
+              -w '%{http_code}' "${base}${path}?audit=${GITHUB_RUN_ID}")
+            echo "${name}_http=${code}" | tee -a audit/report.txt
+            test "$code" = '200'
+          }
+
+          request app '/app/'
+          request module '/app/normative-module.js'
+          request styles '/app/normative.css'
+          request worker '/service-worker.js'
+
+          grep -F 'Medidas y parámetros técnicos' audit/app.body
+          grep -F 'normative-module.js?v=1' audit/app.body
+          grep -F '/api/v1/normativa/parametros' audit/module.body
+          grep -F 'AbortController' audit/module.body
+          grep -F '.normative-card' audit/styles.body
+          grep -F 'mi-casa-segura-pwa-v18' audit/worker.body
+          grep -F '/app/normative-module.js?v=1' audit/worker.body
+
+          api_code=$(curl --retry 8 --retry-all-errors --retry-delay 10 \
+            --connect-timeout 20 --max-time 180 -sS \
+            -o audit/api.json -w '%{http_code}' \
+            'https://construccion-segura.onrender.com/api/v1/normativa/parametros?limite=3')
+          echo "api_http=${api_code}" | tee -a audit/report.txt
+          test "$api_code" = '200'
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('audit/api.json').read_text(encoding='utf-8'))
+          assert payload.get('version') == '1.0.0-piloto', payload
+          assert payload.get('total_encontrados') == 20, payload
+          assert payload.get('mostrados') == 3, payload
+          Path('audit/report.txt').open('a', encoding='utf-8').write(
+              f"normativa_version={payload.get('version')}\n"
+              f"normativa_total={payload.get('total_encontrados')}\n"
+          )
+          PY
+
+          cat audit/report.txt
+
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-normative-ui-audit
+          path: audit/
+          if-no-files-found: warn
+          retention-days: 1

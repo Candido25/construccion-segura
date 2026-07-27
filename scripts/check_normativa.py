@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 1802:
-        raise SystemExit("La base normativa debe contener por lo menos 1802 parámetros revisados.")
+    if len(base.parametros) < 1976:
+        raise SystemExit("La base normativa debe contener por lo menos 1976 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -72,8 +72,8 @@ def main() -> None:
         raise SystemExit(
             f"La revisión editorial debe conservar al menos 1245 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.8.0":
-        raise SystemExit(f"La versión normativa esperada es 2.8.0 y se recibió {base.version}.")
+    if base.version != "2.9.0":
+        raise SystemExit(f"La versión normativa esperada es 2.9.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 539:
-        raise SystemExit(f"El bloque requiere al menos 539 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 713:
+        raise SystemExit(f"El bloque requiere al menos 713 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -325,6 +325,31 @@ def main() -> None:
     if "agua potable" not in impermeabilizacion_cisterna["valor"]["texto"]:
         raise SystemExit("El revestimiento de cisterna debe conservar compatibilidad con agua potable.")
 
+
+    seguridad_ats = api.detalle_parametro_normativo("criterio-seguridad-ats-tarea-no-rutinaria")
+    if seguridad_ats["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("El ATS debe conservarse como criterio técnico revisado.")
+
+    seguridad_escalera = api.detalle_parametro_normativo("criterio-seguridad-escalera-metal-electricidad")
+    if seguridad_escalera["estado_revision"] != "criterio_tecnico_revisado" or seguridad_escalera["elemento"] != "Escaleras provisionales":
+        raise SystemExit("La escalera metálica debe conservarse como criterio técnico de escaleras.")
+
+    seguridad_andamio = api.detalle_parametro_normativo("criterio-seguridad-andamio-no-ladrillos")
+    if seguridad_andamio["fuente"]["tipo"] != "criterio_tecnico":
+        raise SystemExit("La base del andamio debe conservar fuente técnica.")
+
+    seguridad_esmeril = api.detalle_parametro_normativo("criterio-seguridad-esmeril-guarda")
+    if seguridad_esmeril["estado_revision"] != "criterio_tecnico_revisado" or seguridad_esmeril["elemento"] != "Herramientas y equipos":
+        raise SystemExit("La guarda del esmeril debe conservarse como criterio técnico de herramientas.")
+
+    seguridad_izaje = api.detalle_parametro_normativo("criterio-seguridad-izaje-sin-personas-debajo")
+    if seguridad_izaje["estado_revision"] != "criterio_tecnico_revisado" or seguridad_izaje["elemento"] != "Izaje y maquinaria":
+        raise SystemExit("El control de carga suspendida debe conservarse como criterio técnico de izaje.")
+
+    seguridad_excavacion = api.detalle_parametro_normativo("criterio-seguridad-excavacion-no-entrar-sin-soporte")
+    if seguridad_excavacion["estado_revision"] != "criterio_tecnico_revisado" or seguridad_excavacion["elemento"] != "Excavaciones y espacios confinados":
+        raise SystemExit("La restricción de ingreso debe conservarse como criterio técnico de excavaciones.")
+
     preguntas = json.loads(
         (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
     )
@@ -334,8 +359,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 3265:
-        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3265 preguntas técnicas.")
+    if len(todas) < 3439:
+        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3439 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

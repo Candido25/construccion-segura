@@ -1559,3 +1559,129 @@ a   { color: inherit; text-decoration: none; }
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+/* ── NORMATIVE MODULE STYLES ──────────────────────────────────────── */
+.topic-library {
+  padding-top: 1rem;
+}
+
+.normative-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.normative-card {
+  padding: 1.8rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.normative-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201,111,45,0.3);
+  box-shadow: 0 20px 48px rgba(50,34,14,0.12);
+}
+
+.normative-category {
+  display: inline-block;
+  margin-bottom: 0.85rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  background: var(--trust-soft);
+  color: var(--trust);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.normative-card h3 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.normative-code {
+  margin: 0 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.normative-section {
+  margin-top: 1.2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.normative-section h4 {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.normative-section ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.normative-section li,
+.normative-section p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.normative-section.warning {
+  background: rgba(201,111,45,0.05);
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border-top: none;
+  border-left: 3px solid var(--accent);
+  margin-top: 1rem;
+}
+
+.normative-section.warning p.risk {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.normative-loading,
+.normative-empty,
+.normative-error {
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  font-style: italic;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+/* Responsividad adaptativa para la grilla normativa */
+@media (min-width: 760px) {
+  .normative-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .normative-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,29 @@
+name: Diagnosticar mantenimiento y vida útil
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/diagnosticar_mantenimiento_vida_util.py
+      - .github/workflows/diagnosticar-mantenimiento-vida-util.yml
+
+permissions:
+  contents: write
+
+jobs:
+  diagnosticar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ampliar-mantenimiento-vida-util-20260727
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/diagnosticar_mantenimiento_vida_util.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/DIAGNOSTICO_MANTENIMIENTO_VIDA_UTIL_2026-07-27.md
+          git diff --cached --quiet || git commit -m "Registrar diagnóstico de mantenimiento y vida útil"
+          git push origin HEAD:agent/ampliar-mantenimiento-vida-util-20260727

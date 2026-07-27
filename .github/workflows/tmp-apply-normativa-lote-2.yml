@@ -1,0 +1,441 @@
+name: Temporary apply normative batch 2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-apply-normativa-lote-2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-normative-batch:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Add verified parameters
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          from pathlib import Path
+
+          path = Path('backend/normativa_tecnica.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          if data.get('version') != '1.1.0' or len(data.get('parametros', [])) != 20:
+              raise SystemExit(
+                  f"Se esperaba normativa 1.1.0 con 20 parámetros; se encontró "
+                  f"{data.get('version')} con {len(data.get('parametros', []))}."
+              )
+
+          existing_ids = {item['id'] for item in data['parametros']}
+          date = '2026-07-26'
+          urls = {
+              'A.010': 'https://www.gob.pe/institucion/vivienda/normas-legales/2013148-191-2021-',
+              'A.020': 'https://www.gob.pe/institucion/vivienda/normas-legales/2011712-188-2021-vivienda',
+              'E.050': 'https://www.gob.pe/institucion/vivienda/normas-legales/222983-406-2018-vivienda',
+              'E.060': 'https://www.gob.pe/institucion/vivienda/informes-publicaciones/2309793-reglamento-nacional-de-edificaciones-rne',
+          }
+          devices = {
+              'A.010': 'RM N.° 191-2021-VIVIENDA',
+              'A.020': 'RM N.° 188-2021-VIVIENDA',
+              'E.050': 'RM N.° 406-2018-VIVIENDA',
+              'E.060': 'DS N.° 010-2009-VIVIENDA',
+          }
+          names = {
+              'A.010': 'Condiciones Generales de Diseño',
+              'A.020': 'Vivienda',
+              'E.050': 'Suelos y Cimentaciones',
+              'E.060': 'Concreto Armado',
+          }
+
+          def source(norm, numeral):
+              return {
+                  'tipo': 'RNE',
+                  'norma': norm,
+                  'denominacion': names[norm],
+                  'dispositivo': devices[norm],
+                  'numeral': numeral,
+                  'numeral_confirmado': True,
+                  'url_oficial': urls[norm],
+              }
+
+          def record(*, id, category, element, parameter, classification, value,
+                     conditions, norm, numeral, warning, faqs):
+              return {
+                  'id': id,
+                  'categoria': category,
+                  'elemento': element,
+                  'parametro': parameter,
+                  'clasificacion': classification,
+                  'valor': value,
+                  'condiciones': conditions,
+                  'fuente': source(norm, numeral),
+                  'estado_revision': 'validado_con_numeral',
+                  'advertencia': warning,
+                  'faq_relacionadas': faqs,
+                  'fecha_revision': date,
+              }
+
+          new = [
+              record(
+                  id='a020-escalera-caracol-abanico-huella-minima',
+                  category='Escaleras',
+                  element='Escalera interior de vivienda con pasos en caracol o abanico',
+                  parameter='Huella medida en la línea reglamentaria',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':0.25,'unidad':'m','texto':'Huella mínima: 0.25 m, medida a 0.50 m del eje o extremo interior de giro.'},
+                  conditions=['Escalera al interior de una vivienda.','La medición se realiza a 0.50 m del eje alrededor del cual se desarrollan los pasos.'],
+                  norm='A.020', numeral='15.1.b',
+                  warning='No midas la huella únicamente en el borde exterior, donde el peldaño es más ancho.',
+                  faqs=['q1399','q1400'],
+              ),
+              record(
+                  id='a020-escalera-vivienda-pasamanos-cantidad-minima',
+                  category='Escaleras',
+                  element='Escalera interior de vivienda',
+                  parameter='Cantidad mínima de lados con pasamanos',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':1,'unidad':'lado','texto':'La escalera debe tener pasamanos por lo menos en uno de sus lados.'},
+                  conditions=['Escalera al interior de una vivienda.','Otras normas de uso o accesibilidad pueden exigir pasamanos en ambos lados.'],
+                  norm='A.020', numeral='15.1.c',
+                  warning='Esta regla residencial no sustituye exigencias adicionales de accesibilidad o evacuación.',
+                  faqs=['q1506','q1394'],
+              ),
+              record(
+                  id='a020-escalera-vivienda-pasamanos-altura',
+                  category='Escaleras',
+                  element='Pasamanos de escalera interior de vivienda',
+                  parameter='Altura',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':1.0,'unidad':'m','texto':'Altura del pasamanos: 1.00 m.'},
+                  conditions=['Escalera al interior de una vivienda.','La altura debe comprobarse sobre la geometría terminada de la escalera.'],
+                  norm='A.020', numeral='15.1.c',
+                  warning='No confundas la altura del pasamanos residencial con la altura mínima de la baranda inclinada de la A.010.',
+                  faqs=['q1394'],
+              ),
+              record(
+                  id='a020-escalera-vivienda-cierre-aberturas-maximo',
+                  category='Escaleras',
+                  element='Cierre entre pasamanos y pasos de escalera de vivienda',
+                  parameter='Abertura máxima de seguridad',
+                  classification='maximo_normativo',
+                  value={'tipo':'numero','valor':0.15,'unidad':'m','texto':'Las aberturas no deben permitir el paso de una esfera de 0.15 m de diámetro.'},
+                  conditions=['Aplica al espacio entre el pasamanos y los pasos de la escalera interior de vivienda.'],
+                  norm='A.020', numeral='15.1.c',
+                  warning='La separación debe verificarse en el punto más desfavorable, no solo entre barras verticales.',
+                  faqs=['q1398'],
+              ),
+              record(
+                  id='a020-escalera-exterior-bifamiliar-ancho-minimo',
+                  category='Escaleras',
+                  element='Escalera exterior para vivienda bifamiliar o dos unidades',
+                  parameter='Ancho entre muros',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':1.0,'unidad':'m','texto':'Ancho mínimo entre muros: 1.00 m.'},
+                  conditions=['Escalera exterior que sirve a una vivienda bifamiliar o da acceso a dos unidades de vivienda en el piso siguiente.'],
+                  norm='A.020', numeral='15.2.g',
+                  warning='No generalices este valor a escaleras comunes que sirven a más unidades o a otros usos.',
+                  faqs=['q1389'],
+              ),
+              record(
+                  id='a010-escalera-pasamanos-invasion-ancho-permitida',
+                  category='Escaleras',
+                  element='Escalera con pasamanos adosado al muro',
+                  parameter='Invasión que no reduce el ancho exigido',
+                  classification='maximo_normativo',
+                  value={'tipo':'numero','valor':0.10,'unidad':'m','texto':'El ancho del pasamanos no reduce el ancho exigido cuando se encuentra dentro de los 0.10 m medidos desde la pared.'},
+                  conditions=['El ancho de la escalera se mide entre paramentos o límites terminados.','Si el pasamanos queda a mayor distancia, debe aumentarse el ancho para conservar la circulación exigida.'],
+                  norm='A.010', numeral='23.2.d',
+                  warning='Los acabados y otros elementos salientes también deben considerarse al medir el ancho libre final.',
+                  faqs=['q1393','q1392','q1507'],
+              ),
+              record(
+                  id='a010-escalera-peldano-diagonal-huella-minima',
+                  category='Escaleras',
+                  element='Peldaño diagonal o en ángulo',
+                  parameter='Huella en la línea de medición',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':0.28,'unidad':'m','texto':'Huella mínima: 0.28 m, medida a 0.30 m del inicio del paso.'},
+                  conditions=['Escalera con pasos diagonales o en ángulo.','La línea de medición se ubica a 0.30 m del inicio del paso.'],
+                  norm='A.010', numeral='23.2.e',
+                  warning='Un peldaño muy angosto cerca del vértice puede seguir siendo peligroso aunque cumpla en la línea de medición.',
+                  faqs=['q1401'],
+              ),
+              record(
+                  id='a010-escalera-caracol-integrada-niveles-maximos',
+                  category='Escaleras',
+                  element='Escalera caracol integrada',
+                  parameter='Niveles continuos que puede comunicar',
+                  classification='maximo_normativo',
+                  value={'tipo':'numero','valor':2,'unidad':'niveles continuos','texto':'Puede comunicar como máximo dos pisos o niveles continuos.'},
+                  conditions=['Escalera caracol considerada como escalera integrada.'],
+                  norm='A.010', numeral='24.3',
+                  warning='Comunicar más niveles exige otra solución de circulación vertical compatible con la norma.',
+                  faqs=['q1402'],
+              ),
+              record(
+                  id='a010-escalera-caracol-integrada-personas-maximas',
+                  category='Escaleras',
+                  element='Escalera caracol integrada',
+                  parameter='Personas a las que puede servir',
+                  classification='maximo_normativo',
+                  value={'tipo':'numero','valor':5,'unidad':'personas','texto':'Puede servir como máximo a cinco personas.'},
+                  conditions=['Escalera caracol considerada como escalera integrada.'],
+                  norm='A.010', numeral='24.3',
+                  warning='Este límite no convierte automáticamente a una escalera caracol en adecuada para evacuación o accesibilidad.',
+                  faqs=['q1402'],
+              ),
+              record(
+                  id='a010-escalera-caracol-integrada-pasamanos-lados',
+                  category='Escaleras',
+                  element='Escalera caracol integrada',
+                  parameter='Lados con pasamanos',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':2,'unidad':'lados','texto':'Debe contar con pasamanos a ambos lados.'},
+                  conditions=['Escalera caracol considerada como escalera integrada.'],
+                  norm='A.010', numeral='24.3',
+                  warning='El pasamanos no corrige peldaños inseguros ni una geometría que exceda las limitaciones de uso.',
+                  faqs=['q1402'],
+              ),
+              record(
+                  id='a020-escalera-gato-inicio-proteccion',
+                  category='Escaleras',
+                  element='Escalera tipo gato para ambiente técnico',
+                  parameter='Altura de inicio de la protección',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':2.10,'unidad':'m','texto':'La protección debe comenzar a partir de 2.10 m de altura.'},
+                  conditions=['Escalera de acceso a ambientes de uso técnico.'],
+                  norm='A.020', numeral='15.1.d',
+                  warning='Una escalera tipo gato no es una alternativa para el acceso habitual a ambientes de vivienda.',
+                  faqs=['q1404'],
+              ),
+              record(
+                  id='a010-escalera-usos-intermedios-huella-minima',
+                  category='Escaleras',
+                  element='Escalera en hospedaje, comercio, oficinas o servicios comunales',
+                  parameter='Huella o paso',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':0.28,'unidad':'m','texto':'Huella mínima: 0.28 m.'},
+                  conditions=['Aplica a hospedaje, comercio, oficinas y servicios comunales.'],
+                  norm='A.010', numeral='23.2.b.ii',
+                  warning='El mínimo de 0.25 m de vivienda no debe trasladarse a estos usos.',
+                  faqs=['q1367','q1368','q1369','q1370','q1415'],
+              ),
+              record(
+                  id='a010-escalera-usos-publicos-huella-minima',
+                  category='Escaleras',
+                  element='Escalera en salud, educación, recreación, deportes, transportes o comunicaciones',
+                  parameter='Huella o paso',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':0.30,'unidad':'m','texto':'Huella mínima: 0.30 m.'},
+                  conditions=['Aplica a salud, educación, recreación y deportes, transportes y comunicaciones.'],
+                  norm='A.010', numeral='23.2.b.iii',
+                  warning='Una huella de 0.28 m no alcanza el mínimo exigido para estos usos.',
+                  faqs=['q1417','q1415'],
+              ),
+              record(
+                  id='e050-suelos-no-permitidos-apoyo-cimentacion',
+                  category='Terreno y estudio de suelos',
+                  element='Suelo de apoyo de cimentaciones',
+                  parameter='Materiales no permitidos',
+                  classification='prohibicion',
+                  value={'tipo':'texto','texto':'No se permite apoyar cimentaciones sobre turba, suelo orgánico, tierra vegetal, relleno de desmonte, relleno sanitario o industrial, ni relleno no controlado.'},
+                  conditions=['Los materiales no permitidos deben removerse en la totalidad del terreno antes de ejecutar la obra y reemplazarse por materiales que cumplan la norma.'],
+                  norm='E.050', numeral='Artículo 24',
+                  warning='Cubrir basura, materia orgánica o relleno no controlado con una capa superficial no convierte el terreno en apto.',
+                  faqs=['q25','q26','q27','q30'],
+              ),
+              record(
+                  id='e050-relleno-controlado-finos-mayor-12-compactacion-minima',
+                  category='Rellenos y compactación',
+                  element='Relleno controlado con más de 12% de finos',
+                  parameter='Densidad seca mínima respecto al Proctor Modificado',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':90,'unidad':'%','texto':'Compactación mínima: 90% de la máxima densidad seca del Proctor Modificado, en todo el espesor.'},
+                  conditions=['Material seleccionado con más de 12% de finos.','Referencia de ensayo NTP 339.141 indicada por la E.050.'],
+                  norm='E.050', numeral='25.4.2.a',
+                  warning='La apariencia superficial no demuestra que todo el espesor de la capa alcanzó la densidad requerida.',
+                  faqs=['q104','q105','q108'],
+              ),
+              record(
+                  id='e050-relleno-controlado-finos-hasta-12-compactacion-minima',
+                  category='Rellenos y compactación',
+                  element='Relleno controlado con 12% o menos de finos',
+                  parameter='Densidad seca mínima respecto al Proctor Modificado',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':95,'unidad':'%','texto':'Compactación mínima: 95% de la máxima densidad seca del Proctor Modificado, en todo el espesor.'},
+                  conditions=['Material seleccionado con 12% o menos de finos.','Referencia de ensayo NTP 339.141 indicada por la E.050.'],
+                  norm='E.050', numeral='25.4.2.b',
+                  warning='El porcentaje requerido depende del contenido de finos; no intercambies los criterios de 90% y 95%.',
+                  faqs=['q104','q105','q108'],
+              ),
+              record(
+                  id='e050-relleno-controlado-frecuencia-control-area',
+                  category='Rellenos y compactación',
+                  element='Capa de relleno controlado o de ingeniería',
+                  parameter='Frecuencia de controles por área',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':1,'unidad':'control por cada 250 m² o fracción','texto':'Como mínimo, un control de compactación por cada 250 m² o fracción de capa.'},
+                  conditions=['Control requerido en cada una de las capas compactadas.'],
+                  norm='E.050', numeral='25.4.3',
+                  warning='Un ensayo aislado no representa automáticamente toda una capa extensa o heterogénea.',
+                  faqs=['q104','q105','q108'],
+              ),
+              record(
+                  id='e050-relleno-controlado-controles-minimos-capa',
+                  category='Rellenos y compactación',
+                  element='Capa de relleno controlado o de ingeniería',
+                  parameter='Cantidad mínima de controles por capa',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':3,'unidad':'controles por capa','texto':'Mínimo tres controles por capa, salvo la excepción para áreas pequeñas.'},
+                  conditions=['La regla general se combina con un control por cada 250 m² o fracción.'],
+                  norm='E.050', numeral='25.4.3',
+                  warning='Distribuye los controles para representar la capa y no los concentres en un solo sector favorable.',
+                  faqs=['q104','q105','q108'],
+              ),
+              record(
+                  id='e050-relleno-controlado-area-pequena-controles-minimos',
+                  category='Rellenos y compactación',
+                  element='Capa de relleno controlado en área pequeña',
+                  parameter='Cantidad mínima de controles',
+                  classification='minimo_normativo',
+                  value={'tipo':'numero','valor':1,'unidad':'ensayo','texto':'En áreas pequeñas, iguales o menores de 25 m², se realiza como mínimo un ensayo.'},
+                  conditions=['Área de la capa igual o menor de 25 m².'],
+                  norm='E.050', numeral='25.4.3',
+                  warning='La excepción reduce la cantidad mínima por área, pero no elimina la necesidad de comprobar la compactación.',
+                  faqs=['q104','q105','q108'],
+              ),
+              record(
+                  id='e060-losa-escalera-ambos-extremos-continuos-referencia-espesor',
+                  category='Escaleras',
+                  element='Losa unidireccional de escalera continua en ambos extremos',
+                  parameter='Referencia de espesor para control de deflexiones',
+                  classification='formula_normativa',
+                  value={'tipo':'formula','formula':'h ≥ L/28','texto':'Referencia h ≥ L/28 cuando no se calculan explícitamente las deflexiones.'},
+                  conditions=['Losa maciza unidireccional continua en ambos extremos.','Concreto de peso normal y refuerzo fy = 420 MPa; aplicar modificadores de la Tabla 9.1 para otras condiciones.','No debe soportar ni estar ligada a elementos no estructurales susceptibles de dañarse por grandes deflexiones.','Puede emplearse menor espesor si el cálculo demuestra que no se producen efectos adversos.'],
+                  norm='E.060', numeral='9.6.2.1, Tabla 9.1',
+                  warning='Esta referencia controla deflexiones y no sustituye las verificaciones de resistencia, armado, recubrimiento y anclaje.',
+                  faqs=['q1431','q1433'],
+              ),
+              record(
+                  id='e060-losa-escalera-voladizo-referencia-espesor',
+                  category='Escaleras',
+                  element='Losa unidireccional de escalera en voladizo',
+                  parameter='Referencia de espesor para control de deflexiones',
+                  classification='formula_normativa',
+                  value={'tipo':'formula','formula':'h ≥ L/10','texto':'Referencia h ≥ L/10 cuando no se calculan explícitamente las deflexiones.'},
+                  conditions=['Losa maciza unidireccional en voladizo.','Concreto de peso normal y refuerzo fy = 420 MPa; aplicar modificadores de la Tabla 9.1 para otras condiciones.','No debe soportar ni estar ligada a elementos no estructurales susceptibles de dañarse por grandes deflexiones.','Puede emplearse menor espesor si el cálculo demuestra que no se producen efectos adversos.'],
+                  norm='E.060', numeral='9.6.2.1, Tabla 9.1',
+                  warning='Los voladizos requieren especial revisión de anclaje, fisuración y deformación, además del espesor de referencia.',
+                  faqs=['q1432','q1433'],
+              ),
+          ]
+
+          new_ids = [item['id'] for item in new]
+          if len(new_ids) != len(set(new_ids)):
+              raise SystemExit('El lote contiene identificadores duplicados.')
+          duplicates = sorted(set(new_ids) & existing_ids)
+          if duplicates:
+              raise SystemExit(f'El lote intenta repetir identificadores existentes: {duplicates}')
+
+          data['parametros'].extend(new)
+          data['version'] = '1.2.0'
+          data['fecha_revision'] = date
+          data['descripcion'] = (
+              'Base estructurada y validada de parámetros, condiciones y reglas técnicas para Mi Casa Segura.'
+          )
+          path.write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
+
+          if len(data['parametros']) != 41:
+              raise SystemExit(f"Se esperaban 41 parámetros y hay {len(data['parametros'])}.")
+          validated = sum(item['estado_revision'] == 'validado_con_numeral' for item in data['parametros'])
+          pilots = sum(item['estado_revision'] == 'piloto_verificado' for item in data['parametros'])
+          if (validated, pilots) != (40, 1):
+              raise SystemExit(f'Conteo editorial inesperado: validados={validated}, pilotos={pilots}')
+          print('Lote agregado: 21 parámetros; total 41; 40 validados y 1 piloto.')
+          PY
+
+      - name: Update validation thresholds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/check_normativa.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              'if len(base.parametros) < 20:\n        raise SystemExit("La fase piloto debe contener por lo menos 20 parámetros.")',
+              'if len(base.parametros) < 41:\n        raise SystemExit("La base normativa debe contener por lo menos 41 parámetros validados.")',
+          )
+          text = text.replace(
+              'if validados < 19:\n        raise SystemExit(\n            f"La revisión editorial debe conservar al menos 19 numerales validados; hay {validados}."\n        )',
+              'if validados < 40:\n        raise SystemExit(\n            f"La revisión editorial debe conservar al menos 40 numerales validados; hay {validados}."\n        )',
+          )
+          if 'por lo menos 41 parámetros' not in text or 'al menos 40 numerales' not in text:
+              raise SystemExit('No se pudieron actualizar los umbrales del validador.')
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Document batch 2
+        run: |
+          cat > docs/VALIDACION_NORMATIVA_LOTE_2_2026-07-26.md <<'EOF'
+          # Segundo lote de normativa estructurada - 26 de julio de 2026
+
+          ## Resultado
+
+          Se incorporaron 21 registros con numeral confirmado. La base pasó de 20 a
+          41 parámetros: 40 se encuentran como `validado_con_numeral` y el criterio
+          sobre garganta de escalera permanece como `piloto_verificado`.
+
+          ## Contenido incorporado
+
+          - Geometría de escaleras caracol, en abanico y con peldaños diagonales.
+          - Cantidad y altura de pasamanos en escaleras interiores de vivienda.
+          - Aberturas máximas en elementos de protección.
+          - Ancho de escalera exterior para vivienda bifamiliar o dos unidades.
+          - Medición del ancho cuando existe un pasamanos adosado al muro.
+          - Limitaciones de uso de una escalera caracol integrada.
+          - Protección de escaleras tipo gato.
+          - Huellas mínimas de 0.28 m y 0.30 m según uso de la edificación.
+          - Suelos no permitidos como apoyo de cimentaciones.
+          - Compactación de rellenos controlados al 90% o 95% del Proctor Modificado.
+          - Frecuencia mínima de controles de compactación.
+          - Referencias L/28 y L/10 para losas macizas unidireccionales.
+
+          ## Normas y numerales
+
+          - A.010: 23.2.b.ii, 23.2.b.iii, 23.2.d, 23.2.e y 24.3.
+          - A.020: 15.1.b, 15.1.c, 15.1.d y 15.2.g.
+          - E.050: artículo 24 y numerales 25.4.2-25.4.3.
+          - E.060: 9.6.2.1 y Tabla 9.1.
+
+          Cada registro conserva preguntas relacionadas de la base de 1,519 preguntas,
+          condiciones de aplicación, advertencia editorial y URL oficial.
+          EOF
+
+      - name: Validate expanded base
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.txt
+          python scripts/check_normativa.py
+          python -m py_compile backend/api.py backend/normativa.py
+
+      - name: Commit expanded base
+        run: |
+          if git diff --quiet; then
+            echo 'No changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add backend/normativa_tecnica.json scripts/check_normativa.py docs/VALIDACION_NORMATIVA_LOTE_2_2026-07-26.md
+          git commit -m 'Ampliar normativa con segundo lote verificado'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

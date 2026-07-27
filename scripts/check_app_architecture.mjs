@@ -26,7 +26,8 @@ const requiredStyles = [
   "app-experience.css?v=1",
   "faq-answer-v2.css?v=1",
   "problem-evaluator.css?v=1",
-  "help-center.css?v=1"
+  "help-center.css?v=1",
+  "related-questions.css?v=1"
 ];
 
 const requiredScripts = [
@@ -42,7 +43,8 @@ const requiredScripts = [
   "stage-expander.js?v=1",
   "stage-view-controller.js?v=1",
   "help-center.js?v=1",
-  "professional-help.js?v=1"
+  "professional-help.js?v=1",
+  "related-questions.js?v=1"
 ];
 
 for (const resource of [...requiredStyles, ...requiredScripts]) {
@@ -128,6 +130,7 @@ const stageExpander = read("frontend/app/stage-expander.js");
 const stageView = read("frontend/app/stage-view-controller.js");
 const helpCenter = read("frontend/app/help-center.js");
 const professionalHelp = read("frontend/app/professional-help.js");
+const relatedQuestions = read("frontend/app/related-questions.js");
 
 if (!faqSearch.includes("mi-casa-segura:faq-shown")) {
   fail("El buscador no emite el evento de respuesta seleccionada.");
@@ -165,6 +168,9 @@ if (!helpCenter.includes("politica-privacidad.html") || !helpCenter.includes("Qu
 if (!professionalHelp.includes("51968481482") || !professionalHelp.includes("wa.me")) {
   fail("La orientación profesional no está contextualizada hacia WhatsApp.");
 }
+if (!relatedQuestions.includes("Preguntas relacionadas") || !relatedQuestions.includes("data-related-faq")) {
+  fail("Las respuestas destacadas no incorporan navegación relacionada.");
+}
 if (!privacy.includes("Mi Casa Segura: Guía de Obra") || !privacy.includes("Mi obra")) {
   fail("La política de privacidad no describe el comportamiento de la aplicación.");
 }
@@ -185,7 +191,7 @@ const requiredStages = [
 ];
 
 for (const stage of requiredStages) {
-  if (!stageExpander.includes(`[\"${stage}\"`) && !stageExpander.includes(`\"${stage}\":`)) {
+  if (!stageExpander.includes(`\"${stage}\"`)) {
     fail(`La guía no incluye la etapa ${stage}.`);
   }
 }
@@ -208,9 +214,11 @@ for (const resource of [
   "/app/stage-view-controller.js?v=1",
   "/app/help-center.js?v=1",
   "/app/professional-help.js?v=1",
+  "/app/related-questions.js?v=1",
   "/app/faq-answer-v2.css?v=1",
   "/app/problem-evaluator.css?v=1",
   "/app/help-center.css?v=1",
+  "/app/related-questions.css?v=1",
   "/politica-privacidad.html"
 ]) {
   if (!serviceWorker.includes(resource)) {
@@ -218,8 +226,8 @@ for (const resource of [
   }
 }
 
-if (!serviceWorker.includes('mi-casa-segura-pwa-v23')) {
-  fail("La caché pública no corresponde a la versión v23 del MVP.");
+if (!serviceWorker.includes('mi-casa-segura-pwa-v24')) {
+  fail("La caché pública no corresponde a la versión v24 del MVP.");
 }
 
 for (const file of [
@@ -233,11 +241,13 @@ for (const file of [
   "stage-view-controller.js",
   "help-center.js",
   "professional-help.js",
+  "related-questions.js",
   "faq-answer-v2.css",
   "problem-evaluator.css",
-  "help-center.css"
+  "help-center.css",
+  "related-questions.css"
 ]) {
   if (!fs.existsSync(path.join(appDir, file))) fail(`No existe frontend/app/${file}.`);
 }
 
-console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas, evaluador guiado, ${requiredStages.length} etapas y centro de ayuda.`);
+console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas, evaluador guiado, ${requiredStages.length} etapas, ayuda y preguntas relacionadas.`);

@@ -30,9 +30,11 @@ REQUIRED_MODULE_TOKENS = {
     "AbortController",
     "localStorage",
     "escapeHtml",
-    "cache: \"no-store\"",
+    'cache: "no-store"',
     "aria-busy",
 }
+
+EXPECTED_CACHE_VERSION = "mi-casa-segura-pwa-v24"
 
 
 def require(condition: bool, message: str) -> None:
@@ -76,8 +78,8 @@ def main() -> None:
         "Faltan estilos de tarjetas o adaptación responsive.",
     )
     require(
-        'CACHE_VERSION = "mi-casa-segura-pwa-v18"' in worker_text,
-        "El service worker debe usar la caché v18.",
+        f'CACHE_VERSION = "{EXPECTED_CACHE_VERSION}"' in worker_text,
+        f"El service worker debe usar la caché {EXPECTED_CACHE_VERSION}.",
     )
     require(
         '"/app/normative.css?v=1"' in worker_text,
@@ -91,7 +93,8 @@ def main() -> None:
     print(
         "Módulo normativo frontend válido:",
         f"{len(REQUIRED_IDS)} controles,",
-        "API versionada, caché local y PWA v18.",
+        "API versionada, caché local y",
+        f"PWA {EXPECTED_CACHE_VERSION}.",
     )
 
 

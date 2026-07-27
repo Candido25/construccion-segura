@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 1680:
-        raise SystemExit("La base normativa debe contener por lo menos 1680 parámetros revisados.")
+    if len(base.parametros) < 1802:
+        raise SystemExit("La base normativa debe contener por lo menos 1802 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -72,8 +72,8 @@ def main() -> None:
         raise SystemExit(
             f"La revisión editorial debe conservar al menos 1245 numerales RNE validados; hay {validados}."
         )
-    if base.version != "2.7.0":
-        raise SystemExit(f"La versión normativa esperada es 2.7.0 y se recibió {base.version}.")
+    if base.version != "2.8.0":
+        raise SystemExit(f"La versión normativa esperada es 2.8.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 417:
-        raise SystemExit(f"El bloque requiere al menos 417 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 539:
+        raise SystemExit(f"El bloque requiere al menos 539 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -308,6 +308,23 @@ def main() -> None:
     if gas_manguera["estado_revision"] != "criterio_tecnico_revisado":
         raise SystemExit("La conexión flexible debe conservarse como criterio técnico revisado.")
 
+
+    impermeabilizacion_prueba = api.detalle_parametro_normativo("criterio-impermeabilizacion-prueba-nivel-registro")
+    if impermeabilizacion_prueba["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("La prueba de inundación debe conservarse como criterio técnico revisado.")
+
+    impermeabilizacion_salitre = api.detalle_parametro_normativo("criterio-humedad-salitre-no-pintar")
+    if "fuente de humedad" not in impermeabilizacion_salitre["valor"]["texto"]:
+        raise SystemExit("El tratamiento de salitre debe exigir corregir la fuente de humedad.")
+
+    impermeabilizacion_techo = api.detalle_parametro_normativo("criterio-cubierta-penetracion-refuerzo-sello")
+    if impermeabilizacion_techo["fuente"]["tipo"] != "criterio_tecnico":
+        raise SystemExit("El sellado de penetraciones debe conservar fuente de criterio técnico.")
+
+    impermeabilizacion_cisterna = api.detalle_parametro_normativo("criterio-cisterna-revestimiento-agua-potable")
+    if "agua potable" not in impermeabilizacion_cisterna["valor"]["texto"]:
+        raise SystemExit("El revestimiento de cisterna debe conservar compatibilidad con agua potable.")
+
     preguntas = json.loads(
         (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
     )
@@ -317,8 +334,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 3143:
-        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3143 preguntas técnicas.")
+    if len(todas) < 3265:
+        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3265 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

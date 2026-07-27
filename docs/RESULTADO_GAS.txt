@@ -1,0 +1,2 @@
+Base inesperada
+ESTADO=1

@@ -25,13 +25,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt
-      - name: Recuperar inventario desde comentarios del PR
+      - name: Recuperar y verificar inventario
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           python - <<'PY'
-          import json, os, urllib.request
+          import hashlib, json, os, urllib.request
           repo = os.environ["GITHUB_REPOSITORY"]
           number = os.environ["PR_NUMBER"]
           token = os.environ["GH_TOKEN"]
@@ -43,24 +43,40 @@ jobs:
           })
           with urllib.request.urlopen(request) as response:
               comments = json.load(response)
-          chunks = []
+          expected = {
+              1: (3000, "d20e2d7628259034ecf322ed3fcd881769022623137a61a6f570e505bb8eeacf"),
+              2: (3000, "a5b504efd8cde08b41dd5227b1cc3ab4d721ec947f3cc139208180132781cf03"),
+              3: (3000, "2e1ac6a97ee19a936ec7258b1ec10546fdb5a555439db7808048ab454194c554"),
+              4: (3000, "a199d48ff0508008c9301d4030e423fab1fed6c41b739e8429cf1e8c5b7dc02a"),
+              5: (3000, "7577b736f428fe169ae587417c22e9efce6203d34e21ca42193284c7afb85ad1"),
+              6: (3000, "7786c7075687576e6a819ff9b3618537659caefd9f340dcc205052aed86d4e7d"),
+              7: (48, "be7ee51f784e6ff9fa33d163f27d61782c8852a87530f01e93f52a5a02373ea9"),
+          }
+          chunks = {}
           for comment in comments:
               body = comment.get("body", "")
               if not body.startswith("CONTROL_CALIDAD_PAYLOAD_") or ":" not in body:
                   continue
               label, data = body.split(":", 1)
-              chunks.append((int(label.removeprefix("CONTROL_CALIDAD_PAYLOAD_")), "".join(data.split())))
-          chunks.sort()
-          if [n for n, _ in chunks] != list(range(1, len(chunks) + 1)):
-              raise SystemExit("Inventario incompleto o desordenado")
-          payload = "".join(data for _, data in chunks)
+              order = int(label.removeprefix("CONTROL_CALIDAD_PAYLOAD_"))
+              chunks[order] = "".join(data.split())
+          lines = []
+          for order in sorted(expected):
+              data = chunks.get(order, "")
+              digest = hashlib.sha256(data.encode()).hexdigest()
+              wanted_length, wanted_digest = expected[order]
+              ok = len(data) == wanted_length and digest == wanted_digest
+              lines.append(f"CHUNK_{order}: len={len(data)} sha256={digest} ok={ok}")
+          payload = "".join(chunks.get(order, "") for order in sorted(expected))
+          lines.append(f"TOTAL: len={len(payload)} sha256={hashlib.sha256(payload.encode()).hexdigest()}")
+          open("/tmp/payload_info.txt", "w", encoding="utf-8").write("\n".join(lines) + "\n")
           open("/tmp/control_calidad_payload.b64", "w", encoding="utf-8").write(payload)
-          print(f"Inventario recuperado: {len(chunks)} fragmentos, {len(payload)} caracteres")
           PY
       - name: Diagnosticar aplicación y validación
         run: |
           set +e
-          python scripts/ampliar_control_calidad_cierre.py /tmp/control_calidad_payload.b64 > docs/RESULTADO_CONTROL_CALIDAD.txt 2>&1
+          cp /tmp/payload_info.txt docs/RESULTADO_CONTROL_CALIDAD.txt
+          python scripts/ampliar_control_calidad_cierre.py /tmp/control_calidad_payload.b64 >> docs/RESULTADO_CONTROL_CALIDAD.txt 2>&1
           APLICACION=$?
           echo "APLICACION=$APLICACION" >> docs/RESULTADO_CONTROL_CALIDAD.txt
           if [ "$APLICACION" -eq 0 ]; then
@@ -73,5 +89,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/RESULTADO_CONTROL_CALIDAD.txt
-          git diff --cached --quiet || git commit -m "Registrar diagnóstico de control de calidad"
+          git diff --cached --quiet || git commit -m "Verificar integridad del inventario de calidad"
           git push origin HEAD:agent/ampliar-control-calidad-cierre-20260727

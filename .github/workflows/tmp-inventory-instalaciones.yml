@@ -1,0 +1,41 @@
+name: Temporary installations inventory
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/tmp-inventory-instalaciones.yml']
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: |
+          mkdir -p inventory
+          python - <<'PY' > inventory/data.txt
+          import json
+          from pathlib import Path
+          n=json.loads(Path('backend/normativa_tecnica.json').read_text())
+          f=json.loads(Path('backend/preguntas_tecnicas.json').read_text())
+          print('version',n['version'],'parameters',len(n['parametros']))
+          allq=[]
+          for c in f['categorias']:
+              name=c.get('nombre') or c.get('categoria')
+              items=c.get('preguntas',[])
+              print('CATEGORY',name,len(items),items[-1]['id'] if items else '-')
+              allq += [(name,q) for q in items]
+          print('LAST')
+          for name,q in sorted(allq,key=lambda x:int(x[1]['id'][1:]))[-110:]:
+              print(q['id'],'|',name,'|',q['pregunta'],'|',q['respuesta'])
+          print('PARAMS')
+          for p in n['parametros']:
+              if p['fuente']['norma'] in {'A.010','A.020','IS.010','EM.010','EM.020','EM.030','EM.110'}:
+                  print(p['id'],'|',p['fuente']['norma'],p['fuente'].get('numeral'),'|',p['parametro'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installations-inventory
+          path: inventory
+          retention-days: 2

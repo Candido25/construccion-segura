@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 748:
-        raise SystemExit("La base normativa debe contener por lo menos 748 parámetros revisados.")
+    if len(base.parametros) < 886:
+        raise SystemExit("La base normativa debe contener por lo menos 886 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -68,12 +68,12 @@ def main() -> None:
         parametro.estado_revision == "validado_con_numeral"
         for parametro in base.parametros
     )
-    if validados < 714:
+    if validados < 852:
         raise SystemExit(
-            f"La revisión editorial debe conservar al menos 714 numerales RNE validados; hay {validados}."
+            f"La revisión editorial debe conservar al menos 852 numerales RNE validados; hay {validados}."
         )
-    if base.version != "1.9.0":
-        raise SystemExit(f"La versión normativa esperada es 1.9.0 y se recibió {base.version}.")
+    if base.version != "2.0.0":
+        raise SystemExit(f"La versión normativa esperada es 2.0.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -234,6 +234,18 @@ def main() -> None:
     if chimenea["clasificacion"] != "prohibicion":
         raise SystemExit("La chimenea metálica en vivienda debe conservarse como prohibición.")
 
+    gas = api.detalle_parametro_normativo("em040-edificacion-nueva-aberturas-area-total")
+    if gas["valor"]["valor"] != 280:
+        raise SystemExit("La ventilación de gas debe conservar 280 cm² en edificaciones nuevas.")
+
+    solar = api.detalle_parametro_normativo("em080-fv-superficie-preliminar-kwp")
+    if "10" not in solar["valor"]["formula"]:
+        raise SystemExit("La superficie preliminar fotovoltaica debe conservar 10 m²/kWp.")
+
+    ascensor = api.detalle_parametro_normativo("em070-cuarto-maquinas-iluminacion")
+    if ascensor["valor"]["valor"] != 200:
+        raise SystemExit("El cuarto de máquinas debe conservar 200 lux.")
+
     detalle = api.detalle_parametro_normativo(
         "a010-escalera-contrahuella-maxima"
     )
@@ -255,8 +267,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 2211:
-        raise SystemExit("El bloque de gas y equipos especiales requiere por lo menos 2211 preguntas técnicas.")
+    if len(todas) < 2349:
+        raise SystemExit("El bloque de gas, energía solar y transporte mecánico requiere por lo menos 2349 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

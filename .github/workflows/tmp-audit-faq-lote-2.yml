@@ -1,0 +1,97 @@
+name: Temporary FAQ mapping for normative batch 2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-audit-faq-lote-2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  map-related-faqs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+
+      - name: Find related questions
+        run: |
+          mkdir -p audit
+          python - <<'PY'
+          import json
+          import re
+          import unicodedata
+          from pathlib import Path
+
+          data = json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          records = []
+          for category in data.get('categorias', []):
+              category_name = category.get('nombre') or category.get('categoria') or ''
+              for item in category.get('preguntas', []):
+                  if not isinstance(item, dict):
+                      continue
+                  records.append({
+                      'id': item.get('id'),
+                      'categoria': category_name,
+                      'pregunta': item.get('pregunta', ''),
+                      'respuesta': item.get('respuesta', ''),
+                  })
+
+          def norm(value):
+              value = unicodedata.normalize('NFD', str(value).lower())
+              value = ''.join(ch for ch in value if unicodedata.category(ch) != 'Mn')
+              return re.sub(r'[^a-z0-9]+', ' ', value).strip()
+
+          groups = {
+              'escalera_caracol_abanico': ['caracol', 'abanico', 'eje escalera'],
+              'pasamanos_altura': ['pasamanos', 'altura pasamanos'],
+              'baranda_aberturas_015': ['0 15', '15 centimetros', 'esfera baranda', 'separacion baranda'],
+              'escalera_exterior_bifamiliar': ['bifamiliar escalera exterior', 'dos viviendas escalera exterior'],
+              'ancho_invasion_pasamanos': ['pasamanos ancho escalera', '10 cm pasamanos', 'ancho libre escalera'],
+              'pasos_diagonales': ['pasos diagonal', 'pasos en angulo', 'peldaños diagonal'],
+              'suelos_no_permitidos': ['turba', 'suelo organico', 'relleno no controlado', 'tierra vegetal'],
+              'proctor_90': ['proctor 90', '12 finos compactacion'],
+              'proctor_95': ['proctor 95', 'menos 12 finos'],
+              'control_compactacion': ['control compactacion', '250 m2 compactacion', 'ensayo por capa'],
+              'talud_factor_seguridad': ['factor seguridad talud', '1 5 talud', '1 25 talud'],
+              'losa_l28': ['l 28', 'ambos extremos continuos'],
+              'losa_l10': ['l 10', 'voladizo espesor'],
+          }
+
+          lines = [f'total_preguntas={len(records)}']
+          for group, queries in groups.items():
+              scored = []
+              for record in records:
+                  haystack = norm(' '.join([record['categoria'], record['pregunta'], record['respuesta']]))
+                  score = 0
+                  matched = []
+                  for query in queries:
+                      terms = norm(query).split()
+                      if terms and all(term in haystack for term in terms):
+                          score += 20 + len(terms)
+                          matched.append(query)
+                      else:
+                          score += sum(2 for term in terms if term in haystack)
+                  if score:
+                      scored.append((score, record, matched))
+              scored.sort(key=lambda row: (-row[0], row[1]['pregunta']))
+              lines.append(f'\n# {group}')
+              for score, record, matched in scored[:18]:
+                  lines.append(
+                      f"{record['id']} | score={score} | categoria={record['categoria']} | "
+                      f"pregunta={record['pregunta']} | respuesta={record['respuesta']} | coincidencias={matched}"
+                  )
+
+          Path('audit/faq-mapping.txt').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print('\n'.join(lines))
+          PY
+
+      - name: Upload FAQ mapping
+        uses: actions/upload-artifact@v4
+        with:
+          name: faq-mapping-normative-batch-2
+          path: audit/faq-mapping.txt
+          if-no-files-found: error
+          retention-days: 2

@@ -1,4 +1,4 @@
-const CACHE_VERSION = "mi-casa-segura-pwa-v23";
+const CACHE_VERSION = "mi-casa-segura-pwa-v24";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -11,6 +11,7 @@ const APP_SHELL = [
   "/app/faq-answer-v2.css?v=1",
   "/app/problem-evaluator.css?v=1",
   "/app/help-center.css?v=1",
+  "/app/related-questions.css?v=1",
   "/app/brand.css?v=20260714-1",
   "/app/app.js?v=1",
   "/app/modules-rne.js?v=1",
@@ -24,6 +25,7 @@ const APP_SHELL = [
   "/app/risk-evaluator.js?v=1",
   "/app/help-center.js?v=1",
   "/app/professional-help.js?v=1",
+  "/app/related-questions.js?v=1",
   "/app/normative-module.js?v=1",
   "/offline.html",
   "/styles.css",

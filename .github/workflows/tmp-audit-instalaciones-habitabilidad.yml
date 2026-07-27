@@ -40,7 +40,7 @@ jobs:
               'EM020.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366691/63%20EM.020%20INSTALACIONES%20DE%20TELECOMUNICACIONES%20RM%20N%C2%B0%20400-2018-VIVIENDA.pdf?v=1677250657',
               'EM030.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366692/64%20EM.030%20INSTALACIONES%20DE%20VENTILACI%C3%93N%20-%20DS%20N%C2%B0%20005-2014-VIVIENDA.pdf?v=1677250657',
               'EM110.pdf': 'https://cdn.www.gob.pe/uploads/document/file/2366726/72%20EM.110%20CONFORT%20T%C3%89RMICO%20Y%20LUM%C3%8DNICO%20CON%20EFICIENCIA%20ENERG%C3%89TICA.pdf?v=1677250657',
-              'IS010-mod-2025.pdf': 'https://cdn.www.gob.pe/uploads/document/file/8056558/RM%20107-2025-VIVIENDA.pdf?v=1744724971',
+              'IS010-mod-2025.pdf': 'https://cdn.www.gob.pe/uploads/document/file/7921378/6667128-rm-107-2025-vivienda.pdf?v=1744646111',
           }
           out = pathlib.Path('audit-instalaciones')
           for name, url in files.items():
@@ -89,37 +89,14 @@ jobs:
                       })
 
           searches = {
-              'A010': [
-                  r'iluminacion natural', r'ventilacion natural', r'area de vano', r'pozo de luz',
-                  r'altura libre', r'pasajes', r'puertas', r'servicios sanitarios', r'impermeabil',
-              ],
-              'A020': [
-                  r'area minima', r'dormitorio', r'cocina', r'lavanderia', r'patio', r'azotea',
-                  r'iluminacion', r'ventilacion', r'proteccion contra humedad', r'altura', r'estacionamiento',
-              ],
-              'IS010': [
-                  r'presion minima', r'presion maxima', r'dotacion', r'diametro minimo', r'pendiente',
-                  r'ventilacion sanitaria', r'registro', r'trampa', r'sello de agua', r'cisterna', r'tanque elevado',
-                  r'agua caliente', r'prueba hidraulica', r'desague', r'aguas pluviales', r'valvula', r'medidor',
-              ],
+              'A010': [r'iluminacion natural', r'ventilacion natural', r'area de vano', r'pozo de luz', r'altura libre', r'pasajes', r'puertas', r'servicios sanitarios', r'impermeabil'],
+              'A020': [r'area minima', r'dormitorio', r'cocina', r'lavanderia', r'patio', r'azotea', r'iluminacion', r'ventilacion', r'proteccion contra humedad', r'altura', r'estacionamiento'],
+              'IS010': [r'presion minima', r'presion maxima', r'dotacion', r'diametro minimo', r'pendiente', r'ventilacion sanitaria', r'registro', r'trampa', r'sello de agua', r'cisterna', r'tanque elevado', r'agua caliente', r'prueba hidraulica', r'desague', r'aguas pluviales', r'valvula', r'medidor'],
               'IS010-mod-2025': [r'vivienda', r'dotacion', r'litros', r'dormitorio'],
-              'EM010': [
-                  r'tablero', r'interruptor diferencial', r'puesta a tierra', r'tomacorriente', r'circuito',
-                  r'carga minima', r'conductor', r'canalizacion', r'proteccion', r'bano', r'cocina',
-                  r'alumbrado', r'caida de tension', r'medidor', r'pozo a tierra',
-              ],
-              'EM020': [
-                  r'caja', r'canalizacion', r'registro', r'telecomunicaciones', r'ducto', r'tuberia',
-                  r'punto de acceso', r'vivienda', r'gabinete',
-              ],
-              'EM030': [
-                  r'renovaciones por hora', r'caudal minimo', r'ventilacion mecanica', r'extraccion',
-                  r'cocina', r'bano', r'servicios higienicos', r'garaje', r'ducto',
-              ],
-              'EM110': [
-                  r'transmitancia', r'iluminancia', r'eficiencia energetica', r'factor solar',
-                  r'aislamiento', r'zona bioclimatica', r'ventilacion', r'iluminacion natural',
-              ],
+              'EM010': [r'tablero', r'interruptor diferencial', r'puesta a tierra', r'tomacorriente', r'circuito', r'carga minima', r'conductor', r'canalizacion', r'proteccion', r'bano', r'cocina', r'alumbrado', r'caida de tension', r'medidor', r'pozo a tierra'],
+              'EM020': [r'caja', r'canalizacion', r'registro', r'telecomunicaciones', r'ducto', r'tuberia', r'punto de acceso', r'vivienda', r'gabinete'],
+              'EM030': [r'renovaciones por hora', r'caudal minimo', r'ventilacion mecanica', r'extraccion', r'cocina', r'bano', r'servicios higienicos', r'garaje', r'ducto'],
+              'EM110': [r'transmitancia', r'iluminancia', r'eficiencia energetica', r'factor solar', r'aislamiento', r'zona bioclimatica', r'ventilacion', r'iluminacion natural'],
           }
 
           def contexts(text: str, patterns: list[str], limit: int = 60) -> list[str]:
@@ -161,14 +138,7 @@ jobs:
               for number, block in enumerate(blocks, 1):
                   report += [f'### Contexto {number}', '```text', block[:6000], '```', '']
 
-          faq_terms = [
-              'ventilacion natural', 'iluminacion natural', 'pozo de luz', 'altura libre', 'humedad',
-              'cisterna', 'tanque elevado', 'presion de agua', 'pendiente de desague', 'ventilacion sanitaria',
-              'registro sanitario', 'trampa', 'sello de agua', 'agua caliente', 'prueba hidraulica',
-              'tablero electrico', 'interruptor diferencial', 'puesta a tierra', 'tomacorriente',
-              'circuito electrico', 'caida de tension', 'caja de paso', 'telecomunicaciones',
-              'ventilacion mecanica', 'extractor', 'bano', 'cocina', 'dormitorio', 'lavanderia',
-          ]
+          faq_terms = ['ventilacion natural', 'iluminacion natural', 'pozo de luz', 'altura libre', 'humedad', 'cisterna', 'tanque elevado', 'presion de agua', 'pendiente de desague', 'ventilacion sanitaria', 'registro sanitario', 'trampa', 'sello de agua', 'agua caliente', 'prueba hidraulica', 'tablero electrico', 'interruptor diferencial', 'puesta a tierra', 'tomacorriente', 'circuito electrico', 'caida de tension', 'caja de paso', 'telecomunicaciones', 'ventilacion mecanica', 'extractor', 'bano', 'cocina', 'dormitorio', 'lavanderia']
           report += ['## Mapeo de preguntas existentes', '']
           for term in faq_terms:
               token = normalize(term)
@@ -182,20 +152,11 @@ jobs:
               report.append('')
 
           report += ['## Parámetros existentes relacionados', '']
-          related_tokens = [
-              'sanitari', 'electr', 'ventil', 'ilumin', 'habit', 'humedad', 'agua', 'desague',
-              'cisterna', 'tanque', 'tuberia', 'ducto', 'dormitorio', 'cocina', 'bano',
-          ]
+          related_tokens = ['sanitari', 'electr', 'ventil', 'ilumin', 'habit', 'humedad', 'agua', 'desague', 'cisterna', 'tanque', 'tuberia', 'ducto', 'dormitorio', 'cocina', 'bano']
           for item in norm.get('parametros', []):
-              haystack = normalize(' '.join([
-                  item.get('id', ''), item.get('categoria', ''), item.get('elemento', ''),
-                  item.get('parametro', ''), item.get('valor', {}).get('texto', ''),
-              ]))
+              haystack = normalize(' '.join([item.get('id', ''), item.get('categoria', ''), item.get('elemento', ''), item.get('parametro', ''), item.get('valor', {}).get('texto', '')]))
               if any(token in haystack for token in related_tokens):
-                  report.append(
-                      f"- `{item.get('id')}` — {item.get('categoria')} / {item.get('elemento')} / "
-                      f"{item.get('parametro')} / {item.get('fuente', {}).get('norma')} {item.get('fuente', {}).get('numeral')}"
-                  )
+                  report.append(f"- `{item.get('id')}` — {item.get('categoria')} / {item.get('elemento')} / {item.get('parametro')} / {item.get('fuente', {}).get('norma')} {item.get('fuente', {}).get('numeral')}")
 
           Path('audit-instalaciones/report.md').write_text('\n'.join(report) + '\n', encoding='utf-8')
           PY

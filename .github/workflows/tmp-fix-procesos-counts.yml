@@ -1,0 +1,64 @@
+name: Temporary fix construction processes counts
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-fix-procesos-counts.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-counts:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Correct generated totals and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/tmp_apply_procesos_control.py')
+          text = path.read_text(encoding='utf-8')
+          replacements = [
+              ('if len(new_parameters) != 91:', 'if len(new_parameters) != 92:'),
+              ('Se esperaban 91 parámetros nuevos', 'Se esperaban 92 parámetros nuevos'),
+              ('if next_question != 1661:', 'if next_question != 1662:'),
+              ('La numeración final esperada era q1660', 'La numeración final esperada era q1661'),
+              ('if len(norm["parametros"]) != 191:', 'if len(norm["parametros"]) != 192:'),
+              ('Se esperaban 191 parámetros', 'Se esperaban 192 parámetros'),
+              ('if question_total != 1660:', 'if question_total != 1661:'),
+              ('Se esperaban 1660 preguntas', 'Se esperaban 1661 preguntas'),
+              ('if len(base.parametros) < 191:', 'if len(base.parametros) < 192:'),
+              ('por lo menos 191 parámetros validados', 'por lo menos 192 parámetros validados'),
+              ('if validados < 190:', 'if validados < 191:'),
+              ('al menos 190 numerales validados', 'al menos 191 numerales validados'),
+              ('if len(todas) < 1660:', 'if len(todas) < 1661:'),
+              ('por lo menos 1660 preguntas técnicas', 'por lo menos 1661 preguntas técnicas'),
+              ('Se incorporaron 91 parámetros y 91 preguntas', 'Se incorporaron 92 parámetros y 92 preguntas'),
+              ('Parámetros totales: 191.', 'Parámetros totales: 192.'),
+              ('Registros validados con numeral: 190.', 'Registros validados con numeral: 191.'),
+              ('Preguntas técnicas: 1660.', 'Preguntas técnicas: 1661.'),
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'No se encontró el texto esperado: {old}')
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          python -m py_compile scripts/tmp_apply_procesos_control.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/tmp_apply_procesos_control.py
+          git commit -m 'Corregir totales del bloque de procesos'
+          git pull --rebase origin '${{ github.event.pull_request.head.ref }}'
+          git push origin HEAD:'${{ github.event.pull_request.head.ref }}'

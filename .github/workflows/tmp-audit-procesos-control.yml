@@ -1,0 +1,254 @@
+name: Temporary audit construction processes and control
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-audit-procesos-control.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-official-standards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install PDF text tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Download official RNE PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-procesos/pdfs audit-procesos/text
+          download_pdf() {
+            local url="$1"
+            local output="$2"
+            curl -L --fail --retry 5 --retry-all-errors \
+              -A 'Mozilla/5.0 ConstruccionSegura/1.0' \
+              "$url" -o "audit-procesos/pdfs/$output"
+            pdftotext -layout "audit-procesos/pdfs/$output" "audit-procesos/text/${output%.pdf}.txt"
+          }
+          download_pdf 'https://cdn.www.gob.pe/uploads/document/file/2365155/05%20G.050%20SEGURIDAD%20DURANTE%20LA%20CONSTRUCCI%C3%93N%20DS%20N%C2%B0%20010-2009.pdf?v=1636045000' 'G050.pdf'
+          download_pdf 'https://cdn.www.gob.pe/uploads/document/file/2366526/33%20GE.030%20CALIDAD%20DE%20LA%20CONSTRUCCI%C3%93N.pdf?v=1636058378' 'GE030.pdf'
+          download_pdf 'https://cdn.www.gob.pe/uploads/document/file/2366655/54%20E.050%20SUELOS%20Y%20CIMENTACIONES%20RM%20N%C2%B0%20406-2018-VIVIENDA.pdf?v=1677250657' 'E050.pdf'
+          download_pdf 'https://cdn.www.gob.pe/uploads/document/file/2366660/55%20E.060%20CONCRETO%20ARMADO%20DS%20N%C2%B0%20010-2009.pdf?v=1677250657' 'E060.pdf'
+          download_pdf 'https://cdn.www.gob.pe/uploads/document/file/2366661/56%20E.070%20ALBA%C3%91ILERIA.pdf?v=1677250657' 'E070.pdf'
+
+      - name: Build clause and repository audit report
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import re
+          import unicodedata
+          from pathlib import Path
+
+          root = Path('audit-procesos')
+          texts = {
+              name: (root / 'text' / f'{name}.txt').read_text(encoding='utf-8', errors='ignore')
+              for name in ('G050', 'GE030', 'E050', 'E060', 'E070')
+          }
+          norm = json.loads(Path('backend/normativa_tecnica.json').read_text(encoding='utf-8'))
+          faq = json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+
+          def normalize(value: str) -> str:
+              text = unicodedata.normalize('NFD', str(value).lower())
+              text = ''.join(ch for ch in text if unicodedata.category(ch) != 'Mn')
+              return ' '.join(text.split())
+
+          def windows(text: str, patterns: list[str], before: int = 7, after: int = 14, limit: int = 30):
+              original = text.splitlines()
+              normalized = [normalize(line) for line in original]
+              output = []
+              seen = set()
+              for index, line in enumerate(normalized):
+                  if any(re.search(pattern, line) for pattern in patterns):
+                      start = max(0, index - before)
+                      end = min(len(original), index + after + 1)
+                      block = '\n'.join(f'{i + 1:05d}: {original[i]}' for i in range(start, end)).strip()
+                      fingerprint = normalize(block)
+                      if fingerprint and fingerprint not in seen:
+                          seen.add(fingerprint)
+                          output.append(block)
+                      if len(output) >= limit:
+                          break
+              return output
+
+          topics = {
+              'E060_materiales_almacenamiento_y_limpieza': ('E060', [
+                  r'almacen', r'contamin', r'oxido', r'limpi', r'materiales cementantes', r'agregado', r'agua de mezclado',
+              ]),
+              'E060_dosificacion_mezclado_transporte': ('E060', [
+                  r'dosificacion', r'mezclado', r'mezcladora', r'transporte del concreto', r'equipo de mezclado', r'concreto premezclado',
+              ]),
+              'E060_colocacion_consolidacion_y_vibrado': ('E060', [
+                  r'colocacion del concreto', r'consolid', r'vibrad', r'segregacion', r'caida libre', r'depositar', r'retempl',
+              ]),
+              'E060_curado_temperaturas_y_proteccion': ('E060', [
+                  r'curado', r'temperatura ambiente', r'tiempo caluroso', r'tiempo frio', r'proteccion del concreto', r'mantener humed',
+              ]),
+              'E060_encofrados_apuntalamiento_desencofrado': ('E060', [
+                  r'encofrado', r'puntal', r'reapuntal', r'desencofrado', r'retirar los encofrados', r'cimbras',
+              ]),
+              'E060_juntas_construccion_y_superficies': ('E060', [
+                  r'juntas de construccion', r'junta de construccion', r'lechada', r'superficie del concreto', r'antes de colocar concreto nuevo',
+              ]),
+              'E060_tuberias_embebidas_y_aluminio': ('E060', [
+                  r'embebid', r'tuberias', r'conductos', r'aluminio', r'instalaciones', r'manga',
+              ]),
+              'E060_ensayos_muestreo_resistencia': ('E060', [
+                  r'muestras para ensayos', r'ensayo de resistencia', r'probetas', r'cilindros', r'frecuencia de ensayos', r'aceptacion del concreto', r'curado en obra',
+              ]),
+              'E070_unidades_mortero_y_almacenamiento': ('E070', [
+                  r'unidades de albañileria', r'almacen', r'mortero', r'humede', r'succion', r'limpi', r'agua',
+              ]),
+              'E070_procedimiento_asentado_juntas_y_altura': ('E070', [
+                  r'procedimiento de construccion', r'juntas horizontales', r'juntas verticales', r'altura maxima', r'jornada de trabajo', r'asentado', r'plomo', r'nivel',
+              ]),
+              'E070_confinamiento_grout_y_vaciado': ('E070', [
+                  r'concreto liquido', r'grout', r'vaciado', r'columnas de confinamiento', r'dentad', r'chicote', r'limpiar', r'ventana de limpieza',
+              ]),
+              'E070_tuberias_canalizaciones_y_picado': ('E070', [
+                  r'tuberias', r'canalizaciones', r'picad', r'ranura', r'muro portante', r'instalaciones',
+              ]),
+              'E050_excavaciones_rellenos_y_control': ('E050', [
+                  r'excavacion', r'relleno', r'compactacion', r'control de compactacion', r'densidad de campo', r'entib', r'talud', r'fondo de cimentacion',
+              ]),
+              'GE030_calidad_control_y_responsabilidades': ('GE030', [
+                  r'plan de calidad', r'control de calidad', r'calidad de la construccion', r'pruebas', r'ensayos', r'registro', r'supervision', r'constructor', r'proyecto',
+              ]),
+              'G050_plan_seguridad_y_organizacion': ('G050', [
+                  r'plan de seguridad', r'comite tecnico', r'supervisor de prevencion', r'capacitacion', r'induccion', r'emergencia', r'botiquin', r'primeros auxilios',
+              ]),
+              'G050_EPP_y_proteccion_colectiva': ('G050', [
+                  r'equipo de proteccion personal', r'casco', r'arnes', r'linea de vida', r'proteccion colectiva', r'baranda', r'malla', r'senalizacion',
+              ]),
+              'G050_orden_limpieza_accesos_y_residuos': ('G050', [
+                  r'orden y limpieza', r'vias de circulacion', r'acceso', r'residuos', r'iluminacion', r'almacenamiento', r'evacuacion',
+              ]),
+              'G050_excavaciones_andamios_escaleras_altura': ('G050', [
+                  r'excavaciones', r'andamios', r'escaleras', r'trabajo en altura', r'caida de altura', r'zanjas', r'entibado',
+              ]),
+              'G050_electricidad_herramientas_y_demolicion': ('G050', [
+                  r'instalaciones electricas provisionales', r'herramientas electricas', r'puesta a tierra', r'demolicion', r'maquinaria', r'equipos',
+              ]),
+          }
+
+          lines = [
+              '# Auditoría de procesos constructivos, control y seguridad', '',
+              f"- Versión normativa actual: `{norm.get('version')}`",
+              f"- Parámetros actuales: {len(norm.get('parametros', []))}",
+              f"- Fecha de revisión actual: `{norm.get('fecha_revision')}`",
+          ]
+
+          all_questions = []
+          category_counts = []
+          for category in faq.get('categorias', []):
+              category_name = category.get('nombre') or category.get('categoria') or ''
+              items = [item for item in category.get('preguntas', []) if isinstance(item, dict)]
+              category_counts.append((category_name, len(items)))
+              for item in items:
+                  all_questions.append({
+                      'id': item.get('id'),
+                      'category': category_name,
+                      'question': item.get('pregunta', ''),
+                      'answer': item.get('respuesta', ''),
+                      'search': normalize(' '.join([
+                          category_name,
+                          item.get('pregunta', ''),
+                          item.get('respuesta', ''),
+                      ])),
+                  })
+
+          lines += [f"- Preguntas actuales: {len(all_questions)}", '', '## Categorías FAQ existentes', '']
+          for category_name, count in category_counts:
+              lines.append(f'- `{category_name}`: {count}')
+
+          def q_number(value):
+              try:
+                  return int(str(value).lstrip('q'))
+              except ValueError:
+                  return -1
+
+          lines += ['', '## Últimas preguntas por identificador', '']
+          for item in sorted(all_questions, key=lambda row: q_number(row['id']))[-45:]:
+              answer = ' '.join(str(item['answer']).split())
+              lines.append(f"- `{item['id']}` [{item['category']}]: **{item['question']}** — {answer[:350]}")
+
+          lines += ['', '## Parámetros ya existentes relacionados', '']
+          related_tokens = [
+              'curado', 'vibrado', 'encofrado', 'desencofrado', 'junta', 'mortero', 'grout', 'compactacion',
+              'excavacion', 'almacen', 'seguridad', 'andamio', 'altura', 'ensayo', 'muestra', 'tuberia', 'conducto',
+          ]
+          for item in norm.get('parametros', []):
+              haystack = normalize(' '.join([
+                  item.get('id', ''), item.get('categoria', ''), item.get('elemento', ''),
+                  item.get('parametro', ''), item.get('valor', {}).get('texto', ''),
+              ]))
+              if any(token in haystack for token in related_tokens):
+                  lines.append(
+                      f"- `{item.get('id')}` — {item.get('categoria')} / {item.get('elemento')} / "
+                      f"{item.get('parametro')} / {item.get('fuente', {}).get('norma')} "
+                      f"{item.get('fuente', {}).get('numeral')}"
+                  )
+
+          faq_terms = [
+              'curado', 'vibrado', 'vibrador', 'encofrado', 'desencofrado', 'puntal', 'junta fria', 'junta de construccion',
+              'mezclado', 'transporte de concreto', 'segregacion', 'caida libre', 'probetas', 'ensayo de concreto',
+              'almacenamiento de cemento', 'oxido del acero', 'separadores', 'tuberias embebidas', 'picado de muro',
+              'mortero', 'humedecer ladrillo', 'altura por jornada', 'grout', 'ventana de limpieza', 'relleno',
+              'compactacion', 'excavacion', 'entibado', 'plan de seguridad', 'casco', 'arnes', 'andamio', 'escalera de obra',
+              'orden y limpieza', 'instalacion electrica provisional', 'demolicion', 'primeros auxilios',
+          ]
+          lines += ['', '## Mapeo de preguntas existentes por tema', '']
+          for term in faq_terms:
+              normalized_term = normalize(term)
+              matches = [item for item in all_questions if normalized_term in item['search']][:15]
+              lines += [f'### {term}', '']
+              if not matches:
+                  lines.append('_Sin coincidencias directas._')
+              for item in matches:
+                  answer = ' '.join(str(item['answer']).split())
+                  lines.append(f"- `{item['id']}` [{item['category']}]: **{item['question']}** — {answer[:400]}")
+              lines.append('')
+
+          lines += ['## Extractos oficiales por tema', '']
+          for heading, (standard, patterns) in topics.items():
+              lines += [f'### {heading}', f'_Fuente: {standard}_', '']
+              blocks = windows(texts[standard], patterns)
+              if not blocks:
+                  lines.append('_Sin coincidencias extraídas._')
+              for number, block in enumerate(blocks, 1):
+                  lines += [f'#### Contexto {number}', '```text', block[:7000], '```', '']
+
+          (root / 'report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+          summary = {
+              'version_normativa': norm.get('version'),
+              'parametros': len(norm.get('parametros', [])),
+              'preguntas': len(all_questions),
+              'max_question_number': max(q_number(item['id']) for item in all_questions),
+              'categorias': category_counts,
+              'pdfs': {name: len(text.splitlines()) for name, text in texts.items()},
+          }
+          (root / 'summary.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          PY
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: construction-processes-control-audit
+          path: audit-procesos
+          retention-days: 3

@@ -1,0 +1,157 @@
+name: Temporary audit accessibility fire safety
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tmp-audit-accesibilidad-incendios.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-official-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install PDF tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Download current official standards
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-access-fire
+          python - <<'PY'
+          from pathlib import Path
+          import html
+          import re
+          import urllib.request
+
+          pages = {
+              'A120': 'https://www.gob.pe/institucion/vivienda/normas-legales/3906930-075-2023-vivienda',
+              'A130_current': 'https://www.gob.pe/institucion/vivienda/informes-publicaciones/2309793-reglamento-nacional-de-edificaciones-rne',
+              'A010': 'https://www.gob.pe/institucion/vivienda/informes-publicaciones/2309793-reglamento-nacional-de-edificaciones-rne',
+              'A130_project_2026': 'https://www.gob.pe/institucion/vivienda/normas-legales/8394201-264-2026-vivienda',
+              'Guide_accessible_housing_2026': 'https://www.gob.pe/institucion/vivienda/normas-legales/8267220-228-2026-vivienda',
+          }
+
+          def get(url):
+              req=urllib.request.Request(url,headers={'User-Agent':'ConstruccionSegura-audit/1.0'})
+              with urllib.request.urlopen(req,timeout=60) as r:
+                  return r.read().decode('utf-8','ignore')
+
+          def links(text):
+              text=html.unescape(text).replace('\\u002F','/').replace('\\/','/')
+              found=[]
+              for pattern in [r'https://cdn\.www\.gob\.pe/[^"\'<> ]+', r'https://[^"\'<> ]+\.pdf[^"\'<> ]*']:
+                  found += re.findall(pattern,text,re.I)
+              return list(dict.fromkeys(x.rstrip('),.;') for x in found))
+
+          wanted = {
+              'A120': ['a.120','nt-a-120','nt a.120','accesibilidad'],
+              'A130_current': ['a.130','requisitos de seguridad'],
+              'A010': ['a.010','condiciones generales de diseño'],
+              'A130_project_2026': ['proyecto','a.130'],
+              'Guide_accessible_housing_2026': ['guia','accesibilidad'],
+          }
+          chosen={}
+          for key,url in pages.items():
+              text=get(url)
+              Path(f'audit-access-fire/{key}.html').write_text(text,encoding='utf-8')
+              candidates=links(text)
+              scored=[]
+              for link in candidates:
+                  low=link.lower()
+                  score=sum(term in low for term in wanted[key])
+                  if '.pdf' in low:
+                      score += 1
+                  scored.append((score,link))
+              scored.sort(reverse=True)
+              for score,link in scored:
+                  if score < 1:
+                      continue
+                  try:
+                      req=urllib.request.Request(link,headers={'User-Agent':'ConstruccionSegura-audit/1.0'})
+                      with urllib.request.urlopen(req,timeout=90) as r:
+                          data=r.read()
+                      if data.startswith(b'%PDF'):
+                          Path(f'audit-access-fire/{key}.pdf').write_bytes(data)
+                          chosen[key]=link
+                          break
+                  except Exception:
+                      pass
+          Path('audit-access-fire/selected-links.txt').write_text('\n'.join(f'{k}={v}' for k,v in chosen.items()),encoding='utf-8')
+          missing=[k for k in pages if k not in chosen]
+          if missing:
+              raise SystemExit('No se descargaron: '+', '.join(missing))
+          PY
+          for pdf in audit-access-fire/*.pdf; do pdftotext -layout "$pdf" "${pdf%.pdf}.txt"; done
+
+      - name: Build audit inventory
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re, unicodedata
+          from pathlib import Path
+
+          faq=json.loads(Path('backend/preguntas_tecnicas.json').read_text(encoding='utf-8'))
+          norm=json.loads(Path('backend/normativa_tecnica.json').read_text(encoding='utf-8'))
+          def n(s):
+              s=unicodedata.normalize('NFD',str(s).lower())
+              return ' '.join(''.join(c for c in s if unicodedata.category(c)!='Mn').split())
+          qs=[]
+          for cat in faq['categorias']:
+              cn=cat.get('nombre') or cat.get('categoria') or ''
+              for q in cat.get('preguntas',[]):
+                  qs.append((q.get('id'),cn,q.get('pregunta',''),q.get('respuesta',''),n(f"{cn} {q.get('pregunta','')} {q.get('respuesta','')}")))
+          topics={
+            'A.120 accesibilidad':['rampa','pendiente','pasamanos','silla de ruedas','servicio higienico accesible','estacionamiento accesible','senalizacion braille','ruta accesible','puerta accesible','ascensor accesible'],
+            'A.130 evacuacion':['evacuacion','salida de emergencia','distancia de recorrido','ancho de salida','escalera de evacuacion','puerta cortafuego','aforo','iluminacion de emergencia'],
+            'A.130 incendios':['extintor','detector de humo','alarma contra incendio','rociador','gabinete contra incendio','resistencia al fuego','compartimentacion','hidrante'],
+            'A.010 seguridad de uso':['baranda','vidrio de seguridad','borde libre','proteccion de vacio','puerta de escape'],
+          }
+          lines=['# Auditoría de accesibilidad, evacuación e incendios','',f"- Parámetros actuales: {len(norm['parametros'])}",f"- Preguntas actuales: {len(qs)}",'',
+                 '## Vigencia comprobada','',
+                 '- A.120: se usa la modificación aprobada por RM N.° 075-2023-VIVIENDA.',
+                 '- A.130: se usa el texto vigente del compendio oficial; el documento publicado mediante RM N.° 264-2026-VIVIENDA es solo proyecto de modificación y no se trata como norma vigente.',
+                 '- Guía para el diseño de viviendas accesibles 2026: se usa como manual oficial, no como sustituto de A.120.','']
+          for name,terms in topics.items():
+              lines += [f'## Preguntas existentes: {name}','']
+              hits=[]
+              for q in qs:
+                  if any(n(t) in q[4] for t in terms): hits.append(q)
+              for qid,cat,question,answer,_ in hits[:80]:
+                  lines.append(f'- `{qid}` [{cat}] **{question}** — {" ".join(answer.split())[:300]}')
+              if not hits: lines.append('_Sin coincidencias directas._')
+              lines.append('')
+          patterns={
+            'A120':['pendiente','ancho libre','rampa','pasamanos','circulo de 1.50','estacionamiento','servicio higienico','ruta accesible','senalizacion','braille','ascensor'],
+            'A130_current':['distancia de evacuacion','ancho libre','puerta','escalera','resistencia al fuego','extintor','detector','alarma','rociador','iluminacion de emergencia','senalizacion'],
+            'A010':['barandas','vidrio','puertas','escaleras','seguridad'],
+            'Guide_accessible_housing_2026':['rampa','dormitorio','servicio higienico','puerta','circulacion','cocina'],
+          }
+          for key,terms in patterns.items():
+              text=Path(f'audit-access-fire/{key}.txt').read_text(encoding='utf-8',errors='ignore')
+              raw=text.splitlines(); normlines=[n(x) for x in raw]
+              lines += [f'## Extractos {key}','']
+              count=0
+              for i,line in enumerate(normlines):
+                  if any(n(t) in line for t in terms):
+                      block='\n'.join(raw[max(0,i-3):min(len(raw),i+8)]).strip()
+                      if block:
+                          lines += ['```text',block[:2400],'```','']
+                          count+=1
+                      if count>=35: break
+          Path('audit-access-fire/report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-fire-audit
+          path: audit-access-fire
+          retention-days: 3

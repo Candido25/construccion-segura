@@ -1,4 +1,0 @@
-La rama no parte de la versión 2.5.0 esperada.
-ESTADO_APLICAR=1
-Normativa técnica válida: 1604 parámetros, 1219 elementos, 76 categorías.
-ESTADO_VALIDAR=0

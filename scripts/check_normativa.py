@@ -28,8 +28,8 @@ def main() -> None:
             raise SystemExit(f"El contrato antiguo todavía contiene la clave rígida: {clave}")
 
     base: BaseNormativa = cargar_normativa_tecnica()
-    if len(base.parametros) < 2149:
-        raise SystemExit("La base normativa debe contener por lo menos 2149 parámetros revisados.")
+    if len(base.parametros) < 2323:
+        raise SystemExit("La base normativa debe contener por lo menos 2323 parámetros revisados.")
 
     ids = [parametro.id for parametro in base.parametros]
     if len(ids) != len(set(ids)):
@@ -72,8 +72,8 @@ def main() -> None:
         raise SystemExit(
             f"La revisión editorial debe conservar al menos 1254 numerales RNE validados; hay {validados}."
         )
-    if base.version != "3.0.0":
-        raise SystemExit(f"La versión normativa esperada es 3.0.0 y se recibió {base.version}.")
+    if base.version != "3.1.0":
+        raise SystemExit(f"La versión normativa esperada es 3.1.0 y se recibió {base.version}.")
 
     oficiales = sum(
         parametro.estado_revision == "validado_con_fuente_oficial"
@@ -85,8 +85,8 @@ def main() -> None:
     )
     if oficiales < 17:
         raise SystemExit(f"El bloque requiere al menos 17 referencias oficiales externas al RNE; hay {oficiales}.")
-    if criterios < 877:
-        raise SystemExit(f"El bloque requiere al menos 877 criterios técnicos revisados; hay {criterios}.")
+    if criterios < 1051:
+        raise SystemExit(f"El bloque requiere al menos 1051 criterios técnicos revisados; hay {criterios}.")
 
     BaseNormativa.model_validate(datos_crudos)
 
@@ -375,6 +375,31 @@ def main() -> None:
     if calidad_pendientes["estado_revision"] != "criterio_tecnico_revisado":
         raise SystemExit("Los pendientes de entrega deben quedar como criterio revisado.")
 
+
+    mantenimiento_plan = api.detalle_parametro_normativo("criterio-mantenimiento-plan-anual")
+    if mantenimiento_plan["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("El plan de mantenimiento debe conservarse como criterio técnico revisado.")
+
+    mantenimiento_fisura = api.detalle_parametro_normativo("criterio-mantenimiento-fisura-columna-viga")
+    if mantenimiento_fisura["elemento"] != "Estructura y fisuras":
+        raise SystemExit("La fisura en columna o viga debe conservar su categoría técnica.")
+
+    mantenimiento_agua = api.detalle_parametro_normativo("criterio-mantenimiento-llave-general")
+    if mantenimiento_agua["fuente"]["tipo"] != "criterio_tecnico":
+        raise SystemExit("La llave general debe conservar fuente de criterio técnico.")
+
+    mantenimiento_electrico = api.detalle_parametro_normativo("criterio-mantenimiento-calentamiento-tomacorriente")
+    if mantenimiento_electrico["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("El tomacorriente caliente debe conservarse como criterio técnico revisado.")
+
+    mantenimiento_gas = api.detalle_parametro_normativo("criterio-mantenimiento-olor-gas")
+    if mantenimiento_gas["elemento"] != "Gas y combustión":
+        raise SystemExit("La respuesta ante olor a gas debe conservar su clasificación.")
+
+    mantenimiento_intervencion = api.detalle_parametro_normativo("criterio-mantenimiento-no-cortar-acero")
+    if mantenimiento_intervencion["estado_revision"] != "criterio_tecnico_revisado":
+        raise SystemExit("La prohibición práctica de cortar acero debe conservarse como criterio revisado.")
+
     preguntas = json.loads(
         (BACKEND / "preguntas_tecnicas.json").read_text(encoding="utf-8")
     )
@@ -384,8 +409,8 @@ def main() -> None:
         for item in categoria.get("preguntas", [])
         if isinstance(item, dict)
     ]
-    if len(todas) < 3612:
-        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3612 preguntas técnicas.")
+    if len(todas) < 3786:
+        raise SystemExit("La base ampliada de puertas, ventanas y cerrajería requiere por lo menos 3786 preguntas técnicas.")
     respuesta_q307 = next(
         item.get("respuesta", "") for item in todas if item.get("id") == "q307"
     )

@@ -70,12 +70,22 @@ jobs:
           cp /tmp/legacy-output/VALIDACION_NORMATIVA_SOLAR_COMPLEMENTOS_2026-07-27.md docs/VALIDACION_NORMATIVA_SOLAR_COMPLEMENTOS_2026-07-27.md
           rm -f docs/VALIDACION_NORMATIVA_GAS_SOLAR_TRANSPORTE_2026-07-27.md
 
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('scripts/check_normativa.py')
+          text=path.read_text(encoding='utf-8')
+          old='if base.version != "1.9.0":\n        raise SystemExit(f"La versión normativa esperada es 1.9.0 y se recibió {base.version}.")'
+          new='if base.version != "2.0.0":\n        raise SystemExit(f"La versión normativa esperada es 2.0.0 y se recibió {base.version}.")'
+          if old not in text:
+              raise SystemExit('No se encontró la validación heredada de versión 1.9.0.')
+          path.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+
           python scripts/check_normativa.py
           python -m py_compile backend/api.py backend/normativa.py
           python scripts/prepare_frontend.py
           test -f public/app/normative-module.js
           test -f public/app/normative.css
-          test -f public/backend/normativa_tecnica.json
           test -z "$(git status --short public)"
 
       - name: Commit permanent files

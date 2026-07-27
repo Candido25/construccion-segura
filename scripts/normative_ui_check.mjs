@@ -5,6 +5,7 @@ import process from "node:process";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.APP_BASE_URL || "http://127.0.0.1:8000";
+const screenshotPath = process.env.NORMATIVE_UI_SCREENSHOT || "";
 
 const elements = [
   { categoria: "Escaleras", elemento: "Escalera" },
@@ -175,6 +176,11 @@ async function main() {
   await page.waitForFunction(() => (
     document.querySelectorAll("#normativeResults .normative-card").length === 3
   ));
+
+  if (screenshotPath) {
+    await page.locator("#parametros-tecnicos").scrollIntoViewIfNeeded();
+    await page.screenshot({ path: screenshotPath, fullPage: true, animations: "disabled" });
+  }
 
   await page.locator("#normativeClassification").selectOption("maximo_normativo");
   await page.waitForFunction(() => (

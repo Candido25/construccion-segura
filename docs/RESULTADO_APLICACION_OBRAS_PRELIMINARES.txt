@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/runner/work/construccion-segura/construccion-segura/scripts/aplicar_ampliacion_obras_preliminares.py", line 220, in <module>
+    main()
+  File "/home/runner/work/construccion-segura/construccion-segura/scripts/aplicar_ampliacion_obras_preliminares.py", line 35, in main
+    payload = cargar_registros()
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/construccion-segura/construccion-segura/scripts/aplicar_ampliacion_obras_preliminares.py", line 25, in cargar_registros
+    return json.loads(gzip.decompress(comprimido).decode("utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/gzip.py", line 655, in decompress
+    raise BadGzipFile("CRC check failed")
+gzip.BadGzipFile: CRC check failed

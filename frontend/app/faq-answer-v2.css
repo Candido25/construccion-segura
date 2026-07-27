@@ -1,0 +1,38 @@
+.faq-risk-panel[data-risk="unclassified"] {
+  border: 1px solid rgba(7, 30, 56, 0.16);
+  background: #eef3f7;
+}
+
+.faq-risk-panel[data-risk="unclassified"] .faq-risk-light {
+  background: #8190a0;
+}
+
+.faq-answer-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+.faq-answer-metadata span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.34rem 0.56rem;
+  border: 1px solid rgba(7, 30, 56, 0.1);
+  border-radius: 999px;
+  background: #f5f8fa;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.faq-answer-grid section ul {
+  margin-bottom: 0;
+}
+
+.faq-answer-grid section p:last-child {
+  margin-bottom: 0;
+}

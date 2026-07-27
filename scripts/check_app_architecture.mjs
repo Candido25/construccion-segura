@@ -16,6 +16,7 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), "u
 
 const index = read("frontend/app/index.html");
 const serviceWorker = read("frontend/service-worker.js");
+const privacy = read("politica-privacidad.html");
 
 const requiredStyles = [
   "brand.css?v=20260714-1",
@@ -24,7 +25,8 @@ const requiredStyles = [
   "normative.css?v=1",
   "app-experience.css?v=1",
   "faq-answer-v2.css?v=1",
-  "problem-evaluator.css?v=1"
+  "problem-evaluator.css?v=1",
+  "help-center.css?v=1"
 ];
 
 const requiredScripts = [
@@ -37,7 +39,10 @@ const requiredScripts = [
   "normative-module.js?v=1",
   "app.js?v=1",
   "modules-rne.js?v=1",
-  "stage-expander.js?v=1"
+  "stage-expander.js?v=1",
+  "stage-view-controller.js?v=1",
+  "help-center.js?v=1",
+  "professional-help.js?v=1"
 ];
 
 for (const resource of [...requiredStyles, ...requiredScripts]) {
@@ -46,6 +51,13 @@ for (const resource of [...requiredStyles, ...requiredScripts]) {
 
 if (index.includes("app-experience.js")) {
   fail("index.html todavía carga el módulo experimental app-experience.js.");
+}
+
+const appIndex = index.indexOf('app.js?v=1');
+const rneIndex = index.indexOf('modules-rne.js?v=1');
+const stageIndex = index.indexOf('stage-expander.js?v=1');
+if (!(appIndex >= 0 && rneIndex > appIndex && stageIndex > rneIndex)) {
+  fail("El orden de carga debe ser app.js, modules-rne.js y luego stage-expander.js.");
 }
 
 for (const label of ["Inicio", "Guía", "Consultar", "Mi obra", "Ayuda"]) {
@@ -113,6 +125,9 @@ const problemEvaluator = read("frontend/app/problem-evaluator.js");
 const homeNavigation = read("frontend/app/home-navigation.js");
 const workProfile = read("frontend/app/work-profile.js");
 const stageExpander = read("frontend/app/stage-expander.js");
+const stageView = read("frontend/app/stage-view-controller.js");
+const helpCenter = read("frontend/app/help-center.js");
+const professionalHelp = read("frontend/app/professional-help.js");
 
 if (!faqSearch.includes("mi-casa-segura:faq-shown")) {
   fail("El buscador no emite el evento de respuesta seleccionada.");
@@ -140,6 +155,18 @@ if (!problemEvaluator.includes("baseRisk") || !problemEvaluator.includes("yesRis
 }
 if (/classifyRisk|redSignals|yellowSignals/.test(problemEvaluator)) {
   fail("El evaluador guiado no debe decidir el riesgo mediante coincidencias de palabras.");
+}
+if (!stageView.includes("moduleView.scrollIntoView")) {
+  fail("La vista de etapas no lleva al usuario al módulo abierto.");
+}
+if (!helpCenter.includes("politica-privacidad.html") || !helpCenter.includes("Qué no hace")) {
+  fail("El centro de ayuda no explica el alcance o la privacidad.");
+}
+if (!professionalHelp.includes("51968481482") || !professionalHelp.includes("wa.me")) {
+  fail("La orientación profesional no está contextualizada hacia WhatsApp.");
+}
+if (!privacy.includes("Mi Casa Segura: Guía de Obra") || !privacy.includes("Mi obra")) {
+  fail("La política de privacidad no describe el comportamiento de la aplicación.");
 }
 
 const requiredStages = [
@@ -178,16 +205,21 @@ for (const resource of [
   "/app/work-profile.js?v=1",
   "/app/risk-evaluator.js?v=1",
   "/app/stage-expander.js?v=1",
+  "/app/stage-view-controller.js?v=1",
+  "/app/help-center.js?v=1",
+  "/app/professional-help.js?v=1",
   "/app/faq-answer-v2.css?v=1",
-  "/app/problem-evaluator.css?v=1"
+  "/app/problem-evaluator.css?v=1",
+  "/app/help-center.css?v=1",
+  "/politica-privacidad.html"
 ]) {
   if (!serviceWorker.includes(resource)) {
     fail(`El service worker no guarda ${resource} para uso sin conexión.`);
   }
 }
 
-if (!serviceWorker.includes('mi-casa-segura-pwa-v22')) {
-  fail("La caché pública no corresponde a la versión v22 con doce etapas.");
+if (!serviceWorker.includes('mi-casa-segura-pwa-v23')) {
+  fail("La caché pública no corresponde a la versión v23 del MVP.");
 }
 
 for (const file of [
@@ -198,10 +230,14 @@ for (const file of [
   "work-profile.js",
   "risk-evaluator.js",
   "stage-expander.js",
+  "stage-view-controller.js",
+  "help-center.js",
+  "professional-help.js",
   "faq-answer-v2.css",
-  "problem-evaluator.css"
+  "problem-evaluator.css",
+  "help-center.css"
 ]) {
   if (!fs.existsSync(path.join(appDir, file))) fail(`No existe frontend/app/${file}.`);
 }
 
-console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas, evaluador guiado y ${requiredStages.length} etapas.`);
+console.log(`Arquitectura de Mi Casa Segura validada: ${faqs.length} preguntas destacadas, evaluador guiado, ${requiredStages.length} etapas y centro de ayuda.`);

@@ -8,6 +8,13 @@ on:
       - scripts/aplicar_ampliacion_azoteas.py
       - scripts/data_azoteas/**
       - .github/workflows/aplicar-ampliacion-azoteas.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - scripts/aplicar_ampliacion_azoteas.py
+      - scripts/data_azoteas/**
+      - .github/workflows/aplicar-ampliacion-azoteas.yml
 
 permissions:
   contents: write
@@ -16,8 +23,10 @@ jobs:
   aplicar:
     runs-on: ubuntu-latest
     steps:
-      - name: Descargar repositorio
+      - name: Descargar rama de trabajo
         uses: actions/checkout@v4
+        with:
+          ref: agent/ampliar-azoteas-drenaje-estacionamientos-20260727
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -39,4 +48,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add backend/normativa_tecnica.json backend/preguntas_tecnicas.json scripts/check_normativa.py docs/VALIDACION_AZOTEAS_DRENAJE_ESTACIONAMIENTOS_2026-07-27.md
           git diff --cached --quiet || git commit -m "Ampliar azoteas, drenaje y estacionamientos"
-          git push
+          git push origin HEAD:agent/ampliar-azoteas-drenaje-estacionamientos-20260727

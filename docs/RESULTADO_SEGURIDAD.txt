@@ -1,4 +1,4 @@
 Aplicados 174 parámetros y preguntas; versión 2.9.0
 APLICACION=0
-El izaje debe prohibir personas bajo la carga.
-VALIDACION=1
+Normativa técnica válida: 1976 parámetros, 1372 elementos, 78 categorías.
+VALIDACION=0

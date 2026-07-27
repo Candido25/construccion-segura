@@ -56,7 +56,10 @@
       }
 
       if (route === "problema") {
-        if (problemButton) {
+        const evaluator = document.getElementById("problemas-evaluador");
+        if (evaluator) {
+          scrollToElement(evaluator);
+        } else if (problemButton) {
           problemButton.click();
         } else {
           scrollToElement(stageSection);

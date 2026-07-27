@@ -36,10 +36,24 @@ ORIGENES_PERMITIDOS = [
     "http://localhost:5500",
 ]
 
+RIESGOS_VALIDOS = {"green", "yellow", "red"}
+CAMPOS_EDITORIALES_TEXTO = (
+    "etapa",
+    "sistema",
+    "clasificacion_contenido",
+    "fecha_revision",
+    "estado_editorial",
+    "no_permitir",
+    "referencia",
+    "fuente_texto",
+    "cuando_consultar",
+)
+CAMPOS_EDITORIALES_LISTA = ("que_revisar", "condiciones")
+
 app = FastAPI(
     title="API de Consultas Técnicas - Construcción Segura",
     description="Servidor backend para preguntas técnicas y parámetros estructurados de normativa peruana.",
-    version="1.2.0",
+    version="1.3.0",
 )
 
 app.add_middleware(
@@ -60,6 +74,37 @@ def normalizar(texto: str) -> str:
         if unicodedata.category(caracter) != "Mn"
     )
     return " ".join(sin_tildes.split())
+
+
+def texto_limpio(valor: object) -> str:
+    return str(valor or "").strip()
+
+
+def lista_textos(valor: object) -> list[str]:
+    if not isinstance(valor, list):
+        return []
+    return [texto_limpio(item) for item in valor if texto_limpio(item)]
+
+
+def extraer_metadatos_editoriales(item: dict) -> dict:
+    """Extrae campos opcionales sin romper registros históricos de la base."""
+    metadatos: dict = {}
+
+    riesgo = texto_limpio(item.get("riesgo") or item.get("risk")).lower()
+    if riesgo in RIESGOS_VALIDOS:
+        metadatos["riesgo"] = riesgo
+
+    for campo in CAMPOS_EDITORIALES_TEXTO:
+        valor = texto_limpio(item.get(campo))
+        if valor:
+            metadatos[campo] = valor
+
+    for campo in CAMPOS_EDITORIALES_LISTA:
+        valores = lista_textos(item.get(campo))
+        if valores:
+            metadatos[campo] = valores
+
+    return metadatos
 
 
 @lru_cache(maxsize=1)
@@ -103,7 +148,7 @@ def obtener_indice() -> tuple[dict, ...]:
         if not isinstance(categoria, dict):
             continue
 
-        nombre_categoria = str(categoria.get("nombre", "")).strip()
+        nombre_categoria = texto_limpio(categoria.get("nombre"))
         preguntas = categoria.get("preguntas", [])
         if not isinstance(preguntas, list):
             continue
@@ -112,22 +157,22 @@ def obtener_indice() -> tuple[dict, ...]:
             if not isinstance(item, dict):
                 continue
 
-            pregunta = str(item.get("pregunta", "")).strip()
-            respuesta = str(item.get("respuesta", "")).strip()
+            pregunta = texto_limpio(item.get("pregunta"))
+            respuesta = texto_limpio(item.get("respuesta"))
             if not pregunta or not respuesta:
                 continue
 
-            indice.append(
-                {
-                    "categoria": nombre_categoria or "Sin categoría",
-                    "id": str(item.get("id", "")).strip(),
-                    "pregunta": pregunta,
-                    "respuesta": respuesta,
-                    "categoria_normalizada": normalizar(nombre_categoria),
-                    "pregunta_normalizada": normalizar(pregunta),
-                    "respuesta_normalizada": normalizar(respuesta),
-                }
-            )
+            registro = {
+                "categoria": nombre_categoria or "Sin categoría",
+                "id": texto_limpio(item.get("id")),
+                "pregunta": pregunta,
+                "respuesta": respuesta,
+                "categoria_normalizada": normalizar(nombre_categoria),
+                "pregunta_normalizada": normalizar(pregunta),
+                "respuesta_normalizada": normalizar(respuesta),
+            }
+            registro.update(extraer_metadatos_editoriales(item))
+            indice.append(registro)
 
     return tuple(indice)
 
@@ -159,6 +204,26 @@ def puntuar_resultado(item: dict, termino: str) -> int:
     return puntaje
 
 
+def serializar_resultado_pregunta(item: dict) -> dict:
+    resultado = {
+        "categoria": item["categoria"],
+        "id": item["id"],
+        "pregunta": item["pregunta"],
+        "respuesta": item["respuesta"],
+    }
+
+    for campo in (
+        "riesgo",
+        *CAMPOS_EDITORIALES_TEXTO,
+        *CAMPOS_EDITORIALES_LISTA,
+    ):
+        valor = item.get(campo)
+        if valor:
+            resultado[campo] = valor
+
+    return resultado
+
+
 @app.get("/")
 def home():
     """Ruta raíz para verificar el estado general del servicio."""
@@ -177,9 +242,11 @@ def home():
 def salud():
     """Comprobación ligera para monitoreo y diagnóstico del despliegue."""
     base_normativa = cargar_normativa_tecnica()
+    clasificados = sum(1 for item in obtener_indice() if item.get("riesgo"))
     return {
         "estado": "activo",
         "total_preguntas": len(obtener_indice()),
+        "preguntas_con_riesgo": clasificados,
         "total_parametros_normativos": len(parametros_visibles()),
         "archivo_preguntas": RUTA_JSON.name,
         "archivo_normativa": "normativa_tecnica.json",
@@ -225,12 +292,7 @@ def buscar_preguntas(
     seleccionados = encontrados[:limite]
 
     resultados = [
-        {
-            "categoria": item["categoria"],
-            "id": item["id"],
-            "pregunta": item["pregunta"],
-            "respuesta": item["respuesta"],
-        }
+        serializar_resultado_pregunta(item)
         for _, item in seleccionados
     ]
 

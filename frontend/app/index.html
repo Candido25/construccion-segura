@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="app.css?v=2">
   <link rel="stylesheet" href="faq.css?v=1">
   <link rel="stylesheet" href="normative.css?v=1">
+  <link rel="stylesheet" href="app-experience.css?v=1">
 </head>
 <body>
   <header class="app-header">
@@ -27,11 +28,34 @@
   <main>
     <section class="welcome-card" aria-labelledby="welcome-title">
       <p class="eyebrow">Construye informado</p>
-      <h1 id="welcome-title">¿En qué etapa está tu vivienda?</h1>
-      <p>Elige una etapa para revisar recomendaciones prácticas, mínimos del Reglamento Nacional de Edificaciones, señales de alerta y listas de verificación antes de avanzar.</p>
+      <h1 id="welcome-title">¿Qué necesitas hacer hoy?</h1>
+      <p>Consulta antes de construir, verifica antes de tapar y reconoce cuándo debes detener el trabajo y pedir ayuda profesional.</p>
       <div class="progress-summary" aria-live="polite">
         <span><strong id="completedCount">0</strong> controles revisados</span>
         <button id="resetProgress" class="text-button" type="button">Reiniciar avance</button>
+      </div>
+    </section>
+
+    <section class="app-choice-section" aria-labelledby="app-choice-title">
+      <p class="eyebrow">Elige una ruta</p>
+      <h2 id="app-choice-title">Empieza por lo que necesitas resolver</h2>
+      <p>No necesitas conocer términos técnicos. Selecciona la opción que más se parece a tu situación.</p>
+      <div class="app-choice-grid">
+        <button class="app-choice-card" type="button" data-app-route="construir">
+          <span class="app-choice-icon" aria-hidden="true">⌂</span>
+          <span class="app-choice-copy"><strong>Voy a construir o ampliar</strong><small>Revisa la obra por etapas antes de ejecutar, vaciar o tapar.</small></span>
+          <span class="app-choice-arrow" aria-hidden="true">›</span>
+        </button>
+        <button class="app-choice-card" type="button" data-app-route="duda">
+          <span class="app-choice-icon" aria-hidden="true">?</span>
+          <span class="app-choice-copy"><strong>Tengo una duda</strong><small>Escribe una pregunta como la dirías normalmente y encuentra respuestas.</small></span>
+          <span class="app-choice-arrow" aria-hidden="true">›</span>
+        </button>
+        <button class="app-choice-card is-problem" type="button" data-app-route="problema">
+          <span class="app-choice-icon" aria-hidden="true">!</span>
+          <span class="app-choice-copy"><strong>Tengo un problema</strong><small>Identifica señales de alerta y cuándo conviene detener el trabajo.</small></span>
+          <span class="app-choice-arrow" aria-hidden="true">›</span>
+        </button>
       </div>
     </section>
 
@@ -157,7 +181,7 @@
       <p class="normative-disclaimer"><strong>Importante:</strong> esta herramienta es educativa. Las condiciones reales del terreno, los planos, el cálculo estructural y la revisión profesional prevalecen para cada obra.</p>
     </section>
 
-    <section class="stage-section" aria-labelledby="stage-title">
+    <section class="stage-section" id="guia-etapas" aria-labelledby="stage-title">
       <div class="section-heading">
         <p class="eyebrow">Guía por etapas</p>
         <h2 id="stage-title">Selecciona lo que estás haciendo</h2>
@@ -272,6 +296,7 @@
 
   <script src="faq-data.js?v=1"></script>
   <script src="faq-search.js?v=2"></script>
+  <script src="app-experience.js?v=1"></script>
   <script src="normative-module.js?v=1"></script>
   <script src="app.js?v=1"></script>
   <script src="modules-rne.js?v=1"></script>

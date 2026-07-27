@@ -53,12 +53,15 @@ jobs:
       - name: Validate contract, API and package
         shell: bash
         run: |
+          set -euo pipefail
           python scripts/check_normativa.py
           python -m py_compile backend/api.py backend/normativa.py
-          rm -rf /tmp/construccion-public
-          python scripts/prepare_frontend.py --source . --output /tmp/construccion-public
-          test -f /tmp/construccion-public/app/normative-module.js
-          test -f /tmp/construccion-public/index.html
+          rm -rf public
+          python scripts/prepare_frontend.py
+          test -f public/app/normative-module.js
+          test -f public/index.html
+          test ! -e public/backend
+          test ! -e public/scripts
 
       - name: Commit permanent files
         shell: bash

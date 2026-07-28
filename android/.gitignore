@@ -1,0 +1,17 @@
+# Archivos locales y artefactos
+.gradle/
+.idea/
+local.properties
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Claves privadas: nunca deben entrar al repositorio
+*.jks
+*.keystore
+signing.properties
+
+# Salidas generadas
+*.apk
+*.aab

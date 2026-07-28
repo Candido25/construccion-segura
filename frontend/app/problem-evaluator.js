@@ -7,8 +7,8 @@
       id: "grietas",
       title: "Grietas, fisuras o deformaciones",
       summary: "Rajaduras nuevas, desniveles, elementos que se doblan o partes que se desprenden.",
-      baseRisk: "yellow",
-      immediate: "No tapes ni resanes la grieta antes de registrar su ubicación y evolución.",
+      baseRisk: "green",
+      immediate: "No tapes ni resanes la grieta antes de registrar su ubicación, longitud y evolución.",
       questions: [
         { id: "growth", text: "¿La grieta está creciendo, se abrió rápidamente o reapareció después de repararla?", yesRisk: "red" },
         { id: "structural", text: "¿Atraviesa una columna, viga, muro portante o losa, o existe desnivel entre sus lados?", yesRisk: "red" },
@@ -20,7 +20,7 @@
       id: "terreno",
       title: "Hundimiento, terreno o ladera",
       summary: "Suelo que baja, grietas en el terreno, taludes, rellenos o excavaciones inestables.",
-      baseRisk: "yellow",
+      baseRisk: "green",
       immediate: "Aleja a las personas del borde de excavaciones, cortes y zonas con movimiento.",
       questions: [
         { id: "movement", text: "¿El terreno se está moviendo, desprendiendo o hundiendo en este momento?", yesRisk: "red" },
@@ -33,8 +33,8 @@
       id: "estructura-intervenida",
       title: "Cortaron una viga, columna, muro o acero",
       summary: "Perforaciones, demoliciones o cortes realizados para abrir vanos o pasar tuberías.",
-      baseRisk: "red",
-      immediate: "Detén la intervención y evita cargar o golpear el elemento afectado.",
+      baseRisk: "yellow",
+      immediate: "Detén la intervención y evita cargar, golpear o resanar el elemento afectado.",
       questions: [
         { id: "cut", text: "¿Se cortó acero, concreto, una columna, una viga o un muro que podría ser estructural?", yesRisk: "red" },
         { id: "plan", text: "¿El cambio se hizo sin plano, detalle o autorización del responsable estructural?", yesRisk: "red" },
@@ -42,35 +42,36 @@
       ]
     },
     {
-      id: "electricidad",
-      title: "Problema eléctrico",
-      summary: "Chispas, olor a quemado, tomacorrientes calientes o llaves que se disparan.",
-      baseRisk: "yellow",
-      immediate: "No toques partes metálicas ni improvises puentes en el tablero.",
+      id: "humedad",
+      title: "Humedad, filtración o salitre",
+      summary: "Pintura inflada, polvo blanco, moho, goteo o humedad que reaparece.",
+      baseRisk: "green",
+      immediate: "Identifica y controla la entrada de agua antes de pintar, sellar o tarrajear nuevamente.",
       questions: [
-        { id: "shock", text: "¿Alguien recibió una descarga o hay partes energizadas expuestas?", yesRisk: "red" },
-        { id: "burn", text: "¿Hay chispas, humo, olor a quemado o calentamiento intenso?", yesRisk: "red" },
-        { id: "trip", text: "¿La protección se dispara repetidamente o vuelve a dispararse al reconectarla?", yesRisk: "yellow" },
-        { id: "wet", text: "¿La humedad o una fuga de agua está cerca de cables, tablero o tomacorrientes?", yesRisk: "red" }
+        { id: "electric", text: "¿La humedad está en contacto con instalaciones eléctricas?", yesRisk: "red" },
+        { id: "structural", text: "¿Hay acero expuesto, corrosión, desprendimiento o pérdida de material?", yesRisk: "red" },
+        { id: "active", text: "¿La filtración continúa activa o aumenta con lluvia o uso de una instalación?", yesRisk: "yellow" },
+        { id: "repeat", text: "¿Reapareció después de varias reparaciones o pinturas?", yesRisk: "yellow" }
       ]
     },
     {
-      id: "gas",
-      title: "Olor a gas o combustión deficiente",
-      summary: "Olor a GLP o gas, llama inusual, hollín o mareos cerca de un artefacto.",
-      baseRisk: "red",
-      immediate: "No enciendas ni apagues interruptores, no uses fuego y sal del área. Cierra la válvula solo si puedes hacerlo sin exponerte y contacta al proveedor o servicio de emergencia correspondiente.",
+      id: "concreto",
+      title: "Concreto con vacíos, rajaduras o acero visible",
+      summary: "Cangrejeras, polvo superficial, barras expuestas o concreto que se desprende.",
+      baseRisk: "green",
+      immediate: "No ocultes el defecto con mortero o acabado antes de determinar su extensión y causa.",
       questions: [
-        { id: "odor", text: "¿Percibes olor a gas o escuchas una fuga?", yesRisk: "red" },
-        { id: "symptoms", text: "¿Hay mareos, dolor de cabeza, somnolencia o dificultad para respirar?", yesRisk: "red" },
-        { id: "flame", text: "¿La llama es amarilla, hay hollín o el ambiente tiene poca ventilación?", yesRisk: "red" }
+        { id: "steel", text: "¿Se ve acero, hay barras sueltas o recubrimiento desprendido?", yesRisk: "red" },
+        { id: "deform", text: "¿El elemento está deformado, inclinado o soporta carga en este momento?", yesRisk: "red" },
+        { id: "deep", text: "¿Los vacíos son profundos, continuos o atraviesan gran parte de la sección?", yesRisk: "red" },
+        { id: "surface", text: "¿El defecto parece superficial pero se extiende por varias zonas?", yesRisk: "yellow" }
       ]
     },
     {
       id: "desague",
       title: "Retorno, atoros u olor de desagüe",
       summary: "Aguas residuales que regresan, varios aparatos lentos o malos olores persistentes.",
-      baseRisk: "yellow",
+      baseRisk: "green",
       immediate: "Evita el contacto con aguas residuales y no viertas ácidos o mezclas químicas improvisadas.",
       questions: [
         { id: "return", text: "¿Están retornando aguas residuales o inundando ambientes?", yesRisk: "red" },
@@ -80,38 +81,65 @@
       ]
     },
     {
-      id: "humedad",
-      title: "Humedad, filtración o salitre",
-      summary: "Pintura inflada, polvo blanco, moho, goteo o humedad que reaparece.",
-      baseRisk: "yellow",
-      immediate: "Identifica y controla la entrada de agua antes de pintar, sellar o tarrajear nuevamente.",
+      id: "electricidad",
+      title: "Chispas, calentamiento o llave que se dispara",
+      summary: "Olor a quemado, tomacorrientes calientes, descargas o interrupciones repetidas.",
+      baseRisk: "green",
+      immediate: "No toques partes metálicas ni improvises puentes en el tablero.",
       questions: [
-        { id: "electric", text: "¿La humedad está en contacto con instalaciones eléctricas?", yesRisk: "red" },
-        { id: "structural", text: "¿Hay acero expuesto, corrosión, desprendimiento o pérdida de material?", yesRisk: "red" },
-        { id: "soil", text: "¿La humedad sube desde el suelo o aparece después de lluvias?", yesRisk: "yellow" },
-        { id: "repeat", text: "¿Reapareció después de varias reparaciones o pinturas?", yesRisk: "yellow" }
+        { id: "shock", text: "¿Alguien recibió una descarga o hay partes energizadas expuestas?", yesRisk: "red" },
+        { id: "burn", text: "¿Hay chispas, humo, olor a quemado o calentamiento intenso?", yesRisk: "red" },
+        { id: "wet", text: "¿La humedad o una fuga está cerca de cables, tablero o tomacorrientes?", yesRisk: "red" },
+        { id: "trip", text: "¿La protección se dispara repetidamente o vuelve a dispararse al reconectarla?", yesRisk: "yellow" }
       ]
     },
     {
-      id: "concreto",
-      title: "Concreto con vacíos, rajaduras o desprendimientos",
-      summary: "Cangrejeras, polvo superficial, acero visible o concreto que se desprende.",
+      id: "gas",
+      title: "Olor a gas o combustión deficiente",
+      summary: "Olor a GLP o gas, llama inusual, hollín o mareos cerca de un artefacto.",
       baseRisk: "yellow",
-      immediate: "No ocultes el defecto con mortero o acabado antes de determinar su extensión y causa.",
+      immediate: "No enciendas ni apagues interruptores, no uses fuego y sal del área. Cierra la válvula solo si puedes hacerlo sin exponerte.",
       questions: [
-        { id: "steel", text: "¿Se ve acero, hay barras sueltas o recubrimiento desprendido?", yesRisk: "red" },
-        { id: "deform", text: "¿El elemento está deformado, inclinado o soporta carga en este momento?", yesRisk: "red" },
-        { id: "deep", text: "¿Los vacíos son profundos, continuos o atraviesan gran parte de la sección?", yesRisk: "red" },
-        { id: "surface", text: "¿El problema parece superficial pero se extiende por varias zonas?", yesRisk: "yellow" }
+        { id: "odor", text: "¿Percibes olor a gas o escuchas una fuga?", yesRisk: "red" },
+        { id: "symptoms", text: "¿Hay mareos, dolor de cabeza, somnolencia o dificultad para respirar?", yesRisk: "red" },
+        { id: "flame", text: "¿La llama es amarilla, hay hollín o el ambiente tiene poca ventilación?", yesRisk: "red" }
+      ]
+    },
+    {
+      id: "desprendimiento",
+      title: "Desprendimiento o riesgo de caída",
+      summary: "Tarrajeo, ladrillo, vidrio, baranda o revestimiento que está suelto.",
+      baseRisk: "green",
+      immediate: "Aísla la zona inferior y no retires el elemento desde una posición insegura.",
+      questions: [
+        { id: "overhead", text: "¿El material está sobre una zona de paso, cama, escalera o vía pública?", yesRisk: "red" },
+        { id: "loose", text: "¿Se mueve, suena hueco, está abombado o ya cayó una parte?", yesRisk: "red" },
+        { id: "protection", text: "¿Se trata de una baranda, ventana, vidrio u otro elemento de protección?", yesRisk: "red" },
+        { id: "spread", text: "¿La zona suelta se extiende más allá del punto visible?", yesRisk: "yellow" }
+      ]
+    },
+    {
+      id: "post-evento",
+      title: "Daño después de sismo, incendio o inundación",
+      summary: "Cambios observados después de un evento que pudo afectar la vivienda.",
+      baseRisk: "yellow",
+      immediate: "No reingreses ni restablezcas servicios cuando existan señales de inestabilidad, gas, humo o electricidad dañada.",
+      questions: [
+        { id: "newDamage", text: "¿Aparecieron grietas nuevas en columnas, vigas, muros, escaleras o techos?", yesRisk: "red" },
+        { id: "instability", text: "¿Hay inclinación, deformación, desprendimientos o partes que pueden caer?", yesRisk: "red" },
+        { id: "utilities", text: "¿Existe olor a gas, cables mojados, humo o tuberías rotas?", yesRisk: "red" },
+        { id: "minor", text: "¿Solo observas daños menores de pintura o acabado, sin otras señales?", yesRisk: "yellow" }
       ]
     }
   ];
+
+  window.MI_CASA_SEGURA_PROBLEM_COUNT = problems.length;
 
   const riskRank = { green: 0, yellow: 1, red: 2 };
   const riskCopy = {
     green: {
       title: "Orientación preventiva",
-      message: "No aparecen señales críticas en estas respuestas. Revisa el punto y observa si cambia antes de continuar."
+      message: "No aparecen señales críticas en estas respuestas. Mantén observación y no ocultes el punto hasta comprobar que permanece estable."
     },
     yellow: {
       title: "Revisa antes de continuar",
@@ -193,11 +221,8 @@
       </fieldset>
     `).join("");
 
-    if (typeof dialog.showModal === "function") {
-      dialog.showModal();
-    } else {
-      dialog.setAttribute("open", "");
-    }
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
   };
 
   const evaluate = () => {
@@ -206,9 +231,7 @@
 
     activeProblem.questions.forEach((question) => {
       const value = form.elements.namedItem(question.id)?.value;
-      if (value === "yes" && riskRank[question.yesRisk] > riskRank[risk]) {
-        risk = question.yesRisk;
-      }
+      if (value === "yes" && riskRank[question.yesRisk] > riskRank[risk]) risk = question.yesRisk;
       if (value === "unknown") uncertain.push(question.text);
     });
 
@@ -238,6 +261,9 @@
       ${evaluation.risk === "green" ? "" : `<a class="primary-button problem-contact" href="/contacto.html?origen=mi-casa-segura&nivel=${evaluation.risk}&consulta=${encodeURIComponent(activeProblem.title)}">${contactLabel}</a>`}
     `;
     result.hidden = false;
+    document.dispatchEvent(new CustomEvent("mi-casa-segura:problem-evaluated", {
+      detail: { problem: activeProblem, risk: evaluation.risk }
+    }));
     result.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 

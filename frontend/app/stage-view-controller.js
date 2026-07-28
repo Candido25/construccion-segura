@@ -11,6 +11,7 @@
     ".problem-evaluator-section",
     ".faq-section",
     ".normative-section",
+    ".critical-checklists-section",
     ".help-card"
   ];
 

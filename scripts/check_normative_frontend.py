@@ -34,7 +34,7 @@ REQUIRED_MODULE_TOKENS = {
     "aria-busy",
 }
 
-EXPECTED_CACHE_VERSION = "mi-casa-segura-pwa-v24"
+EXPECTED_CACHE_VERSION = "mi-casa-segura-pwa-v25"
 
 
 def require(condition: bool, message: str) -> None:

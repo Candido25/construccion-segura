@@ -1,0 +1,38 @@
+name: Validación Fase 0
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validar-aplicacion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validar arquitectura de Mi Casa Segura
+        run: node scripts/check_app_architecture.mjs
+
+      - name: Validar preguntas y riesgos editoriales
+        run: node scripts/check_app_content.mjs
+
+      - name: Validar módulo de parámetros técnicos
+        run: python scripts/check_normative_frontend.py

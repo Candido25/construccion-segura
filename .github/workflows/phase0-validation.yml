@@ -34,5 +34,8 @@ jobs:
       - name: Validar preguntas y riesgos editoriales
         run: node scripts/check_app_content.mjs
 
+      - name: Validar limpieza de módulos provisionales
+        run: node scripts/check_phase0_cleanup.mjs
+
       - name: Validar módulo de parámetros técnicos
         run: python scripts/check_normative_frontend.py

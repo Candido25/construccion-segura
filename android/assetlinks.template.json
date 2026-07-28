@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "pe.org.construccionsegura.app",
+      "sha256_cert_fingerprints": [
+        "REEMPLAZAR_CON_HUELLA_SHA256_DE_PLAY_APP_SIGNING"
+      ]
+    }
+  }
+]

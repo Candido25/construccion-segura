@@ -1,0 +1,78 @@
+name: Compilación Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "android/**"
+      - "scripts/check_android_phase2.mjs"
+      - ".github/workflows/android-build.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "android/**"
+      - "scripts/check_android_phase2.mjs"
+      - ".github/workflows/android-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  compilar-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar API 36
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;35.0.0" "platform-tools"
+
+      - name: Configurar Gradle 8.13
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.13"
+
+      - name: Validar estructura Android
+        run: node scripts/check_android_phase2.mjs
+
+      - name: Ejecutar lint y compilar
+        run: gradle -p android --no-daemon clean lintDebug assembleDebug bundleRelease
+
+      - name: Guardar APK de depuración
+        uses: actions/upload-artifact@v4
+        with:
+          name: mi-casa-segura-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Guardar AAB sin firma de publicación
+        uses: actions/upload-artifact@v4
+        with:
+          name: mi-casa-segura-release-unsigned-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Guardar informe de lint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mi-casa-segura-lint
+          path: android/app/build/reports/lint-results-debug.html
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,4 +1,4 @@
-name: Validación Fase 0
+name: Validación Mi Casa Segura
 
 on:
   push:
@@ -36,6 +36,9 @@ jobs:
 
       - name: Validar limpieza de módulos provisionales
         run: node scripts/check_phase0_cleanup.mjs
+
+      - name: Validar MVP funcional de la Fase 1
+        run: node scripts/check_phase1_mvp.mjs
 
       - name: Validar módulo de parámetros técnicos
         run: python scripts/check_normative_frontend.py

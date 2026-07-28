@@ -43,7 +43,12 @@ for (const token of [
   'android.permission.INTERNET',
   'android:usesCleartextTraffic="false"',
   'com.google.androidbrowserhelper.trusted.LauncherActivity',
+  'com.google.androidbrowserhelper.trusted.ManageDataLauncherActivity',
+  'com.google.androidbrowserhelper.trusted.FocusActivity',
+  'com.google.androidbrowserhelper.trusted.DelegationService',
+  'android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE',
   'android.support.customtabs.trusted.DEFAULT_URL',
+  'android.support.customtabs.trusted.MANAGE_SPACE_URL',
   'android:host="www.construccionsegura.org.pe"',
   'android:pathPrefix="/app"',
   'android:autoVerify="true"'
@@ -104,5 +109,5 @@ if (fs.existsSync(liveAssetlinks)) {
 
 console.log(
   "Proyecto Android válido: paquete pe.org.construccionsegura.app, API 36, " +
-  "TWA HTTPS, un solo permiso y firma privada excluida."
+  "componentes completos de Android Browser Helper, TWA HTTPS, un solo permiso y firma privada excluida."
 );

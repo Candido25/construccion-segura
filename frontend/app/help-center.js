@@ -11,18 +11,18 @@
         <h2>Cómo usar Mi Casa Segura</h2>
         <p>La aplicación traduce criterios técnicos a controles comprensibles para propietarios. No reemplaza planos, estudios, licencias ni una evaluación profesional del caso real.</p>
       </div>
-      <span class="help-center-version">MVP 1.0</span>
+      <span class="help-center-version">MVP 1.1</span>
     </div>
 
     <div class="help-center-grid">
       <section>
         <h3>Qué puedes hacer</h3>
         <ul>
-          <li>Revisar tu obra por etapas.</li>
-          <li>Buscar preguntas en lenguaje cotidiano.</li>
-          <li>Consultar medidas y reglas técnicas.</li>
-          <li>Reconocer señales para revisar o detener.</li>
-          <li>Guardar localmente el avance de “Mi obra”.</li>
+          <li>Revisar tu obra mediante doce etapas ordenadas.</li>
+          <li>Usar listas críticas antes de excavar, vaciar, tapar o recibir trabajos.</li>
+          <li>Buscar preguntas en lenguaje cotidiano y consultar parámetros técnicos.</li>
+          <li>Evaluar señales para decidir si debes observar, revisar o detener.</li>
+          <li>Recibir una siguiente acción según el perfil local de “Mi obra”.</li>
         </ul>
       </section>
 
@@ -38,8 +38,8 @@
       </section>
 
       <section>
-        <h3>Privacidad</h3>
-        <p>El perfil “Mi obra” se guarda en este dispositivo. Puedes editarlo o eliminarlo desde la aplicación. Revisa cómo funcionan el buscador, la API y los canales de consulta.</p>
+        <h3>Privacidad local</h3>
+        <p>El perfil “Mi obra”, el avance de listas y las búsquedas sin respuesta se guardan en este dispositivo. No se envían automáticamente a Construcción Segura. Puedes editar, reiniciar o borrar esos datos desde la aplicación o el dispositivo.</p>
         <a href="/politica-privacidad.html">Leer política de privacidad</a>
       </section>
 

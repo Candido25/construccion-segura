@@ -76,6 +76,21 @@ for (const token of ["open-checklist", "faqSearch", "normativeSearch", "stage-su
   if (!stageEnhancements.includes(token)) fail(`Falta integración de etapas: ${token}.`);
 }
 
+const problemEvaluator = read("frontend/app/problem-evaluator.js");
+const problemIds = [
+  "grietas", "terreno", "estructura-intervenida", "humedad", "concreto",
+  "desague", "electricidad", "gas", "desprendimiento", "post-evento"
+];
+for (const id of problemIds) {
+  if (!problemEvaluator.includes(`id: "${id}"`)) fail(`Falta la categoría de problema ${id}.`);
+}
+if (!problemEvaluator.includes("MI_CASA_SEGURA_PROBLEM_COUNT = problems.length")) {
+  fail("El evaluador no publica el conteo de categorías para control de calidad.");
+}
+for (const risk of ["green", "yellow", "red"]) {
+  if (!problemEvaluator.includes(`${risk}: {`)) fail(`El evaluador no presenta el nivel ${risk}.`);
+}
+
 const searchInsights = read("frontend/app/search-insights.js");
 if (!searchInsights.includes("mi-casa-segura-search-gaps-v1")) {
   fail("El buscador no registra localmente consultas sin resultado.");
@@ -95,6 +110,15 @@ for (const token of [
   if (!professionalHelp.includes(token)) fail(`La ayuda profesional no incluye: ${token}.`);
 }
 
+const privacy = read("politica-privacidad.html");
+for (const token of [
+  "avance de las listas de verificación",
+  "búsquedas que no encuentran una respuesta",
+  "no se envía automáticamente"
+]) {
+  if (!privacy.includes(token)) fail(`La política de privacidad no informa: ${token}.`);
+}
+
 const serviceWorker = read("service-worker.js");
 if (!serviceWorker.includes('CACHE_VERSION = "mi-casa-segura-pwa-v25"')) {
   fail("El MVP funcional debe usar la caché v25.");
@@ -110,4 +134,4 @@ for (const resource of [
   if (!serviceWorker.includes(resource)) fail(`El modo sin conexión no incluye ${resource}.`);
 }
 
-console.log(`Fase 1 válida: ${checklists.length} listas críticas, personalización por etapa, doce etapas vinculadas, brechas de búsqueda y ayuda contextual.`);
+console.log(`Fase 1 válida: ${checklists.length} listas críticas, ${problemIds.length} categorías de problemas, personalización, doce etapas vinculadas, brechas de búsqueda y ayuda contextual.`);

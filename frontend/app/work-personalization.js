@@ -89,6 +89,7 @@
         <p>La personalización se realiza únicamente con los datos guardados en este dispositivo.</p>
         <div class="next-action-actions"><button type="button" data-personal-action="profile">Configurar mi obra</button></div>
       `;
+      document.dispatchEvent(new CustomEvent("mi-casa-segura:recommend-checklist", { detail: { id: "" } }));
       return;
     }
 
@@ -150,6 +151,10 @@
 
   document.addEventListener("mi-casa-segura:work-profile-saved", render);
   document.addEventListener("mi-casa-segura:checklists-updated", render);
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest("#deleteWorkProfile")) return;
+    window.setTimeout(render, 0);
+  }, true);
   window.addEventListener("storage", (event) => {
     if ([PROFILE_KEY, CHECKLIST_KEY].includes(event.key)) render();
   });

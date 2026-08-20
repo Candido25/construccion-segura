@@ -171,6 +171,17 @@ const sendAnalyticsEvent = (eventName, parameters) => {
   window.gtag("event", eventName, parameters);
 };
 
+const pageViewEventName = document.body?.dataset.pageView?.trim();
+if (pageViewEventName) {
+  window.addEventListener("load", () => {
+    sendAnalyticsEvent(pageViewEventName, {
+      event_category: "page_engagement",
+      page_path: window.location.pathname,
+      page_title: document.title
+    });
+  });
+}
+
 document.addEventListener("click", (event) => {
   const link = event.target.closest("a");
   if (!link) return;
@@ -200,6 +211,65 @@ document.addEventListener("click", (event) => {
           : "phone"
     });
   }
+});
+
+/* Lightweight service forms that open the existing WhatsApp contact with structured data */
+const whatsappServiceForms = document.querySelectorAll("[data-whatsapp-form]");
+
+whatsappServiceForms.forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (typeof form.reportValidity === "function" && !form.reportValidity()) {
+      return;
+    }
+
+    const formData = new FormData(form);
+    const serviceName = form.dataset.serviceName?.trim() || "Consulta técnica";
+    const fields = Array.from(form.querySelectorAll("input, select, textarea")).filter((field) => {
+      if (!field.name || field.disabled) return false;
+      if (field.type === "submit" || field.type === "button") return false;
+      if ((field.type === "checkbox" || field.type === "radio") && !field.checked) return false;
+      return true;
+    });
+
+    const lines = [
+      `Hola, deseo solicitar el servicio: ${serviceName}.`,
+      ""
+    ];
+
+    fields.forEach((field) => {
+      const rawValue = formData.get(field.name);
+      const value = typeof rawValue === "string" ? rawValue.trim() : "";
+      if (!value) return;
+
+      const label = field.dataset.label?.trim() || field.name;
+      lines.push(`${label}: ${value}`);
+    });
+
+    const whatsappUrl = `https://wa.me/51968481482?text=${encodeURIComponent(lines.join("\n"))}`;
+    const eventName = form.dataset.trackForm?.trim();
+
+    if (eventName) {
+      sendAnalyticsEvent(eventName, {
+        event_category: "conversion",
+        method: "whatsapp_form",
+        service_name: serviceName,
+        page_path: window.location.pathname,
+        page_title: document.title
+      });
+    }
+
+    sendAnalyticsEvent("generate_lead", {
+      event_category: "conversion",
+      method: "whatsapp_form",
+      service_name: serviceName,
+      page_path: window.location.pathname,
+      page_title: document.title
+    });
+
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+  });
 });
 
 /* Ongoing anonymous case highlighted in the technical library */

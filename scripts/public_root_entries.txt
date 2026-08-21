@@ -1,5 +1,6 @@
 # Entradas públicas de la web institucional ubicadas en la raíz.
 # frontend/app se empaqueta por separado como /app/.
+.well-known
 404.html
 app-icon-192.png
 app-icon-maskable-512.png

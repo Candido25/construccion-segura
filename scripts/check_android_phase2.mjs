@@ -28,11 +28,19 @@ for (const token of [
   "compileSdk = 36",
   "targetSdk = 36",
   "minSdk = 23",
-  "versionCode = 1",
-  'versionName = "1.0.0"',
   'androidbrowserhelper:2.7.2'
 ]) {
   if (!appBuild.includes(token)) fail(`La configuración Android no contiene: ${token}`);
+}
+
+const versionCodeMatch = appBuild.match(/versionCode\s*=\s*(\d+)/);
+if (!versionCodeMatch || Number(versionCodeMatch[1]) < 1) {
+  fail("versionCode debe ser un entero de 1 o mayor.");
+}
+
+const versionNameMatch = appBuild.match(/versionName\s*=\s*"([^"]+)"/);
+if (!versionNameMatch || !/^\d+\.\d+\.\d+$/.test(versionNameMatch[1])) {
+  fail('versionName debe tener el formato "X.Y.Z".');
 }
 
 if (!appBuild.includes("MCS_KEYSTORE_PATH") || !appBuild.includes("MCS_KEY_PASSWORD")) {

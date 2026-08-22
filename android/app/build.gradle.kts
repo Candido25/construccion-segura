@@ -21,7 +21,7 @@ android {
         applicationId = "pe.org.construccionsegura.app"
         minSdk = 23
         targetSdk = 36
-        versionCode = 3
+        versionCode = 4
         versionName = "1.0.1"
         resourceConfigurations += listOf("es")
     }

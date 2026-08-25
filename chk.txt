@@ -1,0 +1,2 @@
+app-icon-192.png (192, 192) RGBA
+app-icon-maskable-512.png (512, 512) RGBA

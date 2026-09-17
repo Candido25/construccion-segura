@@ -177,6 +177,7 @@
 }
 
 .home-conversion-hero .hero-image,
+.home-conversion-hero .hero-collage,
 .home-conversion-hero .hero-grid {
   position: absolute;
   inset: 0;
@@ -188,6 +189,7 @@
     url("assets/site-photos/web/hero-portada.webp") center/cover;
   border-radius: 0 0 0 var(--radius);
   filter: saturate(0.9) contrast(1.03);
+  animation: hero-portada-settle 10s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .home-conversion-hero .hero-image img {
@@ -196,6 +198,118 @@
   height: 1px;
   opacity: 0;
   pointer-events: none;
+}
+
+.home-conversion-hero .hero-collage {
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 0 0 0 var(--radius);
+  animation: hero-collage-out 9.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  pointer-events: none;
+}
+
+.home-conversion-hero .hero-collage-tile {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 20px 50px rgba(23,43,55,0.22);
+  filter: saturate(0.92) contrast(1.02);
+  transform-origin: center;
+  animation: hero-tile-fly 8.4s cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+
+.home-conversion-hero .hero-collage-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(23,43,55,0.22));
+}
+
+.home-conversion-hero .hero-collage-tile-1 {
+  width: 43%;
+  height: 34%;
+  left: 6%;
+  top: 12%;
+  background-image: url("assets/site-photos/web/estructura.webp");
+  --start-x: -18%;
+  --start-y: 10%;
+  --start-rotate: -7deg;
+  --end-rotate: -2deg;
+  --tile-pan-x: 8%;
+}
+
+.home-conversion-hero .hero-collage-tile-2 {
+  width: 35%;
+  height: 28%;
+  right: 8%;
+  top: 9%;
+  background-image: url("assets/site-photos/web/obra-desordenada-peligrosa.webp");
+  --start-x: 18%;
+  --start-y: -12%;
+  --start-rotate: 6deg;
+  --end-rotate: 2deg;
+  --tile-pan-x: -7%;
+  animation-delay: 90ms;
+}
+
+.home-conversion-hero .hero-collage-tile-3 {
+  width: 31%;
+  height: 27%;
+  left: 10%;
+  bottom: 18%;
+  background-image: url("assets/site-photos/web/muros-sin-confinamiento.webp");
+  --start-x: -12%;
+  --start-y: 22%;
+  --start-rotate: 8deg;
+  --end-rotate: 1.5deg;
+  --tile-pan-x: 7%;
+  animation-delay: 180ms;
+}
+
+.home-conversion-hero .hero-collage-tile-4 {
+  width: 42%;
+  height: 34%;
+  right: 13%;
+  bottom: 12%;
+  background-image: url("assets/site-photos/web/observacion-viga-cangrejeras.webp");
+  --start-x: 16%;
+  --start-y: 18%;
+  --start-rotate: -6deg;
+  --end-rotate: -1deg;
+  --tile-pan-x: -8%;
+  animation-delay: 270ms;
+}
+
+.home-conversion-hero .hero-collage-tile-5 {
+  width: 28%;
+  height: 22%;
+  left: 36%;
+  top: 39%;
+  background-image: url("assets/site-photos/web/caja-octogonal-vigueta.webp");
+  --start-x: 0%;
+  --start-y: -18%;
+  --start-rotate: 5deg;
+  --end-rotate: 0deg;
+  --tile-pan-x: 6%;
+  animation-delay: 360ms;
+}
+
+.home-conversion-hero .hero-collage-tile-6 {
+  width: 28%;
+  height: 24%;
+  right: 2%;
+  top: 39%;
+  background-image: url("assets/site-photos/web/escalera-apoyo-vigueta.webp");
+  --start-x: 18%;
+  --start-y: 2%;
+  --start-rotate: 7deg;
+  --end-rotate: 2.5deg;
+  --tile-pan-x: -5%;
+  animation-delay: 450ms;
 }
 
 .home-conversion-hero .hero-grid {
@@ -261,6 +375,64 @@
   to { background-position: 72px 72px, 72px 72px; }
 }
 
+@keyframes hero-portada-settle {
+  0% {
+    transform: scale(1.08) translate3d(-1.6%, 0, 0);
+  }
+  78% {
+    transform: scale(1.035) translate3d(0.8%, 0, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-collage-out {
+  0%, 68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes hero-tile-fly {
+  0% {
+    opacity: 0;
+    background-position: calc(50% - var(--tile-pan-x, 0%)) center;
+    transform: translate3d(var(--start-x, 0), var(--start-y, 0), 0) rotate(var(--start-rotate, 0deg)) scale(0.86);
+  }
+  18% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 1;
+    background-position: calc(50% + var(--tile-pan-x, 0%)) center;
+    transform: translate3d(0, 0, 0) rotate(var(--end-rotate, 0deg)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    background-position: center;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1.08);
+  }
+}
+
+@keyframes slow-photo-pan {
+  0% {
+    transform: scale(1.03) translate3d(-0.8%, 0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate3d(0.8%, 0, 0);
+  }
+}
+
+.home-conversion-hero .resource-photo img,
+.home-conversion-hero .home-case-card figure img {
+  animation: slow-photo-pan 14s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
 @media (max-width: 1080px) {
   .home-conversion-hero .hero {
     grid-template-columns: 1fr;
@@ -284,6 +456,7 @@
   }
 
   .home-conversion-hero .hero-image,
+  .home-conversion-hero .hero-collage,
   .home-conversion-hero .hero-grid {
     border-radius: 0;
   }
@@ -348,8 +521,21 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-conversion-hero .hero-media,
+  .home-conversion-hero .hero-image,
+  .home-conversion-hero .hero-collage,
+  .home-conversion-hero .hero-collage-tile,
   .home-conversion-hero .hero-grid {
     animation: none;
+  }
+
+  .home-conversion-hero .hero-collage {
+    display: none;
+  }
+
+  .home-conversion-hero .resource-photo img,
+  .home-conversion-hero .home-case-card figure img {
+    animation: none;
+    transform: none;
   }
 }
 

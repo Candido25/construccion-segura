@@ -8,6 +8,7 @@
 }
 
 .authority-strip article,
+.problem-card,
 .price-card,
 .profile-card,
 .scope-note {
@@ -37,6 +38,66 @@
   font-size: 0.9rem;
 }
 
+.problem-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.problem-card {
+  display: block;
+  position: relative;
+  min-height: 15rem;
+  padding: 1.35rem 1.2rem;
+  overflow: hidden;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.problem-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 1.1rem 1rem auto;
+  width: 4.8rem;
+  height: 4.8rem;
+  border: 1px solid rgba(61, 122, 146, 0.16);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 48%, rgba(61, 122, 146, 0.18) 49% 51%, transparent 52%),
+    linear-gradient(0deg, transparent 48%, rgba(201, 111, 45, 0.18) 49% 51%, transparent 52%);
+  opacity: 0.62;
+  transform: rotate(-10deg);
+}
+
+.problem-card:hover,
+.problem-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(201, 111, 45, 0.34);
+  box-shadow: 0 20px 48px rgba(50, 34, 14, 0.13);
+}
+
+.problem-card span {
+  display: inline-flex;
+  margin-bottom: 1rem;
+  color: var(--trust);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.problem-card h3 {
+  margin: 0 0 0.8rem;
+  max-width: 18rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 4vw, 2.15rem);
+  line-height: 1.02;
+}
+
+.problem-card p {
+  margin: 0;
+  max-width: 29rem;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
 .price-grid {
   display: grid;
   gap: 1rem;
@@ -45,6 +106,8 @@
 .price-card {
   position: relative;
   padding: 1.35rem 1.2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .price-card.is-featured {
@@ -91,6 +154,11 @@
 
 .price-card ul {
   padding-left: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+
+.price-card .button {
+  margin-top: auto;
 }
 
 .profile-layout {
@@ -158,7 +226,17 @@
   line-height: 1.65;
 }
 
+.contact-block strong {
+  color: var(--accent-deep);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
 @media (min-width: 760px) {
+  .problem-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .price-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -173,6 +251,10 @@
 }
 
 @media (min-width: 1180px) {
+  .problem-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .price-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }

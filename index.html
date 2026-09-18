@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site-pages.css">
   <link rel="stylesheet" href="conversion.css">
+  <link rel="stylesheet" href="casos-de-obra.css">
   <link rel="stylesheet" href="hero.css">
   <script type="application/ld+json">
   {
@@ -92,6 +93,9 @@
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menú</button>
     <nav id="site-nav" class="site-nav" aria-label="Principal">
       <a href="#servicios">Servicios y precios</a>
+      <a href="saneamiento-predial.html">Saneamiento predial</a>
+      <a href="#problemas">Problemas frecuentes</a>
+      <a href="#casos">Casos</a>
       <a href="biblioteca-tecnica.html">Biblioteca técnica</a>
       <a href="errores-frecuentes.html">Errores frecuentes</a>
       <a href="nosotros.html">Sobre el ingeniero</a>
@@ -106,6 +110,14 @@
         <picture class="hero-image">
           <img src="assets/site-photos/web/hero-portada.webp" width="2844" height="1600" alt="" decoding="async" fetchpriority="high">
         </picture>
+        <div class="hero-collage" aria-hidden="true">
+          <span class="hero-collage-tile hero-collage-tile-1"></span>
+          <span class="hero-collage-tile hero-collage-tile-2"></span>
+          <span class="hero-collage-tile hero-collage-tile-3"></span>
+          <span class="hero-collage-tile hero-collage-tile-4"></span>
+          <span class="hero-collage-tile hero-collage-tile-5"></span>
+          <span class="hero-collage-tile hero-collage-tile-6"></span>
+        </div>
         <div class="hero-grid"></div>
         <div class="hero-badge hero-badge-top">Consulta remota nacional</div>
         <div class="hero-badge hero-badge-bottom">Visitas técnicas en Lima</div>
@@ -119,11 +131,11 @@
       <div class="hero-content">
         <p class="hero-brand">Construcción Segura</p>
         <p class="eyebrow">Asesoría para propietarios y familias que autoconstruyen</p>
-        <h1>¿Tienes dudas sobre cómo están construyendo o ampliando tu vivienda?</h1>
-        <p class="hero-text">Recibe orientación clara sobre procesos constructivos, concreto, acero, albañilería, instalaciones y Reglamento Nacional de Edificaciones antes de seguir gastando o cubrir un posible error.</p>
+        <h1>¿Estás seguro de que tu vivienda se está construyendo correctamente?</h1>
+        <p class="hero-text">Recibe orientación de un ingeniero antes de continuar gastando o cubrir un posible error.</p>
 
         <div class="hero-actions">
-          <a class="button button-primary" href="https://wa.me/51968481482?text=Hola%2C%20necesito%20revisar%20mi%20obra.%20La%20obra%20est%C3%A1%20en%20___%2C%20se%20encuentra%20en%20la%20etapa%20de%20___%20y%20mi%20principal%20duda%20es%20___." target="_blank" rel="noreferrer" data-track="whatsapp_hero">Consultar mi obra</a>
+          <a class="button button-primary" href="https://wa.me/51968481482?text=Hola%2C%20necesito%20revisar%20mi%20obra.%20La%20obra%20est%C3%A1%20en%20___%2C%20se%20encuentra%20en%20la%20etapa%20de%20___%20y%20mi%20principal%20duda%20es%20___." target="_blank" rel="noreferrer" data-track="whatsapp_hero">Consultar mi obra por WhatsApp</a>
           <a class="button button-secondary" href="#servicios" data-track="view_prices_hero">Ver servicios y precios</a>
         </div>
 
@@ -173,6 +185,45 @@
       </div>
     </section>
 
+    <section class="section problem-section" id="problemas">
+      <div class="section-heading">
+        <p class="eyebrow">Problemas frecuentes en obra</p>
+        <h2>Señales que conviene revisar antes de vaciar, tapar o seguir gastando.</h2>
+      </div>
+      <div class="problem-grid">
+        <a class="problem-card" href="errores/cangrejeras-recubrimiento-separadores-inadecuados.html">
+          <span>01</span>
+          <h3>Grietas, cangrejeras y acero expuesto</h3>
+          <p>Vacíos, fisuras o barras visibles pueden indicar falta de compactación, recubrimiento insuficiente o una reparación pendiente.</p>
+        </a>
+        <a class="problem-card" href="errores/falta-recubrimiento-acero.html">
+          <span>02</span>
+          <h3>Acero mal colocado o sin recubrimiento</h3>
+          <p>La posición del refuerzo y los separadores deben revisarse antes del vaciado, no cuando el concreto ya endureció.</p>
+        </a>
+        <a class="problem-card" href="errores/zapatas-mal-dimensionadas.html">
+          <span>03</span>
+          <h3>Cimentaciones sin orientación suficiente</h3>
+          <p>Zapatas, cimientos y sobrecimientos necesitan dimensiones, acero y concreto coherentes con el diseño y el terreno.</p>
+        </a>
+        <a class="problem-card" href="errores/picar-vigas-columnas-para-tuberias.html">
+          <span>04</span>
+          <h3>Cortes en columnas, vigas o losas</h3>
+          <p>Abrir pases para tuberías o instalaciones puede comprometer elementos estructurales si no se revisa técnicamente.</p>
+        </a>
+        <a class="problem-card" href="servicios.html#servicios-complementarios">
+          <span>05</span>
+          <h3>Dudas antes del vaciado de concreto</h3>
+          <p>Antes de concretar conviene revisar acero, estribos, encofrado, interferencias, limpieza y condiciones generales.</p>
+        </a>
+        <a class="problem-card" href="errores-frecuentes.html">
+          <span>06</span>
+          <h3>Ampliaciones y cambios de vivienda</h3>
+          <p>Agregar pisos, mover muros o modificar ambientes requiere criterio técnico para evitar errores difíciles de corregir.</p>
+        </a>
+      </div>
+    </section>
+
     <section class="section" id="servicios">
       <div class="section-heading">
         <p class="eyebrow">Servicios y precios iniciales</p>
@@ -189,7 +240,7 @@
             <li>Revisión previa de hasta 5 fotos</li>
             <li>Orientación verbal</li>
           </ul>
-          <a class="button button-secondary" href="servicios.html#consulta-breve" data-track="service_brief">Ver alcance</a>
+          <a class="button button-secondary" href="https://wa.me/51968481482?text=Hola%2C%20deseo%20una%20consulta%20breve%20de%20obra.%0A%0ACiudad%20o%20distrito%3A%20___%0AEtapa%20de%20obra%3A%20___%0ADuda%20principal%3A%20___" target="_blank" rel="noreferrer" data-track="service_brief_whatsapp_home">Consultar por WhatsApp</a>
         </article>
 
         <article class="price-card is-featured">
@@ -202,7 +253,7 @@
             <li>Hasta dos asuntos relacionados</li>
             <li>Resumen breve por WhatsApp</li>
           </ul>
-          <a class="button button-primary" href="servicios.html#consulta-completa" data-track="service_complete">Ver alcance</a>
+          <a class="button button-primary" href="https://wa.me/51968481482?text=Hola%2C%20deseo%20una%20consulta%20completa%20de%20obra.%0A%0ACiudad%20o%20distrito%3A%20___%0AEtapa%20de%20obra%3A%20___%0AAsuntos%20a%20revisar%3A%20___" target="_blank" rel="noreferrer" data-track="service_complete_whatsapp_home">Solicitar por WhatsApp</a>
         </article>
 
         <article class="price-card">
@@ -215,7 +266,7 @@
             <li>Reporte breve en PDF</li>
             <li>Observaciones y próximos pasos</li>
           </ul>
-          <a class="button button-secondary" href="servicios.html#revision-documentada" data-track="service_report">Ver alcance</a>
+          <a class="button button-secondary" href="https://wa.me/51968481482?text=Hola%2C%20deseo%20cotizar%20una%20revisi%C3%B3n%20documentada.%0A%0ACiudad%20o%20distrito%3A%20___%0AEtapa%20de%20obra%3A%20___%0ADocumentos%20disponibles%3A%20___" target="_blank" rel="noreferrer" data-track="service_report_whatsapp_home">Cotizar por WhatsApp</a>
         </article>
 
         <article class="price-card">
@@ -228,8 +279,12 @@
             <li>Conversación con el propietario</li>
             <li>Observaciones posteriores</li>
           </ul>
-          <a class="button button-secondary" href="servicios.html#visita-tecnica" data-track="service_visit">Ver alcance</a>
+          <a class="button button-secondary" href="https://wa.me/51968481482?text=Hola%2C%20deseo%20consultar%20por%20una%20visita%20t%C3%A9cnica%20en%20Lima.%0A%0ANombre%3A%20___%0ADistrito%3A%20___%0AEtapa%20de%20obra%3A%20___%0ADuda%20principal%3A%20___%0A%C2%BFCuento%20con%20fotos%20o%20planos%3F%3A%20___" target="_blank" rel="noreferrer" data-track="service_visit_whatsapp_home">Coordinar por WhatsApp</a>
         </article>
+      </div>
+      <div class="section-cta">
+        <p>Los precios y alcances completos se mantienen publicados para comparar cada modalidad antes de reservar.</p>
+        <a class="inline-link" href="servicios.html">Ver detalle de servicios y precios</a>
       </div>
     </section>
 
@@ -241,6 +296,7 @@
       <div class="coverage-list">
         <article><strong>Todo el Perú — modalidad remota</strong><span>Revisión por fotografías, videos, planos, documentos y videollamada, siempre que el caso pueda evaluarse responsablemente a distancia.</span></article>
         <article><strong>Lima — modalidad presencial</strong><span>Visitas técnicas según distrito, disponibilidad, desplazamiento y alcance previamente acordado.</span></article>
+        <article><strong>Saneamiento predial — Lima y Callao</strong><span>Diagnóstico físico-registral, declaratoria de edificación, independización, planos y regularización inmobiliaria en la Zona Registral IX.</span><a class="inline-link" href="saneamiento-predial.html">Ver saneamiento predial</a></article>
       </div>
     </section>
 
@@ -271,10 +327,38 @@
       </div>
       <div class="timeline">
         <article><span>1</span><h3>Envías el caso</h3><p>Comparte fotos, ubicación, etapa de obra y la duda principal.</p></article>
-        <article><span>2</span><h3>Definimos modalidad</h3><p>Confirmamos si corresponde consulta breve, completa, reporte o visita.</p></article>
-        <article><span>3</span><h3>Reservas la atención</h3><p>Se confirma horario, precio y medio de pago.</p></article>
-        <article><span>4</span><h3>Recibes orientación</h3><p>Revisamos el caso y acordamos los siguientes pasos.</p></article>
+        <article><span>2</span><h3>Revisión inicial</h3><p>Se identifica si la información permite orientar a distancia o si falta evidencia.</p></article>
+        <article><span>3</span><h3>Definimos modalidad</h3><p>Confirmamos si corresponde consulta breve, completa, reporte o visita.</p></article>
+        <article><span>4</span><h3>Reservas la atención</h3><p>Se confirma horario, precio, forma de atención y medio de pago.</p></article>
+        <article><span>5</span><h3>Recibes orientación</h3><p>Revisamos el caso y acordamos próximos pasos responsables.</p></article>
       </div>
+    </section>
+
+    <section class="section home-cases-preview" id="casos">
+      <div class="section-heading">
+        <p class="eyebrow">Casos y errores frecuentes</p>
+        <h2>Observaciones reales explicadas con fotografías, consecuencias y próximos pasos.</h2>
+      </div>
+      <article class="home-case-card">
+        <figure class="watermark-frame">
+          <img src="assets/site-photos/casos/multifamiliar-seis-niveles/recubrimiento-viga-caseton-20260721.webp" alt="Observación técnica de recubrimiento y modulación en una vivienda multifamiliar" loading="lazy">
+        </figure>
+        <div class="home-case-copy">
+          <p class="eyebrow">Vivienda multifamiliar · Lima</p>
+          <h3>Recubrimiento, albañilería, escalera y concreto armado bajo revisión.</h3>
+          <p>El caso existente reúne fotografías ampliables, señalización visual, explicación comprensible, verificaciones necesarias y referencias del RNE E.060 y E.070 cuando corresponden.</p>
+          <div class="project-tags" aria-label="Temas revisados">
+            <span>Cangrejeras</span>
+            <span>Recubrimiento</span>
+            <span>Albañilería</span>
+            <span>Escalera</span>
+          </div>
+          <div class="project-card-actions">
+            <a class="button button-primary" href="casos/seguimiento-vivienda-multifamiliar-seis-niveles.html" data-track="home_case_detail">Ver caso técnico</a>
+            <a class="button button-secondary" href="errores-frecuentes.html" data-track="home_errors_library">Ver errores frecuentes</a>
+          </div>
+        </div>
+      </article>
     </section>
 
     <section class="section resources" id="recursos">
@@ -318,6 +402,7 @@
           <p>Envía fotografías claras, ubicación, etapa de construcción y tu duda principal. Primero revisaremos qué modalidad corresponde.</p>
         </div>
         <div class="contact-block">
+          <strong>Antes de continuar construyendo, consulta.</strong>
           <a href="https://wa.me/51968481482?text=Hola%2C%20necesito%20revisar%20mi%20obra.%20La%20obra%20est%C3%A1%20en%20___%2C%20se%20encuentra%20en%20la%20etapa%20de%20___%20y%20mi%20principal%20duda%20es%20___." target="_blank" rel="noreferrer" data-track="whatsapp_contact">WhatsApp: +51 968 481 482</a>
           <a href="mailto:contacto@construccionsegura.org.pe" data-track="email_contact">contacto@construccionsegura.org.pe</a>
           <p>Consultas remotas: todo el Perú.</p>

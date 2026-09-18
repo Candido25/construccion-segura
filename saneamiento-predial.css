@@ -1,0 +1,193 @@
+.saneamiento-page .simple-hero {
+  padding-bottom: 3rem;
+}
+
+.saneamiento-hero-card,
+.diagnostic-panel,
+.featured-route,
+.coverage-panel,
+.faq-accordion details,
+.saneamiento-service-card {
+  border: 1px solid rgba(15, 39, 68, 0.08);
+  border-radius: var(--radius-sm);
+  background: rgba(253, 248, 241, 0.86);
+  box-shadow: var(--shadow-sm);
+}
+
+.saneamiento-hero-card {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.35rem;
+  align-self: stretch;
+}
+
+.saneamiento-hero-card strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  line-height: 1.03;
+}
+
+.saneamiento-hero-card span,
+.saneamiento-hero-card p,
+.diagnostic-panel p,
+.featured-route p,
+.coverage-panel p,
+.faq-accordion p,
+.saneamiento-service-card p {
+  color: var(--muted);
+  line-height: 1.78;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.diagnostic-panel {
+  display: grid;
+  gap: 1.3rem;
+  padding: clamp(1.35rem, 4vw, 2.4rem);
+}
+
+.diagnostic-panel h2,
+.featured-route h2 {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  line-height: 1.02;
+}
+
+.diagnostic-steps {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.diagnostic-steps li {
+  position: relative;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(15, 39, 68, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.38);
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.diagnostic-steps li::marker {
+  color: var(--accent-deep);
+  font-weight: 800;
+}
+
+.saneamiento-service-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.saneamiento-service-card {
+  position: relative;
+  min-height: 13rem;
+  padding: 1.25rem 1.15rem;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.saneamiento-service-card:hover,
+.saneamiento-service-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(201, 111, 45, 0.22);
+  box-shadow: 0 18px 40px rgba(50, 34, 14, 0.12);
+}
+
+.saneamiento-service-card span {
+  display: inline-flex;
+  margin-bottom: 0.9rem;
+  color: var(--trust);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.saneamiento-service-card h3 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3vw, 2.05rem);
+  line-height: 1.06;
+}
+
+.featured-routes {
+  display: grid;
+  gap: 1rem;
+}
+
+.featured-route {
+  padding: clamp(1.35rem, 4vw, 2.2rem);
+}
+
+.coverage-panel {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.35rem, 4vw, 2rem);
+}
+
+.coverage-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.coverage-tags span {
+  padding: 0.45rem 0.68rem;
+  border-radius: 999px;
+  background: var(--trust-soft);
+  color: var(--trust);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.coverage-note {
+  margin: 0;
+}
+
+.faq-accordion {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq-accordion details {
+  padding: 1rem 1.1rem;
+}
+
+.faq-accordion summary {
+  cursor: pointer;
+  color: var(--text-dark);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.faq-accordion summary:focus-visible {
+  outline: 2.5px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.faq-accordion p {
+  margin: 0.85rem 0 0;
+}
+
+@media (min-width: 760px) {
+  .diagnostic-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .saneamiento-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured-routes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1120px) {
+  .saneamiento-service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

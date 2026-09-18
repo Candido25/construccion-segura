@@ -139,8 +139,8 @@ for (const resource of [
   if (!serviceWorker.includes(resource)) fail(`El modo sin conexión no incluye ${resource}.`);
 }
 
-if (!serviceWorker.includes('CACHE_VERSION = "mi-casa-segura-pwa-v25"')) {
-  fail("La PWA debe usar la caché v25.");
+if (!serviceWorker.includes('CACHE_VERSION = "mi-casa-segura-pwa-v26"')) {
+  fail("La PWA debe usar la caché v26.");
 }
 
 if (!professionalHelp.includes("phase1-bootstrap.js?v=1")) {

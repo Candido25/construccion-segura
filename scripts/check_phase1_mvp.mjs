@@ -120,8 +120,8 @@ for (const token of [
 }
 
 const serviceWorker = read("service-worker.js");
-if (!serviceWorker.includes('CACHE_VERSION = "mi-casa-segura-pwa-v25"')) {
-  fail("El MVP funcional debe usar la caché v25.");
+if (!serviceWorker.includes('CACHE_VERSION = "mi-casa-segura-pwa-v26"')) {
+  fail("El MVP funcional debe usar la caché v26.");
 }
 for (const resource of [
   "/app/phase1-mvp.css?v=1",

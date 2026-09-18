@@ -31,6 +31,8 @@ privacy.css
 privacy.js
 recubrimiento-observation.js
 robots.txt
+saneamiento-predial.css
+saneamiento-predial.html
 script.js
 service-worker.js
 servicios.html
